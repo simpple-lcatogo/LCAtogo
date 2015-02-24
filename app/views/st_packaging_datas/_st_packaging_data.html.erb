@@ -1,0 +1,25 @@
+<tr id="st_packaging_data_<%= st_packaging_data.id %>">
+     <td>
+	      <% if st_packaging_data.st_packaging_type %>
+			<%= st_packaging_data.st_packaging_type.name.html_safe %>
+	      <% end %>		
+     </td>
+     <td>
+          <% if st_packaging_data.quantity %>
+            <%= st_packaging_data.quantity %>
+          <% end %>
+     </td>
+     <td>
+	      <% if st_packaging_data.st_packaging_type %>
+			<%= st_packaging_data.st_packaging_type.unit.html_safe %>
+	      <% end %>		
+     </td>     
+     <td>
+       <% if st_packaging_data.eco_cost && st_packaging_data.quantity %>
+          <%= lca_format_number(st_packaging_data.quantity * st_packaging_data.eco_cost, 4)  %> &euro;
+       <% else %>
+          -
+       <% end %>   
+     </td>     
+     <td class="center"><%= link_to '&#10006;'.html_safe, st_packaging_data_path(st_packaging_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>

@@ -1,0 +1,92 @@
+<h1><%=_('Introduction').html_safe%>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/ph_data_qualities/tabs') %>
+	</div>
+	
+	<table class="standard2">
+	   <thead>
+	      <tr>
+	        <th></th>
+	        <th><div style="float:left;padding-top:7px;text-align:center"><%=_('Robust').html_safe%></div><div><%= image_tag('bullet-green-icon.png')%></div></th>
+	        <th><div style="float:left;padding-top:7px"><%=_('Indicative').html_safe%></div><div><%= image_tag('bullet-yellow-icon.png')%></div></th>
+	        <th><div style="float:left;padding-top:7px"><%=_('Illustrative').html_safe%></div><div><%= image_tag('bullet-red-icon.png')%></div></th>
+	      </tr>	      
+	   </thead>
+	   <tbody>
+	      <tr>
+	        <th><%=_('Country of use & radiation').html_safe%></th>
+	        <td><%=_('The location is know and the local radiation taken from a reliable source as PVGis').html_safe%></td>
+	        <td><%=_('Location is approximately known, the radiation therefore unsure but taken from a reliable source').html_safe%></td>
+	        <td><%=_('Either the location is not known at all or its solar sources are estimated').html_safe%></td>	        
+	      </tr>
+	      <tr>
+	        <th><%=_('Modules\' temperature').html_safe%></th>
+	        <td><%=_('Specific number, either used in own field or PR').html_safe%></td>
+	        <td><%=_('Temperature taken from a former similar project or well estimated and included in data').html_safe%></td>
+	        <td><%=_('Temperature not known or neither entered or used in PR').html_safe%></td>	        
+	      </tr>
+	      <tr>
+	        <th><%=_('Performance ratio (PR)').html_safe%></th>
+	        <td><%=_('Taken from a simulation such as PVsyst or calculated according to the in-tool text').html_safe%></td>
+	        <td><%=_('Estimated using information from former similar project or similar to "Robust" but based on estimates').html_safe%></td>
+	        <td><%=_('Use of a standard average value found in literature or from not similar project').html_safe%></td>	        
+	      </tr>
+	      <tr>
+	        <th><%=_('Module specifications').html_safe%></th>
+	        <td><%=_('Efficiency and lifetime from datasheet or other database').html_safe%></td>
+	        <td><%=_('Use of LCA to go default values, technology known').html_safe%></td>
+	        <td><%=_('LCA to go default values, for exemplary technology').html_safe%></td>	        
+	      </tr>
+	      <tr>
+	        <th><%=_('Production countries').html_safe%></th>
+	        <td><%=_('Data from manufacturer for specific technology').html_safe%></td>
+	        <td><%=_('General information about specific technology or manufacturer').html_safe%></td>
+	        <td><%=_('Use of world mix data taken from LCA to go defaults').html_safe%></td>	        
+	      </tr>
+	      <tr>
+	        <th><%=_('Inverters').html_safe%></th>
+	        <td><%=_('Capacity according to PV peak power and component existing and lifetime known').html_safe%></td>
+	        <td><%=_('Capacity is strictly taken from calculated peak power - real components\' size unknown or lifetime based on justified estimates').html_safe%></td>
+	        <td><%=_('Capacity is estimated or number of inverters unknown, lifetime roughly estimated').html_safe%></td>	        
+	      </tr>
+	      <tr>
+	        <th><%=_('Batteries').html_safe%></th>
+	        <td><%=_('Weight per piece is taken from datasheet or used components').html_safe%></td>
+	        <td><%=_('Technology and capacity is known, weight is calculated by LCA to go routine').html_safe%></td>
+	        <td><%=_('Capacity and/or number is roughly estimated or technology not defined').html_safe%></td>	        
+	      </tr>
+	      <tr>
+	        <th><%=_('Maintenance').html_safe%></th>
+	        <td><%=_('Known period and extent of contracted maintenance; well estimated driving range').html_safe%></td>
+	        <td><%=_('Maintenance details are taken from a similar project; well estimated driving range').html_safe%></td>
+	        <td><%=_('Maintenance details are unknown and therefore not included').html_safe%></td>	        
+	      </tr>
+	      
+	   </tbody>	   
+	</table>
+	
+	
+  <div class="buttons last" style="float:right;text-align:right">
+     <a href="<%=ph_data_quality_path(@ph_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Next step").html_safe %></a>
+  </div>
+  
+  <div class="clear"></div>
+  	
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, ph_production_intro_path(@ph_product) %></li>
+        <li><%= link_to _('To Data Entry').html_safe, ph_basic_information_path(@ph_product) %></li>
+        <li><%= link_to _('To Results').html_safe, ph_result_summary_path(@ph_product) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+
+	
+</div>	

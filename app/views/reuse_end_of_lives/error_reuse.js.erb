@@ -1,0 +1,8 @@
+/* Add the new comment to the bottom of the comments list */
+
+$("#error_explanation_reuse").empty();
+$("#error_explanation_reuse").css("display", "block")
+$("#error_explanation_reuse").append("<p><b><%=_('Please check the following issues before proceding. Thanks!').html_safe%></b></p>");  
+  <% full_messages_no_attribute(@reuse_end_of_life.errors).each do |msg| %>    
+    $("#error_explanation_reuse").append("<p><%= msg.html_safe %></p>");
+  <% end %>

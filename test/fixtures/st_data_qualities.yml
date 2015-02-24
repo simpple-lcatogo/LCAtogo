@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  st_product_id: 1
+  materials: MyString
+  manufacturing: MyString
+  distribution: MyString
+  use: MyString
+  end_of_life: MyString
+
+two:
+  st_product_id: 1
+  materials: MyString
+  manufacturing: MyString
+  distribution: MyString
+  use: MyString
+  end_of_life: MyString

@@ -1,0 +1,29 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  ph_product_id: 1
+  inverter_size_1: 1.5
+  inverter_size_2: 1.5
+  quantity_1: 1.5
+  quantity_2: 1.5
+  lifetime_1: 1.5
+  lifetime_2: 1.5
+  include_batteries: MyString
+  ph_battery_type_id: 1
+  capacity_battery: 1.5
+  separated_battery: 1.5
+  battery_lifetime: 1.5
+
+two:
+  ph_product_id: 1
+  inverter_size_1: 1.5
+  inverter_size_2: 1.5
+  quantity_1: 1.5
+  quantity_2: 1.5
+  lifetime_1: 1.5
+  lifetime_2: 1.5
+  include_batteries: MyString
+  ph_battery_type_id: 1
+  capacity_battery: 1.5
+  separated_battery: 1.5
+  battery_lifetime: 1.5

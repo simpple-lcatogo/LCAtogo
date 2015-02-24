@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  economical_phase_id: 1
+  economical_family_id: 1
+  economical_flow_id: 1
+  quantity: 1.5
+  economic_id: 1
+
+two:
+  economical_phase_id: 1
+  economical_family_id: 1
+  economical_flow_id: 1
+  quantity: 1.5
+  economic_id: 1

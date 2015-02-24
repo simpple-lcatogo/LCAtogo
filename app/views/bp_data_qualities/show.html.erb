@@ -1,0 +1,79 @@
+<h1><%=_('Data Quality').html_safe%></h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/bp_data_qualities/tabs') %>
+	</div>
+	<div class="clear"></div>
+<%= form_for(@bp_data_quality) do |f| %>
+  <table class="standard2">
+   <tbody>
+    <tr>
+      <th colspan="4"><a title="<%=_('For an engineer it might be hard to understand, that environmental life cycle data is subject to numerous assumptions, approximations, partly guess-work and thus uncertainty. Data quality essentially is an indicator of how good a given dataset and the related results of modelling represent the &quot;real&quot; life cycle of a product or system. The Data Quality Indicator in the &quot;LCA to go&quot; tool is meant to assess the quality of YOUR data entries (raw materials, transport distances, power consumption), not of the background data in the tool.').html_safe%>" href="#" class="tip">&nbsp;</a></th>
+    </tr>
+    <tr>
+      <td><%=_('RAW MATERIALS').html_safe%></td>
+	  <td><%= f.radio_button :materials, "robust" %>  <%=_('Robust').html_safe%></td>
+	  <td><%= f.radio_button :materials, "indicative" %>  <%=_('Indicative').html_safe%></td>
+	  <td><%= f.radio_button :materials, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	<tr>
+      <td><%=_('TRANSPORT').html_safe%></td>
+      <td><%= f.radio_button :transport, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :transport, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :transport, "illustrative" %>  <%=_('Illustrative').html_safe%></td>  
+	</tr>
+	<tr>
+      <td><%=_('PROCESSING').html_safe%></td>
+      <td><%= f.radio_button :processing, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :processing, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :processing, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	<tr>
+      <td><%=_('DISTRIBUTION').html_safe%></td>
+      <td><%= f.radio_button :distribution, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :distribution, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :distribution, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	<tr>
+      <td><%=_('END-OF-LIFE').html_safe%></td>
+      <td><%= f.radio_button :end_of_life, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :end_of_life, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :end_of_life, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	
+	</tbody> 
+   </table>
+   
+  <div class="buttons last" style="float:left">
+     <a href="<%=bp_data_quality_intro_path(@bp_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Previous step").html_safe %></a>
+  </div>
+   
+   
+  <div class="buttons" style="float:right">
+     <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Data Update").html_safe %></button>
+   </div>
+
+
+      <div class="clear"></div>
+      <div class="navbar">
+        <div>
+          <ul>
+            <li><%= link_to _('To Introduction').html_safe, bp_production_intro_path(@bp_product) %></li>
+            <li><%= link_to _('To Data Entry').html_safe, bp_production_url(@bp_product) %></li>
+            <li><%= link_to _('To Results').html_safe, bp_result_url(@bp_product) %></li>
+            <li><%= link_to _('To Economic Data'), bp_economic_url(@bp_product) %></li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="clear"></div>
+
+
+    </div>
+
+	
+	
+<% end %>
+
+</div>	

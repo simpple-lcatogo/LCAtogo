@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  mt_product_id: 1
+  waste: 1.5
+
+two:
+  mt_product_id: 1
+  waste: 1.5

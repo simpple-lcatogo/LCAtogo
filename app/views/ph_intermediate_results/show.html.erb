@@ -1,0 +1,484 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#ph_intermediate_result_silicon_country_id").change(function(){
+           var id_value_string = $(this).val();
+           if ((id_value_string != "") && (id_value_string != "-1")){
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, item: 'silicon_country', type: 'co2_intermediate'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                        alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                        alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("ph_intermediate_result_silicon_co2").value = "" + data; 
+                       }
+                    });
+              } else {
+              document.getElementById("ph_intermediate_result_silicon_co2").value = "449.48";              
+              }
+         });   
+
+        $("#ph_intermediate_result_wafers_country_id").change(function(){
+           var id_value_string = $(this).val();
+           if ((id_value_string != "") && (id_value_string != "-1")){
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, item: 'wafers_country', type: 'co2_intermediate'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                        alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                        alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("ph_intermediate_result_wafers_co2").value = "" + data; 
+                       }
+                    });
+              } else {
+              document.getElementById("ph_intermediate_result_wafers_co2").value = "487.34";              
+              }
+         });   
+
+
+        $("#ph_intermediate_result_cells_country_id").change(function(){
+           var id_value_string = $(this).val();
+           if ((id_value_string != "") && (id_value_string != "-1")){
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, item: 'cells_country', type: 'co2_intermediate'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                        alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                        alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("ph_intermediate_result_cells_co2").value = "" + data; 
+                       }
+                    });
+              } else {
+              document.getElementById("ph_intermediate_result_cells_co2").value = "635.81";              
+              }
+
+         });   
+
+        $("#ph_intermediate_result_modules_country_id").change(function(){
+           var id_value_string = $(this).val();
+           if ((id_value_string != "") && (id_value_string != "-1")){
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, item: 'modules_country', type: 'co2_intermediate'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                        alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                        alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("ph_intermediate_result_modules_co2").value = "" + data; 
+                       }
+                    });
+              } else {
+              document.getElementById("ph_intermediate_result_modules_co2").value = "627.51";              
+              }
+
+         });   
+
+        $("#ph_intermediate_result_cadmium_country_id").change(function(){
+           var id_value_string = $(this).val();
+           if ((id_value_string != "") && (id_value_string != "-1")){
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, item: 'cadmium_country', type: 'co2_intermediate'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                        alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                        alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("ph_intermediate_result_cadmium_co2").value = "" + data; 
+                       }
+                    });
+              } else {
+              document.getElementById("ph_intermediate_result_cadmium_co2").value = "636.61";              
+              }
+                                                     
+         });   
+
+
+        $("#ph_intermediate_result_cis_country_id").change(function(){
+           var id_value_string = $(this).val();
+           if ((id_value_string != "") && (id_value_string != "-1")){
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, item: 'cis_country', type: 'co2_intermediate'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                        alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                        alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("ph_intermediate_result_cis_co2").value = "" + data; 
+                       }
+                    });
+              } else {
+              document.getElementById("ph_intermediate_result_cis_co2").value = "482.04";              
+              }
+                                                     
+         });   
+
+        $("#ph_intermediate_result_amorphous_country_id").change(function(){
+           var id_value_string = $(this).val();
+           if ((id_value_string != "") && (id_value_string != "-1")){
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, item: 'amorphous_country', type: 'co2_intermediate'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                        alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                        alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("ph_intermediate_result_amorphous_co2").value = "" + data; 
+                       }
+                    });
+              } else {
+              document.getElementById("ph_intermediate_result_amorphous_co2").value = "504";              
+              }
+                                                     
+         });   
+
+         
+     $("#edit_ph_intermediate_result_<%=@ph_intermediate_result.id%>").validate({
+   	    rules: {
+	      "ph_intermediate_result[area]": {
+	                required:true,
+	                number:true
+	                },
+	      "ph_intermediate_result[silicon_co2]": {
+	                required:true,
+	                number:true
+	                },
+	      "ph_intermediate_result[wafers_co2]": {
+	                required:true,
+	                number:true
+	                },
+	      "ph_intermediate_result[cells_co2]": {
+	                required:true,
+	                number:true
+	                },
+	      "ph_intermediate_result[modules_co2]": {
+	                required:true,
+	                number:true
+	                },
+	      "ph_intermediate_result[cadmium_co2]": {
+	                required:true,
+	                number:true
+	                },
+	      "ph_intermediate_result[cis_co2]": {
+	                required:true,
+	                number:true
+	                },
+	      "ph_intermediate_result[amorphous_co2]": {
+	                required:true,
+	                number:true
+	                }
+	    },
+		messages: {
+          "ph_intermediate_result[area]": {
+                required:"<%=_('This field is mandatory').html_safe%>",
+                number:"<%=_('Please enter a number').html_safe%>",
+                },
+          "ph_intermediate_result[silicon_co2]": {
+                required:"<%=_('This field is mandatory').html_safe%>",
+                number:"<%=_('Please enter a number').html_safe%>"
+                },
+          "ph_intermediate_result[wafers_co2]": {
+                required:"<%=_('This field is mandatory').html_safe%>",
+                number:"<%=_('Please enter a number').html_safe%>"
+                },
+          "ph_intermediate_result[cells_co2]": {
+                required:"<%=_('This field is mandatory').html_safe%>",
+                number:"<%=_('Please enter a number').html_safe%>"
+                },
+          "ph_intermediate_result[modules_co2]": {
+                required:"<%=_('This field is mandatory').html_safe%>",
+                number:"<%=_('Please enter a number').html_safe%>"
+                },
+          "ph_intermediate_result[cadmium_co2]": {
+                required:"<%=_('This field is mandatory').html_safe%>",
+                number:"<%=_('Please enter a number').html_safe%>"
+                },
+          "ph_intermediate_result[cis_co2]": {
+                required:"<%=_('This field is mandatory').html_safe%>",
+                number:"<%=_('Please enter a number').html_safe%>"
+                },
+          "ph_intermediate_result[amorphous_co2]": {
+                required:"<%=_('This field is mandatory').html_safe%>",
+                number:"<%=_('Please enter a number').html_safe%>"
+                }           
+		}		    
+       });                     
+         
+         
+         
+     }); 
+</script>
+<h1><%=_('Production Countries').html_safe%>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/lca/ph_tabs') %>
+	</div>
+
+<%= form_for(@ph_intermediate_result) do |f| %>
+  <% if @ph_intermediate_result.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@ph_intermediate_result.errors.count, "error") %> prohibited this ph_intermediate_result from being saved:</h2>
+
+      <ul>
+      <% @ph_intermediate_result.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  
+  <div class="field">
+    <b><%= _('Peak Power').html_safe %></b><br />
+    <%= lca_format_number(@peak_power, 2)  %>
+    <%=_('kWp').html_safe%>
+  </div>
+  <br/>
+  <div class="field">
+    <b><%= _('Yearly Output').html_safe %></b><br />
+    <% if @ph_intermediate_result.ph_product.ph_basic_information.working == 'yes' && @ph_intermediate_result.ph_product.ph_basic_information.know_power == 'yes' && @ph_intermediate_result.ph_product.ph_basic_information.user_power %>
+       <%= @ph_intermediate_result.ph_product.ph_basic_information.user_power %>
+    <% else %>
+       <%= lca_format_number(@averaged_power, 2)  %>
+    <% end %>   
+    <%=_('kWh').html_safe%>
+  </div>
+  <br/>  
+  <div class="field">
+    <b><%= _('Module area').html_safe %></b><br />
+    <%= (number_with_precision(f.object.module_area, :precision => 2)) %>
+    <%=_('m<sup>2</sup>').html_safe%>
+  </div>
+  <br/><br/>
+  <% if @ph_product.ph_specified && @ph_product.ph_specified.ph_module_type %>
+  <table width="100%">
+    <% if @ph_product.ph_specified.ph_module_type.name_en == 'polycrystalline Silicon' || @ph_product.ph_specified.ph_module_type.name_en == 'monocrystalline Silicon' %>
+	    <tr>    
+	      <td width="20%" class="td_top"><%=_('Silicon Feedstock (Poly-Si)').html_safe%></td>
+	      <td width="40%">
+	         <%=_('Country of production').html_safe%>&nbsp;
+		     <select id="ph_intermediate_result_silicon_country_id" name="ph_intermediate_result[silicon_country_id]">
+		         <option value="-1"><%=_('Unknown').html_safe%></option>
+			     <% @ph_country_infos.each do |ph_country_info| %>
+			        <% if @ph_intermediate_result.silicon_country && @ph_intermediate_result.silicon_country.id == ph_country_info.id %>
+			           <option selected="true" value="<%=ph_country_info.id%>"><%=ph_country_info.name.html_safe%></option>
+			        <% else %>
+			           <option value="<%=ph_country_info.id%>"><%=ph_country_info.name.html_safe%></option>
+			        <% end %>   
+			     <% end %>
+		     </select>          
+		   </td>  
+		   <td width="15%" class="td_top">
+	          <%=_('CO2-F for Step').html_safe%>
+	       </td>   
+	       <td width="25%">
+	          <%= f.text_field :silicon_co2 %>
+	       </td>
+	     </tr>
+		   <tr>   
+		     <td class="td_top"> 
+		        <%=_('Crystalline Wafers').html_safe%>
+		     </td>   
+		     <td> 
+		         <%=_('Country of production').html_safe%>&nbsp;
+			     <select id="ph_intermediate_result_wafers_country_id" name="ph_intermediate_result[wafers_country_id]">
+			         <option value="-1"><%=_('Unknown').html_safe%></option>     
+				     <% @ph_country_infos.each do |ph_country_info| %>
+				        <% if @ph_intermediate_result.wafers_country && @ph_intermediate_result.wafers_country.id == ph_country_info.id %>
+				           <option selected="true" value="<%=ph_country_info.id%>"><%=ph_country_info.name.html_safe%></option>
+				        <% else %>
+				           <option value="<%=ph_country_info.id%>"><%=ph_country_info.name.html_safe%></option>
+				        <% end %>   
+				     <% end %>
+			     </select>
+			 </td>
+			 <td class="td_top">
+		         <%=_('CO2-F for Step').html_safe%>
+			 </td>
+			 <td>
+		         <%= f.text_field :wafers_co2 %>
+			 </td>     
+		   </tr>   
+		   <tr>   
+		     <td class="td_top">   
+		       <%=_('Crystalline Cells').html_safe%>
+		     </td>  
+		     <td>   
+		         <%=_('Country of production').html_safe%>&nbsp;
+			     <select id="ph_intermediate_result_cells_country_id" name="ph_intermediate_result[cells_country_id]">
+			         <option value="-1"><%=_('Unknown').html_safe%></option>     
+				     <% @ph_country_infos.each do |ph_country_info| %>
+				        <% if @ph_intermediate_result.cells_country && @ph_intermediate_result.cells_country.id == ph_country_info.id %>
+				           <option selected="true" value="<%=ph_country_info.id%>"><%=ph_country_info.name.html_safe%></option>
+				        <% else %>
+				           <option value="<%=ph_country_info.id%>"><%=ph_country_info.name.html_safe%></option>
+				        <% end %>   
+				     <% end %>
+			     </select>
+			 </td>       
+			 <td class="td_top">
+		        <%=_('CO2-F for Step').html_safe%>
+		     </td>
+		     <td>
+		        <%= f.text_field :cells_co2 %>
+		     </td>
+		   </tr>  
+		 
+		   <tr>   
+		     <td class="td_top">          
+		       <%=_('Crystalline Modules').html_safe%>
+		     </td>  
+		     <td>     
+		         <%=_('Country of production').html_safe%>&nbsp;
+			     <select id="ph_intermediate_result_modules_country_id" name="ph_intermediate_result[modules_country_id]">
+			         <option value="-1"><%=_('Unknown').html_safe%></option>     
+				     <% @ph_country_infos.each do |ph_country_info| %>
+				        <% if @ph_intermediate_result.modules_country && @ph_intermediate_result.modules_country.id == ph_country_info.id %>
+				           <option selected="true" value="<%=ph_country_info.id%>"><%=ph_country_info.name.html_safe%></option>
+				        <% else %>
+				           <option value="<%=ph_country_info.id%>"><%=ph_country_info.name.html_safe%></option>
+				        <% end %>   
+				     <% end %>
+			     </select>
+			 </td>
+		     <td class="td_top">
+		        <%=_('CO2-F for Step').html_safe%>
+			 </td>
+		     <td>	 
+		        <%= f.text_field :modules_co2 %>
+			 </td>	 
+		  </tr>
+  <% end %>    
+  <% if @ph_product.ph_specified.ph_module_type.name_en == 'CdTe Thinfilm' %>
+	  <tr>
+	     <td class="td_top">
+	       <%=_('Cadmium Telluride Thinfilm Modules').html_safe%>
+	     </td>  
+	     <td>
+	         <%=_('Country of production').html_safe%>&nbsp;
+		     <select id="ph_intermediate_result_cadmium_country_id" name="ph_intermediate_result[cadmium_country_id]">
+		         <option value="-1"><%=_('Unknown').html_safe%></option>     
+			     <% @ph_country_infos.each do |ph_country_info| %>
+			        <% if @ph_intermediate_result.cadmium_country && @ph_intermediate_result.cadmium_country.id == ph_country_info.id %>
+			           <option selected="true" value="<%=ph_country_info.id%>"><%=ph_country_info.name.html_safe%></option>
+			        <% else %>
+			           <option value="<%=ph_country_info.id%>"><%=ph_country_info.name.html_safe%></option>
+			        <% end %>   
+			     <% end %>
+		     </select>
+		 </td>           
+	     <td class="td_top">
+	        <%=_('CO2-F for Step').html_safe%>
+		 </td>     
+	     <td>     
+	        <%= f.text_field :cadmium_co2 %>
+		 </td>        
+	  </tr>
+  <% end %>
+  <% if @ph_product.ph_specified.ph_module_type.name_en == 'CIS/CIGS Thinfilm' %>  
+	  <tr>
+	    <td class="td_top">     
+	       <%=_('CIS / CIGS Thinfilm Modules').html_safe%>
+	    </td>   
+	    <td>
+	     <%=_('Country of production').html_safe%>&nbsp;
+	     <select id="ph_intermediate_result_cis_country_id" name="ph_intermediate_result[cis_country_id]">
+	         <option value="-1"><%=_('Unknown').html_safe%></option>     
+		     <% @ph_country_infos.each do |ph_country_info| %>
+		        <% if @ph_intermediate_result.cis_country && @ph_intermediate_result.cis_country.id == ph_country_info.id %>
+		           <option selected="true" value="<%=ph_country_info.id%>"><%=ph_country_info.name.html_safe%></option>
+		        <% else %>
+		           <option value="<%=ph_country_info.id%>"><%=ph_country_info.name.html_safe%></option>
+		        <% end %>   
+		     <% end %>
+	     </select>    
+	   </td>  
+	   <td class="td_top">
+	     <%=_('CO2-F for Step').html_safe%>
+	   </td>  
+	   <td>   
+	     <%= f.text_field :cis_co2 %>
+	   </td>
+	  </tr>
+  <% end %>	  
+  <% if @ph_product.ph_specified.ph_module_type.name_en == 'amorphous Silicon' %>  
+	  <tr>
+	   <td class="td_top">
+	     <%=_('Amorphous Silicon Modules').html_safe%>
+	   </td>
+	   <td>
+	     <%=_('Country of production').html_safe%>&nbsp;
+	     <select id="ph_intermediate_result_amorphous_country_id" name="ph_intermediate_result[amorphous_country_id]">
+	         <option value="-1"><%=_('Unknown').html_safe%></option>     
+		     <% @ph_country_infos.each do |ph_country_info| %>
+		        <% if @ph_intermediate_result.amorphous_country && @ph_intermediate_result.amorphous_country.id == ph_country_info.id %>
+		           <option selected="true" value="<%=ph_country_info.id%>"><%=ph_country_info.name.html_safe%></option>
+		        <% else %>
+		           <option value="<%=ph_country_info.id%>"><%=ph_country_info.name.html_safe%></option>
+		        <% end %>   
+		     <% end %>
+	     </select>
+	   </td>
+	   <td class="td_top">
+	     <%=_('CO2-F for Step').html_safe%>
+	   </td>
+	   <td >     
+	     <%= f.text_field :amorphous_co2 %>
+	   </td>
+	  </tr> 
+ <% end %>  
+ </table>    
+  <% end %>
+   <div class="buttons" style="float:left">
+     <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+   </div>
+  </div>
+
+    <div class="clear"></div>
+    <div class="navbar">
+      <!-- <div id="for-ie"> -->
+      <div>
+        <ul>
+          <li><%= link_to _('To Introduction').html_safe, ph_production_intro_path(@ph_product) %></li>
+          <li><%= link_to _('To Data Quality').html_safe, ph_data_quality_intro_path(@ph_product) %></li>
+          <li><%= link_to _('To Results').html_safe, ph_result_summary_path(@ph_product) %></li>
+        </ul>
+      </div>
+    </div>
+    <div class="clear"></div>
+
+
+  <br/> 
+
+<% end %>
+</div>

@@ -1,0 +1,29 @@
+<tr id="se_use_production_data_<%= se_use_production_data.id %>">
+  <td><%= se_use_production_data.downtime_level_description%></td>
+
+  <td>
+    <span class="left prepend-2">
+      <% if !se_use_production_data.occurrance_with_sensor.nil? && !se_use_production_data.avg_duration_with_sensor.nil? %>
+          <%= number_with_precision(se_use_production_data.occurrance_with_sensor * se_use_production_data.avg_duration_with_sensor / 60, :precision => 2, :locale => 'en') %>
+      <% else %> 
+          - 
+      <% end %>
+    </span>
+    
+    <span class="right append-2"><%= _("h/year").html_safe %></span>
+  </td>
+
+  <td>
+    <span class="left prepend-2">  
+      <% if !se_use_production_data.occurance_without_sensor.nil? && !se_use_production_data.avg_duration_without_sensor.nil? %>
+         <%= number_with_precision(se_use_production_data.occurance_without_sensor * se_use_production_data.avg_duration_without_sensor / 60, :precision => 2, :locale => 'en')%>
+      <% else %>
+          -
+      <% end %>
+    </span>
+    
+    <span class="right append-2"><%= _("h/year").html_safe %></span>
+  </td>
+
+  <td class="center"><%= link_to '&#10006;'.html_safe, se_use_production_data_path(se_use_production_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>

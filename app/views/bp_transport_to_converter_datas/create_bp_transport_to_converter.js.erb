@@ -1,0 +1,12 @@
+
+$("#error_explanation_material").empty();
+$("#error_explanation_material").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#bp_transport_to_converter_datas").append("<%= escape_javascript(render(@bp_transport_to_converter_data)) %>");
+/* Highlight the new comment */
+$("#bp_transport_to_converter_<%= @bp_transport_to_converter_data.id %>").effect("highlight", {}, 3000);
+
+
+$("#bp_transport_to_converter_data_distance").val("");
+$("#bp_transport_to_converter_data_amount").val("");
+$("#bp_transport_to_converter_data_comment").val("");

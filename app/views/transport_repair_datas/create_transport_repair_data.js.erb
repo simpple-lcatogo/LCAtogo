@@ -1,0 +1,8 @@
+/* Add the new comment to the bottom of the comments list */
+$("#transport_repair_datas").append("<%= escape_javascript(render(@transport_repair_data)) %>");
+/* Highlight the new comment */
+$("#transport_repair_data_<%= @transport_repair_data.id %>").effect("highlight", {}, 3000);
+
+$("#transport_repair_data_distance").val("");
+$("#transport_repair_data_amount").val("");
+$("#transport_repair_data_comment").val("");

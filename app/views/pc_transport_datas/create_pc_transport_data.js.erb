@@ -1,0 +1,12 @@
+$("#error_explanation_pc_transport_data").empty();
+$("#error_explanation_pc_transport_data").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#pc_transport_datas").append("<%= escape_javascript(render(@pc_transport_data)) %>");
+/* Highlight the new comment */
+$("#pc_transport_data_<%= @pc_transport_data.id %>").effect("highlight", {}, 3000);
+
+$("#pc_transport_data_with_sensor").val("");
+$("#pc_transport_data_without_sensor").val("");
+$("#pc_transport_data_recycling_revenue").val("");
+$("#pc_transport_data_description").val("");
+$("#pc_transport_data_global_warming_potential").val("");

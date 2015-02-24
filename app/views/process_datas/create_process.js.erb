@@ -1,0 +1,9 @@
+
+$("#error_explanation_process").empty();
+$("#error_explanation_process").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#processes").append("<%= escape_javascript(render(@process_data)) %>");
+/* Highlight the new comment */
+$("#process_<%= @process_data.id %>").effect("highlight", {}, 3000);
+
+$("#process_data_quantity").val("");

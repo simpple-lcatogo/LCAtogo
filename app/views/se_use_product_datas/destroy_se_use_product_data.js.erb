@@ -1,0 +1,6 @@
+/* Eliminate the comment by fading it out */
+$('#se_use_product_data_<%= @se_use_product_data.id %>').fadeOut("fast","",function(){
+  $(this).find("span.with_sensor").removeClass("with_sensor"); 
+  $(this).find("span.without_sensor").removeClass("without_sensor"); 
+  executeCalcFunctions();
+});

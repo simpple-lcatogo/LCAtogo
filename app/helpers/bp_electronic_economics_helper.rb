@@ -1,0 +1,2 @@
+module BpElectronicEconomicsHelper
+end

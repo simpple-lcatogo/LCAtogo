@@ -1,0 +1,2 @@
+module SeUseConsumptionDatasHelper
+end

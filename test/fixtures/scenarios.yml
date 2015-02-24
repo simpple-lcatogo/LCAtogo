@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  product_id: 1
+  use_lifetime: 1.5
+  annual_failure: 1.5
+  repair_likeness: 1.5
+  hardware_measures: MyText
+  software_measures: MyText
+  service_measures: MyText
+  business_measures: MyText
+
+two:
+  product_id: 1
+  use_lifetime: 1.5
+  annual_failure: 1.5
+  repair_likeness: 1.5
+  hardware_measures: MyText
+  software_measures: MyText
+  service_measures: MyText
+  business_measures: MyText

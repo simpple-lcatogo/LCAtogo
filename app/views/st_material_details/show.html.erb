@@ -1,0 +1,268 @@
+<script type="text/javascript">
+  function checkFields() {
+     var isOk = true;
+     return isOk;   
+  }
+  
+  function goNext() {
+     if (checkFields()) {
+        document.forms[0].submit();
+     }     
+  }
+
+    $(document).ready(function(){
+
+        $("#st_material_detail_electronic_weight,#st_material_detail_textile_weight,#st_material_detail_product_weight").keyup(function(){
+          var total_value = 0;           
+		  $('[id^=td_quantity_]').each(function(index) {
+		     var value = parseFloat($(this).html());	    
+		     total_value += (value / 1000);
+		  });
+           var product_weight = parseFloat($("#st_material_detail_product_weight").val());
+           var percentage = (total_value / product_weight) * 100;
+           if (!isNaN(percentage)) {           
+               $("#percentage_weight").html(percentage.toFixed(2));
+           } else {
+               $("#percentage_weight").html("0.00");
+           }
+        });
+
+        $("#st_material_data_st_family").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                $("#st_material_data_st_material option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#st_material_data_st_material");
+                $("#family_other_div").show();
+                $("#family_other_div_2").show();                
+                $("#family_no_other_div").hide();
+                document.getElementById("unit_st_material").innerHTML = ""; 
+                $("#quantity_div").attr("class", "span-3");
+            }
+            else {
+                $("#family_other_div").hide();
+                $("#family_other_div_2").hide();                
+                $("#family_no_other_div").show();                
+                $("#quantity_div").attr("class", "span-5");            
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'st_materials_for_st_family'},
+                    timeout: 15000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                        $("#st_material_data_st_material option").remove();
+                        var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.st_material.id + "\">" + j.st_material.name + "</option>";  
+                            $(row).appendTo("select#st_material_data_st_material");                    
+                        });     
+                        $("#st_material_data_st_material").change();       
+                     }
+                });
+             };   
+           });     
+           
+           
+        $("#st_material_data_st_material").change(function(){
+           var id_value_string = $(this).val();
+           if (id_value_string != "") {
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'unit_for_st_material'},
+                    timeout: 15000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                       // alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                       // alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("unit_st_material").innerHTML = "" + data; 
+                       }
+                    }); 
+              }
+         });                  
+           
+           
+           $("#st_material_data_st_family").change();
+           $("#st_material_data_st_material").change();
+           $("#st_material_detail_product_weight").keyup();
+
+ });
+</script>
+<h1><%=_('Data entry').html_safe%>
+  <br/><span class="tool_subtitle"></span>
+</h1>
+<div class="content_skin">
+  <div class="lcamenu span-23 showdgrid last ">
+    <%= render(:partial => 'shared/lca/st_tabs') %>
+  </div>
+  <div class="clear"></div>
+  <%= form_for @st_material_detail do |f| %>
+      <fieldset class="empty">
+        <legend><%=_('General information about the product').html_safe%></legend>
+        <input type="hidden" name="st_product_id" id="st_product_id" value="<%=@st_product.id%>"/>
+
+        <div class="span-10" >
+          <%= f.label :value, _('Weight of the product (without batteries):').html_safe %>
+        </div>  
+        <div class="span-5" >
+          <%= f.text_field :product_weight, :size => 5%> kg
+        </div>
+<!--
+        <div class="span-10" >
+          <%= f.label :value, _('Estimate the content of textile materials:').html_safe %>
+        </div>  
+        <div class="span-5" >          
+          <%= f.text_field :textile_weight, :size => 5%> %
+        </div>
+
+        <div class="span-10" >
+          <%= f.label :value, _('Estimate the content of electronic materials:').html_safe %>
+        </div>  
+        <div class="span-5" >          
+          <%= f.text_field :electronic_weight, :size => 5%> %
+        </div>
+-->
+        <div class="clear"></div>
+
+
+
+      </fieldset>
+  <% end %>
+
+  <div class="clear"></div>
+
+ <%= form_for StMaterialData.new, :remote => true do |f| %>
+  <input type="hidden" name="st_material_data[st_product_id]" id="st_product_id" value="<%=@st_product.id%>"/>
+  <fieldset class="empty">
+    <legend><%=_('Materials').html_safe%></legend>
+    <%=_('Please select the most relevant materials that are used in the product and specify the quantity per product. Then press the button \'Add\' to insert the chosen material in your list.').html_safe%>
+    <br/><br/>
+    <div class="span-6" > 
+       <%= f.label :value, _('Family').html_safe %> 
+       <br/>
+        <select class="span-6" id="st_material_data_st_family" name="st_material_data[st_family_id]">
+         
+         <% @st_families.each do |st_family| %>
+            <option value="<%=st_family.id%>"><%=st_family.name.html_safe%></option>
+         <% end %>
+         <option value=""><%=_('Other').html_safe%></option>
+       </select>
+    </div>
+    <div id="family_other_div" style="display:none">
+	    <div class="span-4">
+	      <%= f.label :value, _('Name').html_safe %> 
+	      <br />
+	      <%= f.text_field :user_material_name, :size => 17 %>
+	    </div>
+	</div>
+    <div id="family_no_other_div">        
+	    <div class="span-10">
+	       <%= f.label :value, _('Material').html_safe %> 
+	       <br/>
+	        <select class="span-10" id="st_material_data_st_material" name="st_material_data[st_material_id]">
+	         
+	         <% @st_materials.each do |st_material| %>
+	            <option value="<%=st_material.id%>"><%=st_material.name.html_safe%></option>
+	         <% end %>
+	       
+	       </select>
+	    </div>
+	 </div>    
+	    <div class="span-5" id="quantity_div">
+	      <%= f.label :value, _('Quantity').html_safe %> 
+	      <br />
+	      <%= f.text_field :quantity, :size => 10 %> <span id="unit_st_material"></span>
+	    </div>
+	    
+   
+    <div id="family_other_div_2" style="display:none">
+   
+    	<div class="span-3">
+	      <%= f.label :value, _('Unit').html_safe %> 
+	      <br />
+	      <%= f.text_field :user_unit, :size => 10 %>
+	    </div>
+    	
+	    <div class="span-4">
+	      <%= f.label :user_eco_costs, _('Eco-costs').html_safe %> 
+	      <br />
+	      <%= f.text_field :user_eco_costs, :size => 10 %> &euro;/unit
+	    </div>
+    </div>
+
+
+
+    <div class="clear"></div>
+
+	<div class="span-3 buttons last">
+		<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+	</div>
+
+</fieldset>
+<% end %>
+<br>
+
+<table class="standard2">
+    <tr class="add"> 
+      <th class="span-8">
+        <%=_('Family').html_safe %><br/>
+      </th>
+      <th class="span-8">
+        <%=_('Material').html_safe %><br/>
+      </th>
+      <th class="span-3">
+        <%=_('Quantity').html_safe %>
+      </th>
+      <th class="span-3">
+        <%=_('Unit').html_safe %>
+      </th>      
+      <th class="span-3">
+        <%=_('Eco-costs').html_safe %>
+      </th>
+      <th class="span-1">
+        &nbsp;
+      </th>
+    </tr>   
+    <tbody id="st_material_datas">
+      <%= render :partial => @st_material_datas %>
+    </tbody>
+</table>
+
+ <div class="clear"></div>
+ <br/>
+   <table>
+      <tr>
+        <td style="background:#666666;color:#EBEEDB"> 
+             <%=_('You have specified').html_safe %> <span id="percentage_weight">0</span>% <%=_('of the product weight').html_safe %>
+        </td>
+      </tr>
+   </table>     
+ <br/>
+<div class="buttons span-5 last" style="float:right;text-align:right">
+      <button type="submit" class="positive" style="float:right;text-align:right" onClick="javascript:goNext();"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+</div>
+  <br/>
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, st_production_intro_url(@st_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, st_data_quality_intro_path(@st_product) %></li>
+        <li><%= link_to _('To Results').html_safe, st_result_url(@st_product) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+
+</div>

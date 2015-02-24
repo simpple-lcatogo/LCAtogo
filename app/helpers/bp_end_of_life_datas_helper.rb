@@ -1,0 +1,2 @@
+module BpEndOfLifeDatasHelper
+end

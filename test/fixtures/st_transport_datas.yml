@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  st_product_id: 1
+  st_family_transport_id: 1
+  st_transport_id: 1
+  distance: 1.5
+  quantity: 1.5
+
+two:
+  st_product_id: 1
+  st_family_transport_id: 1
+  st_transport_id: 1
+  distance: 1.5
+  quantity: 1.5

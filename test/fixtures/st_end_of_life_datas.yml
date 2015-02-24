@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  st_product_id: 1
+  st_material_data_id: 1
+  st_packaging_data_id: 1
+  st_consumable_data_id: 1
+  quantity_recycling: 1.5
+  quantity_incineration: 1.5
+  eco_cost_recycling: 1.5
+  eco_cost_incineration: 1.5
+
+two:
+  st_product_id: 1
+  st_material_data_id: 1
+  st_packaging_data_id: 1
+  st_consumable_data_id: 1
+  quantity_recycling: 1.5
+  quantity_incineration: 1.5
+  eco_cost_recycling: 1.5
+  eco_cost_incineration: 1.5

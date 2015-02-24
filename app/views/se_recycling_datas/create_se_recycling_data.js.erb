@@ -1,0 +1,12 @@
+$("#error_explanation_se_recycling_data").empty();
+$("#error_explanation_se_recycling_data").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#se_recycling_datas").append("<%= escape_javascript(render(@se_recycling_data)) %>");
+/* Highlight the new comment */
+$("#se_recycling_data_<%= @se_recycling_data.id %>").effect("highlight", {}, 3000);
+
+$("#se_recycling_data_with_sensor").val("");
+$("#se_recycling_data_without_sensor").val("");
+$("#se_recycling_data_recycling_revenue").val("");
+$("#se_recycling_data_description").val("");
+$("#se_recycling_data_global_warming_potential").val("");

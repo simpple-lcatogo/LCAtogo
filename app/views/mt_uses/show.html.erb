@@ -1,0 +1,809 @@
+<script type="text/javascript">
+  function checkFields() {
+     var isOk = true;
+     return isOk;   
+  }
+  
+  function goPrevious() {
+     if (checkFields()) {
+        document.getElementById("arrow").value = 'previous';
+        document.forms[0].submit();
+     }         
+  }
+
+  function goNext() {
+     if (checkFields()) {
+        document.getElementById("arrow").value = 'next';
+        document.forms[0].submit();
+     }     
+  }
+  
+  function updateShifts() {
+     $("#option1").html($("#mt_use_description").val());  
+     $("#option2").html($("#mt_use_description_2").val());
+     $("#option3").html($("#mt_use_description_3").val());          
+  }
+
+  function updateUnassigned() {
+     var processing = parseFloat($("#mt_use_processing").val(), 10)
+     var ready = parseFloat($("#mt_use_ready").val(), 10)     
+     var standby = parseFloat($("#mt_use_standby").val(), 10)     
+     
+     var tmp_processing = 0;
+     $('[id^=td_processing_]').each(function(index) {
+	     var value = parseFloat($(this).html());	    
+	     tmp_processing += value;
+	  });     
+
+     var tmp_ready = 0;
+     $('[id^=td_ready_]').each(function(index) {
+	     var value = parseFloat($(this).html());	    
+	     tmp_ready += value;
+	  });     
+
+     var tmp_standby = 0;
+     $('[id^=td_standby_]').each(function(index) {
+	     var value = parseFloat($(this).html());	    
+	     tmp_standby += value;
+	  });     
+
+     var tmp_resta = 0
+     if (!isNaN(processing - tmp_processing)) {
+        tmp_resta = processing - tmp_processing
+        if ((tmp_resta < 1) && (tmp_resta > -1)) {
+           $("#unassigned_processing").html(tmp_resta.toFixed(4));
+           }else {
+           $("#unassigned_processing").html(processing - tmp_processing);
+           }
+        } else {
+        $("#unassigned_processing").html("-");
+        }
+     if (!isNaN(ready - tmp_ready)) {
+        tmp_resta = ready - tmp_ready
+        if ((tmp_resta < 1) && (tmp_resta > -1)) {
+           $("#unassigned_ready").html(tmp_resta.toFixed(4));
+           } else {
+           $("#unassigned_ready").html(ready - tmp_ready);
+           }
+        } else {
+        $("#unassigned_ready").html("-");
+        }
+     if (!isNaN(standby - tmp_standby)) {
+        tmp_resta = standby - tmp_standby
+        if ((tmp_resta < 1) && (tmp_resta > -1)) {
+           $("#unassigned_standby").html(tmp_resta.toFixed(4));
+           } else {
+            $("#unassigned_standby").html(standby - tmp_standby);
+           }
+        } else {
+        $("#unassigned_standby").html("-");
+        }          
+  }
+
+  
+   $(document).ready(function(){
+       $("#mt_use_additional_energy_data_mt_energy_family").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                $("#mt_use_additional_energy_data_mt_energy_process option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#mt_use_additional_energy_data_mt_energy_process");
+            }
+            else {
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'mt_energy_processes_for_mt_energy_family', general:"true"},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                        $("#mt_use_additional_energy_data_mt_energy_process option").remove();
+                        var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.mt_energy_process.id + "\">" + j.mt_energy_process.name + "</option>";    
+                            $(row).appendTo("select#mt_use_additional_energy_data_mt_energy_process");                    
+                        });     
+                        $("#mt_use_additional_energy_data_mt_energy_process").change();       
+                     }
+                });
+             };   
+           });
+
+       $("#mt_use_hours_shift_processing,#mt_use_hours_shift_ready,#mt_use_hours_shift_standby,#mt_use_hours_shift_processing_2,#mt_use_hours_shift_ready_2,#mt_use_hours_shift_standby_2,#mt_use_hours_shift_processing_3,#mt_use_hours_shift_ready_3,#mt_use_hours_shift_standby_3").keyup(function(event ){
+       //    alert($(this).val());
+           var id = $(this).attr("id");
+           var group_1 = false;
+           var group_2 = false;
+           var group_3 = false;
+           if (id.match(/_2/) != null) {
+               group_2 = true;
+           } else {
+               if (id.match(/_3/) != null) {
+                   group_3 = true;
+               } else {
+                   group_1 = true;
+               }
+           }
+           var processing = 0;
+           var ready = 0;
+           var standby = 0;
+           if (group_1) {
+               processing = parseFloat($("#mt_use_hours_shift_processing").val());
+               ready = parseFloat($("#mt_use_hours_shift_ready").val());
+               standby = parseFloat($("#mt_use_hours_shift_standby").val());
+           }
+           if (group_2) {
+               processing = parseFloat($("#mt_use_hours_shift_processing_2").val());
+               ready = parseFloat($("#mt_use_hours_shift_ready_2").val());
+               standby = parseFloat($("#mt_use_hours_shift_standby_2").val());
+           }
+           if (group_3) {
+               processing = parseFloat($("#mt_use_hours_shift_processing_3").val());
+               ready = parseFloat($("#mt_use_hours_shift_ready_3").val());
+               standby = parseFloat($("#mt_use_hours_shift_standby_3").val());
+           }
+           var off = 0;
+           if (processing + ready + standby > 24) {
+               alert('Sum of hours can\'t be greater than 24');
+               var rest = 0;
+               if (id.match(/_processing/)) {
+                  rest = 24 - (ready + standby);
+               }
+               if (id.match(/_ready/)) {
+                  rest = 24 - (processing + standby);
+               }
+               if (id.match(/_standby/)) {
+                  rest = 24 - (processing + ready);
+               }
+               $(this).val(rest);
+             //  event.preventDefault();
+           } else {
+               var off = 24 - (processing + ready + standby);
+           }
+           if (group_1) {
+               $("#mt_use_hours_shift_off").val(off);
+           }
+           if (group_2) {
+               $("#mt_use_hours_shift_off_2").val(off);
+           }
+           if (group_3) {
+               $("#mt_use_hours_shift_off_3").val(off);
+           }
+
+       });
+
+
+       $("#mt_use_operating_resource_data_mt_family").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                $("#mt_use_operating_resource_data_mt_material option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#mt_use_operating_resource_data_mt_material");
+            }
+            else {
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'mt_materials_for_mt_family', general:"true"},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                        $("#mt_use_operating_resource_data_mt_material option").remove();
+                        var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.mt_material.id + "\">" + j.mt_material.name + "</option>";    
+                            $(row).appendTo("select#mt_use_operating_resource_data_mt_material");                    
+                        });     
+                        $("#mt_use_operating_resource_data_mt_material").change();       
+                     }
+                });
+             };   
+           });     
+
+  
+        $("#mt_use_machine_subsystem_data_mt_subsystem").change(function(){
+             var text = $("#mt_use_machine_subsystem_data_mt_subsystem option:selected").text();
+             if (text == 'Other sub-system') {
+                 $("#subsystem_name_div").show();
+             } else {
+                 $("#subsystem_name_div").hide();                
+             }       
+        }); 
+  
+        $("#mt_use_additional_energy_data_mt_energy_process").change(function(){
+           var id_value_string = $(this).val();
+           if (id_value_string != "") {
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'unit_for_mt_energy_process'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+     //                   alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+     //                   alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("unit_mt_use_additional_processing").innerHTML = "" + data + "/h"; 
+                       document.getElementById("unit_mt_use_additional_ready").innerHTML = "" + data + "/h";
+                       document.getElementById("unit_mt_use_additional_standby").innerHTML = "" + data + "/h";
+                       }
+                    }); 
+              }
+         });               
+  
+  
+        $("#select_breakdown").change(function(){
+             $("#mt_use_breakdown").val($(this).val());
+        });  
+  
+  
+    $("#mt_use_description, #mt_use_description_2, , #mt_use_description_3").keyup(function(){
+      updateShifts();      
+    });  
+  
+    $("#mt_use_processing,#mt_use_ready,#mt_use_standby").keyup(function(){
+      updateUnassigned(); 
+    });
+  
+        $("#mt_use_additional_energy_data_mt_energy_family").change();
+        $("#mt_use_operating_resource_data_mt_family").change();  
+         $("#select_breakdown").change();
+        updateShifts();     
+        updateUnassigned(); 
+      });        
+</script>  
+<h1>
+  <% if @mt_product.mt_assessment && @mt_product.mt_assessment.assessment_type == 'rough' %>
+     <%=_('Rough Assessment').html_safe%>
+  <% else %>
+     <%=_('Detailed Assessment').html_safe%>
+  <% end %>   
+
+  <br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+
+<div class="content_skin">
+  <div class="lcamenu span-23 showdgrid last ">
+    <%= render(:partial => 'shared/lca/mt_tabs') %>
+  </div>
+  <div class="clear"></div>
+  <%= form_for @mt_use do |f| %>
+      <fieldset class="empty">
+        <legend><%=_('Electrical Power Consumption').html_safe%></legend>
+        <input type="hidden" name="mt_product_id" id="mt_product_id" value="<%=@mt_product.id%>"/>
+        <input type="hidden" name="arrow" id="arrow" value=""/>
+        
+        <div class="span-10" >
+          <%= f.label :processing, _('Processing').html_safe %> <a title="<%=_('In this state the machine is in production and is machining or carrying out its primary function. Enter the Electrical Power Consumption when the machine is in this state in kW.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+        </div>  
+        <div class="span-5" >
+          <%= f.text_field :processing, :size => 5%> <%=_('kW').html_safe%>
+        </div>
+        <div class="clear"></div>        
+
+        <div class="span-10" >
+          <%= f.label :ready, _('Ready for operation').html_safe %> <a title="<%=_('In this state the machine is idle, it is not machining. This could be a scenario when a workpiece is not in the machine. Enter the Electrical Power Consumption when the machine is in this state in kW.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+        </div>  
+        <div class="span-5" >
+          <%= f.text_field :ready, :size => 5%> <%=_('kW').html_safe%>
+        </div>
+        <div class="clear"></div>        
+
+        <div class="span-10" >
+          <%= f.label :standby, _('Standby').html_safe %> <a title="<%=_('In this state the machine is not ready to process parts, fluids may not be at the operating temperature, the machine may be in a mode that allows maintenance to take place. Enter the Electrical Power Consumption when the machine is in this state in kW.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+        </div>  
+        <div class="span-5" >
+          <%= f.text_field :standby, :size => 5%> <%=_('kW').html_safe%>
+        </div>
+        <div class="clear"></div>        
+
+        <div class="span-10">
+          <%= f.label :standby, _('Country Energy Mix').html_safe %> <a title="<%=_('Select the country that supplies the electricity to the machine.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+        </div>  
+        <div class="span-5" >
+           <select id="mt_use_mt_energy_process_id" name="mt_use[mt_energy_process_id]">
+		    <% @mt_energy_processes.each do |mt_energy_process| %>
+		       <% if @mt_use.mt_energy_process && @mt_use.mt_energy_process.id == mt_energy_process.id %>	    
+		          <option selected="true" value="<%=mt_energy_process.id%>"><%=mt_energy_process.name_changed.html_safe%></option>
+		       <% else %>
+		          <option value="<%=mt_energy_process.id%>"><%=mt_energy_process.name_changed.html_safe%></option>
+		       <% end %>   
+		    <% end %>           
+           </select>
+        </div>
+        <div class="clear"></div>        
+
+
+
+      </fieldset>
+
+  <% if !@detailed %>
+      <fieldset class="empty">
+        <legend><%=_('Working days per year').html_safe%></legend>
+        
+        <div class="span-10" >
+          <%= f.label :working_days, _('Working days per year').html_safe %> <a title="<%=_('Please enter the number of days per year when it is planned for your product to be in production.').html_safe%>" href="#" class="tip_left">&nbsp;</a> 
+        </div>  
+        <div class="span-5" >
+          <%= f.text_field :working_days, :size => 5%> <%=_('day(s)/year').html_safe%>
+        </div>
+        <div class="clear"></div>        
+
+        <div class="span-10" >
+          <%= f.label :parts_produced, _('Parts produced per hour').html_safe %> <a title="<%=_('In your scenario what is the typical hourly production rate on your product.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+        </div>  
+        <div class="span-5" >
+          <%= f.text_field :parts_produced, :size => 5%> <%=_('parts/hour').html_safe%>
+        </div>
+        <div class="clear"></div>        
+   <% end %>
+
+      </fieldset>
+
+
+      <fieldset class="empty">
+        <legend><%=_('Shift regime').html_safe%>
+        <% if @detailed %>
+           <a title="<%=_('Use this section to enter details for different use scenarios for your product.').html_safe%>" href="#" class="tip_left">&nbsp;</a>        
+        <% end %>
+        </legend>
+<% if !@detailed %>        
+        <div class="span-10" >
+          <%= f.label :description, _('Description').html_safe %> <a title="<%=_('Enter a memorable title for the shift scenario that you are considering. E.g. Standard 3 shift scenario.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+        </div>  
+        <div class="span-5" >
+          <%= f.text_field :description, :size => 20%>
+        </div>
+        <div class="clear"></div>        
+
+  <!--      <div class="span-10" >
+          <%= f.label :shifts_day, _('Number of shifts per day').html_safe %> <a title="<%=_('Enter the number of shifts per day that you are considering, it may be one 8 hour shift each day or it may be three 8 hour shifts each day.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+        </div>  
+        <div class="span-5" >
+          <%= f.text_field :shifts_day, :size => 5%> <%=_('shift(s)/day').html_safe%>
+        </div>
+        <div class="clear"></div>-->
+<% else %>
+       <table>
+         <tr>
+           <th width="30%"></th>
+           <th width="25%"><%=_('Scenario 1').html_safe%></th>
+           <th width="25%"><%=_('Scenario 2').html_safe%></th>
+           <th width="25%"><%=_('Scenario 3').html_safe%></th>
+         </tr>
+         <tr>
+           <td><b><%=_('Description').html_safe%></b> <a title="<%=_('Give a description or a name to each of your scenarios, e.g. 1 Shift, 2 shifts, 3 shifts.').html_safe%>" href="#" class="tip_left">&nbsp;</a></td>
+           <td><%= f.text_field :description, :size => 20%></td>
+           <td><%= f.text_field :description_2, :size => 20%></td>
+           <td><%= f.text_field :description_3, :size => 20%></td>
+         </tr>
+  <!--       <tr>
+           <td><b><%=_('Number of shifts per day').html_safe%></b></td>
+           <td><%= f.text_field :shifts_day, :size => 5%> <%=_('shift(s)/day').html_safe%></td>
+           <td><%= f.text_field :shifts_day_2, :size => 5%> <%=_('shift(s)/day').html_safe%></td>
+           <td><%= f.text_field :shifts_day_3, :size => 5%> <%=_('shift(s)/day').html_safe%></td>
+         </tr> -->
+         <tr>
+           <td><b><%=_('Working days per year').html_safe%></b></td>
+           <td><%= f.text_field :working_days, :size => 5%> <%=_('day(s)/year').html_safe%></td>
+           <td><%= f.text_field :working_days_2, :size => 5%> <%=_('day(s)/year').html_safe%></td>
+           <td><%= f.text_field :working_days_3, :size => 5%> <%=_('day(s)/year').html_safe%></td>
+         </tr>
+         <tr>
+           <td><b><%=_('Parts produced per hour').html_safe%></b>  <a title="<%=_('Enter number of good parts produced during processing state within one hour.').html_safe%>" href="#" class="tip_left">&nbsp;</a></td>
+           <td><%= f.text_field :parts_produced, :size => 5%> <%=_('parts/hour').html_safe%></td>
+           <td><%= f.text_field :parts_produced_2, :size => 5%> <%=_('parts/hour').html_safe%></td>
+           <td><%= f.text_field :parts_produced_3, :size => 5%> <%=_('parts/hour').html_safe%></td>
+         </tr>
+         
+       </table>    
+<% end %>        
+
+        <u><b><%=_('Hours per day').html_safe%></b></u> <a title="<%=_('Enter the typical hours in your selected scenario when the process is actually producing parts, when it is in the Ready for operation mode, in Standby mode and when the machine is turned Off completely, with no power consumption. It is unusual for a machine to be in full production for a full 24 hours, it may be stopped for planned maintenance, or in a manually operated machine the operator may have a break which should be considered, or turned &quot;Off&quot; overnight.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+        <br/><br/>
+<% if !@detailed %>         
+        <div class="clear"></div>   
+        <div class="span-10" >
+          <%= f.label :hours_shift_processing, _('Processing').html_safe %>
+        </div>  
+        <div class="span-5" >
+          <%= f.text_field :hours_shift_processing, :size => 5%> <%=_('hours').html_safe%>
+        </div>
+        <div class="clear"></div>        
+
+        <div class="span-10" >
+          <%= f.label :hours_shift_ready, _('Ready for operation').html_safe %>
+        </div>  
+        <div class="span-5" >
+          <%= f.text_field :hours_shift_ready, :size => 5%> <%=_('hours').html_safe%>
+        </div>
+        <div class="clear"></div>        
+
+        <div class="span-10" >
+          <%= f.label :hours_shift_standby, _('Standby').html_safe %>
+        </div>  
+        <div class="span-5" >
+          <%= f.text_field :hours_shift_standby, :size => 5%> <%=_('hours').html_safe%>
+        </div>
+
+        <div class="clear"></div>        
+
+        <div class="span-10" >
+          <%= f.label :hours_shift_off, _('Off').html_safe %>
+        </div>  
+        <div class="span-5" >
+          <%= f.text_field :hours_shift_off, :size => 5, :readonly => true%> <%=_('hours').html_safe%>
+        </div>
+
+        
+    <% else %>
+       <table>
+         <tr>
+           <td width="30%"><b><%=_('Processing').html_safe%></b></td>
+           <td width="25%"><%= f.text_field :hours_shift_processing, :size => 5%> <%=_('hours').html_safe%></td>
+           <td width="25%"><%= f.text_field :hours_shift_processing_2, :size => 5%> <%=_('hours').html_safe%></td>
+           <td width="25%"><%= f.text_field :hours_shift_processing_3, :size => 5%> <%=_('hours').html_safe%></td>
+         </tr>
+         <tr>
+           <td><b><%=_('Ready for operation').html_safe%></b></td>
+           <td><%= f.text_field :hours_shift_ready, :size => 5%> <%=_('hours').html_safe%></td>
+           <td><%= f.text_field :hours_shift_ready_2, :size => 5%> <%=_('hours').html_safe%></td>
+           <td><%= f.text_field :hours_shift_ready_3, :size => 5%> <%=_('hours').html_safe%></td>
+         </tr>    
+         <tr>
+           <td><b><%=_('Standby').html_safe%></b></td>
+           <td><%= f.text_field :hours_shift_standby, :size => 5%> <%=_('hours').html_safe%></td>
+           <td><%= f.text_field :hours_shift_standby_2, :size => 5%> <%=_('hours').html_safe%></td>
+           <td><%= f.text_field :hours_shift_standby_3, :size => 5%> <%=_('hours').html_safe%></td>
+         </tr>
+         <tr>
+           <td><b><%=_('Off').html_safe%></b></td>
+           <td><%= f.text_field :hours_shift_off, :size => 5, :readonly => true%> <%=_('hours').html_safe%></td>
+           <td><%= f.text_field :hours_shift_off_2, :size => 5, :readonly => true%> <%=_('hours').html_safe%></td>
+           <td><%= f.text_field :hours_shift_off_3, :size => 5, :readonly => true%> <%=_('hours').html_safe%></td>
+         </tr>    
+             
+         <input type="hidden" id="mt_use_breakdown" name="mt_use[breakdown]" value="<%=@mt_use.breakdown%>"/>             
+      </table>    
+    <% end %>
+        
+        
+        
+        <div class="clear"></div>             
+        
+      </fieldset>
+
+
+   <% end %>
+   
+   <% if @detailed %>
+   <br/><br/>
+  <table>
+      <tr>
+        <td style="background:#666666;color:#EBEEDB"> 
+	        <%=_('Please select the main use scenario for which the breakdown of energy consumption per sub-system will be calculated').html_safe%> <a title="<%=_('At the bottom right of the image there is a pull down menu option to select the scenario that you want to be used in the initial calculation.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+        </td>
+        <td style="background:#666666;color:#EBEEDB;text-align:right;vertical-align:middle;padding-top:17px">
+	        <select class="span-4" id="select_breakdown" name="select_breakdown">
+	           <% if @mt_use.breakdown && @mt_use.breakdown == 'shift1' %>
+	              <option id="option1" value="shift1" selected="true"><%=_('Shift 1').html_safe%></option>
+	           <% else %>
+	              <option id="option1" value="shift1"><%=_('Shift 1').html_safe%></option>
+	           <% end %>
+	           <% if @mt_use.breakdown && @mt_use.breakdown == 'shift2' %>
+	              <option id="option2" value="shift2" selected="true"><%=_('Shift 2').html_safe%></option>
+	           <% else %>
+	              <option id="option2" value="shift2"><%=_('Shift 2').html_safe%></option>
+	           <% end %>   
+	           <% if @mt_use.breakdown && @mt_use.breakdown == 'shift3' %>
+	              <option id="option3" value="shift3" selected="true"><%=_('Shift 3').html_safe%></option>
+	           <% else %>
+	              <option id="option3" value="shift3"><%=_('Shift 3').html_safe%></option>
+	           <% end %>   
+	        </select>
+        </td>
+      </tr>
+   </table>		   
+   
+   
+        <!-- ADDITIONAL ENERGY FLOW -->
+		 <%= form_for MtUseAdditionalEnergyData.new, :remote => true do |f| %>
+		  <input type="hidden" name="mt_use_additional_energy_data[mt_product_id]" id="mt_product_id" value="<%=@mt_product.id%>"/>
+		  <fieldset class="empty">
+            <legend><%=_('Additional energy flow').html_safe%> <a title="<%=_('Record any data here related to other forms of energy resources that are consumed during the use phase.').html_safe%>" href="#" class="tip_left">&nbsp;</a></legend>
+		    <div class="span-4" > 
+		       <%= f.label :value, _('Family').html_safe %> 
+		       <br/>
+		        <select class="span-4" id="mt_use_additional_energy_data_mt_energy_family" name="mt_use_additional_energy_data[mt_energy_family_id]">
+		         
+		         <% @mt_energy_families.each do |mt_energy_family| %>
+		            <option value="<%=mt_energy_family.id%>"><%=mt_energy_family.name.html_safe%></option>
+		         <% end %>
+		       
+		       </select>
+		    </div>
+		
+		    <div class="span-4" > 
+		       <%= f.label :value, _('Type').html_safe %> 
+		       <br/>
+		        <select class="span-4" id="mt_use_additional_energy_data_mt_energy_process" name="mt_use_additional_energy_data[mt_energy_process_id]">
+		       
+		       </select>
+		    </div>		
+		    <div class="span-4">
+		      <%= f.label :processing, _('Processing').html_safe %> 
+		      <br />
+		      <%= f.text_field :processing, :size => 10 %> <span id="unit_mt_use_additional_processing"></span>
+		    </div>
+		    <div class="span-4">
+		      <%= f.label :ready, _('Ready').html_safe %> 
+		      <br />
+		      <%= f.text_field :ready, :size => 10 %> <span id="unit_mt_use_additional_ready"></span>
+		    </div>
+		    <div class="span-4">
+		      <%= f.label :standby, _('Stand by').html_safe %> 
+		      <br />
+		      <%= f.text_field :standby, :size => 10 %> <span id="unit_mt_use_additional_standby"></span>
+		    </div>
+		
+		
+		
+		    <div class="clear"></div>
+		
+			<div class="span-3 buttons last">
+				<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+			</div>
+		
+		</fieldset>
+		<% end %>
+		<br/>
+		
+		<table class="standard2">
+		    <tr class="add"> 
+		      <th class="span-8">
+		        <%=_('Family').html_safe %><br/>
+		      </th>
+		      <th class="span-8">
+		        <%=_('Type').html_safe %><br/>
+		      </th>		      
+		      <th class="span-3">
+		        <%=_('Processing').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Ready').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Stand by').html_safe %>
+		      </th>			  
+		      <th class="span-3">
+		        <%=_('Unit').html_safe %>
+		      </th>				      
+		      <th class="span-1">
+		        &nbsp;
+		      </th>
+		    </tr>   
+		    <tbody id="mt_use_additional_energy_datas">
+		      <%= render :partial => @mt_use_additional_energy_datas %>
+		    </tbody>
+		</table>
+		
+		
+		
+        <!-- OPERATING RESOURCES -->
+		 <%= form_for MtUseOperatingResourceData.new, :remote => true do |f| %>
+		  <input type="hidden" name="mt_use_operating_resource_data[mt_product_id]" id="mt_product_id" value="<%=@mt_product.id%>"/>
+		  <fieldset class="empty">
+            <legend><%=_('Operating resources').html_safe%> <a title="<%=_('Record any additional resources that are consumed during the use phase of the product.').html_safe%>" href="#" class="tip_left">&nbsp;</a></legend>
+		    <div class="span-6" > 
+		       <%= f.label :value, _('Family').html_safe %> 
+		       <br/>
+		        <select class="span-4" id="mt_use_operating_resource_data_mt_consumable" name="mt_use_operating_resource_data[mt_consumable_id]">
+		         
+		         <% @mt_consumables.each do |mt_consumable| %>
+		            <option value="<%=mt_consumable.id%>"><%=mt_consumable.name.html_safe%></option>
+		         <% end %>
+		       
+		       </select>
+		    </div>
+		    <div class="span-5">
+		      <%= f.label :processing, _('Processing').html_safe %> 
+		      <br />
+		      <%= f.text_field :processing, :size => 10 %> <%=_('kg/h').html_safe%>
+		    </div>
+		    <div class="span-5">
+		      <%= f.label :ready, _('Ready').html_safe %> 
+		      <br />
+		      <%= f.text_field :ready, :size => 10 %> <%=_('kg/h').html_safe%>
+		    </div>
+		    <div class="span-5">
+		      <%= f.label :standby, _('Stand by').html_safe %> 
+		      <br />
+		      <%= f.text_field :standby, :size => 10 %> <%=_('kg/h').html_safe%>
+		    </div>
+		
+		
+		
+		    <div class="clear"></div>
+		
+			<div class="span-3 buttons last">
+				<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+			</div>
+		
+		</fieldset>
+		<% end %>
+		<br/>
+		
+		<table class="standard2">
+		    <tr class="add"> 
+		      <th class="span-8">
+		        <%=_('Family').html_safe %><br/>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Processing').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Ready').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Stand by').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Unit').html_safe %>
+		      </th>			  
+		      <th class="span-1">
+		        &nbsp;
+		      </th>
+		    </tr>   
+		    <tbody id="mt_use_operating_resource_datas">
+		      <%= render :partial => @mt_use_operating_resource_datas %>
+		    </tbody>
+		</table>  
+		
+		<div class="clear"></div> 
+
+		
+        <br/>
+		<div class="clear"></div>
+		
+        <!-- MACHINE SUBSYSTEMS -->
+		 <%= form_for MtUseMachineSubsystemData.new, :remote => true do |f| %>
+		  <input type="hidden" name="mt_use_machine_subsystem_data[mt_product_id]" id="mt_product_id" value="<%=@mt_product.id%>"/>
+		  <fieldset class="empty">
+            <legend><%=_('Machine sub-systems').html_safe%> <a title="<%=_('Use this section to add details of the sub-systems within the product that consume energy.').html_safe%>" href="#" class="tip_left">&nbsp;</a></legend>
+		    <div class="span-4" > 
+		       <%= f.label :value, _('Sub-system').html_safe %> 
+		       <br/>
+		        <select class="span-4" id="mt_use_machine_subsystem_data_mt_subsystem" name="mt_use_machine_subsystem_data[mt_subsystem_id]">
+		         
+		         <% @mt_subsystems.each do |mt_subsystem| %>
+		            <option value="<%=mt_subsystem.id%>"><%=mt_subsystem.name.html_safe%></option>
+		         <% end %>
+		       
+		       </select>
+		    </div>
+
+		    <div class="span-4" id="subsystem_name_div" style="display:none">
+		      <%= f.label :subsystem_name, _('Name').html_safe %> 
+		      <br />
+		      <%= f.text_field :subsystem_name, :size => 10 %>
+		    </div>
+
+		    <div class="span-4">
+		      <%= f.label :processing, _('Processing').html_safe %> 
+		      <br />
+		      <%= f.text_field :processing, :size => 10 %> <%=_('kW').html_safe%>
+		    </div>
+		    <div class="span-4">
+		      <%= f.label :ready, _('Ready').html_safe %> 
+		      <br />
+		      <%= f.text_field :ready, :size => 10 %> <%=_('kW').html_safe%>
+		    </div>
+		    <div class="span-4">
+		      <%= f.label :standby, _('Stand by').html_safe %> 
+		      <br />
+		      <%= f.text_field :standby, :size => 10 %> <%=_('kW').html_safe%>
+		    </div>
+		
+		
+		
+		    <div class="clear"></div>
+		
+			<div class="span-3 buttons last">
+				<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+			</div>
+		
+		</fieldset>
+		<% end %>
+		<br/>
+		
+		<table class="standard2">
+		    <tr class="add"> 
+		      <th class="span-8">
+		        <%=_('Sub-system').html_safe %><br/>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Processing').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Ready').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Stand by').html_safe %>
+		      </th>	
+		      <th class="span-3">
+		        <%=_('Unit').html_safe %>
+		      </th>
+		      <th class="span-1">
+		        &nbsp;
+		      </th>
+		    </tr>   
+		    <tbody id="mt_use_machine_subsystem_datas">
+		      <%= render :partial => @mt_use_machine_subsystem_datas %>
+		    </tbody>
+		</table>   
+
+		
+		<br/><br/>
+	<table style="margin-top:15px; margin-left:7px; width:98%;border:1px solid;border-color:#2B4950">
+       
+	       <tr>
+	         <th style="color:white;width:24%;background:#2B4950">&nbsp;</th>
+	         <th style="text-align:center;width:19%;border-bottom:1px solid #2B4950"><%=_('Processing').html_safe%></th>
+	         <th style="text-align:center;width:19%;border-bottom:1px solid #2B4950"><%=_('Ready').html_safe%></th>
+	         <th style="text-align:center;width:19%;border-bottom:1px solid #2B4950"><%=_('Stand by').html_safe%></th>
+	         <th style="text-align:center;width:19%;border-bottom:1px solid #2B4950">&nbsp;</th>
+	       </tr>
+	       
+	   <tr>
+	     <td style="color:white;background:#2B4950"><%=_('Unassigned remaining energy').html_safe%></td>
+	     <td style="color:black;text-align:center"><span id="unassigned_processing"></span> <%=_('kW').html_safe%></td>
+	     <td style="color:black;text-align:center"><span id="unassigned_ready"></span> <%=_('kW').html_safe%></td>
+	     <td style="color:black;text-align:center"><span id="unassigned_standby"></span> <%=_('kW').html_safe%></td>
+	     <td style="color:black;text-align:center">&nbsp;</td>	     	     
+	   </tr>	   
+	</table>		
+		   
+   <% end %>
+   
+		<div class="buttons span-5 last" style="float:left;text-align:left">
+		      <button type="submit" class="positive" style="float:left;text-align:left" onClick="javascript:goPrevious();"> <%= image_tag 'tick.png' %><%= _("Previous step").html_safe %></button>
+		</div>
+      
+		<div class="buttons span-5 last" style="float:right;text-align:right">
+		      <button type="submit" class="positive" style="float:right;text-align:right" onClick="javascript:goNext();"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+		</div>
+
+
+   <div class="clear"></div>
+   <div class="navbar">
+     <!-- <div id="for-ie"> -->
+     <div>
+       <ul>
+         <li><%= link_to _('To Introduction').html_safe, mt_production_intro_url(@mt_product) %></li>
+         <li><%= link_to _('To Method').html_safe, mt_assessment_url(@mt_product) %></li>
+         <li><%= link_to _('To Data Quality').html_safe, mt_data_quality_path(@mt_product) %></li>
+         <li><%= link_to _('To Results').html_safe, mt_result_path(@mt_product) %></li>
+         <li><%= link_to _('To Improvements').html_safe, mt_production_improvement_path(@mt_product) %></li>
+       </ul>
+     </div>
+   </div>
+
+
+   <div class="clear"></div>
+
+
+
+</div>      

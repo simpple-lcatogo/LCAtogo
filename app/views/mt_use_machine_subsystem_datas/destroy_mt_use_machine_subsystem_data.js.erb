@@ -1,0 +1,14 @@
+if ($('#td_processing_<%= @mt_use_machine_subsystem_data.id %>')) {
+   $('#td_processing_<%= @mt_use_machine_subsystem_data.id %>').attr("id", "");   
+}
+if ($('#td_ready_<%= @mt_use_machine_subsystem_data.id %>')) {
+   $('#td_ready_<%= @mt_use_machine_subsystem_data.id %>').attr("id", "");   
+}
+if ($('#td_standby_<%= @mt_use_machine_subsystem_data.id %>')) {
+   $('#td_standby_<%= @mt_use_machine_subsystem_data.id %>').attr("id", "");   
+}
+
+/* Eliminate the comment by fading it out */
+$('#mt_use_machine_subsystem_data_<%= @mt_use_machine_subsystem_data.id %>').fadeOut();
+updateUnassigned();
+updateWeight();

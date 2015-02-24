@@ -1,0 +1,9 @@
+
+$("#error_explanation_repair").empty();
+$("#error_explanation_repair").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#repairs").append("<%= escape_javascript(render(@repair_use)) %>");
+/* Highlight the new comment */
+$("#repair_<%= @repair_use.id %>").effect("highlight", {}, 3000);
+
+$("#repair_use_quantity").val("");

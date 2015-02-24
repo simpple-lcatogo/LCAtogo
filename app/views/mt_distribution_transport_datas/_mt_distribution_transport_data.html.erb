@@ -1,0 +1,22 @@
+<tr id="mt_distribution_transport_data_<%= mt_distribution_transport_data.id %>">
+     <td>
+	      <% if mt_distribution_transport_data.mt_transport_type %>
+			<%= mt_distribution_transport_data.mt_transport_type.name.html_safe %>
+	      <% end %>		
+     </td>
+     <td class="distance_<%= mt_distribution_transport_data.id %>">
+          <%= mt_distribution_transport_data.distance %>
+     </td>
+    <script type="text/javascript">
+		   $(".distance_<%=mt_distribution_transport_data.id%>").editInPlace({
+		        url: "/mt_distribution_transport_datas/update_distance" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+		        params: "mt_distribution_transport_data_id=<%=mt_distribution_transport_data.id%>",
+		        saving_text: '<%=_("Saving...")%>'
+		        });      
+  
+     </script>         
+     <td>
+          <%=_('km').html_safe%>
+     </td>     
+     <td class="center"><%= link_to '&#10006;'.html_safe, mt_distribution_transport_data_path(mt_distribution_transport_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>

@@ -1,0 +1,10 @@
+
+$("#error_explanation_process").empty();
+$("#error_explanation_process").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#packagings").append("<%= escape_javascript(render(@packaging_distribution)) %>");
+/* Highlight the new comment */
+$("#packaging_<%= @packaging_distribution.id %>").effect("highlight", {}, 3000);
+
+$("#packaging_distribution_value").val("");
+$("#packaging_distribution_name").val("");

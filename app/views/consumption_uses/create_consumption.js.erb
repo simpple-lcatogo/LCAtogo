@@ -1,0 +1,18 @@
+
+<% if !@over_total %>
+	$("#error_explanation_consumption").empty();
+	$("#error_explanation_consumption").css("display", "none")
+	/* Add the new comment to the bottom of the comments list */
+	$("#consumptions").append("<%= escape_javascript(render(@consumption_use)) %>");
+	/* Highlight the new comment */
+	$("#consumption_<%= @consumption_use.id %>").effect("highlight", {}, 3000);
+	
+	$("#consumption_use_consumption").val("");
+	
+	 $(".timemode_consumption_<%= @consumption_use.id %>").focusout(function(){
+	      updateValues();
+	   });			        
+	updateValues();
+<% else %>
+   alert('Sum of time modes exceeds 100%');
+<% end %>	

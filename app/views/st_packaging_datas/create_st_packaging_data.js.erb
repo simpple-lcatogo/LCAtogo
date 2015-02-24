@@ -1,0 +1,12 @@
+$("#error_explanation_st_packaging_data").empty();
+$("#error_explanation_st_packaging_data").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#st_packaging_datas").append("<%= escape_javascript(render(@st_packaging_data)) %>");
+/* Highlight the new comment */
+$("#st_packaging_data_<%= @st_packaging_data.id %>").effect("highlight", {}, 3000);
+
+$("#st_packaging_data_with_sensor").val("");
+$("#st_packaging_data_without_sensor").val("");
+$("#st_packaging_data_recycling_revenue").val("");
+$("#st_packaging_data_description").val("");
+$("#st_packaging_data_global_warming_potential").val("");

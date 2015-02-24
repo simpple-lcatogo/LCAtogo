@@ -1,0 +1,146 @@
+<% # encoding: UTF-8 %>
+<tr id="bp_finishing_data_<%= bp_finishing_data.id %>">
+
+
+  <% if bp_finishing_data.bp_material %>  
+     <td><%= bp_finishing_data.bp_material.name.html_safe %></td>
+
+  <% else %>
+     <td>&nbsp;</td>  
+  <% end %>
+  
+  <% if bp_finishing_data.bp_manufacturing_process %>  
+     <td><%= bp_finishing_data.bp_manufacturing_process.name.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>  
+  <% end %>
+
+  <% if bp_finishing_data.quantity %>  
+    <!-- <td id="bp_finishing_data_quantity_<%= bp_finishing_data.id %>" class="bp_finishing_data_quantity_<%= bp_finishing_data.id %>" ><%= bp_finishing_data.quantity.to_s.html_safe + " " + _("m<sup>2</sup>").html_safe %></td> -->
+       <td id="bp_finishing_data_quantity_<%= bp_finishing_data.id %>" class="bp_finishing_data_quantity_<%= bp_finishing_data.id %>" ><%= bp_finishing_data.quantity.to_s.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>  
+  <% end %>
+ 
+ 
+
+ <% if bp_finishing_data.bp_country_info_id %>  
+     <td><%= bp_finishing_data.bp_country_info.name.html_safe %></td>
+
+  <% else %>
+     <td>&nbsp;</td>  
+  <% end %>
+
+   <td>
+    <%#= link_to _("Default values accepted"),'#' ,:class => "default_values"%>
+      <table>
+        <th><%= _("Parameters").html_safe %></th>
+        <th><%= _("Default value").html_safe %></th>
+        <th> <%= _("User value").html_safe %></th>
+        
+          <% if @bp_manufacturing_process_variables %>
+            <% @bp_manufacturing_process_variables.each do |var| %>
+              <tr>
+                  <td><%= var.name %>
+                    <% if var.name_en == "Electricity use" && (bp_finishing_data.bp_manufacturing_process.name_en == "Forming" ||
+                            bp_finishing_data.bp_manufacturing_process.name_en == "Laminating" || bp_finishing_data.bp_manufacturing_process.name_en == "Printing") %>
+                        <%= "(kWh/m<sup>2</sup>)".html_safe %>
+                    <% else %>
+                        (<%= var.unit.html_safe %>)
+                    <% end %>
+                    <% if var.name == 'Production waste' %>
+                       <a title="<%=_('Please indicate only the quantity of material that is not going to be reused in the process.').html_safe%>" href="#" class="tip">&nbsp;</a>
+                    <% end %>
+                  </td>
+                  <td><% @bp_manufacturing_process_variable_values.each do |var_val| %>
+                            <% if var_val.bp_material_id == bp_finishing_data.bp_material_id &&
+                                var_val.bp_manufacturing_process_id == bp_finishing_data.bp_manufacturing_process_id &&
+                                var_val.bp_manufacturing_process_variable_id == var.id %><%= var_val.value %>
+                            <% end %>
+                        <% end %>
+                    </td>
+
+                    <%# end %>
+                   <td class="bp_manufacturing_process_user_variable_<%= "#{bp_finishing_data.id}_#{var.id}" %>"></td>
+                    <% if var.name != 'Electricity consumption' %>
+                        <script type="text/javascript">
+                           $(".bp_manufacturing_process_user_variable_<%= "#{bp_finishing_data.id}_#{var.id}" %>").editInPlace({
+                                url: "/bp_finishing_process_user_variable/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+                                params: "bp_finishing_data_id=<%=bp_finishing_data.id%>&bp_manufacturing_process_variable_id=<%= var.id%>&field=user_var_value",
+                                saving_text: '<%=_("Saving...").html_safe%>',
+                                default_text: '<%= _("(value)").html_safe %>'
+                                });
+                        </script>
+                   <% end %>
+              </tr>
+          <% end %>
+          <% elsif bp_finishing_data.bp_manufacturing_process && bp_finishing_data.bp_manufacturing_process.bp_manufacturing_process_variables %>
+            <% bp_finishing_data.bp_manufacturing_process.bp_manufacturing_process_variables.each do |var| %>
+              <tr>
+                  <td><%= var.name %>
+                    <% if var.name_en == "Electricity use" && (bp_finishing_data.bp_manufacturing_process.name_en == "Forming" ||
+                            bp_finishing_data.bp_manufacturing_process.name_en == "Laminating" || bp_finishing_data.bp_manufacturing_process.name_en == "Printing") %>
+                        <%= "(kWh/m<sup>2</sup>)".html_safe %>
+                    <% else %>
+                        (<%= var.unit.html_safe %>)
+                    <% end %>
+                    <% if var.name == 'Production waste' %>
+                       <a title="<%=_('Please indicate only the quantity of material that is not going to be reused in the process.').html_safe%>" href="#" class="tip">&nbsp;</a>
+                    <% end %>
+                  </td>
+                  <td><% @bp_manufacturing_process_variable_values.each do |var_val| %>
+                          <% if var_val.bp_material_id == bp_finishing_data.bp_material_id &&
+                                var_val.bp_manufacturing_process_id == bp_finishing_data.bp_manufacturing_process_id &&
+                                var_val.bp_manufacturing_process_variable_id == var.id %><%= var_val.value %>
+                         <% end %>
+                        <% end %>
+                  </td>
+                  <td class="bp_finishing_process_user_variable_<%= "#{bp_finishing_data.id}_#{var.id}" %>"><% @bp_finishing_process_user_variables.each do |user_var| %>
+                            <% if user_var.bp_finishing_data.bp_material_id == bp_finishing_data.bp_material_id &&
+                                    user_var.bp_finishing_data.bp_manufacturing_process_id == bp_finishing_data.bp_manufacturing_process_id &&
+                                    user_var.bp_manufacturing_process_variable_id == var.id %>
+                            <%= user_var.value %><% end %>
+                      <% end %></td>
+                    <% if var.name != 'Electricity consumption' %>
+                        <script type="text/javascript">
+                           $(".bp_finishing_process_user_variable_<%= "#{bp_finishing_data.id}_#{var.id}" %>").editInPlace({
+                                url: "/bp_finishing_process_user_variable/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+                                params: "bp_finishing_data_id=<%=bp_finishing_data.id%>&bp_manufacturing_process_variable_id=<%= var.id%>&field=user_var_value",
+                                saving_text: '<%=_("Saving...").html_safe%>',
+                                default_text: '<%= _("(value)").html_safe %>'
+                                });
+                        </script>
+                    <% end %>
+              </tr>
+            <% end %>            
+
+          <% end %>
+
+      </table>  
+   
+  </td>
+
+  <% if bp_finishing_data.comment %>  
+     <td id="bp_finishing_data_comment_<%= bp_finishing_data.id %>" class="bp_finishing_data_comment_<%= bp_finishing_data.id %>"><%= bp_finishing_data.comment.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>  
+  <% end %>
+  
+  <td class="center"><%= link_to '&#10006;'.html_safe, bp_finishing_data_path(bp_finishing_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>
+
+
+
+<script type="text/javascript">
+   $(".bp_finishing_data_quantity_<%=bp_finishing_data.id%>").editInPlace({
+        url: "/bp_finishing_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "bp_finishing_data_id=<%=bp_finishing_data.id%>&field=quantity",
+        saving_text: '<%=_("Saving...").html_safe%>'
+        });
+   $(".bp_finishing_data_comment_<%=bp_finishing_data.id%>").editInPlace({
+        url: "/bp_finishing_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "bp_finishing_data_id=<%=bp_finishing_data.id%>&field=comment",
+        saving_text: '<%=_("Saving...").html_safe%>'
+        });
+  </script>
+

@@ -1,0 +1,21 @@
+<% if @is_ok %>
+	$("#error_explanation_manufacturing").empty();
+	$("#error_explanation_manufacturing").css("display", "none")
+	/* Add the new comment to the bottom of the comments list */
+	$("#manufacturings").append("<%= escape_javascript(render(@manufacturing_data)) %>");
+	/* Highlight the new comment */
+	$("#manufacturing_<%= @manufacturing_data.id %>").effect("highlight", {}, 3000);
+	
+	$("#manufacturing_data_ratio").val("");
+	$("#manufacturing_data_aspect").val("");
+	$("#manufacturing_data_diagonal").val("");
+	$("#manufacturing_data_quantity").val("");
+	$("#manufacturing_data_component_age").val("0");
+	$("#manufacturing_data_component_total_lifetime").val(<%=@average_technical_lifetime%>);
+	$("#manufacturing_data_material_user_type").val("");
+	$("#manufacturing_data_material_user_name").val("");
+	$("#manufacturing_data_user_global_warming").val("");
+    $("#manufacturing_data_overhead_cutoffs").val("");
+<% else %>
+    alert('Quantity exceeded for this material')
+<% end %>	

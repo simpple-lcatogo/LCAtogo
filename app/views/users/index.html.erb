@@ -1,0 +1,97 @@
+<h1>Listing users</h1>
+
+<div class="content_skin">
+
+	<table class="standard2">
+	  <tr>
+	    <th><%=_('Name').html_safe %></th>	  
+	    <th><%=_('Surname').html_safe %></th>	    
+	    <th><%=_('E-mail').html_safe %></th>
+	    <th><%=_('Organization').html_safe %></th>
+	    <th><%=_('Sector').html_safe %></th>
+	    <th><%=_('Country').html_safe %></th>	    
+	    <th><%=_('Last login').html_safe %></th>
+	    <th><%=_('Number of logins').html_safe %></th>	    
+	    <th><%=_('Number of products').html_safe %></th>	    
+	  </tr>
+	
+	<% @users.each do |user| %>
+	  <tr>
+	    <td><%= user.name %></td>	  
+	    <td><%= user.surname %></td>	  
+	    <td><%= user.email %></td>
+	    <td><%= user.organization %></td>
+<!--	    <td>
+	     <% user.sectors.each do |sector| %>
+	      <% if sector.name == "bio_based" %>
+	         <%=_('Bio-based plastics').html_safe%> /
+	      <% end %>
+	      <% if sector.name == "industrial" %>
+	         <%=_('Industrial machines').html_safe%> /
+	      <% end %>
+	      <% if sector.name == "electronics" %>
+	         <%=_('Electronics').html_safe%> /
+	      <% end %>
+	      <% if sector.name == "printed" %>
+	         <%=_('Printed Circuit Boards').html_safe%> /
+	      <% end %>
+	      <% if sector.name == "renewable" %>
+	         <%=_('Renewable Energy - Photovoltaics').html_safe%> /
+	      <% end %>
+	      <% if sector.name == "semiconductors" %>
+	         <%=_('Semiconductors').html_safe%> /
+	      <% end %>
+	      <% if sector.name == "sensors" %>
+	         <%=_('Sensors').html_safe%> /
+	      <% end %>
+	      <% if sector.name == "textiles" %>
+	         <%=_('Smart Textiles').html_safe%> /
+	      <% end %>
+	      
+	      
+	     <% end %> 
+	    </td>-->
+	    <td>
+           <% if user.sector == "bio_based" %>
+              <%=_('Bio-based plastics').html_safe%>
+           <% elsif user.sector == "industrial" %>
+              <%=_('Industrial machines').html_safe%>
+           <% elsif user.sector == "electronics" %>
+              <%=_('Electronics').html_safe%>
+           <% elsif user.sector == "printed" %>
+              <%=_('Printed Circuit Boards').html_safe%>
+           <% elsif user.sector == "renewable" %>
+              <%=_('Renewable Energy - Photovoltaics').html_safe%>
+           <% elsif user.sector == "semiconductors" %>
+              <%=_('Semiconductors').html_safe%>
+           <% elsif user.sector == "sensors" %>
+              <%=_('Sensors').html_safe%>
+           <% elsif user.sector == "textiles" %>
+              <%=_('Smart Textiles').html_safe%>
+           <% else %>
+              <%=_('unknown').html_safe%>
+           <% end %>	    
+	    
+	    
+	    </td>
+	    
+	    <td><%= user.country.name if user.country %></td>
+<% if user.last_sign_in_at %>
+	    <td><%= user.last_sign_in_at.strftime("%d/%m/%Y") %></td>
+<% else %>	    
+	    <td></td>
+<% end %>	    	   
+	    <td><%= user.sign_in_count %></td>	 
+	    <td><%= user.products.size %></td>  
+	  </tr>
+	<% end %>
+	</table>
+
+<div class="buttons">
+  <%= form_tag '/users/generate_excel' do %>	
+    <button type="submit"> <%= image_tag 'page_white_excel.png' %><%= _("Exporta a Excel").html_safe %></button>
+  <% end %> 
+</div>
+
+<div class="clear"></div>
+</div>

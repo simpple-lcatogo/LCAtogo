@@ -1,0 +1,402 @@
+<script type="text/javascript">
+  function checkFields() {
+     var isOk = true;
+     if (document.getElementById("st_use_lifetime").value == "") {
+        isOk = false;
+        alert("<%=_('Lifetime time field can\'t be blank').html_safe%>");
+     }
+      if (isNaN(document.getElementById("st_use_lifetime").value)) {
+        isOk = false;
+        alert("<%=_('Lifetime field must be numeric').html_safe%>");
+     } else {
+       var lifetimeValue = parseFloat(document.getElementById("st_use_lifetime").value);
+       if (lifetimeValue == 0) {
+        isOk = false;
+        alert("<%=_('Lifetime field must be greater than 0').html_safe%>");
+       
+          }
+     
+     }    
+     return isOk;   
+  }
+
+  function goPrevious() {
+     if (checkFields()) {
+        document.getElementById("arrow").value = 'previous';
+        document.forms[0].submit();
+     }         
+  }
+
+  function goNext() {
+     if (checkFields()) {
+        document.getElementById("arrow").value = 'next';
+        document.forms[0].submit();
+     }     
+  }
+    $(document).ready(function(){  
+    
+    
+        $("#st_consumption_data_st_energy_type_id").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                $("#st_consumption_data_st_energy_source_id option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#st_consumption_data_st_energy_source_id");
+            }
+            else {
+                var text = $("#st_consumption_data_st_energy_type_id option:selected").text();
+                if ((text == 'Electricity') || (text == 'Heat')){
+                   $("#charges_div").hide();
+                } else {
+                   $("#charges_div").show();                
+                }
+                document.getElementById("unit_energy").innerHTML = "";
+            
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'st_energy_sources_for_st_energy_types'},
+                    timeout: 15000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                        $("#st_consumption_data_st_energy_source_id option").remove();
+                        var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.st_energy_source.id + "\">" + j.st_energy_source.name + "</option>";  
+                            $(row).appendTo("select#st_consumption_data_st_energy_source_id");                    
+                        });
+                        $("#st_consumption_data_st_energy_source_id").change();
+                     }
+                });
+             };   
+           });    
+    
+        $("#st_consumable_data_st_family").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                $("#st_consumable_data_st_material option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#st_consumable_data_st_material");
+            }
+            else {
+            
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'st_materials_for_st_family'},
+                    timeout: 15000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                        $("#st_consumable_data_st_material option").remove();
+                        var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.st_material.id + "\">" + j.st_material.name + "</option>";  
+                            $(row).appendTo("select#st_consumable_data_st_material");                    
+                        });
+
+                     }
+                });
+             };   
+           });
+           
+        $("#st_consumption_data_st_energy_source_id").change(function(){
+           var id_value_string = $(this).val();
+           if (id_value_string != "") {
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'unit_for_st_energy_source'},
+                    timeout: 15000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                     //   alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                     //   alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("unit_energy").innerHTML = "" + data; 
+                       }
+                    }); 
+              }
+         });
+
+        $("#st_use_lifetime").keyup(function(){
+            $("#lifetime_hidden").val($(this).val());
+        });
+
+        $("#st_consumable_data_st_material").change(function(){
+           var id_value_string = $(this).val();
+           if (id_value_string != "") {
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'unit_for_st_material'},
+                    timeout: 15000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                       // alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                       // alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("unit_material").innerHTML = "" + data; 
+                       }
+                    }); 
+              }
+         });                  
+           
+           
+           
+           
+           
+         $("#st_consumable_data_st_family").change();
+         $("#st_consumption_data_st_energy_type_id").change();
+         $("#st_consumption_data_st_energy_source_id").change();   
+         $("#st_consumable_data_st_material").change();
+
+
+	         $(".edit_st_use").validate({
+		   	    rules: {
+			      "st_use[lifetime]": {
+			                required:true,
+			                number:true
+			                }	      
+			    },
+				messages: {
+                  "st_use[lifetime]": {
+                        required:"<%=_('This field is mandatory').html_safe%>",
+                        number:"<%=_('Please enter a number').html_safe%>"
+                        }
+				}		    
+		       });
+
+      }); 
+</script>
+
+<h1><%=_('Data entry').html_safe%>
+  <br/><span class="tool_subtitle"></span>
+</h1>
+<div class="content_skin">
+  <div class="lcamenu span-23 showdgrid last ">
+    <%= render(:partial => 'shared/lca/st_tabs') %>
+  </div>
+  <div class="clear"></div>
+  <%= form_for @st_use do |f| %>
+      <input type="hidden" name="arrow" id="arrow" value=""/>
+      <fieldset class="empty">
+        <legend><%=_('Estimate the life-time of the product').html_safe%></legend>
+        <input type="hidden" name="st_product_id" id="st_product_id" value="<%=@st_product.id%>"/>
+
+        <div class="span-15" >
+          <%= f.label :value, _('Lifetime:').html_safe %>
+          <%= f.text_field :lifetime, :size => 5%> <%=_('years').html_safe%>
+        </div>
+
+        <div class="clear"></div>
+
+
+
+      </fieldset>
+  <% end %>
+
+  <div class="clear"></div>
+
+ <%= form_for StConsumptionData.new, :remote => true do |f| %>
+  <input type="hidden" name="st_consumption_data[st_product_id]" id="st_product_id" value="<%=@st_product.id%>"/>
+  <input type="hidden" name="lifetime_hidden" id="lifetime_hidden" value="<%=@st_use.lifetime%>"/>
+  <fieldset class="empty">
+    <legend><%=_('Energy Consumption (per year)').html_safe%></legend>
+    <div class="clear"></div>
+    <%=_('Indicate the energy consumption of the product during one year of use.').html_safe%>
+    <br/><br/>
+    <div class="span-8" > 
+       <%= f.label :value, _('Family').html_safe %> 
+       <br/>
+        <select class="span-8" id="st_consumption_data_st_energy_type_id" name="st_consumption_data[st_energy_type_id]">
+         
+         <% @st_energy_types.each do |st_energy_type| %>
+            <option value="<%=st_energy_type.id%>"><%=st_energy_type.name.html_safe%></option>
+         <% end %>
+       
+       </select>
+    </div>
+
+    <div class="span-8">
+       <%= f.label :value, _('Type').html_safe %> 
+       <br/>
+        <select class="span-8" id="st_consumption_data_st_energy_source_id" name="st_consumption_data[st_energy_source_id]">
+         
+
+       </select>
+    </div>
+
+    <div class="span-5">
+      <%= f.label :value, _('Quantity').html_safe %> 
+      <br />
+      <%= f.text_field :quantity, :size => 10 %> <span id="unit_energy"></span>
+    </div>
+
+    <div class="span-5" id="charges_div">
+      <%= f.label :value, _('Charges per year').html_safe %> 
+      <br />
+      <%= f.text_field :charges, :size => 10 %>  <span id="unit_charges"><%=_('times').html_safe%></span>
+    </div>
+
+
+    <div class="clear"></div>
+
+	<div class="span-3 buttons last">
+		<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+	</div>
+
+</fieldset>
+<% end %>
+<br>
+
+<table class="standard2">
+    <tr class="add"> 
+      <th class="span-8">
+        <%=_('Family').html_safe %><br/>
+      </th>
+      <th class="span-8">
+        <%=_('Type').html_safe %><br/>
+      </th>
+      <th class="span-3">
+        <%=_('Quantity').html_safe %>
+      </th>
+      <th class="span-3">
+        <%=_('Unit').html_safe %>
+      </th>
+      
+      <th class="span-3">
+        <%=_('Eco-costs').html_safe %>
+      </th>      
+      <th class="span-1">
+        &nbsp;
+      </th>
+    </tr>   
+    <tbody id="st_consumption_datas">
+      <%= render :partial => @st_consumption_datas %>
+    </tbody>
+</table>
+
+  <div class="clear"></div>
+
+ <%= form_for StConsumableData.new, :remote => true do |f| %>
+  <input type="hidden" name="st_consumable_data[st_product_id]" id="st_product_id" value="<%=@st_product.id%>"/>
+  <fieldset class="empty">
+    <legend><%=_('Consumables').html_safe%></legend>
+    <div class="clear"></div>
+    <%=_('Indicate the consumables during product lifetime.').html_safe%>
+    <br/><br/>
+    
+    <div class="span-5" >
+       <%= f.label :value, _('Family').html_safe %> 
+       <br/>
+        <select class="span-5" id="st_consumable_data_st_family" name="st_consumable_data[st_family_id]">         
+         <% @st_families.each do |st_family| %>
+            <% if st_family.name == 'Electronic components' || st_family.name == 'Battery' %>
+               <option value="<%=st_family.id%>"><%=st_family.name.html_safe%></option>
+            <% end %>   
+         <% end %>
+       
+       </select>
+    </div>
+
+    <div class="span-11">
+       <%= f.label :value, _('Type').html_safe %> 
+       <br/>
+        <select class="span-11" id="st_consumable_data_st_material" name="st_consumable_data[st_material_id]">
+         
+         <% @st_materials.each do |st_material| %>
+            <option value="<%=st_material.id%>"><%=st_material.name.html_safe%></option>
+         <% end %>
+       
+       </select>
+    </div>
+
+    <div class="span-5">
+      <%= f.label :value, _('Quantity').html_safe %> 
+      <br />
+      <%= f.text_field :quantity, :size => 10 %> <span id="unit_material"></span>
+    </div>
+
+
+
+    <div class="clear"></div>
+
+	<div class="span-3 buttons last">
+		<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+	</div>
+
+</fieldset>
+<% end %>
+<br>
+
+<table class="standard2">
+    <tr class="add"> 
+      <th class="span-8">
+        <%=_('Family').html_safe %><br/>
+      </th>
+      <th class="span-8">
+        <%=_('Material').html_safe %><br/>
+      </th>
+      <th class="span-3">
+        <%=_('Quantity').html_safe %>
+      </th>
+      <th class="span-3">
+        <%=_('Unit').html_safe %>
+      </th>
+      
+      <th class="span-3">
+        <%=_('Eco-costs').html_safe %>
+      </th>            
+      <th class="span-1">
+        &nbsp;
+      </th>
+    </tr>   
+    <tbody id="st_consumable_datas">
+      <%= render :partial => @st_consumable_datas %>
+    </tbody>
+</table>
+
+
+ <div class="clear"></div>
+
+ <div class="buttons span-5 last" style="float:left;text-align:left">
+      <button type="submit" class="positive" style="float:left;text-align:left" onClick="javascript:goPrevious();"> <%= image_tag 'tick.png' %><%= _("Previous step").html_safe %></button>
+</div>
+ 
+ <div class="buttons span-5 last" style="float:right;text-align:right">
+      <button type="submit" class="positive" style="float:right;text-align:right" onClick="javascript:goNext();"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+</div>
+
+
+
+<div class="clear"></div>
+<div class="navbar">
+  <!-- <div id="for-ie"> -->
+  <div>
+    <ul>
+      <li><%= link_to _('To Introduction').html_safe, st_production_intro_url(@st_product) %></li>
+      <li><%= link_to _('To Data Quality').html_safe, st_data_quality_intro_path(@st_product) %></li>
+      <li><%= link_to _('To Results').html_safe, st_result_url(@st_product) %></li>
+
+    </ul>
+  </div>
+</div>
+<div class="clear"></div>
+
+
+
+</div>

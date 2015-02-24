@@ -1,0 +1,23 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name_1: MyString
+  name_2: MyString
+  labor: MyString
+  power: MyString
+  energy: MyString
+  unit: MyString
+  consumption: 1.5
+  performance: 1.5
+  source: MyString
+
+two:
+  name_1: MyString
+  name_2: MyString
+  labor: MyString
+  power: MyString
+  energy: MyString
+  unit: MyString
+  consumption: 1.5
+  performance: 1.5
+  source: MyString

@@ -1,0 +1,223 @@
+# encoding: UTF-8
+<script type="text/javascript">
+   function doDelete(id) {
+     if (confirm("<%=_('Are you sure you want to delete this product? (This step cannot be undone)').html_safe%>")) {
+        document.forms[0].action = '/products/' + id + '?locale=<%=I18n.locale%>';
+        document.forms[0].submit();
+        }
+   }
+   
+   function duplicate(id) {
+     if (confirm("<%=_('Duplicate product?').html_safe%>")) {
+        document.getElementById("product_id").value = id;
+        document.forms[1].submit();
+        }
+   } 
+    
+</script>
+<%= form_tag @product, :url => products_url, :method => :delete, :id => 'delete_form', :name => 'delete_form' do %>      
+<% end %>      
+
+<%= form_tag '/products/duplicate' do %>
+   <input type="hidden" name="product_id" id="product_id" value=""/>	
+<% end %>
+
+<%= form_tag @product, :url => products_url, :method => :delete, :id => 'delete_form', :name => 'delete_form' do %>      
+<% end %>
+
+
+
+<h1><%=_('List of products').html_safe%></h1>
+<div class="content_skin">
+
+  <table class="products">
+    <tr>
+      <th class="actions" colspan="10" style="text-align:right;padding-right:31px;padding-top:10px;padding-bottom:10px">
+      <form action="<%=products_url%>" method="get">
+        <input name="query" type="text" size="20" value="<%=@query%>" style="margin-bottom:0px"/>
+        <input name="locale" type="hidden" value="<%=I18n.locale%>"/>        
+        <input type="submit" value="<%=_('Filter products')%>" class="button_normal"/> <%=_('or')%> <%= link_to _('show them all').html_safe, :action => 'index'%>
+      </form>    
+      </th>
+    </tr>      
+
+    <tr>
+      <th style="width:170px;"><%=_("Product name").html_safe%></th>
+      <th style="width:70px; text-align:center;"><%=_("Version").html_safe%></th>
+      <th class="center" style="width:170px;"><%=_("Industrial Sector").html_safe%></th>
+      <th class="center" style="width:115px;"><%=_("Latest change").html_safe%></th>      
+      <th class="center" style="width:50px;"><%=_("Description").html_safe%></th>      
+      <th class="module raee" colspan="4"><%=_("What do you want to do?").html_safe%></th>       
+    </tr>
+ 
+<% @products.each_with_index do |product, index| %>
+  <% bg1 = "#F3F3F3"
+     bg2 = "#EBEEDB"
+     if index % 2 != 0
+        bg1 = "#E6E6E6"
+        bg2 = "#E3E7CD"     
+     end 
+     
+  %>   
+  <tr>
+    <td style="background:<%=bg1%>"><%= link_to product.name_utf8, edit_product_url(product), :title => _("Edit product").html_safe %></td>
+    <td style="text-align:center;background:<%=bg1%>"><%= product.version %></td>
+    <td style="text-align:center;background:<%=bg1%>">
+      <% if product.sector == "bio_based" %><%=_('Bio-based plastics').html_safe%><% end %>
+      <% if product.sector == "industrial" %><%=_('Industrial machines').html_safe%><% end %>
+      <% if product.sector == "electronics" %><%=_('Electronics').html_safe%><% end %>      
+      <% if product.sector == "printed" %><%=_('Printed Circuit Boards').html_safe%><% end %>      
+      <% if product.sector == "renewable" %><%=_('Photovoltaics').html_safe%><% end %>    
+      <% if product.sector == "machine" %><%=_('Machine tools').html_safe%><% end %>
+      <% if product.sector == "sensors" %><%=_('Sensors').html_safe%><% end %>
+      <% if product.sector == "textiles" %><%=_('Smart Textiles').html_safe%><% end %>
+    </td>
+    <td style="text-align:center;background:<%=bg1%>">
+      <% if product.updated_at %>
+         <%= product.updated_at.strftime("%Y/%m/%d") %>
+      <% else %>
+         <%= product.created_at.strftime("%Y/%m/%d") %>
+      <% end %>   
+    </td>
+    <td style="text-align:center;background:<%=bg1%>">
+       <a title="<u><%=_('Description').html_safe%></u><br/><%=product.description_utf8%>" href="#" class="tip_info" width="25" height="25">&nbsp;</a>
+    </td>
+    
+    <td style="text-align:center;background:<%=bg2%>">
+	    <% if product.sector == "electronics" %>
+	      <% if product.product_result %>
+	        <%= link_to image_tag("accept2.png", :border=>0, :size => "16x16"), production_init_path(product), :title => _('Go to data entry').html_safe %>
+	      <% else %>
+	        <%= link_to image_tag("asterisk_yellow2.png", :border=>0, :size => "16x16"), production_init_path(product), :title => _('Go to data entry').html_safe %>
+	      <% end %> 
+      <% elsif product.sector == "bio_based" %>
+        <% if product.bp_product %>            
+	        <% if product.bp_product.bp_product_result %>
+	          <%= link_to image_tag("accept2.png", :border=>0, :size => "16x16"), bp_production_init_path(product.bp_product), :title => _('Go to data entry').html_safe %>
+	        <% else %>
+	          <%= link_to image_tag("asterisk_yellow2.png", :border=>0, :size => "16x16"), bp_production_init_path(product.bp_product), :title => _('Go to data entry').html_safe %>
+	        <% end %>
+	     <% end %>   
+      <% elsif product.sector == "renewable" %>
+        <% if product.ph_product && !product.ph_product.ph_result.blank? %>
+          <%= link_to image_tag("accept2.png", :border=>0, :size => "16x16"), ph_production_init_path(product.ph_product), :title => _('Go to data entry').html_safe %>
+        <% else %>
+          <% if product.ph_product %>
+             <%= link_to image_tag("asterisk_yellow2.png", :border=>0, :size => "16x16"), ph_production_init_path(product.ph_product), :title => _('Go to data entry').html_safe %>
+          <% end %>   
+        <% end %> 	  
+      <% elsif product.sector == "sensors" %>
+        <% if product.se_product %>
+          <%= link_to image_tag("accept2.png", :border=>0, :size => "16x16"), se_production_init_path(product.se_product), :title => _('Go to data entry').html_safe %>
+        <% else %>
+          <% if product.se_product %>
+             <%= link_to image_tag("asterisk_yellow2.png", :border=>0, :size => "16x16"), se_production_init_path(product.se_product), :title => _('Go to data entry').html_safe %>
+          <% end %>   
+        <% end %>
+      <% elsif product.sector == "textiles" %>
+          <% if product.st_product && product.st_product.is_completed %>
+              <%= link_to image_tag("accept2.png", :border=>0, :size => "16x16"), st_production_init_path(product.st_product), :title => _('Go to data entry').html_safe %>
+          <% else %>
+              <% if product.st_product %>
+                  <%= link_to image_tag("asterisk_yellow2.png", :border=>0, :size => "16x16"), st_production_init_path(product.st_product), :title => _('Go to data entry').html_safe %>
+              <% end %>
+          <% end %>
+      <% elsif product.sector == "machine" %>
+          <% if product.mt_product && product.mt_product.is_completed %>
+              <%= link_to image_tag("accept2.png", :border=>0, :size => "16x16"), mt_production_init_path(product.mt_product), :title => _('Go to data entry').html_safe %>
+          <% else %>
+              <% if product.mt_product %>
+                  <%= link_to image_tag("asterisk_yellow2.png", :border=>0, :size => "16x16"), mt_production_init_path(product.mt_product), :title => _('Go to data entry').html_safe %>
+              <% end %>
+          <% end %>
+      <% elsif product.sector == "printed" %>
+          <% if product.pc_product && product.pc_product.is_completed %>
+              <%= link_to image_tag("accept2.png", :border=>0, :size => "16x16"), pc_production_init_path(product.pc_product), :title => _('Go to data entry').html_safe %>
+          <% else %>
+              <% if product.pc_product %>
+                  <%= link_to image_tag("asterisk_yellow2.png", :border=>0, :size => "16x16"), pc_production_init_path(product.pc_product), :title => _('Go to data entry').html_safe %>
+              <% end %>
+          <% end %>
+          
+      <% else %>        
+           <%=image_tag("exclamation2.png", :border=>0, :size => "16x16")%>	      
+	    <% end %>
+	    
+	    
+    </td>
+    <td style="text-align:center;background:<%=bg2%>">
+	    <% if product.sector == "electronics" %>   
+	       <% if product.product_result %> 
+              <%= link_to image_tag("report.png", :border=>0, :size => "16x16"), product_result_pdf_path(product), :title => _('pdf report').html_safe %>
+	       <% else %>
+	        <%= image_tag("asterisk_yellow2.png", :border=>0, :size => "16x16") %>
+	       <% end %>       
+        <% elsif product.sector == "renewable" %>  
+	        <% if product.ph_product && product.ph_product.ph_result %>
+	          <%= link_to image_tag("report.png", :border=>0, :size => "16x16"), ph_result_pdf_path(product.ph_product), :title => _('pdf report').html_safe %>
+	        <% else %>
+	          <%= image_tag("asterisk_yellow2.png", :border=>0, :size => "16x16") %>
+	        <% end %>
+        <% elsif product.sector == "bio_based" %>  
+	        <% if product.bp_product && product.bp_product.bp_product_result %>
+	          <%= link_to image_tag("report.png", :border=>0, :size => "16x16"), bp_result_pdf_path(product.bp_product), :title => _('pdf report').html_safe %>
+	        <% else %>
+	          <%= image_tag("asterisk_yellow2.png", :border=>0, :size => "16x16") %>
+	        <% end %>
+        <% elsif product.sector == "sensors" %>  
+	        <% if product.se_product && product.se_product.se_result %>
+	          <%= link_to image_tag("report.png", :border=>0, :size => "16x16"), se_result_pdf_path(product.se_product), :title => _('pdf report').html_safe %>
+	        <% else %>
+	          <%= image_tag("asterisk_yellow2.png", :border=>0, :size => "16x16") %>
+	        <% end %>
+	        
+        <% elsif product.sector == "textiles" %>
+           <% if product.st_product && product.st_product.is_completed %>
+              <%= link_to image_tag("report.png", :border=>0, :size => "16x16"), st_result_pdf_path(product.st_product), :title => _('pdf report').html_safe %>
+           <% else %>
+              <%= image_tag("asterisk_yellow2.png", :border=>0, :size => "16x16") %>
+           <% end %>
+        <% elsif product.sector == "machine" %>
+           <% if product.mt_product && product.mt_product.is_completed %>
+              <%= link_to image_tag("report.png", :border=>0, :size => "16x16"), mt_result_pdf_path(product.mt_product), :title => _('pdf report').html_safe %>
+           <% else %>
+              <%= image_tag("asterisk_yellow2.png", :border=>0, :size => "16x16") %>
+           <% end %>
+        <% elsif product.sector == "printed" %>
+           <% if product.pc_product && product.pc_product.is_completed %>
+              <%= link_to image_tag("report.png", :border=>0, :size => "16x16"), pc_result_pdf_path(product.pc_product), :title => _('pdf report').html_safe %>
+           <% else %>
+              <%= image_tag("asterisk_yellow2.png", :border=>0, :size => "16x16") %>
+           <% end %>
+        <% else %>        
+           <%=image_tag("exclamation2.png", :border=>0, :size => "16x16")%>           
+        <% end %>   
+    </td>
+
+    <td style="text-align:center;background:<%=bg2%>"><a title="<%=_('duplicate').html_safe%>" href="#" class="delete" style="vertical-align:middle" onclick="javascript:duplicate(<%=product.id%>);"><img  border="0" src="/images/copy2.png" height="16" width="16"></a></td>
+    <td style="text-align:center;background:<%=bg2%>"><a title="<%=_('delete').html_safe%>" href="#" class="delete" style="vertical-align:middle" onclick="javascript:doDelete(<%=product.id%>);"><img alt="Delete" border="0" src="/images/trash3.png" height="16" width="16"></a></td>
+  </tr>
+<% end %>
+ 
+ 
+    
+  <tr style="border:0px">
+    <td colspan="13" style="font-size:12px">
+      <div style="float:left">
+       <%= page_entries_info @products %>
+      </div>
+      <div style="float:left;padding-left:20px;">      
+       <%= will_paginate :per_page => 3, :previous_label => _('Previous'), :next_label => _('Next') %>
+      </div>
+      <div style="float:right">       
+       <span style="text-align:right">
+         <span class="no_priority"><%=image_tag("asterisk_yellow2.png", :border=>0, :size => "16x16")%>&nbsp;<%=_('Pending')%></span>
+         <span class="applied"><%=image_tag("accept2.png", :border=>0, :size => "16x16")%>&nbsp;<%=_('Done')%></span>
+       </span>  
+       </div>
+       <div class="clear"></div> 
+    </td>
+   </tr>
+</table>         
+</div>
+

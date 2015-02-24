@@ -1,0 +1,256 @@
+<h1><%=_('Comparison').html_safe%>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/pc_results/tabs') %>
+	</div>
+    <div class="clear"></div>   
+   <div class="buttons span-23 last">    
+	   <%= form_tag '/pc_results/pdf_compare' do %>
+	        <input type="hidden" name="pc_product_id" id="pc_product_id" value="<%=@pc_product.id%>"/>
+
+	        <% @indicators_checked.each do |indicator| %>
+	          <input type="hidden" name="indicator_<%=indicator.id%>" id="indicator_<%=indicator.id%>" value="true"/>
+	        <% end %>
+             <% @products_checked.each do |product| %>
+                 <input type="hidden" name="compare_product_<%=product.id%>" id="compare_product_<%=product.id%>"/>
+             <% end %>
+
+	        <button type="submit" class="positive" style="float:left"> <%= image_tag 'page_white_acrobat.png' %><%= _("Generate PDF").html_safe %></button>
+	   <% end %>		
+    </div>   
+   
+    <div class="clear"></div>
+	<table style="border:solid 1px" id="treeMain">
+	  <thead>
+	   <tr style="border:solid 1px">
+	     <th style="text-align:left;background:#2B4950;color:#EBEEDB"><%=_('Indicator').html_safe%></th>
+	     <th style="text-align:left;background:#2B4950;color:#EBEEDB"><%=_('Units').html_safe%></th>
+	     <th style="text-align:right;background:#2B4950;color:#EBEEDB"><%=@pc_product.product.name%></th>
+         <% @products_checked.each do |pc_product| %>
+             <th style="text-align:right;background:#2B4950;color:#EBEEDB"><%=pc_product.product.name%></th>
+         <% end %>
+         <% if @products_checked.size == 1 %>
+            <th style="text-align:right;background:#2B4950;color:#EBEEDB"><%=_('Result of comparison [%]').html_safe%></th>
+         <% end %>
+       </tr>
+	  </thead>
+	  <% @indicators.each_with_index do |indicator, index| %>
+	   <% if @indicators_checked.include?indicator %>
+	     <% bg_color = "#006400" 
+	        if index == 0
+	           bg_color = "#696969" 
+	        end 
+	        if index == 1
+	           bg_color = "#9933FF"	        
+	        end 
+	        if index == 2
+	           bg_color = "#8B0000"	        
+	        end 
+	        if index == 3
+	           bg_color = "#1E90FF"	        
+	        end 
+	     
+	     %> 
+		      <% if index == 4 %>
+		      <tr>
+	             <td colspan="2" style="background:#006400;color:#FFF"><%=_('Possible materials for recycling:').html_safe%></td>
+	             <td colspan="2">&nbsp;</td>	        
+		      </tr>	 
+		       <% end %>	     
+ 	      <tr>
+	         <% if indicator.name == 'Energy consumption'%>
+                <td style="background:<%=bg_color%>;color:#FFF"><%=_('Energy consumption Ec (Ec = Ecm+Ecp)').html_safe%></td>
+             <% else %>
+                <td style="background:<%=bg_color%>;color:#FFF"><%=indicator.name.html_safe%></td>
+             <% end %>    	      	        
+             <td style="background:<%=bg_color%>;color:#FFF"><%=indicator.unit.html_safe%></td>
+
+             <% #pc_result_values = @pc_result_values_array[0] %>
+
+
+             <% #end %>
+
+             <% var_a = 0
+                var_b = 0
+                @pc_result_values_array.each_with_index do |pc_result_values, index|
+                  pc_result_values.each do |pc_result_value|
+                    if pc_result_value.indicator.id == indicator.id
+                        if index == 0
+                          var_a = pc_result_value.value_one
+                        end
+                        if index == 1
+                          var_b = pc_result_value.value_one
+                        end
+
+                        %>
+
+                        <td style="text-align:right;"><%=lca_format_number(pc_result_value.value_one, 4) %></td>
+                  <% end
+                 end
+              end %>
+            <% if @products_checked.size == 1 %>
+                <% if var_b != 0 &&  var_a != 0 %>
+                    <td style="text-align:right;"><%=lca_format_number(((var_b - var_a) /var_a) * 100, 2)%> %</td>
+                <% else %>
+                    <td style="text-align:right;">0 %</td>
+                <% end %>
+            <% end %>
+
+
+	      </tr>	  
+	      <% if index == 1 %>
+		      <tr>
+	             <td style="background:#9933FF;color:#FFF"><%=_('Ecm - Energy consumed during materials production for PCB').html_safe%></td>
+	             <td style="background:#9933FF;color:#FFF"><%=_('kWh').html_safe%></td>
+                <td style="text-align:right;"><%=lca_format_number(@ecm_array[0], 4)%></td>
+                 <% @products_checked.each_with_index do |pc_product, index| %>
+                    <td style="text-align:right;"><%=lca_format_number(@ecm_array[index + 1], 4)%></td>
+                 <% end %>
+                <% if @products_checked.size == 1 %>
+                    <% if @ecm_array[1] != 0 &&  @ecm_array[0] != 0 %>
+                       <td style="text-align:right;"><%=lca_format_number(((@ecm_array[1] - @ecm_array[0]) / @ecm_array[0]) * 100, 2)%> %</td>
+                    <% else %>
+                        <td style="text-align:right;">0 %</td>
+                    <% end %>
+                <% end %>
+
+		      </tr>
+		      <tr>
+	             <td style="background:#9933FF;color:#FFF"><%=_('Ecp - Energy consumed during production processes of the PCB').html_safe%></td>
+	             <td style="background:#9933FF;color:#FFF"><%=_('kWh').html_safe%></td>
+                 <td style="text-align:right;"><%=lca_format_number(@ecp_array[0], 4)%></td>
+                <% @products_checked.each_with_index do |pc_product, index| %>
+                    <td style="text-align:right;"><%=lca_format_number(@ecp_array[index + 1], 4)%></td>
+                <% end %>
+                <% if @products_checked.size == 1 %>
+                    <% if @ecp_array[1] != 0 &&  @ecp_array[0] != 0 %>
+                        <td style="text-align:right;"><%=lca_format_number(((@ecp_array[1] - @ecp_array[0]) / @ecp_array[0]) * 100, 2)%> %</td>
+                    <% else %>
+                        <td style="text-align:right;">0 %</td>
+                    <% end %>
+                <% end %>
+
+		      </tr>	   
+		      	   
+	      <% end %>	       
+	      <% if index == 3 %>
+		      <tr>
+	             <td style="background:#1E90FF;color:#FFF"><%=_('CF of materials').html_safe%></td>
+	             <td style="background:#1E90FF;color:#FFF"><%=_('kg CO2 eq').html_safe%></td>
+                 <td style="text-align:right;"><%=lca_format_number(@cf_m_array[0], 4)%></td>
+                 <% @products_checked.each_with_index do |pc_product, index| %>
+                    <td style="text-align:right;"><%=lca_format_number(@cf_m_array[index + 1], 4)%></td>
+                 <% end %>
+                <% if @products_checked.size == 1 %>
+                    <% if @cf_m_array[1] != 0 &&  @cf_m_array[0] != 0 %>
+                        <td style="text-align:right;"><%=lca_format_number(((@cf_m_array[1] - @cf_m_array[0]) / @cf_m_array[0]) * 100, 2)%> %</td>
+                    <% else %>
+                        <td style="text-align:right;">0 %</td>
+                    <% end %>
+                <% end %>
+		      </tr>	   	      
+		      <tr>
+	             <td style="background:#1E90FF;color:#FFF"><%=_('CF of production processes').html_safe%></td>
+	             <td style="background:#1E90FF;color:#FFF"><%=_('kg CO2 eq').html_safe%></td>
+                 <td style="text-align:right;"><%=lca_format_number(@cf_p_array[0], 4)%></td>
+                 <% @products_checked.each_with_index do |pc_product, index| %>
+                    <td style="text-align:right;"><%=lca_format_number(@cf_p_array[index + 1], 4)%></td>
+                 <% end %>
+                <% if @products_checked.size == 1 %>
+                    <% if @cf_p_array[1] != 0 &&  @cf_p_array[0] != 0 %>
+                        <td style="text-align:right;"><%=lca_format_number(((@cf_p_array[1] - @cf_p_array[0]) / @cf_p_array[0]) * 100, 2)%> %</td>
+                    <% else %>
+                        <td style="text-align:right;">0 %</td>
+                    <% end %>
+                <% end %>
+
+
+              </tr>
+		      <tr>
+	             <td style="background:#1E90FF;color:#FFF"><%=_('CF of gas emissions to air').html_safe%></td>
+	             <td style="background:#1E90FF;color:#FFF"><%=_('kg CO2 eq').html_safe%></td>
+                 <td style="text-align:right;"><%=lca_format_number(@cf_ghg_array[0], 4)%></td>
+                 <% @products_checked.each_with_index do |pc_product, index| %>
+                    <td style="text-align:right;"><%=lca_format_number(@cf_ghg_array[index + 1], 4)%></td>
+                 <% end %>
+                <% if @products_checked.size == 1 %>
+                    <% if @cf_ghg_array[1] != 0 &&  @cf_ghg_array[0] != 0 %>
+                        <td style="text-align:right;"><%=lca_format_number(((@cf_ghg_array[1] - @cf_ghg_array[0]) / @cf_ghg_array[0]) * 100, 2)%> %</td>
+                    <% else %>
+                        <td style="text-align:right;">0 %</td>
+                    <% end %>
+                <% end %>
+		      </tr>	   	      
+		      <tr>
+	             <td style="background:#1E90FF;color:#FFF"><%=_('CF of transport').html_safe%></td>
+	             <td style="background:#1E90FF;color:#FFF"><%=_('kg CO2 eq').html_safe%></td>
+                 <td style="text-align:right;"><%=lca_format_number(@cf_t_array[0], 4)%></td>
+                 <% @products_checked.each_with_index do |pc_product, index| %>
+                    <td style="text-align:right;"><%=lca_format_number(@cf_t_array[index + 1], 4)%></td>
+                 <% end %>
+                <% if @products_checked.size == 1 %>
+                    <% if @cf_t_array[1] != 0 &&  @cf_t_array[0] != 0 %>
+                        <td style="text-align:right;"><%=lca_format_number(((@cf_t_array[1] - @cf_t_array[0]) / @cf_t_array[0]) * 100, 2)%> %</td>
+                    <% else %>
+                        <td style="text-align:right;">0 %</td>
+                    <% end %>
+                <% end %>
+
+		      </tr>	   	      		      
+		      <% end %>	   	      
+	      <% end %>
+      <% end %>
+	</table>
+   
+   
+   <% height = (@products_checked.size + 1) * 35 %>
+  <%
+     axis_format = ''
+     index_axis = 0
+     while index_axis <=  @products_checked.size
+       axis_format += 'N*f2*,000000,' + index_axis.to_s + ',-1,11,,:10:'
+       if index_axis != @products_checked.size
+         axis_format += '|'
+       end
+       index_axis = index_axis + 1
+     end
+
+  %>
+
+
+
+   <% @indicators_checked.each_with_index do |indicator, index| %>
+      <h2><%=indicator.name.html_safe%> (<%=indicator.unit.html_safe%>)</h2>   
+   
+	  <img 
+	     alt="" 
+	     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=16&amp;chts=2B4950,16,l&amp;chxt=x&amp;cht=bhg&amp;chds=a&amp;chd=t:<%=@values_array[index]%>&amp;chco=<%=@seriesColors_to_array%>&amp;chls=2.0&amp;chs=600x<%=height%>&amp;chxl=1:<%=@ticks_array[index]%>&amp;chxs=1,,11,-1,lt&amp;chdl=<%=@compare_products%>&amp;chm=<%=axis_format%>"
+	     style="padding-right:20px;padding-bottom:40px;">   
+   <% end %>
+
+
+  <div class="clear"></div>
+
+  <div class="buttons span-5" style="float:left;text-align:left">
+    <a href="<%=pc_comparison_url(@pc_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Previous step").html_safe %></a>
+  </div>
+
+
+   <div class="clear"></div>
+   <div class="navbar">
+     <!-- <div id="for-ie"> -->
+     <div>
+       <ul>
+         <li><%= link_to _('To Introduction').html_safe, pc_production_intro_url(@pc_product) %></li>
+         <li><%= link_to _('To Data Entry').html_safe, pc_basic_url(@pc_product) %></li>
+         <li><%= link_to _('To Data Quality').html_safe, pc_data_quality_intro_path(@pc_product) %></li>
+       </ul>
+     </div>
+   </div>
+
+
+   <div class="clear"></div>
+
+	
+</div>

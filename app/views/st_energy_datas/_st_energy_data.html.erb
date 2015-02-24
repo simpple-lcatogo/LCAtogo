@@ -1,0 +1,30 @@
+<tr id="st_energy_data_<%= st_energy_data.id %>">
+     <td>
+	      <% if st_energy_data.st_energy_type %>
+			<%= st_energy_data.st_energy_type.name.html_safe %>
+	      <% end %>		
+     </td>
+     <td>
+	      <% if st_energy_data.st_energy_source %>
+			<%= st_energy_data.st_energy_source.name.html_safe %>
+	      <% end %>		
+
+     </td>
+     <td>
+        <%= st_energy_data.quantity%>
+     </td>
+     <td>
+	      <% if st_energy_data.st_energy_type %>
+			<%= st_energy_data.st_energy_type.unit.html_safe %>
+	      <% end %>		
+     </td>
+     
+     <td>
+       <% if st_energy_data.eco_cost %>
+          <%= lca_format_number(st_energy_data.quantity * st_energy_data.eco_cost, 4)  %> &euro;
+       <% else %>
+          -
+       <% end %>   
+     </td>     
+     <td class="center"><%= link_to '&#10006;'.html_safe, st_energy_data_path(st_energy_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>

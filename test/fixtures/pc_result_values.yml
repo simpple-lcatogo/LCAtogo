@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  pc_product_id: 1
+  indicator_id: 1
+  value_one: 1.5
+  value_n: 1.5
+
+two:
+  pc_product_id: 1
+  indicator_id: 1
+  value_one: 1.5
+  value_n: 1.5

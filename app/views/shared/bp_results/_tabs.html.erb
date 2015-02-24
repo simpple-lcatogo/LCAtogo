@@ -1,0 +1,11 @@
+<ul>
+  <% if @product.id %>
+     <li><%= tab_link_to _('Detailed Results').html_safe, bp_result_url(@bp_product), :product => @product, :index => 1 %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>
+	 <li><%= tab_link_to _('Graphic Results').html_safe, bp_result_graphic_path(@product.bp_product), :product => @product, :index => 2 %></li>
+	 <li style="padding-top:10px;padding-bottom:10px"> > </li>
+	 <li><%= tab_link_to _('Comparison').html_safe, bp_comparison_url(@product.bp_product), :product => @product, :index => 3 %></li>     
+     
+   <% end %>
+<div class="clear"></div>
+</ul>

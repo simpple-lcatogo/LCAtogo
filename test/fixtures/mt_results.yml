@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  mt_product_id: 1
+  name_en: MyString
+  name_ca: MyString
+  name_es: MyString
+  parent_id: 1
+  check_graphic: false
+
+two:
+  mt_product_id: 1
+  name_en: MyString
+  name_ca: MyString
+  name_es: MyString
+  parent_id: 1
+  check_graphic: false

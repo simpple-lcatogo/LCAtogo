@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  bp_product_id: 1
+  amount: 1.5
+  bp_distribution_default_value_id: 1
+
+two:
+  bp_product_id: 1
+  amount: 1.5
+  bp_distribution_default_value_id: 1

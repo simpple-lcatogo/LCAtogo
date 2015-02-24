@@ -1,0 +1,167 @@
+<script type="text/javascript">
+  var checkflag = "false";
+  function initial_value(field) {
+        var title = "<%=_('Unselect all')%>";
+        checkflag = "true";
+		if( document.getElementsByTagName ) {
+		    tableCells = document.getElementsByTagName('input');
+		    } else if( document.all && document.all.tags ) {
+		    tableCells = document.all.tags('input');
+		    }
+
+		if( tableCells ) {
+		   for (var i = 0; i < tableCells.length; i++) {
+		   if (tableCells[i] != null) {
+		       if (tableCells[i].id) {		               
+		          if (tableCells[i].id.match(/^product_indicator_ids_/) != null) {
+		              if (!tableCells[i].checked) {
+		                 title = "<%=_('Select all')%>";
+		                 checkflag = "false";
+		                 }
+  		              }
+		           }
+		        }
+		     }
+		  }              
+       return title;
+  }
+  
+  function check(field) {
+		if( document.getElementsByTagName ) {
+		    tableCells = document.getElementsByTagName('input');
+		    } else if( document.all && document.all.tags ) {
+		    tableCells = document.all.tags('input');
+		    }
+		if( tableCells ) {
+		   for (var i = 0; i < tableCells.length; i++) {
+		   if (tableCells[i] != null) {
+		       if (tableCells[i].id) {         
+		          if (tableCells[i].id.match(/^product_indicator_ids_/) != null) {
+		              if (checkflag == "false") {
+		                 tableCells[i].checked = true;
+		                 } else {
+		                 tableCells[i].checked = false;
+		                 }
+		              }
+		           }
+		        }
+		     }
+		  }              
+  
+  
+    if (checkflag == "false") {
+      checkflag = "true";
+      return "<%=_('Unselect All')%>"; 
+      } else {
+      checkflag = "false";
+      return "<%=_('Select All')%>"; 
+       }
+}  
+
+  function checkFields() {
+     var isOk = true;
+     return isOk;   
+  }
+  
+  function goPrevious() {
+     if (checkFields()) {
+        document.getElementById("arrow").value = 'previous';
+        document.forms[0].submit();
+     }         
+  }
+
+  function goNext() {
+     if (checkFields()) {
+        document.getElementById("arrow").value = 'next';
+        document.forms[0].submit();
+     }     
+  }
+
+</script>
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/lca/pc_tabs') %>
+	</div>
+	
+	<% form_for @product do |f| %>
+	
+     <input class="positive_button" id="check_all_button" type="button" value="<%=_('Select all')%>" onClick="this.value=check(this.form.booklabel)">	
+	 <input type="hidden" name="from_pc_indicators" id="from_pc_indicators" value=""/>
+	 <input type="hidden" name="product[id]" id="product_id" value="<%=@product.id%>"/>
+     <input type="hidden" name="arrow" id="arrow" value=""/>
+	 <br/><br/>
+
+	<table class="standard2" style="margin-top:0px">
+	    <tr>
+	      <th></th>
+	      <th><%=_('Indicator').html_safe%></th>
+	      <th><%=_('Unit').html_safe%></th>
+	    </tr>	
+	<% for indicator in @indicators %>
+	    <% if indicator.name == 'Cu' %>
+	       <tr>
+	         <td colspan="3">
+	             <br/>
+	            <b><%=_('Possible materials for recycling').html_safe%></b>:
+	         </td> 
+	       </tr>
+	    <% end %>
+	    
+	    <% show_indicator = false; %>
+	    
+	    <% if @pc_product.pc_basic.pcb_type == 'rigid' || (indicator.name != 'Glass' && indicator.name != 'Resin') %>
+			<tr>	
+			 <% if @product.indicators.size == 0 %>
+		       <td><%= check_box_tag "product[indicator_ids][]", indicator.id, true %></td>
+		     <% else %>
+		       <td><%= check_box_tag "product[indicator_ids][]", indicator.id, @product.indicators.include?(indicator) %></td>
+		     <% end %>  
+		     <td><%= indicator.name.html_safe %></td>
+		     <td><%= indicator.unit.html_safe %></td>
+		    </tr> 		    
+         <% end %>	
+	<% end %>
+	</table>
+	
+	<br/>
+
+
+     <div class="buttons span-12 last" style="float:right">	
+	  <button type="submit" class="positive" style="float:right;text-align:right" onClick="javascript:goNext();"><%= image_tag 'tick.png' %><%=_('Generate results').html_safe%>	  
+	  </button>
+	 </div> 
+	 
+   <div class="buttons span-5" style="float:left;text-align:left">	
+	<button type="submit" class="positive" style="float:left;text-align:left" onClick="javascript:goPrevious();"> <%= image_tag 'tick.png' %><%= _("Previous step").html_safe %></button>
+  </div>   
+	 
+
+	<% end %>
+	
+		
+	<br/><br/>
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, pc_production_intro_url(@pc_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, pc_data_quality_intro_path(@pc_product) %></li>
+        <li><%= link_to _('To Results').html_safe, pc_result_path(@pc_product) %></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="clear"></div>
+
+
+</div>
+
+<script type="text/javascript">
+   document.getElementById("check_all_button").value = initial_value(document.forms[0].booklabel);
+</script>   

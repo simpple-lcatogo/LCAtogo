@@ -1,0 +1,366 @@
+<h1><%=_('Results').html_safe%>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/se_results/tabs') %>
+	</div>
+
+    <b><%=_('Total greenhouse gas emissions of the production line per year').html_safe%></b>
+    <br/>
+	<table class="standard2">
+	  <tr>
+	   <th class="span-9"><%=_('kg CO2-eq/year').html_safe%></th>
+	   <th class="span-5"><%=_('Without sensor').html_safe%></th>
+	   <th class="span-5"><%=_('With sensor').html_safe%></th>
+	   <th class="span-5"><%=_('Increment impacts').html_safe%></th>
+	   <th class="span-5" style="text-align:center"><%=_('DQI').html_safe%></th>
+	  </tr>
+	  <tr>
+	    <td><%=_('sensor life cycle').html_safe%></td>
+        <td><%="%.2E" % @se_result.sensor_kg_year_without%></td>
+        <td><%="%.2E" % @se_result.sensor_kg_year_with%></td>
+        <td><%="%.2E" % @sensor_kg_year_increment_impact%></td>
+	    <td style="text-align:center">
+	       <% if @se_product.se_data_quality %>
+	           <% if @se_product.se_data_quality.life_cycle == 'robust' %>
+	              <%= image_tag('bullet-green-icon.png')%> 
+	           <% end %>
+	           <% if @se_product.se_data_quality.life_cycle == 'indicative' %>
+	              <%= image_tag('bullet-yellow-icon.png')%>
+	           <% end %>
+	           <% if @se_product.se_data_quality.life_cycle == 'illustrative' %>
+                  <%= image_tag('bullet-red-icon.png')%>
+	           <% end %>
+	       <% end %>   	     	    
+	    </td>        
+	  </tr>
+	  <tr>
+	    <td><%=_('production - energy usage').html_safe%></td>
+        <td><%="%.2E" % @se_result.energy_kg_year_without%></td>
+        <td><%="%.2E" % @se_result.energy_kg_year_with%></td>
+        <td><%="%.2E" % @energy_kg_year_increment_impact%></td>
+	    <td style="text-align:center">
+	       <% if @se_product.se_data_quality %>
+	           <% if @se_product.se_data_quality.energy_usage == 'robust' %>
+	              <%= image_tag('bullet-green-icon.png')%> 
+	           <% end %>
+	           <% if @se_product.se_data_quality.energy_usage == 'indicative' %>
+	              <%= image_tag('bullet-yellow-icon.png')%>
+	           <% end %>
+	           <% if @se_product.se_data_quality.energy_usage == 'illustrative' %>
+                  <%= image_tag('bullet-red-icon.png')%>
+	           <% end %>
+	       <% end %>   	     	    
+	    </td>        
+        
+	  </tr> 	   
+	  <tr>
+	    <td><%=_('production - consumables usage').html_safe%></td>
+        <td><%="%.2E" % @se_result.consumables_kg_year_without%></td>
+        <td><%="%.2E" % @se_result.consumables_kg_year_with%></td>
+        <td><%="%.2E" % @consumables_kg_year_increment_impact%></td>
+	    <td style="text-align:center">
+	       <% if @se_product.se_data_quality %>
+	           <% if @se_product.se_data_quality.consumables_usage == 'robust' %>
+	              <%= image_tag('bullet-green-icon.png')%> 
+	           <% end %>
+	           <% if @se_product.se_data_quality.consumables_usage == 'indicative' %>
+	              <%= image_tag('bullet-yellow-icon.png')%>
+	           <% end %>
+	           <% if @se_product.se_data_quality.consumables_usage == 'illustrative' %>
+                  <%= image_tag('bullet-red-icon.png')%>
+	           <% end %>
+	       <% end %>   	     	    
+	    </td>        
+        
+	  </tr> 	   
+	  <tr>
+	    <td><%=_('production - utilities usage').html_safe%></td>
+        <td><%="%.2E" % @se_result.utilities_kg_year_without%></td>
+        <td><%="%.2E" % @se_result.utilities_kg_year_with%></td>
+        <td><%="%.2E" % @utilities_kg_year_increment_impact%></td>
+	    <td style="text-align:center">
+	       <% if @se_product.se_data_quality %>
+	           <% if @se_product.se_data_quality.utilities_usage == 'robust' %>
+	              <%= image_tag('bullet-green-icon.png')%> 
+	           <% end %>
+	           <% if @se_product.se_data_quality.utilities_usage == 'indicative' %>
+	              <%= image_tag('bullet-yellow-icon.png')%>
+	           <% end %>
+	           <% if @se_product.se_data_quality.utilities_usage == 'illustrative' %>
+                  <%= image_tag('bullet-red-icon.png')%>
+	           <% end %>
+	       <% end %>   	     	    
+	    </td>                
+	  </tr> 	   
+	  <tr>
+	    <td><%=_('yield loss').html_safe%></td>
+        <td><%="%.2E" % @se_result.yield_kg_year_without%></td>
+        <td><%="%.2E" % @se_result.yield_kg_year_with%></td>
+        <td><%="%.2E" % @yeld_kg_year_increment_impact%></td>
+	    <td style="text-align:center">
+	       <% if @se_product.se_data_quality %>
+	           <% if @se_product.se_data_quality.yield_loss == 'robust' %>
+	              <%= image_tag('bullet-green-icon.png')%> 
+	           <% end %>
+	           <% if @se_product.se_data_quality.yield_loss == 'indicative' %>
+	              <%= image_tag('bullet-yellow-icon.png')%>
+	           <% end %>
+	           <% if @se_product.se_data_quality.yield_loss == 'illustrative' %>
+                  <%= image_tag('bullet-red-icon.png')%>
+	           <% end %>
+	       <% end %>   	     	    
+	    </td>                 
+	  </tr> 	
+	  <tr>
+	    <td><%=_('TOTAL').html_safe%></td>
+        <td><%= "%.2E" % @kg_year_sum_without %></td>
+        <td><%= "%.2E" % @kg_year_sum_with %></td>
+        <td><%= "%.2E" % @kg_year_sum_increment_impact %></td>
+        <td>&nbsp;</td>
+	  </tr> 
+	</table>
+    <br/>
+    <b><%=_('Total greenhouse gas emissions of the production line per kg product output').html_safe%></b>
+    <br/>
+  <table class="standard2">
+    <tr>
+      <th class="span-9"><%=_('kg CO2-eq/kg product').html_safe%></th>
+      <th class="span-5"><%=_('Without sensor').html_safe%></th>
+      <th class="span-5"><%=_('With sensor').html_safe%></th>
+      <th class="span-5"><%=_('Increment impacts').html_safe%></th>
+      <th class="span-5" style="text-align:center"><%=_('DQI').html_safe%></th>
+    </tr>
+    <tr>
+      <td><%=_('sensor life cycle').html_safe%></td>
+      <td><%=@se_result.sensor_kg_product_without.round()%></td>
+      <td><%="%.2E" % @se_result.sensor_kg_product_with%></td>
+      <td><%="%.2E" % @sensor_kg_product_increment_impact%></td>
+	    <td style="text-align:center">
+	       <% if @se_product.se_data_quality %>
+	           <% if @se_product.se_data_quality.life_cycle == 'robust' %>
+	              <%= image_tag('bullet-green-icon.png')%> 
+	           <% end %>
+	           <% if @se_product.se_data_quality.life_cycle == 'indicative' %>
+	              <%= image_tag('bullet-yellow-icon.png')%>
+	           <% end %>
+	           <% if @se_product.se_data_quality.life_cycle == 'illustrative' %>
+                  <%= image_tag('bullet-red-icon.png')%>
+	           <% end %>
+	       <% end %>   	     	    
+	    </td>        
+      
+    </tr>
+    <tr>
+      <td><%=_('production - energy usage').html_safe%></td>
+      <td><%="%.2E" % @se_result.energy_kg_product_without%></td>
+      <td><%="%.2E" % @se_result.energy_kg_product_with%></td>
+      <td><%="%.2E" % @energy_kg_product_increment_impact%></td>
+	    <td style="text-align:center">
+	       <% if @se_product.se_data_quality %>
+	           <% if @se_product.se_data_quality.energy_usage == 'robust' %>
+	              <%= image_tag('bullet-green-icon.png')%> 
+	           <% end %>
+	           <% if @se_product.se_data_quality.energy_usage == 'indicative' %>
+	              <%= image_tag('bullet-yellow-icon.png')%>
+	           <% end %>
+	           <% if @se_product.se_data_quality.energy_usage == 'illustrative' %>
+                  <%= image_tag('bullet-red-icon.png')%>
+	           <% end %>
+	       <% end %>   	     	    
+	    </td>        
+      
+    </tr>
+    <tr>
+      <td><%=_('production - consumables usage').html_safe%></td>
+      <td><%="%.2E" % @se_result.consumables_kg_product_without%></td>
+      <td><%="%.2E" % @se_result.consumables_kg_product_with%></td>
+      <td><%="%.2E" % @consumable_kg_product_increment_impact%></td>
+	    <td style="text-align:center">
+	       <% if @se_product.se_data_quality %>
+	           <% if @se_product.se_data_quality.consumables_usage == 'robust' %>
+	              <%= image_tag('bullet-green-icon.png')%> 
+	           <% end %>
+	           <% if @se_product.se_data_quality.consumables_usage == 'indicative' %>
+	              <%= image_tag('bullet-yellow-icon.png')%>
+	           <% end %>
+	           <% if @se_product.se_data_quality.consumables_usage == 'illustrative' %>
+                  <%= image_tag('bullet-red-icon.png')%>
+	           <% end %>
+	       <% end %>   	     	    
+	    </td>        
+      
+    </tr>
+    <tr>
+      <td><%=_('production - utilities usage').html_safe%></td>
+      <td><%="%.2E" % @se_result.utilities_kg_product_without%></td>
+      <td><%="%.2E" % @se_result.utilities_kg_product_with%></td>
+      <td><%="%.2E" % @utilities_kg_product_increment_impact%></td>
+	    <td style="text-align:center">
+	       <% if @se_product.se_data_quality %>
+	           <% if @se_product.se_data_quality.utilities_usage == 'robust' %>
+	              <%= image_tag('bullet-green-icon.png')%> 
+	           <% end %>
+	           <% if @se_product.se_data_quality.utilities_usage == 'indicative' %>
+	              <%= image_tag('bullet-yellow-icon.png')%>
+	           <% end %>
+	           <% if @se_product.se_data_quality.utilities_usage == 'illustrative' %>
+                  <%= image_tag('bullet-red-icon.png')%>
+	           <% end %>
+	       <% end %>   	     	    
+	    </td>                
+      
+    </tr>
+    <tr>
+      <td><%=_('yield loss').html_safe%></td>
+      <td><%="%.2E" % @se_result.yield_kg_product_without%></td>
+      <td><%="%.2E" % @se_result.yield_kg_product_with%></td>
+      <td><%="%.2E" % @yield_loss_kg_product_increment_impact%></td>
+	    <td style="text-align:center">
+	       <% if @se_product.se_data_quality %>
+	           <% if @se_product.se_data_quality.yield_loss == 'robust' %>
+	              <%= image_tag('bullet-green-icon.png')%> 
+	           <% end %>
+	           <% if @se_product.se_data_quality.yield_loss == 'indicative' %>
+	              <%= image_tag('bullet-yellow-icon.png')%>
+	           <% end %>
+	           <% if @se_product.se_data_quality.yield_loss == 'illustrative' %>
+                  <%= image_tag('bullet-red-icon.png')%>
+	           <% end %>
+	       <% end %>   	     	    
+	    </td>                 
+      
+    </tr>
+    <tr>
+      <td><%=_('TOTAL').html_safe%></td>
+      <td><%="%.2E" % @kg_product_sum_without%></td>
+      <td><%="%.2E" % @kg_product_sum_with%></td>
+      <td><%="%.2E" % @kg_product_sum_increment_impact%></td>
+      <td>&nbsp;</td>
+    </tr>
+  </table>
+
+
+    <span class="tip_text"><%=_('Following cost calculations are meant to quantify the differences between the scenarios with and without sensor system, not to quantify the total absolute process costs of the production line. Focus on the increment impacts only. Negative values are savings and revenues achievable with the sensor system, positive values are additional costs.').html_safe%></span>
+
+    <br/> <br/>
+
+
+    <b><%=_('Comparison of annual costs').html_safe%></b>
+    <br/>
+
+  <table class="standard2">
+    <tr>
+      <th class="span-9"><%=_('Euro/year').html_safe%></th>
+      <th class="span-5"><%=_('Without sensor').html_safe%></th>
+      <th class="span-5"><%=_('With sensor').html_safe%></th>
+      <th class="span-5"><%=_('Increment impacts').html_safe%></th>
+      <th class="span-5">&nbsp;</th>
+
+    </tr>
+    <tr>
+      <td><%=_('sensor life cycle').html_safe%></td>
+      <td><%="%.2E" % @se_result.sensor_euro_year_without%></td>
+      <td><%="%.2E" % @se_result.sensor_euro_year_with%></td>
+      <td><%="%.2E" % @sensor_euro_year_increment_impact %></td>
+    </tr>
+    <tr>
+      <td><%=_('production costs').html_safe%></td>
+      <td><%="%.2E" % @se_result.production_euro_year_without%></td>
+      <td><%="%.2E" % @se_result.production_euro_year_with%></td>
+      <td><%="%.2E" % @production_euro_year_increment_impact%></td>
+    </tr>
+    <tr>
+      <td><%=_('yield loss').html_safe%></td>
+      <td><%="%.2E" % @se_result.yield_euro_year_without%></td>
+      <td><%="%.2E" % @se_result.yield_euro_year_with%></td>
+      <td><%="%.2E" % @yield_euro_year_increment_impact%></td>
+    </tr>
+    <tr>
+      <td><%=_('value creation').html_safe%></td>
+      <td><%="%.2E" % @se_result.value_euro_year_without%></td>
+      <td><%="%.2E" % @se_result.value_euro_year_with%></td>
+      <td><%="%.2E" % @value_euro_year_increment_impact%></td>
+    </tr>
+    <tr>
+      <td><%=_('TOTAL').html_safe%></td>
+      <td><%="%.2E" % @euro_year_sum_without %></td>
+      <td><%="%.2E" % @euro_year_sum_with %></td>
+      <td><%="%.2E" % @euro_year_sum_increment_impact %></td>
+    </tr>
+  </table>
+
+
+    <b><%=_('Comparison of costs per kg product output').html_safe%></b>
+    <br/>
+
+  <table class="standard2">
+    <tr>
+      <th class="span-9"><%=_('Euro/kg').html_safe%></th>
+      <th class="span-5"><%=_('Without sensor').html_safe%></th>
+      <th class="span-5"><%=_('With sensor').html_safe%></th>
+      <th class="span-5"><%=_('Increment impacts').html_safe%></th>
+      <th class="span-5">&nbsp;</th>
+    </tr>
+    <tr>
+      <td><%=_('sensor life cycle').html_safe%></td>
+      <td><%="%.2E" % @se_result.sensor_euro_product_without%></td>
+      <td><%="%.2E" % @se_result.sensor_euro_product_with%></td>
+      <td><%="%.2E" % @sensors_euro_kg_increment_impact%></td>
+    </tr>
+    <tr>
+      <td><%=_('production costs').html_safe%></td>
+      <td><%="%.2E" % @se_result.production_euro_product_without%></td>
+      <td><%="%.2E" % @se_result.production_euro_product_with%></td>
+      <td><%="%.2E" % @production_euro_kg_increment_impact%></td>
+    </tr>
+    <tr>
+      <td><%=_('yield loss').html_safe%></td>
+      <td><%="%.2E" % @se_result.yield_euro_product_without%></td>
+      <td><%="%.2E" % @se_result.yield_euro_product_with%></td>
+      <td><%="%.2E" % @yield_euro_kg_increment_impact%></td>
+    </tr>
+    <tr>
+      <td><%=_('value creation').html_safe%></td>
+      <td><%="%.2E" % @se_result.value_euro_product_without%></td>
+      <td><%="%.2E" % @se_result.value_euro_product_with%></td>
+      <td><%="%.2E" % @value_euro_kg_increment_impact%></td>
+    </tr>
+    <tr>
+      <td><%=_('TOTAL').html_safe%></td>
+      <td><%= "%.2E" % @euro_kg_sum_without %></td>
+      <td><%= "%.2E" % @euro_kg_sum_with %></td>
+      <td><%= "%.2E" % @euro_kg_sum_increment_impact %></td>
+    </tr>
+  </table>
+
+
+  <div class="buttons last" style="float:left;text-align:left">
+     <%= form_tag '/se_results/generate_csv' do %>
+        <input type="hidden" name="product_id" id="product_id" value="<%=@product.id%>"/>
+        <button type="submit" class="positive" style="float:left"> <%= image_tag 'page_white_excel.png' %><%= _("Export table to Excel").html_safe %></button>
+     <% end %>	
+  </div>
+  
+  <div class="buttons last" style="float:right;text-align:right">
+     <a href="<%=se_result_graphic_path(@se_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Next step").html_safe %></a>
+  </div>
+
+
+    <div class="clear"></div>
+    <div class="navbar">
+      <!-- <div id="for-ie"> -->
+      <div>
+        <ul>
+          <li><%= link_to _('To Introduction').html_safe, se_production_intro_path(@product.se_product) %></li>
+          <li><%= link_to _('To Data Entry').html_safe, se_manufacturing_path(@product.se_product) %></li>
+          <li><%= link_to _('To Data Quality').html_safe, se_data_quality_intro_url(@product.se_product) %></li>
+        </ul>
+      </div>
+    </div>
+    <div class="clear"></div>
+
+
+</div>	
+<script type="text/javascript">
+</script>

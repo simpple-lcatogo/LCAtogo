@@ -1,0 +1,37 @@
+
+
+<h1><%=_('Management').html_safe%></h1>
+<div class="content_skin">
+   <table class="standard2">
+      <tr>
+         <th><%=_('Phase').html_safe%></th>
+         <th><%=_('Concept').html_safe%></th>
+         <th><%=_('Default value').html_safe%></th>         
+         <th><%=_('User value').html_safe%></th>         
+      </tr>
+      <% @excel_values.each do |excel_value| %>
+      <tr>
+         <td><%=excel_value.phase%></td>
+         <td><%=excel_value.name%></td>
+         <td><%=excel_value.value%></td>
+         <td class="excel_value_<%= excel_value.id %>" style="background: none repeat scroll 0% 0% transparent">
+            <% excel_value.excel_value_users.each do |excel_value_user| %>
+               <% if excel_value_user.user_id == current_user.id %>
+                  <%=excel_value_user.value%>
+               <% end %>
+            <% end %>            
+         </td>
+      </tr>     
+      <% end %>
+   </table>
+</div>
+
+<script>
+<% @excel_values.each do |excel_value| %>
+   $(".excel_value_<%=excel_value.id%>").editInPlace({
+        url: "/managements/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "excel_value_id=<%=excel_value.id%>",
+        saving_text: '<%=_("Saving...")%>'
+        });           
+<% end %>        
+</script>

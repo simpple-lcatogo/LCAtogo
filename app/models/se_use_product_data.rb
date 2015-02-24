@@ -1,0 +1,3 @@
+class SeUseProductData < ActiveRecord::Base
+  belongs_to :se_product
+end

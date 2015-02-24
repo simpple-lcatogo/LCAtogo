@@ -1,0 +1,5 @@
+/* Eliminate the comment by fading it out */
+$('#consumption_<%= @consumption_use.id %>').fadeOut();
+$('#timemode_value_<%= @consumption_use.id %>').remove();
+$('#consumption_value_<%= @consumption_use.id %>').remove();
+updateValues();

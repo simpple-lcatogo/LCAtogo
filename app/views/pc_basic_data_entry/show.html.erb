@@ -1,0 +1,126 @@
+<h1><%=_('Product Assessment').html_safe%>
+  <br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+
+<div class="content_skin">
+
+      <p><strong><%= _("Choose country of PCB producer from the list:").html_safe %></strong></p>
+
+
+  <select>
+    <option value=""></option>
+    <option value="">Austria</option>
+    <option value="">Belgium</option>
+    <option value="">Bulgaria</option>
+    <option value="">Cyprus</option>
+    <option value="">Czech Republic</option>
+    <option value="">Denmark</option>
+    <option value="">Estonia</option>
+    <option value="">Finland</option>
+    <option value="">France</option>
+    <option value="">Germany</option>
+    <option value="">Greece</option>
+    <option value="">Hungary</option>
+    <option value="">Ireland</option>
+    <option value="">Italy</option>
+    <option value="">Latvia</option>
+    <option value="">Lithuania</option>
+    <option value="">Luxembourg</option>
+    <option value="">Malta</option>
+    <option value="">Netherlands</option>
+    <option value="">Poland</option>
+    <option value="">Portugal</option>
+    <option value="">Romania</option>
+    <option value="">Slovak Republic</option>
+    <option value="">Slovenia</option>
+    <option value="">Spain</option>
+    <option value="">Sweden</option>
+    <option value="">European Union - 27</option>
+    <option value="">China*</option>
+
+  </select>
+
+  <br /> <br />
+
+  <p><strong><%= _("Mark of the PCB:").html_safe %></strong> <input type="text" name="" value=""></strong></p>
+
+  <p><strong><%= _("Main PCBs settings:").html_safe %></strong></p>
+
+  <style>
+    #dt { margin-left:40px;}
+    #dt p { margin-bottom:25px;}
+
+  </style>
+
+
+  <div id="dt">
+      <p>
+        <strong><%= _("Type of PCB:").html_safe %></strong>
+          <input type="radio" name="1" value="male">rigid <input type="radio" name="1" value="female">elastic
+
+      </p>
+      <p><strong><%= _("Area of PCB:").html_safe %></strong>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="" value=""> m<sup>2</sup></p>
+      <p><strong><%= _("Number of PCBs:").html_safe %></strong> <input type="text" name="" value=""> u</p>
+      <p><strong><%= _("Number of layers:").html_safe %></strong> <input type="text" name="" value=""></p>
+      <p>
+        <strong><%= _("Type of finish coating:").html_safe %></strong>
+
+        <select>
+          <option value=""></option>
+          <option value="">ENIG</option>
+          <option value="">Ag</option>
+          <option value="">Sn</option>
+          <option value="">HASL</option>
+        </select>
+
+      </p>
+
+  </div>
+
+  <p>
+    <strong><%= _("Type of Transport: ").html_safe %></strong>
+    <select>
+      <option value=""></option>
+      <option value="">Car</option>
+      <option value="">Rail</option>
+      <option value="">Air Domestic (to 1000 km)</option>
+      <option value="">Air Short-haul international (from 1001 to 5000 km)</option>
+      <option value="">Air Long-haul international (>5000 km)</option>
+      <option value="">Ship </option>
+    </select>
+  </p>
+
+
+  <p><strong><%= _("Other information:").html_safe %></strong></p>
+
+  <p style="margin-left:40px;"><%= _("Does the PCB is RoHS compliant?").html_safe %>
+    <input type="radio" name="1" value="male">Yes <input type="radio" name="1" value="female">No
+  </p>
+
+
+  <div class="buttons span-5 last" style="float:right;text-align:right">
+    <button type="submit" class="positive" style="float:right;text-align:right" onclick="javascript:goNext();"> <img alt="Tick" src="/images/tick.png?1377781308"><%=_('Next step').html_safe%></button>
+  </div>
+
+  <br />
+  <br />
+  <br />
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, pc_production_intro_url(@pc_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, pc_data_quality_intro_path(@pc_product) %></li>
+        <li><%= link_to _('To Results').html_safe, pc_result_path(@product.pc_product) %></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="clear"></div>
+
+
+
+</div>

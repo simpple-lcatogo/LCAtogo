@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  bp_economical_phase_id: 1
+  bp_economical_family_id: 1
+  bp_economical_flow_id: 1
+  quantity: 1.5
+  bp_economic_id: 1
+
+two:
+  bp_economical_phase_id: 1
+  bp_economical_family_id: 1
+  bp_economical_flow_id: 1
+  quantity: 1.5
+  bp_economic_id: 1

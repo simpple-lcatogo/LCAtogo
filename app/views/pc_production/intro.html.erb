@@ -1,0 +1,48 @@
+<h1><%=_('Product Assessment').html_safe%>
+  <br/><span class="tool_subtitle"><%=_('Introduction').html_safe%></span>
+</h1>
+
+
+<div class="content_skin">
+
+  <%=_('This module of the LCA to go tool will calculate your PCB\'s relevant Key Environmental Performance Indicators (KEPIs) as: the water consumption, energy consumption of materials related with PCB production and used during PCB production processes, total sludge and waste emitted from production processes, the carbon footprint and the amount of recyclable material contained within your PCB. The information gathered may be shared with the potential clients (B2B) who perform the LCA of the electronic products in which your PCB is part of it, as well as, use as a means to improve PCBs design, production processes or annual budget planning. In addition, this tool reminds about the RoHS compliance issue that must be considered during PCBs design and processing.').html_safe%>
+  <br/><br/>
+  <%=_('In the <b>&quot;DATA ENTRY&quot;</b> section, the required data for the simulation of the product should be entered:').html_safe%>
+  <ul>
+    <li><%=_('Choose the country in which the PCB has been produced (it has influence on the carbon footprint of the PCB), as well as the mark,').html_safe%></li>
+    <li><%=_('Enter PCB\'s main setting: choose type of assessed PCB (rigid or flex) and other PCB\'s parameters (area, number of PCB, number of layers, type of finish coating),').html_safe%></li>
+    <li><%=_('Enter information regarding transport profile of your PCB (choose type of transport from the list, enter distance and click on &quot;Add&quot;),').html_safe%></li>
+    <li><%=_('Enter &quot;Other information&quot; - The mark does the PCB to be RoHS compliant or not. This information will be added to the final report for the subsequent dissemination. Previous assessment must be done with regard to PCBs RoHS Directive compliance (based on previous knowledge of PCBs production processes, owned documents, etc. Please, be aware of the new Directive 2011/65/EU - RoHS2 and assess your production process or requirements for PCB before answering the question).').html_safe%></li>
+    <li><%=_('Additional comments if needed - e.g. &quot;Compliance with RoHS not applicable. The PCB is intended for specifically military purposes.&quot;').html_safe%></li>
+    <li><%=_('Choose the assessment method: &quot;Basic&quot; or &quot;Sophisticated&quot;').html_safe%></li>
+    <ul style="margin-bottom:0px">
+      <li><%=_('The &quot;Basic&quot; method is recommended for electronic products designers or fast PCB\'s relevant KEPIs calculation (algorithms and internal data bases with robust data quality are used in this method).').html_safe%></li>
+      <li><%=_('The &quot;Sophisticated&quot; method is recommended for PCB\'s producers. Additional information concerning the PCB factory has to be entered. Depending on that information the &quot;LCA to go&quot; tool data bases are adjusted, as well as, PCB\'s relevant KEPIs are calculated.').html_safe%></li>
+    </ul>
+    <li><%=_('Once the method has been selected, click on &quot;Next step&quot; in order to fulfil the &quot;KEPI\'s selection&quot;.').html_safe%></li>
+    <li><%=_('<b>&quot;KEPI\'s selection&quot;</b> - In order to present the results, the Key Environmental Performance Indicators (KEPIs) to analyse must be selected. You can select all the KEPIs from the list or only those you are interested on for your study. After KEPI\'s selection you can &quot;Generate results&quot;.').html_safe%></li>
+    <li><%=_('<b>&quot;Results&quot;</b> - The results are displayed in three different ways: Data table with previously marked KEPIs, a bar chart with PCB\'s carbon footprints information, as well as, the possibility to generate a PDF report is given.').html_safe%></li>
+    <li><%=_('<b>&quot;Comparison&quot;</b> - This section compares the selected KEPI\'s of the PCBs examining at this time with the KEPI\'s of previously assessed PCBs (e.g. other version of PCB design).').html_safe%></li>
+  </ul>
+  <%=_('You will find all your assessed products listed under &quot;My Products&quot; in the top right corner of the tool. Click on &quot;Data entry&quot; status icon to return to the data entries at any time. Click on the icon for duplication to make a copy of the product entries for calculating a variant. In the case an error message appears, your data might be incomplete, please check it again.').html_safe%>
+  <br/><br/>
+  <%=_('All your entered data is saved under your account, once you click on &quot;Add&quot; or &quot;Next step&quot;. Your data is stored on the web server of the online tool, and it is accessible only when entering your account details. The user password is encrypted and even the host is not able to read it, therefore, only the user himself can access to his own data.').html_safe%>
+
+  <br/><br/>
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Data Entry').html_safe, pc_basic_url(@pc_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, pc_data_quality_intro_path(@pc_product) %></li>
+        <li><%= link_to _('To Results').html_safe, pc_result_path(@pc_product) %></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="clear"></div>
+
+</div>	

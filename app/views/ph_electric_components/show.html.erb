@@ -1,0 +1,321 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#ph_electric_component_include_batteries").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == 'no') {
+               document.getElementById("battery_div").style.display = 'none';
+               $("#ph_electric_component_capacity_battery").rules("remove","required");
+               $("#ph_electric_component_capacity_battery").rules("remove","number");
+               $("#ph_electric_component_weight_battery").rules("remove","required");
+               $("#ph_electric_component_weight_battery").rules("remove","number");
+               $("#ph_electric_component_separated_battery").rules("remove","required");
+               $("#ph_electric_component_separated_battery").rules("remove","number");
+
+
+
+               } else {
+               document.getElementById("battery_div").style.display = 'block';
+	 	          $("#ph_electric_component_capacity_battery").rules("add", {
+			         required: true,    
+			         number:true,
+			         messages: {
+			           required: "<%=_('This field is mandatory').html_safe%>",
+			           number:"<%=_('Please enter a number').html_safe%>"
+			           }         
+			      });
+	 	          $("#ph_electric_component_weight_battery").rules("add", {
+			         required: true,    
+			         number:true,
+			         messages: {
+			           required: "<%=_('This field is mandatory').html_safe%>",
+			           number:"<%=_('Please enter a number').html_safe%>"
+			           }         
+			      });
+                $("#ph_electric_component_separated_battery").rules("add", {
+                    required: true,
+                    number:true,
+                    messages: {
+                        required: "<%=_('This field is mandatory').html_safe%>",
+                        number:"<%=_('Please enter a number').html_safe%>"
+                    }
+                });
+
+
+               }              
+         });   
+         
+     $("#edit_ph_electric_component_<%=@ph_electric_component.id%>").validate({
+   	    rules: {
+	      "ph_electric_component[inverter_size_1]": {
+	                required:true,
+	                number:true
+	                },
+	      "ph_electric_component[quantity_1]": {
+	                required:true,
+	                number:true
+	                },
+	      "ph_electric_component[lifetime_1]": {
+	                required:true,
+	                number:true
+	                },
+	      "ph_electric_component[inverter_size_2]": {
+	                required:true,
+	                number:true
+	                },
+	      "ph_electric_component[quantity_2]": {
+	                required:true,
+	                number:true
+	                },
+	      "ph_electric_component[lifetime_2]": {
+	                required:true,
+	                number:true
+	                },
+	      "ph_electric_component[battery_lifetime]": {
+	                required:true,
+	                number:true,
+	                max: 25,
+	                min: 1
+	                }	                	               	              
+	    },
+		messages: {
+          "ph_electric_component[inverter_size_1]": {
+                required:"<%=_('This field is mandatory').html_safe%>",
+                number:"<%=_('Please enter a number').html_safe%>"
+                },
+          "ph_electric_component[quantity_1]": {
+                required:"<%=_('This field is mandatory').html_safe%>",
+                number:"<%=_('Please enter a number').html_safe%>"
+                },
+          "ph_electric_component[lifetime_1]": {
+                required:"<%=_('This field is mandatory').html_safe%>",
+                number:"<%=_('Please enter a number').html_safe%>"
+                },
+          "ph_electric_component[inverter_size_2]": {
+                required:"<%=_('This field is mandatory').html_safe%>",
+                number:"<%=_('Please enter a number').html_safe%>"
+                },
+          "ph_electric_component[quantity_2]": {
+                required:"<%=_('This field is mandatory').html_safe%>",
+                number:"<%=_('Please enter a number').html_safe%>"
+                },
+          "ph_electric_component[lifetime_2]": {
+                required:"<%=_('This field is mandatory').html_safe%>",
+                number:"<%=_('Please enter a number').html_safe%>"
+                },         
+          "ph_electric_component[battery_lifetime]": {
+                required:"<%=_('This field is mandatory').html_safe%>",
+                number:"<%=_('Please enter a number').html_safe%>",
+                max:"<%=_('Number of years should be between 1 and 25').html_safe%>",
+                min:"<%=_('Number of years should be between 1 and 25').html_safe%>"
+                }         
+                  
+		}		    
+       });                     
+         
+       <% if @ph_electric_component.include_batteries == 'yes' %>
+ 	          $("#ph_electric_component_capacity_battery").rules("add", {
+		         required: true,    
+		         number:true,
+		         messages: {
+		           required: "<%=_('This field is mandatory').html_safe%>",
+		           number:"<%=_('Please enter a number').html_safe%>"
+		           }         
+		      });      
+	          $("#ph_electric_component_weight_battery").rules("add", {
+		         required: true,    
+		         number:true,
+		         messages: {
+		           required: "<%=_('This field is mandatory').html_safe%>",
+		           number:"<%=_('Please enter a number').html_safe%>"
+		           }         
+		      });
+                $("#ph_electric_component_separated_battery").rules("add", {
+                    required: true,
+                    number:true,
+                    messages: {
+                        required: "<%=_('This field is mandatory').html_safe%>",
+                        number:"<%=_('Please enter a number').html_safe%>"
+                    }
+                });
+
+       <% end %>         
+         
+         $("#ph_electric_component_capacity_battery").change(function(){
+            var value = $(this).val();
+            var selectedText = $("#ph_electric_component_battery_type_id option:selected").text();
+            if (!isNaN(value)) {
+               if (selectedText == 'Lead Acid') {          
+	               var newValue = value * (0.1294 * Math.pow(value, -0.081));
+	               $("#ph_electric_component_weight_battery").val(newValue.toFixed(2));
+	               } else {	               
+	               var newValue = (value * 0.009) + 0.1113;
+	               $("#ph_electric_component_weight_battery").val(newValue.toFixed(2));	               
+	               }
+               }
+            }); 
+   
+         $("#ph_electric_component_battery_type_id").change(function(){
+            var value = $(this).val();
+            var selectedText = $("#ph_electric_component_battery_type_id option:selected").text();
+            if (selectedText == 'Lead Acid') {
+               $("#capacity_text").html('<%=_('Capacity per Battery[Ah]').html_safe%>');
+            } else {
+               $("#capacity_text").html('<%=_('Capacity per Battery[Wh]').html_safe%>');            
+            }
+            $("#ph_electric_component_capacity_battery").change();
+            });    
+         
+         $("#ph_electric_component_include_batteries").change();
+         <% if @ph_electric_component.weight_battery.blank? %> 
+          
+           $("#ph_electric_component_battery_type_id").change();  
+         <% end %>
+         
+     });   
+</script>     
+          
+<h1><%=_('Electric Components').html_safe%>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/lca/ph_tabs') %>
+	</div>
+<%= form_for(@ph_electric_component) do |f| %>
+  <% if @ph_electric_component.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@ph_electric_component.errors.count, "error") %> prohibited this ph_electric_component from being saved:</h2>
+      <ul>
+      <% @ph_electric_component.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <div class="clear"></div>
+
+  <div class="field">
+    <b><%= _('Peak Power').html_safe %></b><br />
+    <%=lca_format_number(@ph_electric_component.ph_product.tmp_peak, 2)%>    
+    <%=_('kWp').html_safe%>
+  </div>
+  <br/>
+  <div class="field">
+    <b><%= _('Yearly Output').html_safe %></b><br />
+    <% if @ph_electric_component.ph_product.ph_basic_information.working == 'yes' && @ph_electric_component.ph_product.ph_basic_information.know_power == 'yes' && @ph_electric_component.ph_product.ph_basic_information.user_power %>
+       <%= @ph_electric_component.ph_product.ph_basic_information.user_power %>
+    <% else %>
+       <%=lca_format_number(@ph_electric_component.ph_product.tmp_yearly, 2)%> 
+    <% end %>   
+    <%=_('kWh').html_safe%>
+  </div>
+  <br/>
+  <div class="field">
+    <b><%= _('Module area').html_safe %></b><br />
+    <%= (number_with_precision(@ph_product.ph_intermediate_result.module_area, :precision => 2) || 0)    %>
+    <%=_('m<sup>2</sup>').html_safe%>
+  </div>
+  <br/>
+  
+  <table width="100%">
+    <tr>
+      <td width="25%" class="td_top"><%=_('Type 1: Inverter Size[W]').html_safe%></td>
+      <td width="5%"><%= f.text_field :inverter_size_1, :size => 15 %></td>
+      <td width="45%" class="td_top"><%=_('Type 2: Inverter/charge controller Size[W]').html_safe%></td>
+      <td width="5%"><%= f.text_field :inverter_size_2, :size => 15 %></td>
+    </tr>
+    <tr>  
+      <td width="25%" class="td_top"><%=_('Type 1: Quantity[pc.]').html_safe%></td>
+      <td width="25%"><%= f.text_field :quantity_1, :size => 15 %></td>
+      <td width="25%" class="td_top"><%=_('Type 2: Quantity[pc.]').html_safe%></td>
+      <td width="25%"><%= f.text_field :quantity_2, :size => 15 %></td>
+    </tr>
+    <tr>
+      <td width="25%" class="td_top"><%=_('Type 1: Lifetime[a]').html_safe%></td>
+      <td width="25%"><%= f.text_field :lifetime_1, :size => 15 %></td>
+      <td width="25%" class="td_top"><%=_('Type 2: Lifetime[a]').html_safe%></td>
+      <td width="25%"><%= f.text_field :lifetime_2, :size => 15 %></td>
+    </tr>
+  </table>  
+  <div class="field">
+    <%=_('Does your system include batteries?').html_safe%><br />
+    <select id="ph_electric_component_include_batteries" name="ph_electric_component[include_batteries]">
+        <% if @ph_electric_component.include_batteries == 'yes' %>
+           <option selected="true" value="yes"><%=_('Yes').html_safe%></option>
+        <% else %>   
+           <option value="yes"><%=_('Yes').html_safe%></option>
+        <% end %>   
+        <% if @ph_electric_component.include_batteries == 'no' %>
+           <option selected="true" value="no"><%=_('No').html_safe%></option>
+        <% else %>
+           <option value="no"><%=_('No').html_safe%></option>
+        <% end %>
+    </select>
+  </div>
+<% if @ph_electric_component.include_batteries == 'yes' %>  
+  <div id="battery_div">
+<% else %>
+  <div id="battery_div" style="display:none">
+<% end %>     
+  <div class="field">
+    <%=_('Which type of battery will be used?').html_safe%><br />
+    <select id="ph_electric_component_battery_type_id" name="ph_electric_component[ph_battery_type_id]">
+	    <% @ph_battery_types.each do |ph_battery_type| %>
+	       <% if @ph_electric_component.ph_battery_type && @ph_electric_component.ph_battery_type.id == ph_battery_type.id %>	    
+	          <option selected="true" value="<%=ph_battery_type.id%>"><%=ph_battery_type.name.html_safe%></option>
+	       <% else %>
+              <option value="<%=ph_battery_type.id%>"><%=ph_battery_type.name.html_safe%></option>
+	       <% end %>
+	    <% end %>
+    </select>          
+  </div>
+ 
+  <div class="field">
+    <% if @ph_electric_component.ph_battery_type && @ph_electric_component.ph_battery_type.name == 'Lithium Ion' %>
+       <span id="capacity_text"><%=_('Capacity per Battery[Wh]').html_safe%></span><br />
+    <% else %>
+       <span id="capacity_text"><%=_('Capacity per Battery[Ah]').html_safe%></span><br />    
+    <% end %>   
+    <%= f.text_field :capacity_battery %>
+  </div>
+  
+  <div class="field">
+    <%=_('Weight per Battery[kg]').html_safe%> <a title="<%=_('If the weight of the battery is not known, please leave the calculated weight').html_safe%>" href="#" class="tip_left">&nbsp;</a><br />
+    <%= f.text_field :weight_battery %>
+  </div>
+  
+  
+  <div class="field">
+    <%=_('Projected Number of Separate Batteries[pc]').html_safe%> <a title="<%=_('Number of batteries used in the system').html_safe%>" href="#" class="tip_left">&nbsp;</a><br />
+    <%= f.text_field :separated_battery %>
+  </div>
+  <div class="field">
+    <%=_('Battery Lifetime[a]').html_safe%> - <%=_('Number of years should be between 1 and 25').html_safe%><br />
+    <%= f.text_field :battery_lifetime %>
+  </div>
+</div>  
+  <div class="buttons" style="float:left">
+     <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+   </div>
+  </div>
+
+
+
+      <div class="clear"></div>
+      <div class="navbar">
+        <!-- <div id="for-ie"> -->
+        <div>
+          <ul>
+            <li><%= link_to _('To Introduction').html_safe, ph_production_intro_path(@ph_product) %></li>
+            <li><%= link_to _('To Data Quality').html_safe, ph_data_quality_intro_path(@ph_product) %></li>
+            <li><%= link_to _('To Results').html_safe, ph_result_summary_path(@ph_product) %></li>
+          </ul>
+        </div>
+      </div>
+      <div class="clear"></div>
+
+
+  <br/> 
+
+<% end %>
+</div>

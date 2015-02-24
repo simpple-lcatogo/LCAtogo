@@ -1,0 +1,8 @@
+if ($('#td_quantity_material_<%= @mt_supplier_part_data.id %>')) {
+   $('#td_quantity_material_<%= @mt_supplier_part_data.id %>').attr("id", "");   
+}
+/* Eliminate the comment by fading it out */
+$('#mt_supplier_part_data_<%= @mt_supplier_part_data.id %>').fadeOut();
+
+updateSupplierParts();
+updateWeight();

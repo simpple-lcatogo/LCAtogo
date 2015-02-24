@@ -1,0 +1,10 @@
+<script type="text/javascript">
+  $(".bp_manufacturing_data_quantity_<%=@bp_manufacturing_data.id%>").html(<%=@update_value%>)
+$(".bp_manufacturing_process_default_variable_<%=@bp_manufacturing_data.id%>_<%=@bp_manufacturing_process_variable_drying.id%>").html("<%=@pellets_value_default.round(6)%>");
+<% if @pellets_value_user != 0 %>
+   $(".bp_manufacturing_process_user_variable_<%=@bp_manufacturing_data.id%>_<%=@bp_manufacturing_process_variable_drying.id%>").html("<%=@pellets_value_user.round(6)%>");
+<% end %>   
+  
+</script>
+
+  

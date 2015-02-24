@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  mt_product_id: 1
+  mt_energy_family_id: 1
+  mt_energy_process_id: 1
+  quantity: 1.5
+
+two:
+  mt_product_id: 1
+  mt_energy_family_id: 1
+  mt_energy_process_id: 1
+  quantity: 1.5

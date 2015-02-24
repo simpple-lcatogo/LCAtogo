@@ -1,0 +1,158 @@
+<% # encoding: UTF-8 %>
+<tr id="bp_manufacturing_data_<%= bp_manufacturing_data.id %>">
+
+
+  <% if bp_manufacturing_data.bp_material %>  
+     <td><%= bp_manufacturing_data.bp_material.name.html_safe %></td>
+
+  <% else %>
+     <td>&nbsp;</td>  
+  <% end %>
+  
+  <% if bp_manufacturing_data.bp_manufacturing_process %>  
+     <td><%= bp_manufacturing_data.bp_manufacturing_process.name.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>  
+  <% end %>
+
+  <% if bp_manufacturing_data.quantity %>  
+<!--     <td id="bp_manufacturing_data_quantity_<%= bp_manufacturing_data.id %>" class="bp_manufacturing_data_quantity_<%= bp_manufacturing_data.id %>" ><%= bp_manufacturing_data.quantity.to_s.html_safe + " kg" %></td> -->
+     <td id="bp_manufacturing_data_quantity_<%= bp_manufacturing_data.id %>" class="bp_manufacturing_data_quantity_<%= bp_manufacturing_data.id %>" ><%= bp_manufacturing_data.quantity.to_s.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>  
+  <% end %>
+ 
+ 
+
+ <% if bp_manufacturing_data.bp_country_info_id %>  
+     <td><%= bp_manufacturing_data.bp_country_info.name.html_safe %></td>
+
+  <% else %>
+     <td>&nbsp;</td>  
+  <% end %>
+
+   <td>
+    <%#= link_to _("Default values accepted"),'#' ,:class => "default_values"%>
+      <table>
+        <th><%= _("Parameters").html_safe %></th>
+        <th><%= _("Default value").html_safe %></th>
+        <th> <%= _("User value").html_safe %></th>
+        
+          <% if @bp_manufacturing_process_variables %>
+            <% @bp_manufacturing_process_variables.each do |var| %>
+              <tr>
+              <td><%= var.name %> (<%= var.unit.html_safe %>)
+                <% if var.name == 'Production waste' %>
+                   <a title="<%=_('Please indicate only the quantity of material that is not going to be reused in the process.').html_safe%>" href="#" class="tip">&nbsp;</a>
+                <% end %>
+              
+              </td>
+               <% @bp_manufacturing_process_variable_values.each do |var_val| %>
+                <% if var_val.bp_material_id == bp_manufacturing_data.bp_material_id && var_val.bp_manufacturing_process_id == bp_manufacturing_data.bp_manufacturing_process_id && var_val.bp_manufacturing_process_variable_id == var.id %>
+                 <% if var.name == 'Production waste' %>
+                    <td> <%= lca_format_number(var_val.value, 1) %></td>
+                 <% else %>
+                    <% if var.name == 'Electricity consumption' %>
+                      <td class="bp_manufacturing_process_default_variable_<%= "#{bp_manufacturing_data.id}_#{var.id}" %>"><%= calculate_default_pellets(bp_manufacturing_data, true).round(3)%></td>
+                    <% else %>
+                      <td> <%= var_val.value %></td>
+                    <% end %>  
+                 <% end %>   
+                <% end %>
+               <% end %>
+               <td class="bp_manufacturing_process_user_variable_<%= "#{bp_manufacturing_data.id}_#{var.id}" %>"></td>
+                <% #if var.name != 'Electricity consumption' %>
+	                <script type="text/javascript">
+	                   $(".bp_manufacturing_process_user_variable_<%= "#{bp_manufacturing_data.id}_#{var.id}" %>").editInPlace({
+	                        url: "/bp_manufacturing_process_user_variable/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+	                        params: "bp_manufacturing_data_id=<%=bp_manufacturing_data.id%>&bp_manufacturing_process_variable_id=<%= var.id%>&field=user_var_value",
+	                        saving_text: '<%=_("Saving...")%>',
+	                        default_text: '<%= _("(value)") %>'
+	                        });
+	                </script>
+               <% #end %>
+               
+              </tr>  
+            <% end %>
+
+          <% elsif bp_manufacturing_data.bp_manufacturing_process && bp_manufacturing_data.bp_manufacturing_process.bp_manufacturing_process_variables %>
+            <% bp_manufacturing_data.bp_manufacturing_process.bp_manufacturing_process_variables.each do |var| %>
+              <tr>
+              <td><%= var.name %> (<%= var.unit.html_safe %>)
+                <% if var.name == 'Production waste' %>
+                   <a title="<%=_('Please indicate only the quantity of material that is not going to be reused in the process.').html_safe%>" href="#" class="tip">&nbsp;</a>
+                <% end %>
+              
+              </td>
+                <% @bp_manufacturing_process_variable_values.each do |var_val| %>
+                  <% if var_val.bp_material_id == bp_manufacturing_data.bp_material_id && var_val.bp_manufacturing_process_id == bp_manufacturing_data.bp_manufacturing_process_id && var_val.bp_manufacturing_process_variable_id == var.id %>
+	                 <% if var.name == 'Production waste' %>
+	                    <td> <%= lca_format_number(var_val.value, 1) %></td>
+	                 <% else %>
+	                    <% if var.name == 'Electricity consumption' %>
+	                        <td class="bp_manufacturing_process_default_variable_<%= "#{bp_manufacturing_data.id}_#{var.id}" %>"><%= calculate_default_pellets(bp_manufacturing_data, true).round(3)%></td>
+	                    <% else %>
+	                        <td> <%= var_val.value %></td>
+	                    <% end %>    
+                     <% end %>
+                  <% end %>
+                <% end %>
+                <td class="bp_manufacturing_process_user_variable_<%= "#{bp_manufacturing_data.id}_#{var.id}" %>">
+                   <% has_value = false %>
+                   <% @bp_manufacturing_process_user_variables.each do |user_var| %>
+                        <% if user_var.bp_manufacturing_data.id == bp_manufacturing_data.id && user_var.bp_manufacturing_data.bp_material_id == bp_manufacturing_data.bp_material_id && user_var.bp_manufacturing_data.bp_manufacturing_process_id == bp_manufacturing_data.bp_manufacturing_process_id && user_var.bp_manufacturing_process_variable_id == var.id %>                                             
+                            <%= user_var.value %>
+                            <% has_value = true %>
+                       <% end %> 
+                    <% end %>
+                    <% if var.name == 'Electricity consumption' %>
+                        <% if has_value %>
+
+                        <% else %>
+                           <%= calculate_default_pellets(bp_manufacturing_data).round(3)%>
+                        <% end %>
+                    <% end %></td>
+                    
+                <% #if var.name != 'Electricity consumption' %>
+	                <script type="text/javascript">
+	                   $(".bp_manufacturing_process_user_variable_<%= "#{bp_manufacturing_data.id}_#{var.id}" %>").editInPlace({
+	                        url: "/bp_manufacturing_process_user_variable/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+	                        params: "bp_manufacturing_data_id=<%=bp_manufacturing_data.id%>&bp_manufacturing_process_variable_id=<%= var.id%>&field=user_var_value",
+	                        saving_text: '<%=_("Saving...")%>',
+	                        default_text: '<%= _("(value)") %>' 
+	                        });
+	                </script>
+                <% #end %>
+
+            <% end %>            
+
+          <% end %>
+
+      </table>  
+   
+  </td>
+
+  <% if bp_manufacturing_data.comment %>  
+     <td id="bp_manufacturing_data_comment_<%= bp_manufacturing_data.id %>" class="bp_manufacturing_data_comment_<%= bp_manufacturing_data.id %>"><%= bp_manufacturing_data.comment.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>  
+  <% end %>
+  
+  <td class="center"><%= link_to '&#10006;'.html_safe, bp_manufacturing_data_path(bp_manufacturing_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>
+
+
+
+<script type="text/javascript">
+   $(".bp_manufacturing_data_quantity_<%=bp_manufacturing_data.id%>").editInPlace({
+        url: "/bp_manufacturing_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "bp_manufacturing_data_id=<%=bp_manufacturing_data.id%>&field=quantity",
+        saving_text: '<%=_("Saving...")%>'
+        });
+   $(".bp_manufacturing_data_comment_<%=bp_manufacturing_data.id%>").editInPlace({
+        url: "/bp_manufacturing_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "bp_manufacturing_data_id=<%=bp_manufacturing_data.id%>&field=comment",
+        saving_text: '<%=_("Saving...")%>'
+        });
+  </script>
+

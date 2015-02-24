@@ -1,0 +1,110 @@
+<h1 class="green"><%=_('Register to use LCAtogo Tool')%></h1>
+
+<div class="content_skin">
+<p><%= _("Please, fill the following form to register and start using the LCAtogo Tool. Once you have completed the form, you will receive a confirmation e-mail to validate your registration").html_safe %>.</p>
+<p><%= _("LCA to go will only process your personal data in accordance with the Data Protection Act 1998. The information you provide will not be shared with third parties and will be stored electronically. LCA to go may contact you directly about exclusive LCA to go project opportunities up to 12 months after signing up. Please tick here if you do not want to be contacted by LCA to go").html_safe %>.</p> 
+<%= _("Fields marked as").html_safe %> <span class='red'>*</span> <%= _("are mandatory.").html_safe %></p>
+
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+<%= devise_error_messages! %>
+
+  <div class="span-5">
+    <label><%=_('Name').html_safe %></label><span class="red"> *</span><br/>
+    <%= f.text_field :name, :size => 20 %>
+  </div>
+
+  <div class="span-5">
+    <label><%=_('Surname').html_safe %></label><span class="red"> *</span><br/>
+    <%= f.text_field :surname, :size => 20 %>
+  </div>
+
+  <div class="span-5">
+    <label><%=_('Organization').html_safe %></label><span class="red"> *</span><br/>
+    <%= f.text_field :organization, :size => 20  %>
+  </div>
+
+  <div class="span-5 last">
+    <label><%=_('Activity').html_safe %></label><span class="red"> *</span><br/>
+    <select name="user[activity]" id="user_activity">
+      <option value="industry"><%=_('Industrial enterprise').html_safe%></option>
+      <option value="association"><%=_('Enterprise association / Cluster').html_safe%></option>
+      <option value="public_admin"><%=_('Public administration').html_safe%></option>
+      <option value="academic"><%=_('Academic / Educational Institution').html_safe%></option>
+      <option value="research_center"><%=_('Research / Technology Transfer Centre').html_safe%></option>
+      <option value="consulting"><%=_('Consultancy / Engineering').html_safe%></option>
+      <option value="student"><%=_('Student').html_safe%></option>
+      <option value="administration"><%=_('Public administration').html_safe%></option>		
+      <option value="ngo"><%=_('NGO / Non-profit entity').html_safe%></option>
+      <option value="other"><%=_('Others').html_safe%></option>
+    </select>
+  </div>
+  
+  <div class="clear"></div> 
+  
+  <div class="span-7">
+    <label><%=_('Default Industrial Sector').html_safe %></label><span class="red"> *</span><br/>
+    <select name="user[sector]" id="user_sector">
+      <option value=""></option>
+      <option value="bio_based"><%=_('Bio-based plastics').html_safe%></option>
+      <option value="industrial"><%=_('Industrial machines').html_safe%></option>
+      <option value="electronics"><%=_('Electronics').html_safe%></option>
+      <option value="printed"><%=_('Printed Circuit Boards').html_safe%></option>
+      <option value="renewable"><%=_('Renewable Energy - Photovoltaics').html_safe%></option>
+      <option value="semiconductors"><%=_('Semiconductors').html_safe%></option>
+      <option value="sensors"><%=_('Sensors').html_safe%></option>
+      <option value="textiles"><%=_('Smart Textiles').html_safe%></option>		
+    </select>
+  </div>
+
+
+  <div class="span-9">
+    <label><%=_('Postal address').html_safe %></label><br/>
+    <%= f.text_field :postal, :size => 50 %>
+  </div>
+
+  <div class="span-5 last">
+    <label><%=_('Country').html_safe %></label><br/>
+    <%= f.text_field :country, :size => 20 %>
+  </div>
+
+  <div class="clear"></div> 
+
+  <div class="span-7 last">
+    <label><%=_('Default Language').html_safe %></label><span class="red"> *</span><br/>
+    <select name="user[language]" id="user_language">
+      <option value="english"><%=_('English').html_safe%></option>
+      <option value="spanish" disabled="disabled"><%=_('Spanish').html_safe%></option>
+      <option value="german" disabled="disabled"><%=_('German').html_safe%></option>
+      <option value="polish" disabled="disabled"><%=_('Polish').html_safe%></option>
+      <option value="french" disabled="disabled"><%=_('French').html_safe%></option>
+      <option value="dutch" disabled="disabled"><%=_('Dutch').html_safe%></option>
+    </select>
+  </div>
+
+  <div class="clear"></div> 
+  
+  <div class="span-10 last">
+    <label><%=_('E-mail').html_safe %></label><span class='red'>*</span><br/>
+    <span class="tip_text"><%= _("Your email address and password will be the credentials for the site.").html_safe %></span><br/>
+    <%= f.text_field :email, :size => 50 %>
+  </div>
+  <div class="clear"></div>
+
+  <div class="span-5">
+    <label><%=_('Password').html_safe %></label><span class='red'>*</span><br/>
+    <%= f.password_field :password, :size => 20 %>
+  </div>
+
+  <div class="span-5 last">
+    <label><%=_('Password confirmation').html_safe %></label><span class='red'>*</span><br/>
+    <%= f.password_field :password_confirmation, :size => 20 %>
+  </div>
+
+  <div class="buttons span-23 last">
+    <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Register").html_safe %></button>
+  </div>
+
+<% end %>
+
+
+</div>

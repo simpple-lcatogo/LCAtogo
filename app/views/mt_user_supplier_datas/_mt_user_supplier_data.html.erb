@@ -1,0 +1,65 @@
+<tr id="mt_user_supplier_data_<%= mt_user_supplier_data.id %>">
+     <td>
+	      <% if mt_user_supplier_data.mt_supplier_part_data %>
+			<%= mt_user_supplier_data.mt_supplier_part_data.name.html_safe %>
+	      <% end %>		
+     </td>
+     <td>
+	      <% if mt_user_supplier_data.mt_family %>
+			<%= mt_user_supplier_data.mt_family.name.html_safe %>
+	      <% end %>		
+
+     </td>     
+     <td>
+	      <% if mt_user_supplier_data.mt_material %>
+			<%= mt_user_supplier_data.mt_material.name.html_safe %>
+	      <% end %>
+     </td>
+	 <% if mt_user_supplier_data.mt_material %>
+	   <% if mt_user_supplier_data.mt_material && mt_user_supplier_data.mt_material.unit == 'kg'%>     
+          <td id="td_quantity_supplier_<%= mt_user_supplier_data.id %>" class="quantity_<%= mt_user_supplier_data.id %>">
+       <% else %>
+          <td class="quantity_<%= mt_user_supplier_data.id %>">
+       <% end %>
+     <% else %>
+       <td class="quantity_<%= mt_user_supplier_data.id %>">
+     <% end %>
+          <%= mt_user_supplier_data.quantity %>
+     </td>
+     <script type="text/javascript">
+		   $(".quantity_<%= mt_user_supplier_data.id %>").editInPlace({
+		        url: "/mt_user_supplier_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+		        params: "mt_user_supplier_data_id=<%=mt_user_supplier_data.id%>",
+		        saving_text: '<%=_("Saving...")%>'
+		        });           
+     </script>       
+     
+     <td>
+        <% if mt_user_supplier_data.mt_material && mt_user_supplier_data.mt_material.unit%>
+           <%= mt_user_supplier_data.mt_material.unit.html_safe %>
+        <% end %>  
+     </td>     
+     <td>
+	      <% if mt_user_supplier_data.mt_manufacturing_process %>
+			<%= mt_user_supplier_data.mt_manufacturing_process.name.html_safe %>
+	      <% end %>		
+     </td>
+     <td class="process_<%= mt_user_supplier_data.id %>">
+          <%= mt_user_supplier_data.value %>
+     </td>
+     <script type="text/javascript">
+		   $(".process_<%= mt_user_supplier_data.id %>").editInPlace({
+		        url: "/mt_user_supplier_datas/update_process" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+		        params: "mt_user_supplier_data_id=<%=mt_user_supplier_data.id%>",
+		        saving_text: '<%=_("Saving...")%>'
+		        });           
+     </script>       
+     
+     
+     <td>
+        <% if mt_user_supplier_data.mt_manufacturing_process && mt_user_supplier_data.mt_manufacturing_process.unit%>
+           <%= mt_user_supplier_data.mt_manufacturing_process.unit.html_safe %>
+        <% end %>           
+     </td>
+     <td class="center"><%= link_to '&#10006;'.html_safe, mt_user_supplier_data_path(mt_user_supplier_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>

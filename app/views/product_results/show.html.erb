@@ -1,0 +1,336 @@
+<script type="text/javascript">
+	$.fn.expandAll = function() {
+	    $(this).find("tr").removeClass("collapsed").addClass("expanded").each(function(){
+	        $(this).expand();
+	    });
+	};    
+	$(document).ready(function()  {
+	
+        $(":checkbox").click(function(){
+           var isChecked = false;
+
+           var toRemove = 'check_';
+           var id_value_string = $(this).attr('id').replace(toRemove,'');           
+
+           if ($(this).is(':checked')){
+              isChecked = true;
+            }
+            else{
+              isChecked = false;
+            }
+            $.ajax({
+                dataType: "json",
+                cache: false,
+                url: '/ajax_helpers',
+                data: {id: id_value_string, type: 'result_check', isChecked: isChecked},
+                timeout: 15000,
+                error: function(XMLHttpRequest, errorTextStatus, error){
+//                    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                },
+                success: function(data){
+  //                 alert('successs');                    
+                 }
+            });       	
+	     }); 
+	  $("#tree_main").treeTable();   	
+	});
+	
+     function switchPercentage() {
+        temp = document.getElementById('tree_main').getElementsByTagName('TD');
+        for (i in temp) {
+           if (temp[i].id && (temp[i].id.lastIndexOf("result_", 0) === 0)) {
+             hidden_id = temp[i].id.substring(7, temp[i].id.length);
+             value = parseFloat(document.getElementById("hidden_" + hidden_id).value);
+             <% if I18n.locale == :en %>
+                temp[i].innerHTML = value.toFixed(1) + "%";
+             <% else %>
+                temp[i].innerHTML = (value.toFixed(1) + "%").replace(".", ",");
+             <% end %>                
+             }
+           }
+         document.getElementById("lifecycle_selected").style.display = 'none';
+         document.getElementById("year_selected").style.display = 'none';
+        document.getElementById("percentage_selected").style.display = 'block';
+         $("#total_title").html("<%=_('PERCENTAGES').html_safe%>");
+     }	
+	
+     function switchYear() {
+        temp = document.getElementById('tree_main').getElementsByTagName('TD');
+        for (i in temp) {
+           if (temp[i].id && (temp[i].id.lastIndexOf("result_", 0) === 0)) {
+             hidden_id = temp[i].id.substring(7, temp[i].id.length);
+             if (document.getElementById("hidden_" + hidden_id)) {
+	             value = document.getElementById("year_" + hidden_id).value;
+	             temp[i].innerHTML = value;
+	            }
+             }
+           }
+        document.getElementById("lifecycle_selected").style.display = 'none';
+        document.getElementById("year_selected").style.display = 'block';
+        document.getElementById("percentage_selected").style.display = 'none';
+         $("#total_title").html("<%=_('TOTAL per year').html_safe%>");
+     }
+
+    function switchLifecycle() {
+        temp = document.getElementById('tree_main').getElementsByTagName('TD');
+        for (i in temp) {
+            if (temp[i].id && (temp[i].id.lastIndexOf("result_", 0) === 0)) {
+                hidden_id = temp[i].id.substring(7, temp[i].id.length);
+                if (document.getElementById("hidden_" + hidden_id)) {
+                    value = document.getElementById("absolute_" + hidden_id).value;
+                    temp[i].innerHTML = value;
+                }
+            }
+        }
+        document.getElementById("lifecycle_selected").style.display = 'block';
+        document.getElementById("year_selected").style.display = 'none';
+        document.getElementById("percentage_selected").style.display = 'none';
+        $("#total_title").html("<%=_('TOTAL per product lifecycle').html_safe%>");
+    }
+
+
+    function copyValues() {
+        document.getElementById("limit1_csv").value = document.getElementById("input_limit1").value
+        document.getElementById("limit2_csv").value = document.getElementById("input_limit2").value
+        document.getElementById("limit3_csv").value = document.getElementById("input_limit3").value
+     }
+	
+	
+	 function graphics () {
+	   document.forms[0].submit();
+	 }
+	 
+	 function generateExcel () {
+	   document.forms[1].submit();
+	 }	
+	 
+	 function generatePdf () {
+	   document.forms[2].submit();
+	 }	
+	 
+	 
+	 function nextStep () {
+	   document.forms[0].submit();
+	 }	
+	 	
+</script>
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Results').html_safe%></span>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/results/tabs') %>
+	</div>
+
+     <div class="span-9">
+       <table class="scale">
+         <tr>
+           <td colspan="4" style="text-align:left"><%=_("Significance assessment").html_safe%> <a title="<%=_('It allows performing a &quot;Significance assessment&quot; of the environmental assessment results by the application of four colours, one colour for each of the four scores ranges. The user can modify the values of the ranges intervals (25, 50 and 75%).').html_safe%>" href="#" class="tip_left">&nbsp;</a></td>
+         </tr>
+         <tr>
+           <td class="verylow">&#9650;</td>
+           <td class="low">&#9650;</td>
+           <td class="high">&#9650;</td>
+           <td class="veryhigh"></td>
+         </tr>
+       </table>
+      </div>
+      <div class="span-3 last">
+        <div class="buttons right" style="margin-top:8px;margin-bottom:7px">
+          <button type="submit" class="positive" style="margin:0px;" id="update_limits" name="update_limits" value="<%=_('Update')%>" onClick="javascript:changeLimits();"> <%= image_tag 'arrow_refresh.png' %><%= _("Update") %></button>         
+        </div>
+      </div>
+      
+      <div class="clear"></div>
+      <div class="span-9">
+         <div class="span-2" style="margin-right:0px">
+            0%
+         </div>
+         <div class="span-2">
+            <input type="text" id="input_limit1" name="input_limit1" class="number" value="25" size="2" onkeyup="copyValues();"/>%
+         </div>
+         <div class="span-2">
+            <input type="text" id="input_limit2" name="input_limit2" class="number" value="50" size="2" onkeyup="copyValues();"/>%
+         </div>
+         <div class="span-2">
+            <input type="text" id="input_limit3" name="input_limit3" class="number" value="75" size="2" onkeyup="copyValues();"/>%
+         </div>
+         <div class="span-1">
+            100%
+         </div>
+      
+      </div>
+
+   <div class="clear"></div>
+
+    <div class="span-23 last">
+      <%=_('Switch to').html_safe%> <a title="<%=_('Results of indicators can be displayed as &quot;Number&quot; or as &quot;Percentages&quot; of the total value.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+      <div id="year_selected" style="display:none;">
+        <%= link_to _('Per lifecycle').html_safe, 'javascript:switchLifecycle();', :product => @product %> / <%=_('Per year').html_safe%> / <%= link_to _('Percentages').html_safe, 'javascript:switchPercentage();', :product => @product %>
+      </div>
+      <div id="lifecycle_selected">
+        <%=_('Per lifecycle').html_safe%> / <%= link_to _('Per year').html_safe, 'javascript:switchYear();', :product => @product %> / <%= link_to _('Percentages').html_safe, 'javascript:switchPercentage();', :product => @product %>
+      </div>   
+      <div id="percentage_selected" style="display:none;">
+        <%= link_to _('Per lifecycle').html_safe, 'javascript:switchLifecycle();', :product => @product %> / <%= link_to _('Per year').html_safe, 'javascript:switchYear();', :product => @product %> / <%=_('Percentages').html_safe%>
+      </div>
+     
+    </div>
+	<div class="clear"></div>
+
+
+<% if @main_result %>
+  <%= form_tag '/product_results/next_step' do %>
+   <input type="hidden" name="product_id" id="product_id" value="<%=@product.id%>"/>
+     <table id="tree_main"  style="margin-top:15px; margin-left:7px; width:98%;">
+      <tr>
+        <td class="centered" style="background:#EBEEDB">&nbsp;</td>
+        <% @product.indicators.sort_by{ |k| k['id'] }.each do |indicator| %>
+           <td class="unit_centered" title="<%=indicator.name.html_safe%>" id="<%=indicator.name.html_safe%>"><b><span><%=indicator.abbr%></span></b></td>
+        <% end %>
+        <td class="unit_centered" rowspan="2" style="width:10%"><b><%=_('DQI').html_safe%></b> <a title="<%=_('Data Quality Indicators').html_safe%>" href="#" class="tip_left">&nbsp;</a></td>
+      </tr>
+      <tr>
+        <td class="centered" style="background:#EBEEDB">&nbsp;</td>
+        <% @product.indicators.sort_by{ |k| k['id'] }.each do |indicator| %>
+           <td class="unit_centered" title="<%=indicator.unit.html_safe%>" id="<%=indicator.unit.html_safe%>"><b><span><%=indicator.unit.html_safe%></span></b></td>
+        <% end %>
+      </tr>
+	<% time_init = Time.new %>
+	  <%=display_tree_recursive_first(@main_result, @product.indicators.sort_by{ |k| k['id'] }, @divisor_to_graph, false, true, nil, @is_year).html_safe%>
+	</table>
+	
+    <div class="buttons span-23 last">
+	    <input type="hidden" name="product_id" id="product_id" value="<%=@product.id%>"/>
+	    <button type="button" class="positive" style="float:left" onClick="javascript:generateExcel();"> <%= image_tag 'page_white_excel.png' %><%= _("Export table to Excel").html_safe %></button>
+<!--	    <button type="button" class="positive" style="float:left" onClick="javascript:generatePdf();"> <%= image_tag 'page_white_acrobat.png' %><%= _("Generate PDF").html_safe %></button>-->	    
+		<button type="button" class="positive" style="float:right" onClick="javascript:nextStep();"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>		
+    </div>    	
+	
+  <% end %>	
+
+<% end %>
+
+   <%= form_tag '/product_results/generate_csv' do %>
+        <input type="hidden" name="limit1_csv" id="limit1_csv" value="25"/>        
+        <input type="hidden" name="limit2_csv" id="limit2_csv" value="50"/>
+        <input type="hidden" name="limit3_csv" id="limit3_csv" value="75"/>
+        <input type="hidden" name="result_type" id="result_type" value="<%=@result_type%>"/>      
+        <input type="hidden" name="product_id" id="product_id" value="<%=@product.id%>"/>
+   <% end %>	
+
+   <%= form_tag '/product_results/pdf' do %>
+        <input type="hidden" name="product_result_id" id="result_id" value="<%=@product.id%>"/>
+   <% end %>	
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, production_intro_path(@product) %></li>
+        <li><%= link_to _('To Data Entry').html_safe, scenario_url(@product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, data_quality_intro_path(@product) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+
+
+</div>
+
+<script type="text/javascript">
+   var limit1 = <%=@limit1%>;
+   var limit2 = <%=@limit2%>;
+   var limit3 = <%=@limit3%>;  
+   var lastInput1 = 25; 
+   var lastInput2 = 50;   
+   var lastInput3 = 75;   
+   var max = <%=@max%>;
+     function init(){
+        temp = document.getElementById('tree_main').getElementsByTagName('TD');
+        for (i in temp) {
+
+              if (temp[i].id && (temp[i].id.lastIndexOf("result_", 0) === 0)) {
+                 hidden_id = temp[i].id.substring(7, temp[i].id.length);
+                 value = parseFloat(document.getElementById("hidden_" + hidden_id).value);
+                 if (temp[i].className != 'hide') {
+                 if (value < lastInput1) {                  
+                   temp[i].className = 'results_very_low'
+                   }
+                 if ((value >= lastInput1) && (value < lastInput2)) {
+                   temp[i].className = 'results_low'
+                   }
+                 if ((value >= lastInput2) && (value < lastInput3)) {
+                   temp[i].className = 'results_high'
+                   }
+                 if (value >= lastInput3) {
+                   temp[i].className = 'results_very_high'
+                   }
+                   }
+                } else {
+                 if (temp[i].id && (temp[i].id == 'E')) {
+                 //  temp[i].className = 'hide';
+                   }
+                } 
+        };
+      }
+      
+     function changeLimits() {
+        var value1 = parseFloat(document.getElementById("input_limit1").value);
+        var value2 = parseFloat(document.getElementById("input_limit2").value);          
+        var value3 = parseFloat(document.getElementById("input_limit3").value);          
+        var canChange = true;
+
+          if (isNaN(document.getElementById("input_limit1").value)) {            
+             canChange = false;
+             }
+          if ((value1 > value2) || (value1 > value3)) {
+             canChange = false;
+             }
+          if (isNaN(document.getElementById("input_limit2").value)) {             
+             canChange = false;
+             }
+          if ((value2 < value1) || (value2 > value3)) {
+             canChange = false;
+             }             
+          if (isNaN(document.getElementById("input_limit3").value)) {             
+             canChange = false;
+             }
+          if ((value3 < value1) || (value3 < value2)) {
+             canChange = false;
+             }
+        if (canChange) {
+
+	        limit1 = (<%=@max%> * parseFloat(document.getElementById("input_limit1").value)) / 100;
+	        limit2 = (<%=@max%> * parseFloat(document.getElementById("input_limit2").value)) / 100;
+	        limit3 = (<%=@max%> * parseFloat(document.getElementById("input_limit3").value)) / 100;
+	     //   init();   
+	        lastInput1 = parseFloat(document.getElementById("input_limit1").value);
+	        lastInput2 = parseFloat(document.getElementById("input_limit2").value);          
+	        lastInput3 = parseFloat(document.getElementById("input_limit3").value);
+	        init();   
+	        }  else {
+	        document.getElementById("input_limit1").value = lastInput1;
+	        document.getElementById("input_limit2").value = lastInput2;
+	        document.getElementById("input_limit3").value = lastInput3;
+	        }
+
+
+        }
+      
+      init();
+      
+  
+      
+</script>
+ <script type="text/javascript">
+	$(document).ready(function()  {  
+	     $('tr[id^="node-<%=@first_id%>"]').expand();
+	     <% if @array_expanded %>
+		     <% @array_expanded.each do |array_expanded| %>
+		         $('tr[id^="node-<%=array_expanded%>"]').expand();
+		     <% end %> 
+		 <% end %>		     
+	});     
+   </script>    

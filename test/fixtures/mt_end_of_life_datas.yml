@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  mt_product_id: 1
+  mt_family_id: 1
+  mt_material_id: 1
+  quantity: 1.5
+  scenario: MyString
+
+two:
+  mt_product_id: 1
+  mt_family_id: 1
+  mt_material_id: 1
+  quantity: 1.5
+  scenario: MyString

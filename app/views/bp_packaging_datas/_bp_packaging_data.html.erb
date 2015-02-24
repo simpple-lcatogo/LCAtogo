@@ -1,0 +1,21 @@
+<% # encoding: UTF-8 %>
+<tr id="bp_packaging_data_<%= bp_packaging_data.id %>">
+
+
+  <% if bp_packaging_data.bp_distribution_default_value_id %>  
+     <td><%= bp_packaging_data.bp_distribution_default_value.name.html_safe %></td>
+
+  <% else %>
+     <td>&nbsp;</td>  
+  <% end %>
+  
+  <% if bp_packaging_data.amount %>  
+     <td><%= bp_packaging_data.amount %></td>
+  <% else %>
+     <td>&nbsp;</td>  
+  <% end %>
+     <td><%=_('kg').html_safe%></td>
+     <td><%=bp_packaging_data.comment%></td>
+    <td class="center"><%= link_to '&#10006;'.html_safe, bp_packaging_data_path(bp_packaging_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr> 
+ 

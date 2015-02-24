@@ -1,0 +1,409 @@
+<html>
+  <head>
+	<style type="text/css">  
+	 body {
+	  font-family: "Myriad Pro","Myriad Web", helvetica, sans-serif;
+	}
+	
+	table {
+	*border-collapse: collapse; /* IE7 and lower */
+	border-spacing: 0;
+	}
+	th2:first-child {
+	-moz-border-radius: 6px 0 0 0;
+	-webkit-border-radius: 6px 0 0 0;
+	border-radius: 6px 0 0 0;
+	}
+	 
+	th2:last-child {    
+	-moz-border-radius: 0 6px 0 0;    
+	-webkit-border-radius: 0 6px 0 0;    
+	border-radius: 0 6px 0 0;
+	}
+	
+	
+	.bordered {
+	    border-left: solid #2b4950 4px;
+	    border-right: solid #2b4950 4px;    
+	    border-bottom: solid #2b4950 5px;    
+	    -moz-border-radius: 6px;
+	    -webkit-border-radius: 6px;
+	    border-radius: 6px;
+	    -webkit-box-shadow: 0 1px 1px #ccc; 
+	    -moz-box-shadow: 0 1px 1px #ccc; 
+	    box-shadow: 0 1px 1px #ccc;         
+	}
+	
+	.bordered_white {
+	    width: 90px;
+	    background-color:#ffffff;
+	    border-left: solid #ffffff 4px;
+	    border-right: solid #ffffff 4px;    
+	    border-bottom: solid #ffffff 3px;    
+	    border-top: solid #ffffff 3px;    
+	    -moz-border-radius: 6px;
+	    -webkit-border-radius: 6px;
+	    border-radius: 6px;
+	    -webkit-box-shadow: 0 1px 1px #ccc; 
+	    -moz-box-shadow: 0 1px 1px #ccc; 
+	    box-shadow: 0 1px 1px #ccc;         
+	}
+	
+	.bordered_gray {
+	    width: 90px;
+	    background-color:#71c5c8 !important;
+	    border-left: solid #71c5c8 4px !important;
+	    border-right: solid #71c5c8 4px !important;    
+	    border-bottom: solid #71c5c8 5px !important;    
+	    -moz-border-radius: 6px;
+	    -webkit-border-radius: 6px;
+	    border-radius: 6px;
+	}
+	
+	
+	.bordered tr {
+	border: solid #ccc 3px;
+	}    
+	
+	.bordered_gray tr {
+	border: solid #71c5c8 3px;
+	}    
+	
+	    
+	.bordered td, .bordered th {
+	    border-left: 1px solid #ccc;
+	    border-top: 1px solid #ccc;
+	    padding: 5px;
+	    text-align: left;    
+	}
+	
+	.bordered_white th {
+	    border-left: 1px solid #ccc;
+	    border-top: 1px solid #ccc;
+	    padding: 5px;
+	    text-align: left;
+	    background-color:#ffffff;    
+	}
+	
+	.bordered_gray th {
+	    padding: 5px;
+	    text-align: left;
+	    background-color:#71c5c8 !important;    
+	}
+	
+	
+	.bordered th {
+	    background-color: #2b4950;
+	    background-image: -webkit-gradient(linear, left top, left bottom, from(#2b4950), to(#2b4950));
+	    background-image: -webkit-linear-gradient(top, #2b4950, #2b4950);
+	    background-image:    -moz-linear-gradient(top, #2b4950, #2b4950);
+	    background-image:     -ms-linear-gradient(top, #2b4950, #2b4950);
+	    background-image:      -o-linear-gradient(top, #2b4950, #2b4950);
+	    background-image:         linear-gradient(top, #2b4950, #2b4950);
+	    border-top: none;
+	   // text-shadow: 0 1px 0 rgba(255,255,255,.5); 
+	    font-weight: normal;
+	}
+	
+	.bordered_white th {
+	    background-color: #ffffff;
+	    background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#ffffff)) !important;
+	    background-image: -webkit-linear-gradient(top, #ffffff, #ffffff) !important;
+	    background-image:    -moz-linear-gradient(top, #ffffff, #ffffff) !important;
+	    background-image:     -ms-linear-gradient(top, #ffffff, #ffffff) !important;
+	    background-image:      -o-linear-gradient(top, #ffffff, #ffffff) !important;
+	    background-image:         linear-gradient(top, #ffffff, #ffffff) !important;
+	    -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset; 
+	    -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;  
+	    box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;        
+	    border-top: none;
+	    text-shadow: 0 1px 0 rgba(255,255,255,.5); 
+	    font-weight: normal;
+	    font-size:13px;
+	    padding: 5px !important;
+	}
+	
+	
+	.bordered_gray th {
+	    padding-top: 4px !important;
+	    padding-bottom: 4px !important;    
+	    background-color: #71c5c8;
+	    background-image: -webkit-gradient(linear, left top, left bottom, from(#71c5c8), to(#71c5c8)) !important;
+	    background-image: -webkit-linear-gradient(top, #71c5c8, #71c5c8) !important;
+	    background-image:    -moz-linear-gradient(top, #71c5c8, #71c5c8) !important;
+	    background-image:     -ms-linear-gradient(top, #71c5c8, #71c5c8) !important;
+	    background-image:      -o-linear-gradient(top, #71c5c8, #71c5c8) !important;
+	    background-image:         linear-gradient(top, #71c5c8, #71c5c8) !important;
+	    border-top: none;
+	    text-shadow: 0 1px 0 rgba(255,255,255,.5); 
+	    font-weight: bold;
+	    font-size:15px;
+	    border:0px;
+	    padding: 5px !important;
+	}
+	
+	
+	.bordered td:first-child, .bordered th:first-child {
+	    border-left: none;
+	}
+	
+	.bordered_white td:first-child, .bordered_white th:first-child {
+	    border-left: none;
+	}
+	
+	.bordered_gray td:first-child, .bordered_gray th:first-child {
+	    border-left: none;
+	}
+	
+	.bordered_dark {
+	    
+	    -moz-border-radius: 6px;
+	    -webkit-border-radius: 6px;
+	    border-radius: 6px;
+	    -webkit-box-shadow: 0 1px 1px #009da5; 
+	    -moz-box-shadow: 0 1px 1px #009da5; 
+	    box-shadow: 0 1px 1px #009da5;         
+	}
+	
+	.bordered_dark tr {
+	border: solid #ccc 3px;
+	}    
+	    
+	.bordered_dark td {
+	    background-color: #009da5;
+	    padding-right: 10px;
+	    padding-left: 10px;    
+	    padding-bottom: 5px;    
+	    padding-top: 5px;    
+	    text-align: left;    
+	}
+	
+	.bordered_dark th {
+	    padding-right: 10px;
+	    padding-left: 10px;    
+	    padding-bottom: 5px;    
+	    padding-top: 5px;    
+	    text-align: left;    
+	}
+	
+	.bordered_dark th {
+	    border-top: none; 
+	    font-weight: normal;
+	}
+	
+	.bordered_dark td:first-child, .bordered_dark th:first-child {
+	    border-left: none;
+	}
+	
+	.bordered_dark th:first-child {
+	    -moz-border-radius: 6px 0 0 0;
+	    -webkit-border-radius: 6px 0 0 0;
+	    border-radius: 6px 0 0 0;
+	}
+	
+	.bordered_dark th:last-child {
+	    -moz-border-radius: 0 6px 0 0;
+	    -webkit-border-radius: 0 6px 0 0;
+	    border-radius: 0 6px 0 0;
+	}
+	
+	.bordered_dark th:only-child{
+	    -moz-border-radius: 6px 6px 0 0;
+	    -webkit-border-radius: 6px 6px 0 0;
+	    border-radius: 6px 6px 0 0;
+	}
+	
+	.bordered_dark tr:last-child td:first-child {
+	    -moz-border-radius: 0 0 0 6px;
+	    -webkit-border-radius: 0 0 0 6px;
+	    border-radius: 0 0 0 6px;
+	}
+	
+	.bordered_dark tr:last-child td:last-child {
+	    -moz-border-radius: 0 0 6px 0;
+	    -webkit-border-radius: 0 0 6px 0;
+	    border-radius: 0 0 6px 0;
+	}
+	
+	
+	
+	
+	
+	.bordered_gray th:first-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_gray th:last-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_gray th:only-child{
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_gray tr:last-child td:first-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_gray tr:last-child td:last-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	
+	
+	
+	
+	.bordered_white th:first-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_white th:last-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_white th:only-child{
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_white tr:last-child td:first-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_white tr:last-child td:last-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	
+	
+	.title_blue {
+	   color: #009da5;
+	   font-weight: bold;
+	   }
+	
+	.title_white {
+	   color: #ffffff;
+	   font-weight: bold;
+	   }
+	
+	
+	.td_blue td {
+	    border-left: 5px solid #2b4950 !important;
+	    border-top: 5px solid #2b4950 !important;
+	}
+	
+	</style>
+  </head>     
+  <body>
+     <table width="845px;" border="0" style="padding-bottom:20px">
+       <th style="text-align:left;width:155px">
+          <%=absolute_image_tag('logo_lca_to_go.png', :width => 147)%>
+       </th>
+       <th style="text-align:left;width:155px">
+          <%=absolute_image_tag('logos/logo_smart.png', :width => 147)%>
+       </th>      
+       <th align="right">
+	        <table class="bordered" style="width:500px;color:#ffffff">
+	          <th>        
+				    <b><%=_('Organisation').html_safe%>:</b> <%=@product.organisation%><br/>
+				    <b><%=_('Author').html_safe%>:</b> <%=@product.person_name%><br/>
+				    <b><%=_('Name of the product').html_safe%>:</b> <%=@product.name%><br/>
+				    <b><%=_('Version of the product').html_safe%>:</b> <%=@product.version%><br/>
+				    <b><%=_('Description of the product').html_safe%>:</b> <%=@product.description%><br/>				    
+	          </th>			
+			</table>       
+          </th>
+     </table>  
+
+   <br/>
+
+   <table class="bordered" width="845px;">
+      <th><span class="title_white"><%=_('Eco-cost').html_safe%></span></th>
+       <tr>
+          <td style="text-align:center"> 	
+			   <img 
+			     alt="" 
+			     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=18&amp;chts=2B4950,16,l&amp;chxt=x,y&amp;cht=bhg&amp;chds=a&amp;chd=t:<%=@total_values%>&amp;chco=<%=@total_colors%>&amp;chls=2.0&amp;chs=600x<%=((@labels_size * 30) / 1) %>&amp;chxl=1:<%=@total_ticks%>|2:|<%=_('Carbon footprint (kg CO2)').html_safe%>|&amp;chxp=2,50&amp;chm=N*f0* &euro;,000000,0,-1,11,,:10:&amp;chxs=1,,11,-1,lt"
+			     style="padding-top:20px;padding-bottom:20px;">
+		  </td>
+	   </tr>
+   </table>	   	      
+			    
+   <br/>
+   
+  <!-- Materials -->
+   <table class="bordered" width="845px;">
+      <th><span class="title_white"><%=_('Materials').html_safe%></span></th>
+       <tr>
+          <td style="text-align:center">   
+			  <img 
+			     alt="" 
+			     src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=@materials_values%>&amp;chco=<%=@materials_colors%>&amp;chls=2.0&amp;chs=800x200&amp;chl=<%=@materials_ticks%>"
+			     style="padding-top:20px;padding-bottom:20px;">  
+		  </td>
+	   </tr>
+   </table>	   	
+ 
+   <br/> 
+  
+  <!-- Manufacturing -->
+   <table class="bordered" width="845px;">
+      <th><span class="title_white"><%=_('Manufacturing').html_safe%></span></th>
+       <tr>
+          <td style="text-align:center">     
+			  <img 
+			     alt="" 
+			     src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=@manufacturing_values%>&amp;chco=<%=@manufacturing_colors%>&amp;chls=2.0&amp;chs=800x200&amp;chl=<%=@manufacturing_ticks%>"
+			     style="padding-top:20px;padding-bottom:20px;">  
+		  </td>
+	   </tr>
+   </table>	   	
+    
+   <br/>
+   
+  <!-- Distribution -->
+   <table class="bordered" width="845px;">
+      <th><span class="title_white"><%=_('Distribution').html_safe%></span></th>
+       <tr>
+          <td style="text-align:center">    
+			  <img 
+			     alt="" 
+			     src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=@distribution_values%>&amp;chco=<%=@distribution_colors%>&amp;chls=2.0&amp;chs=800x200&amp;chl=<%=@distribution_ticks%>"
+			     style="padding-top:20px;padding-bottom:20px;">  
+		  </td>
+	   </tr>
+   </table>	   	
+
+   <br/>
+   
+  <!-- Use -->
+   <table class="bordered" width="845px;">
+      <th><span class="title_white"><%=_('Use').html_safe%></span></th>
+       <tr>
+          <td style="text-align:center">
+			  <img 
+			     alt="" 
+			     src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=@use_values%>&amp;chco=<%=@use_colors%>&amp;chls=2.0&amp;chs=800x200&amp;chl=<%=@use_ticks%>"
+			     style="padding-top:20px;padding-bottom:20px;">  
+		  </td>
+	   </tr>
+   </table>	   	

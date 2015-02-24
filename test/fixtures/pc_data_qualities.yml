@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  pc_product_id: 1
+  water_consumption: MyString
+  electric_consumption: MyString
+  heat_consumption: MyString
+  sludge: MyString
+  ghc_emissions: MyString
+  pcbs_production: MyString
+
+two:
+  pc_product_id: 1
+  water_consumption: MyString
+  electric_consumption: MyString
+  heat_consumption: MyString
+  sludge: MyString
+  ghc_emissions: MyString
+  pcbs_production: MyString

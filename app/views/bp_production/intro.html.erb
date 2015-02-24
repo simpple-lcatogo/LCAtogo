@@ -1,0 +1,94 @@
+
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Introduction').html_safe%></span>
+</h1>
+
+
+<div class="content_skin">
+   <%=_('The aim of this module is to assess, in a simplified way, the environmental performance of your bio-based plastic product under a life-cycle perspective.').html_safe%>
+   <br/><br/>
+   <%=_('In the <strong>&quot;DATA ENTRY&quot;</strong> module, you should enter the needed data for simulating your product (i.e. materials, transport, manufacturing processes, etc.), considering the different life-cycle steps').html_safe%>
+   <br/><br/>
+   <ul>
+     <li><%=_('<strong>&quot;MATERIALS&quot;</strong>: Here you should select the type of bio-based/oil-based plastic material/s to be used in the product from the predefined list of the dropdown menu and indicate their respective quantities. Main raw materials can be entered here, as well as the use of additives, masterbatches and/or compounds.').html_safe%></li>
+     <li><%=_('<strong>&quot;TRANSPORT&quot;</strong>: Here you should indicate transport distances and modes of transport used from raw material producer to converter.').html_safe%></li>
+     <li><%=_('<strong>&quot;MANUFACTURING PROCESSES&quot;</strong>: Here you should select the manufacturing process/es needed for each bio-based/oil-based plastic material from the predefined list of processes of the dropdown menu. Each manufacturing process has a predefined &quot;Process profile&quot; which is a set of variables that characterise the own process (i.e. efficiency, energy consumption, water consumption, etc.). Users can either enter their own data or the default data provided. We encourage users to enter their own data for an accurate result which reflects their current situation.').html_safe%></li>
+     <li><%=_('<strong>&quot;DISTRIBUTION&quot;</strong>: Here you should indicate transport distances and modes of transport used for the delivery of the bio-based/oil-based plastic product from the converter to the final customer.').html_safe%></li>
+     <li><%=_('<strong>&quot;END-OF-LIFE&quot;</strong>: Users can select either a pre-defined end-of-life scenario for customized end-of-life scenarios for an accurate estimation. Furthermore, users can enable/disable the end-of-life stages in order to get either cradle-to-grave or cradle-to-gate results, respectively.').html_safe%></li>
+   </ul>
+   <%=_('The results coming from the tool are presented in the form of <strong>Key Environmental Performance Indicators (KEPIs)</strong>. Each <strong>KEPI</strong> represent a potential environmental impact. Users can select the <strong>KEPI</strong> of his/her own interest (e.g.: select only Global Warming if interested only in the carbon footprint).').html_safe%>
+   <br/><br/>
+   <%=_('In the <strong>&quot;RESULTS&quot;</strong> module you can see the results using different perspectives:').html_safe%>
+   <br/><br/>
+   <ul>
+	 <li><%=_('<strong>&quot;DETAILED RESULTS&quot;</strong> allows to analyse in detail the numerical results and to quantify the contribution of each aspect, included previously as an input, in the total product environmental impact. Results can be also displayed in percentage.').html_safe%></li>
+	 <li><%=_('<strong>&quot;COMPARE RESULTS&quot;</strong> allows to compare the results of the product with other products already assessed (e.g. other previous designs or benchmarking products).').html_safe%></li>
+	 <li><%=_('<strong>&quot;SUMMARY RESULTS&quot;</strong>  shows all previous results in summarised graphics.').html_safe%></li>
+   </ul>
+   <%=_('Alternatively, users can also enter the quality of the data by clicking on <strong>&quot;DATA QUALITY&quot;</strong>. This is also of interest, in order to estimate how much representative your results are, as well as the points that require further analysis.').html_safe%>
+   <br/><br/>
+   <%=_('Furthermore, for those users also interested in the cost assessment of the product alternatives with less environmental impact, <strong>&quot;ECONOMIC DATA&quot;</strong> section is provided. The economic analysis is a gate-to-gate analysis, so only the costs under financial/operative control of the SME are considered here.').html_safe%>
+   <br/><br/>
+   <%=_('The results from this tool can be used:').html_safe%>
+   <br/><br/>
+   <ul>
+     <li><%=_('<strong>TO DECIDE:</strong>').html_safe%></li>
+     <ul>
+       <li><%=_('Support internal decision making at company level for the ecodesign of products').html_safe%></li>
+       <li><%=_('Set actions aimed at product carbon footprint minimization (screening)').html_safe%></li>
+       <li><%=_('Parallel evaluation of internal costs of product alternatives at company level based on design').html_safe%></li>
+     </ul>
+   </ul>
+  <ul>
+    <li><%=_('<strong>TO IMPROVE:</strong>').html_safe%></li>
+    <ul>
+      <li><%=_('Improve your manufacturing processes from an environmental point of view').html_safe%></li>
+      <li><%=_('Improve your logistic supply chain (less emissions = less cost)').html_safe%></li>
+    </ul>
+  </ul>
+  <ul>
+    <li><%=_('<strong>TO GO FORWARD:</strong> Be the starting point for further detailed studies on:').html_safe%></li>
+    <ul>
+      <li><%=_('Carbon footprint').html_safe%></li>
+      <li><%=_('Environmental product declarations').html_safe%></li>
+    </ul>
+  </ul>
+
+  <br/><br/>
+<!--
+  <div class="span-23" style="text-align:center;font-size:11">
+     <ul style="padding-left:0;margin-right:130px">	        	        
+	    <li class="link_booklabels"><%= link_to _('To Economic Data'),  bp_economic_url(@bp_product) %></li>	       
+	        
+	    <li class="link_booklabels"><%= link_to _('To Results'), bp_result_url(@bp_product) %></li>
+	        
+        <li class="link_booklabels"><%= link_to _('To Data Quality').html_safe, bp_data_quality_intro_path(@bp_product) %></li>
+        	        
+        <li class="link_booklabels"><%= link_to _('To Data Entry').html_safe, bp_production_url(@bp_product) %></li>	        
+	        
+
+        <div class="clear"></div>
+     </ul>
+  </div>
+  
+  <div class="clear"></div>
+-->
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Data Entry').html_safe, bp_production_url(@bp_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, bp_data_quality_intro_path(@bp_product) %></li>
+        <li><%= link_to _('To Results').html_safe, bp_result_url(@bp_product) %></li>
+        <li><%= link_to _('To Economic Data'), bp_economic_url(@bp_product) %></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="clear"></div>
+
+
+</div>
+

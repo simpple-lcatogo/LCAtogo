@@ -1,0 +1,35 @@
+<h1><%=_('Comparison').html_safe%>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/mt_results/tabs') %>
+	</div>
+
+
+   <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=18&amp;chts=2B4950,16,l&amp;chxt=x,y&amp;cht=bhg&amp;chds=a&amp;chd=t:<%=@values_to_array%>&amp;chco=<%=@seriesColors_to_array%>&amp;chls=2.0&amp;chs=600x<%=((@labels_size * 52) / 1) + 32 %>&amp;chxl=1:<%=@ticks_to_array%>&amp;chm=N*f2*,000000,0,-1,11,,:10:|N*f2*,000000,1,-1,11,,:10:&amp;chxs=1,,11,-1,lt&amp;chdl=<%=@legend%>"
+     style="padding-right:20px;padding-bottom:0px;">
+  <div style="width:500px;text-align:center;font-size:11px;color:#888888">
+    <%=_('MJ').html_safe%>
+  </div>
+  <br/><br/>
+
+
+<div class="clear"></div>
+<div class="navbar">
+  <!-- <div id="for-ie"> -->
+  <div>
+    <ul>
+      <li><%= link_to _('To Introduction').html_safe, mt_production_intro_url(@mt_product) %></li>
+      <li><%= link_to _('To Method').html_safe, mt_assessment_url(@mt_product) %></li>
+      <li><%= link_to _('To Data Entry').html_safe, mt_raw_material_path(@mt_product) %></li>
+      <li><%= link_to _('To Data Quality').html_safe, mt_data_quality_path(@mt_product) %></li>
+      <li><%= link_to _('To Improvements').html_safe, mt_production_improvement_path(@mt_product) %></li>
+    </ul>
+  </div>
+</div>
+
+
+<div class="clear"></div>
+

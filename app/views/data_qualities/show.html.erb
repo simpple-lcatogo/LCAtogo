@@ -1,0 +1,82 @@
+<h1><%=_('Data Quality').html_safe%>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/data_qualities/tabs') %>
+	</div>
+	<div class="clear"></div>
+<%= form_for(@data_quality) do |f| %>
+  <table class="standard2">
+   <tbody>
+    <tr>
+      <th colspan="4">&nbsp;</th>
+    </tr>
+	<tr>
+      <td><%=_('Manufacturing').html_safe%></td>
+      <td><%= f.radio_button :manufacturing, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :manufacturing, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :manufacturing, "illustrative" %>  <%=_('Illustrative').html_safe%></td>  
+	</tr>
+	<tr>
+      <td><%=_('Distribution').html_safe%></td>
+      <td><%= f.radio_button :distribution, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :distribution, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :distribution, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	<tr>
+      <td><%=_('Use').html_safe%></td>
+      <td><%= f.radio_button :use, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :use, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :use, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	<tr>
+      <td><%=_('End-of-life').html_safe%></td>
+      <td><%= f.radio_button :end_of_life, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :end_of_life, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :end_of_life, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	</tbody> 
+   </table>
+   
+  <div class="buttons last" style="float:left">
+     <a href="<%=data_quality_intro_path(@product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Previous step").html_safe %></a>
+  </div>
+   
+   
+    <div class="buttons last" style="float:right">  
+	   <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Data Update").html_safe %></button>
+	</div>   
+<% end %>
+<!--
+<div class="span-23" style="text-align:center;font-size:11">
+    <ul style="padding-left:0;margin-right:230px">
+      <li class="link_booklabels"><%= link_to _('To Results').html_safe, product_result_url(@product)  %></li>
+
+      <li class="link_booklabels"><%= link_to _('To Data Entry'), scenario_url(@product) %></li>
+
+      <li class="link_booklabels"><%= link_to _('To Introduction'),  production_intro_path(@product) %></li>
+      <div class="clear"></div>
+    </ul>
+  </div>
+
+   <div class="clear"></div>
+
+
+-->
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, production_intro_path(@product) %></li>
+        <li><%= link_to _('To Data Entry').html_safe, scenario_url(@product) %></li>
+        <li><%= link_to _('To Results').html_safe, product_result_url(@product) %></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="clear"></div>
+
+
+</div>	

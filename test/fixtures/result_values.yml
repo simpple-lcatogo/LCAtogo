@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  result_id: 1
+  indicator_id: 1
+  value: 1.5
+  percentage: 1.5
+
+two:
+  result_id: 1
+  indicator_id: 1
+  value: 1.5
+  percentage: 1.5

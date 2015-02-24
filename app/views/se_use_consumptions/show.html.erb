@@ -1,0 +1,348 @@
+<% # encoding: utf-8 %>
+<script type="text/javascript">
+    $(document).ready(function(){
+      $("#se_use_consumption_data_se_energy_type_id").change(function(){
+        $(".energy_unit").html($("#se_use_consumption_data_se_energy_type_id option:selected").data('energy_unit'));
+      });
+
+      $("#se_use_consumption_consumable_data_se_consumable_id").change(function(){
+        if($("#se_use_consumption_consumable_data_se_consumable_id option:selected").data('excel_name') == 'Other'){
+          $(".other-option").show();
+        }
+        else {
+         $(".other-option").hide();   
+        };
+      });
+      
+      $("#se_use_consumption_utility_data_se_utility_id").change(function(){
+        
+        $(".utility_unit").html($("#se_use_consumption_utility_data_se_utility_id option:selected").data('utility_unit'));
+
+
+        if($("#se_use_consumption_utility_data_se_utility_id option:selected").data('excel_name') == 'Compressed Air'){
+          $(".compressed-air-option").show();
+          $("#se_use_consumption_utility_data_electricity_consumption").val("0.1");
+          $(".water-cooled-option").hide();
+        }
+        else if ($("#se_use_consumption_utility_data_se_utility_id option:selected").data('excel_name') == 'Water Cooled (by Refrigeration)'){
+          $(".water-cooled-option").show();
+          $(".compressed-air-option").hide();   
+        }else{
+          $(".water-cooled-option, .compressed-air-option").hide();
+        };
+      });
+
+      $("#se_use_consumption_data_se_energy_type_id").change();
+      $("#se_use_consumption_consumable_data_se_consumable_id").change();
+      $("#se_use_consumption_utility_data_se_utility_id").change();
+
+    });
+</script>  
+
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/lca/se_tabs') %>
+	</div>
+<div class="clear"></div>
+
+<fieldset class="empty">
+<legend><%=_('Energy consumption sensor system').html_safe%></legend>
+
+
+
+
+
+    <% if @se_use_consumption.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@se_use_consumption.errors.count, "error") %> prohibited this se_maintenance from being saved:</h2>
+
+        <ul>
+        <% @se_use_consumption.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <table class="standard2">
+      <tr>
+       <th class="span-12"></th>
+       <th class="span-6"><%=_('With sensor').html_safe%></th>
+       <th></th>
+     <!--  <th class="span-6"><%=_('Without sensor').html_safe%></th> -->              
+     </tr>
+     <tr>
+       <td><%=_('Electricity consumption of sensor system').html_safe%> <a title="<%=_('Includes energy consumption of sensor nodes (if not powered autarkic) and related sensor system infrastructure (displays, constantly connected computers etc.)').html_safe%>" href="#" class="tip_left">&nbsp;</a></td>
+       <td class="se_use_consumption_sensor_system_with">
+         <% if @se_use_consumption.sensor_system_with %>
+            <%= @se_use_consumption.sensor_system_with %>
+         <% else %>
+           &nbsp;   
+         <% end %>   
+       </td>
+       <td>
+        <%=_('kWh/h').html_safe%>
+       </td>
+     </tr>
+  </table>
+
+</fieldset>
+<br/>
+    <fieldset class="empty">
+      <legend><%=_('Energy consumption production line').html_safe%></legend>
+
+
+
+<div class="clearfix"></div>
+
+<%= form_for SeUseConsumptionData.new, :remote => true do |f| %>
+  <input type="hidden" name="se_use_consumption_data[se_product_id]" id="se_product_id" value="<%=@se_product.id%>"/> 
+   <!-- Energy type -->
+    <div class="span-5" > 
+       <%= f.label :value, _('Energy type').html_safe %> 
+       </br>
+       <%= f.select :se_energy_type_id, @se_energy_types.map{|c| [c.name,c.id,{'data-energy_unit' =>c.unit}]}, {:include_blank => true}, {:class => "span-4" }%>
+    </div>
+
+    <!-- Energy Use -->
+    <div class="span-6" > 
+       <%= f.label :value, _('Energy use').html_safe %> <a title="<%=_('Differentiate in a simplified way per mode of use: machinery downtimes, operational times (average energy consumption), overheads for infrastructure, which can be allocated to the production line.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+       </br>
+       <%= f.select :se_energy_use_id, @se_energy_uses.map{|c| [c.name,c.id]}, {:include_blank => true} , {:class=>"span-5"}    %>
+    </div>
+
+    <div class="span-5">
+      <%= _('With sensor').html_safe%><br />
+      <%= f.text_field :with_sensor, :size => 10 %> <span class="energy_unit"></span>
+    </div>
+
+    <div class="span-5">
+      <%= _('Without sensor').html_safe%><br />
+      <%= f.text_field :without_sensor, :size => 10 %> <span class="energy_unit"></span>
+    </div>
+
+  <div class="span-3 buttons last">
+     <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+  </div>
+
+<% end %>
+
+
+
+<table class="standard2">
+    <tr class="add"> 
+      <th class="span-6">
+        <%=_('Energy type').html_safe %><br/>
+      </th>
+      <th class="span-6">
+        <%=_('Energy use').html_safe %><br/>
+      </th>
+      <th class="span-6" style="text-align:center;">
+        <%=_('With sensor').html_safe %><br/>
+      </th>
+      <th class="span-6" style="text-align:center;">
+        <%=_('Without sensor').html_safe %>
+      </th>
+      <th class="span-1">
+        &nbsp;
+      </th>
+    </tr>   
+    <tbody id="se_use_consumption_datas">
+      <%= render :partial => @se_use_consumption_datas %>
+    </tbody>
+</table>
+
+</fieldset>
+
+<br>
+<div class="clearfix"></div>
+
+<fieldset class="empty">
+<legend><%=_('Consumables').html_safe%> - <span style="font-size:13px;"><%= _('Average use at productive times and downtimes') %></span></legend>
+
+  <%= form_for SeUseConsumptionConsumableData.new, :remote => true do |f| %>
+   <input type="hidden" name="se_use_consumption_consumable_data[se_product_id]" id="se_product_id" value="<%=@se_product.id%>"/>
+
+   <div class="span-5" > 
+       <%= f.label :value, _('Consumables').html_safe %> <a title="<%=_('Select all relevant consumables for the production line. Select &quot;other&quot;, if an important consumable is not listed here, but then you have to source an appropriate GWP value from other sources.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+       </br>
+       <%= f.select :se_consumable_id, @se_consumables.map{|c| [c.name,c.id,{'data-excel_name' => c.excel_name}]}, {:include_blank => true}, {:class => "span-4" }%>
+    </div>
+
+   <div class="span-5">
+      <%= _('With sensor').html_safe%><br />
+      <%= f.text_field :with_sensor, :size => 10 %> <span><%= _('kg/h')%></span>
+    </div>
+
+    <div class="span-5">
+      <%= _('Without sensor').html_safe%><br />
+      <%= f.text_field :without_sensor, :size => 10 %> <span><%= _('kg/h')%></span>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="span-5 other-option">
+      <%= _('Description').html_safe%><br />
+      <%= f.text_field :description, :size => 15 %>
+    </div>
+
+    <div class="span-9 other-option">
+      <%= _('Global Warming Potential').html_safe%><br />
+      <%= f.text_field :global_warming_potential, :size => 15 %> <span> <%= _('kg CO<sub>2</sub> eq/kg').html_safe %></span>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="span-3 buttons last">
+       <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+    </div>
+
+  <% end %>
+
+  <table class="standard2">
+      <tr class="add"> 
+        <th class="span-8">
+          <%=_('Consumables').html_safe %><br/>
+        </th>
+        <th class="span-8" style="text-align:center;">
+          <%=_('With sensor').html_safe %><br/>
+        </th>
+        <th class="span-8" style="text-align:center;">
+          <%=_('Without sensor').html_safe %><br/>
+        </th>
+        <th class="span-1">
+          &nbsp;
+        </th>
+      </tr>   
+      <tbody id="se_use_consumption_consumable_datas">
+        <%= render :partial => @se_use_consumption_consumable_datas %>
+      </tbody>
+  </table>
+
+</fieldset>
+
+<br>
+<div class="clearfix"></div>
+
+<fieldset class="empty">
+<legend><%=_('Utilities').html_safe%> - <span style="font-size:13px;"><%= _('Internal media generation, average use at productive times and downtimes') %></span></legend>
+
+  <%= form_for SeUseConsumptionUtilityData.new, :remote => true do |f| %>
+   <input type="hidden" name="se_use_consumption_utility_data[se_product_id]" id="se_product_id" value="<%=@se_product.id%>"/>
+
+   <p><%= _('These utilities will be assessed with the related energy consumption; if you make entries here, make sure energy is not included already in overheads stated above') %></p>
+
+   <div class="span-5" > 
+       <%= f.label :value, _('Utilities').html_safe %> 
+       </br>
+       <%= f.select :se_utility_id, @se_utilities.map{|c| [c.name.html_safe,c.id,{'data-utility_unit' =>c.unit},{'data-excel_name' =>c.excel_name}]}, {:include_blank => true}, {:class => "span-4" }%>
+    </div>
+
+   <div class="span-5">
+      <%= _('With sensor').html_safe%><br />
+      <%= f.text_field :with_sensor, :size => 10 %> <span class="utility_unit"></span>
+    </div>
+
+    <div class="span-5">
+      <%= _('Without sensor').html_safe%><br />
+      <%= f.text_field :without_sensor, :size => 10 %> <span class="utility_unit"></span>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="span-7 compressed-air-option">
+      <%= _('Electricity consumption').html_safe%><br />
+      <%= f.text_field :electricity_consumption, :size => 15 %> <span><%=_('kWh/Nm<sup>3</sup>').html_safe%></span>
+    </div>
+
+    <div class="span-12 water-cooled-option">
+      <%= _('Temperature difference beetween the water inlet and outlet temperatures').html_safe%><br />
+      <%= f.text_field :temperature_difference, :size => 15 %> <span>K</span>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="span-3 buttons last">
+       <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+    </div>
+
+  <% end %>
+
+  <table class="standard2">
+      <tr class="add"> 
+        <th class="span-8">
+          <%=_('Utilities').html_safe %><br/>
+        </th>
+        <th class="span-8" style="text-align:center;">
+          <%=_('With sensor').html_safe %><br/>
+        </th>
+        <th class="span-8" style="text-align:center;">
+          <%=_('Without sensor').html_safe %>
+        </th>
+        <th class="span-1">
+          &nbsp;
+        </th>
+      </tr>   
+      <tbody id="se_use_consumption_utility_datas">
+        <%= render :partial => @se_use_consumption_utility_datas %>
+      </tbody>
+  </table>
+
+</fieldset>
+ <br/><br/>
+ <div class="clear"></div>
+
+    <div class="buttons span-5" style="float:left;text-align:left">
+      <%= form_tag '/se_use_consumptions/previous_step' do %>
+          <input type="hidden" name="se_product_id" id="se_product_id" value="<%=@se_product.id%>"/>
+          <button type="submit" class="positive" style="float:left;text-align:left"> <%= image_tag 'tick.png' %><%= _("Previous step").html_safe %></button>
+      <% end %>
+    </div>
+
+    <div class="buttons span-5 last" style="float:right;text-align:right">
+      <%= form_tag '/se_use_consumptions/next_step' do %>
+          <input type="hidden" name="se_product_id" id="se_product_id" value="<%=@se_product.id%>"/>
+          <button type="submit" class="positive" style="float:right;text-align:right"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+      <% end %>
+    </div>
+<!--
+  <div class="bottom_menu span-23" style="text-align:center;font-size:11"> 
+     <ul style="padding-left:0;margin-right:230px">	        	        
+	    <li class="link_booklabels"><%= link_to _('To Results'), se_result_path(@product.se_product) %></li>
+	        
+        <li class="link_booklabels"><%= link_to _('To Data Quality').html_safe, se_data_quality_intro_url(@product.se_product) %></li>
+        	        
+        <li class="link_booklabels"><%= link_to _('To Introduction').html_safe, se_production_intro_path(@product.se_product) %></li>	        
+	        
+        <div class="clear"></div>
+     </ul>
+  </div>
+
+   <div class="clear"></div>
+-->
+
+    <div class="clear"></div>
+    <div class="navbar">
+      <!-- <div id="for-ie"> -->
+      <div>
+        <ul>
+          <li><%= link_to _('To Introduction').html_safe, se_production_intro_path(@product.se_product) %></li>
+          <li><%= link_to _('To Data Quality').html_safe, se_data_quality_intro_url(@product.se_product) %></li>
+          <li><%= link_to _('To Results').html_safe, se_result_path(@product.se_product) %></li>
+        </ul>
+      </div>
+    </div>
+    <div class="clear"></div>
+
+
+</div>
+<script type="text/javascript">
+    $(".se_use_consumption_sensor_system_with").editInPlace({
+        url: "/se_use_consumptions/update_sensor_system_with" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "se_use_consumption_id=<%=@se_use_consumption.id%>",
+        saving_text: '<%=_("Saving...")%>'
+    });
+</script>

@@ -1,0 +1,466 @@
+
+
+<html>
+  <head>
+	<style type="text/css">  
+	 body {
+	  font-family: "Myriad Pro","Myriad Web", helvetica, sans-serif;
+	}
+	
+	table {
+	*border-collapse: collapse; /* IE7 and lower */
+	border-spacing: 0;
+	}
+	th2:first-child {
+	-moz-border-radius: 6px 0 0 0;
+	-webkit-border-radius: 6px 0 0 0;
+	border-radius: 6px 0 0 0;
+	}
+	 
+	th2:last-child {    
+	-moz-border-radius: 0 6px 0 0;    
+	-webkit-border-radius: 0 6px 0 0;    
+	border-radius: 0 6px 0 0;
+	}
+	
+	
+	.bordered {
+	    border-left: solid #2b4950 4px;
+	    border-right: solid #2b4950 4px;    
+	    border-bottom: solid #2b4950 5px;    
+	    -moz-border-radius: 6px;
+	    -webkit-border-radius: 6px;
+	    border-radius: 6px;
+	    -webkit-box-shadow: 0 1px 1px #ccc; 
+	    -moz-box-shadow: 0 1px 1px #ccc; 
+	    box-shadow: 0 1px 1px #ccc;         
+	}
+	
+	.bordered_white {
+	    width: 90px;
+	    background-color:#ffffff;
+	    border-left: solid #ffffff 4px;
+	    border-right: solid #ffffff 4px;    
+	    border-bottom: solid #ffffff 3px;    
+	    border-top: solid #ffffff 3px;    
+	    -moz-border-radius: 6px;
+	    -webkit-border-radius: 6px;
+	    border-radius: 6px;
+	    -webkit-box-shadow: 0 1px 1px #ccc; 
+	    -moz-box-shadow: 0 1px 1px #ccc; 
+	    box-shadow: 0 1px 1px #ccc;         
+	}
+	
+	.bordered_gray {
+	    width: 90px;
+	    background-color:#71c5c8 !important;
+	    border-left: solid #71c5c8 4px !important;
+	    border-right: solid #71c5c8 4px !important;    
+	    border-bottom: solid #71c5c8 5px !important;    
+	    -moz-border-radius: 6px;
+	    -webkit-border-radius: 6px;
+	    border-radius: 6px;
+	}
+	
+	
+	.bordered tr {
+	border: solid #ccc 3px;
+	}    
+	
+	.bordered_gray tr {
+	border: solid #71c5c8 3px;
+	}    
+	
+	    
+	.bordered td, .bordered th {
+	    border-left: 1px solid #ccc;
+	    border-top: 1px solid #ccc;
+	    padding: 5px;
+	    text-align: left;    
+	}
+	
+	.bordered_white th {
+	    border-left: 1px solid #ccc;
+	    border-top: 1px solid #ccc;
+	    padding: 5px;
+	    text-align: left;
+	    background-color:#ffffff;    
+	}
+	
+	.bordered_gray th {
+	    padding: 5px;
+	    text-align: left;
+	    background-color:#71c5c8 !important;    
+	}
+	
+	
+	.bordered th {
+	    background-color: #2b4950;
+	    background-image: -webkit-gradient(linear, left top, left bottom, from(#2b4950), to(#2b4950));
+	    background-image: -webkit-linear-gradient(top, #2b4950, #2b4950);
+	    background-image:    -moz-linear-gradient(top, #2b4950, #2b4950);
+	    background-image:     -ms-linear-gradient(top, #2b4950, #2b4950);
+	    background-image:      -o-linear-gradient(top, #2b4950, #2b4950);
+	    background-image:         linear-gradient(top, #2b4950, #2b4950);
+	    border-top: none;
+	   // text-shadow: 0 1px 0 rgba(255,255,255,.5); 
+	    font-weight: normal;
+	}
+	
+	.bordered_white th {
+	    background-color: #ffffff;
+	    background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#ffffff)) !important;
+	    background-image: -webkit-linear-gradient(top, #ffffff, #ffffff) !important;
+	    background-image:    -moz-linear-gradient(top, #ffffff, #ffffff) !important;
+	    background-image:     -ms-linear-gradient(top, #ffffff, #ffffff) !important;
+	    background-image:      -o-linear-gradient(top, #ffffff, #ffffff) !important;
+	    background-image:         linear-gradient(top, #ffffff, #ffffff) !important;
+	    -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset; 
+	    -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;  
+	    box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;        
+	    border-top: none;
+	    text-shadow: 0 1px 0 rgba(255,255,255,.5); 
+	    font-weight: normal;
+	    font-size:13px;
+	    padding: 5px !important;
+	}
+	
+	
+	.bordered_gray th {
+	    padding-top: 4px !important;
+	    padding-bottom: 4px !important;    
+	    background-color: #71c5c8;
+	    background-image: -webkit-gradient(linear, left top, left bottom, from(#71c5c8), to(#71c5c8)) !important;
+	    background-image: -webkit-linear-gradient(top, #71c5c8, #71c5c8) !important;
+	    background-image:    -moz-linear-gradient(top, #71c5c8, #71c5c8) !important;
+	    background-image:     -ms-linear-gradient(top, #71c5c8, #71c5c8) !important;
+	    background-image:      -o-linear-gradient(top, #71c5c8, #71c5c8) !important;
+	    background-image:         linear-gradient(top, #71c5c8, #71c5c8) !important;
+	    border-top: none;
+	    text-shadow: 0 1px 0 rgba(255,255,255,.5); 
+	    font-weight: bold;
+	    font-size:15px;
+	    border:0px;
+	    padding: 5px !important;
+	}
+	
+	
+	.bordered td:first-child, .bordered th:first-child {
+	    border-left: none;
+	}
+	
+	.bordered_white td:first-child, .bordered_white th:first-child {
+	    border-left: none;
+	}
+	
+	.bordered_gray td:first-child, .bordered_gray th:first-child {
+	    border-left: none;
+	}
+	
+	.bordered_dark {
+	    
+	    -moz-border-radius: 6px;
+	    -webkit-border-radius: 6px;
+	    border-radius: 6px;
+	    -webkit-box-shadow: 0 1px 1px #009da5; 
+	    -moz-box-shadow: 0 1px 1px #009da5; 
+	    box-shadow: 0 1px 1px #009da5;         
+	}
+	
+	.bordered_dark tr {
+	border: solid #ccc 3px;
+	}    
+	    
+	.bordered_dark td {
+	    background-color: #009da5;
+	    padding-right: 10px;
+	    padding-left: 10px;    
+	    padding-bottom: 5px;    
+	    padding-top: 5px;    
+	    text-align: left;    
+	}
+	
+	.bordered_dark th {
+	    padding-right: 10px;
+	    padding-left: 10px;    
+	    padding-bottom: 5px;    
+	    padding-top: 5px;    
+	    text-align: left;    
+	}
+	
+	.bordered_dark th {
+	    border-top: none; 
+	    font-weight: normal;
+	}
+	
+	.bordered_dark td:first-child, .bordered_dark th:first-child {
+	    border-left: none;
+	}
+	
+	.bordered_dark th:first-child {
+	    -moz-border-radius: 6px 0 0 0;
+	    -webkit-border-radius: 6px 0 0 0;
+	    border-radius: 6px 0 0 0;
+	}
+	
+	.bordered_dark th:last-child {
+	    -moz-border-radius: 0 6px 0 0;
+	    -webkit-border-radius: 0 6px 0 0;
+	    border-radius: 0 6px 0 0;
+	}
+	
+	.bordered_dark th:only-child{
+	    -moz-border-radius: 6px 6px 0 0;
+	    -webkit-border-radius: 6px 6px 0 0;
+	    border-radius: 6px 6px 0 0;
+	}
+	
+	.bordered_dark tr:last-child td:first-child {
+	    -moz-border-radius: 0 0 0 6px;
+	    -webkit-border-radius: 0 0 0 6px;
+	    border-radius: 0 0 0 6px;
+	}
+	
+	.bordered_dark tr:last-child td:last-child {
+	    -moz-border-radius: 0 0 6px 0;
+	    -webkit-border-radius: 0 0 6px 0;
+	    border-radius: 0 0 6px 0;
+	}
+	
+	
+	
+	
+	
+	.bordered_gray th:first-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_gray th:last-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_gray th:only-child{
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_gray tr:last-child td:first-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_gray tr:last-child td:last-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	
+	
+	
+	
+	.bordered_white th:first-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_white th:last-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_white th:only-child{
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_white tr:last-child td:first-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_white tr:last-child td:last-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	
+	
+	.title_blue {
+	   color: #009da5;
+	   font-weight: bold;
+	   }
+	
+	.title_white {
+	   color: #ffffff;
+	   font-weight: bold;
+	   }
+	
+	
+	.td_blue td {
+	    border-left: 5px solid #2b4950 !important;
+	    border-top: 5px solid #2b4950 !important;
+	}
+	
+	</style>
+  </head>     
+  <body>
+
+     <table width="845px;" border="0" style="padding-bottom:20px">
+       <th style="text-align:left;width:155px">
+          <%=absolute_image_tag('logo_lca_to_go.png', :width => 147)%>
+       </th>
+       <th style="text-align:left;width:155px">
+          <%=absolute_image_tag('logos/logo_electronics.png', :width => 147)%>
+       </th>      
+       <th align="right">
+	        <table class="bordered" style="width:500px;color:#ffffff">
+	          <th>        
+				    <b><%=_('Organisation').html_safe%>:</b> <%=@product.organisation%><br/>
+				    <b><%=_('Author').html_safe%>:</b> <%=@product.person_name%><br/>
+				    <b><%=_('Name of the product').html_safe%>:</b> <%=@product.name%><br/>
+				    <b><%=_('Version of the product').html_safe%>:</b> <%=@product.version%><br/>
+				    <b><%=_('Description of the product').html_safe%>:</b> <%=@product.description%><br/>				    
+	          </th>			
+			</table>       
+          </th>
+     </table>
+     
+     
+ 
+     
+
+
+<% @combineds.each_with_index do |combined, index| %>
+	    <% if @sort == 'no'
+	         values = combined.collect {|x| x[0] }
+	         ticks = combined.collect {|x| x[1] }.reverse      
+	         seriesColors = combined.collect {|x| x[2] }
+	       end 
+	       if @sort == 'asc'
+	         values = combined.collect {|x| x[0] }
+	         ticks = combined.collect {|x| x[1] }.reverse    
+	         seriesColors = combined.collect {|x| x[2] }  
+	       end
+	       if @sort == 'desc' 
+	          values = combined.collect {|x| x[0] }
+	          ticks = combined.collect {|x| x[1] }.reverse
+	          seriesColors = combined.collect {|x| x[2] }
+	       end 
+	       ticks_to_array = ""
+	       ticks.each do |tick|
+	          ticks_to_array += "|" + tick.to_s
+	       end
+	       values_to_array = ""
+	       values.each_with_index do |value, index|
+	          if (index + 1) < values.size
+	             values_to_array += value.to_s + ","
+	          else
+	             values_to_array += value.to_s
+	          end   
+	       end	   
+	       seriesColors_to_array = ""
+	       seriesColors.each_with_index do |seriesColor, index|	 
+	           if (index + 1) < seriesColors.size      
+	       	      seriesColors_to_array += seriesColor.to_s.gsub("#","") + "|"
+	       	   else 
+	       	      seriesColors_to_array += seriesColor.to_s.gsub("#","")
+	       	   end   
+	       end
+       min = combined.sort_by { |x| x[0] }.collect {|x| x[0] }[0]
+       max = combined.sort_by { |x| x[0] }.collect {|x| x[0] }.reverse[0]
+       
+       num_ticks = 0 
+       i = 0
+       if max
+	       while i < max
+	          i += 10
+	       end
+	   end    
+       max = i
+       if i > 100
+          max = (i + 10)
+       end
+       if max < 100
+          max = 100
+       end
+       max = 110
+       if !min || min > 0
+          min = 0
+       else   
+          modulo = min.modulo(10)
+          min -= modulo
+       end	       
+	   max_min_array = ""
+	   min_tmp = min
+	   while min_tmp <= max
+	      max_min_array += "|" + min_tmp.to_s
+	      min_tmp += 10
+	   end
+	    %>
+	    
+	    
+    <table class="bordered" width="845px;">
+ 	  
+   <% if @indicators_checked[index].name == 'Carbon footprint' || @indicators_checked[index].name == 'Copper' || @indicators_checked[index].name == 'Aluminium' || @indicators_checked[index].name == 'Cobalt' || @indicators_checked[index].name == 'Steel'%>	    
+      <th><span class="title_white"><%=@indicators_checked[index].name.html_safe%> (<%=@indicators_checked[index].unit.gsub('<sub>','<sub>').gsub('</sub>','</sub>').html_safe%>)</span></th>
+   <% else %>
+      <th><span class="title_white"><%=@indicators_checked[index].name.html_safe%> (mg)</span></th>
+   <% end %>	      
+        <tr>
+          <td style="text-align:center">  
+		   <img 
+		     alt="" 
+		     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=12&amp;chts=2B4950,16,l&amp;chxt=x,y&amp;cht=bhg&amp;chds=<%=min%>,<%=max%>&amp;chd=t:<%=values_to_array%>&amp;chco=<%=seriesColors_to_array%>&amp;chls=2.0&amp;chs=600x<%=((@labels.size * 20) / @indicators_checked.size) + 32 %>&amp;chds=a&amp;chxl=1:<%=ticks_to_array%>&amp;chm=N*f0*%,000000,0,-1,11,,:10:&amp;chxs=1,,11,-1,lt"
+		     style="padding-bottom:20px;padding-top:20px;">  
+          </td>
+        </tr>    
+   </table>
+    
+   
+   <% if @indicators_checked[index].name == 'Carbon footprint' %>
+     <br/>
+     <table class="bordered" width="845px" style="border-top: solid #2b4950 5px">
+       <tr>
+          <td style="text-align:left">       
+		   <span style="color:#2B4950;font-size:16px;"><b><%=_('Carbon footprint - Production (%)').html_safe%></b></span>
+		   <hr/>	    
+		  <img 
+		     alt="" 
+		     src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=@manufacturing_values%>&amp;chco=<%=@manufacturing_colors%>&amp;chls=2.0&amp;chs=800x200&amp;chl=<%=@manufacturing_ticks%>"
+		     style="padding-right:20px;padding-bottom:20px;">  
+		   
+		   <br/><br/>
+		     
+		   <span style="color:#2B4950;font-size:16px;"><b><%=_('Carbon footprint - Use (%)').html_safe%></b></span>
+		   <hr/>
+		  <img 
+		     alt="" 
+		     src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=@use_values%>&amp;chco=<%=@use_colors%>&amp;chls=2.0&amp;chs=800x200&amp;chl=<%=@use_ticks%>"
+		     style="padding-right:20px;padding-bottom:20px;">  
+		   
+		   <br/><br/>   
+        </td>
+    </tr>    
+   </table>
+   
+   <% end %>   
+   
+   <br/>   
+   
+   <% end %>   
+   
+  </body>
+
+</html>   

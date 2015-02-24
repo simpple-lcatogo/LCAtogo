@@ -1,0 +1,33 @@
+<tr id="consumption_<%= consumption_use.id %>">
+  <% if consumption_use.energy_mode %> 
+    <td><%= consumption_use.energy_mode.name.html_safe %></td>
+  <% else %>
+    <td><%= consumption_use.name_other%></td>
+  <% end %>
+    
+  <% if consumption_use.energy_type %>  
+    <td><%= consumption_use.energy_type.name.html_safe %></td>
+  <% else %>
+    <td>&nbsp;</td>
+  <% end %>
+  <td id="timemode_value_<%= consumption_use.id %>" class="timemode_consumption_<%= consumption_use.id %>" style="background: none repeat scroll 0% 0% transparent;text-align:center"><%= number_with_precision(consumption_use.time_mode, :precision => 2, :locale => 'en') %></td>
+  <td id="consumption_value_<%= consumption_use.id %>" class="quantity_consumption_<%= consumption_use.id %>" style="background: none repeat scroll 0% 0% transparent;text-align:center"><%= number_with_precision(consumption_use.consumption, :precision => 2, :locale => 'en') %></td>
+  <td>W</td> 
+  <td class="center"><%= link_to '&#10006;'.html_safe, consumption_use_path(consumption_use, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>
+
+<script type="text/javascript">
+   $(".quantity_consumption_<%=consumption_use.id%>").editInPlace({
+        url: "/consumption_uses/update_consumption" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "consumption_use_id=<%=consumption_use.id%>",
+        saving_text: '<%=_("Saving...")%>',
+        success: function(msg) {updateValues();}
+        });
+   $(".timemode_consumption_<%=consumption_use.id%>").editInPlace({
+        url: "/consumption_uses/update_timemode" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "consumption_use_id=<%=consumption_use.id%>",
+        saving_text: '<%=_("Saving...")%>',
+        success: function(msg) {updateValues();}
+        });      
+              
+ </script>    

@@ -1,0 +1,39 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  se_product_id: 1
+  machine_fixed: 1.5
+  machine_variable: 1.5
+  personnel_with: 1.5
+  personnel_without: 1.5
+  maintenance_with: 1.5
+  maintenance_without: 1.5
+  spare_parts_with: 1.5
+  spare_parts_without: 1.5
+  spare_parts_storage: 1.5
+  electricity: 1.5
+  heat: 1.5
+  gas: 1.5
+  fuels: 1.5
+  grease: 1.5
+  hydraulic: 1.5
+  organic: 1.5
+
+two:
+  se_product_id: 1
+  machine_fixed: 1.5
+  machine_variable: 1.5
+  personnel_with: 1.5
+  personnel_without: 1.5
+  maintenance_with: 1.5
+  maintenance_without: 1.5
+  spare_parts_with: 1.5
+  spare_parts_without: 1.5
+  spare_parts_storage: 1.5
+  electricity: 1.5
+  heat: 1.5
+  gas: 1.5
+  fuels: 1.5
+  grease: 1.5
+  hydraulic: 1.5
+  organic: 1.5

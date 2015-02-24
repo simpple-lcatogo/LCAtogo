@@ -1,0 +1,8 @@
+<tr id="se_use_consumption_data_<%= se_use_consumption_data.id %>">
+     <td><%= se_use_consumption_data.se_energy_type.name.to_s.html_safe %></td>
+     <td><%= se_use_consumption_data.se_energy_use.name.to_s.html_safe %></td>
+     <td style="text-align:center;"><%= se_use_consumption_data.with_sensor.to_s.html_safe %> <%= se_use_consumption_data.se_energy_type.unit.to_s.html_safe%></td>
+     <td style="text-align:center;"><%= se_use_consumption_data.without_sensor.to_s.html_safe %> <%= se_use_consumption_data.se_energy_type.unit.to_s.html_safe%></td>
+      
+  <td class="center"><%= link_to '&#10006;'.html_safe, se_use_consumption_data_path(se_use_consumption_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>

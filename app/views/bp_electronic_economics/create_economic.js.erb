@@ -1,0 +1,10 @@
+
+$("#error_explanation_material").empty();
+$("#error_explanation_material").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#assesments").append("<%= escape_javascript(render(@bp_electronic_economic)) %>");
+/* Highlight the new comment */
+$("#assesment_<%= @bp_electronic_economic.id %>").effect("highlight", {}, 3000);
+
+$("#assesment_data_value").val("");
+$("#assesment_data_name").val("");

@@ -1,0 +1,430 @@
+<script type="text/javascript">
+	$.fn.expandAll = function() {
+	    $(this).find("tr").removeClass("collapsed").addClass("expanded").each(function(){
+	        $(this).expand();
+	    });
+	};    
+	$(document).ready(function()  {
+        $(":checkbox").click(function(){
+           var isChecked = false;
+
+           var toRemove = 'check_';
+           var id_value_string = $(this).attr('id').replace(toRemove,'');           
+
+           if ($(this).is(':checked')){
+              isChecked = true;
+            }
+            else{
+              isChecked = false;
+            }
+            $.ajax({
+                dataType: "json",
+                cache: false,
+                url: '/ajax_helpers',
+                data: {id: id_value_string, type: 'mt_result_check', isChecked: isChecked},
+                timeout: 15000,
+                error: function(XMLHttpRequest, errorTextStatus, error){
+//                    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                },
+                success: function(data){
+  //                 alert('successs');                    
+                 }
+            });            
+            
+        });		
+	  $("#tree_main").treeTable();   	
+	});
+	
+     function switchPercentage() {
+        temp = document.getElementById('tree_main').getElementsByTagName('TD');
+        for (i in temp) {
+           if (temp[i].id && (temp[i].id.lastIndexOf("result_", 0) === 0)) {
+             hidden_id = temp[i].id.substring(7, temp[i].id.length);
+             value = parseFloat(document.getElementById("hidden_" + hidden_id).value);
+             <% if I18n.locale == :en %>
+                temp[i].innerHTML = value.toFixed(1) + "%";
+             <% else %>
+                temp[i].innerHTML = (value.toFixed(1) + "%").replace(".", ",");
+             <% end %>                
+             }
+           }
+        document.getElementById("absolute_selected").style.display = 'none';
+        document.getElementById("percentage_selected").style.display = 'block';        
+     }	
+	
+     function switchAbsolute() {
+        temp = document.getElementById('tree_main').getElementsByTagName('TD');
+        for (i in temp) {
+           if (temp[i].id && (temp[i].id.lastIndexOf("result_", 0) === 0)) {
+             hidden_id = temp[i].id.substring(7, temp[i].id.length);
+             if (document.getElementById("hidden_" + hidden_id)) {
+	             value = document.getElementById("absolute_" + hidden_id).value;
+	             temp[i].innerHTML = value;
+	            }
+             }
+           }        
+        document.getElementById("absolute_selected").style.display = 'block';
+        document.getElementById("percentage_selected").style.display = 'none';        
+     }   
+	
+     function copyValues() {
+        document.getElementById("limit1_csv").value = document.getElementById("input_limit1").value
+        document.getElementById("limit2_csv").value = document.getElementById("input_limit2").value
+        document.getElementById("limit3_csv").value = document.getElementById("input_limit3").value
+     }
+	
+	
+	 function graphics () {
+	   document.forms[0].submit();
+	 }
+	 
+	 function generateExcel () {
+	   document.forms[1].submit();
+	 }	
+
+	 function generatePdf () {
+	   document.forms[2].submit();
+	 }	
+
+	 
+	 function nextStep () {
+	   document.forms[0].submit();
+	 }
+
+     <% if !@end_of_life_ok %>
+         alert("<%=_('Please define the End-of-life treatment for all materials').html_safe%>");
+         window.location = '<%=mt_end_of_life_path(@product.mt_product)%>';
+     <% end %>
+</script>
+<h1><%=_('Results').html_safe%> <a title="<%=_('This page illustrates the main results from the data that you have just entered. The Detailed results tab will show the actual MJ (MegaJoules) value calculated for each of the categories. The Graphic Results tab will show the results in a graphical format using bar and pie charts. The Comparison tab will allow a comparison of the results of other studies carried out by the user, this may be helpful to compare the impact of the use of different materials or different use scenarios.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+</h1>
+
+
+
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/mt_results/tabs') %>
+	</div>
+	
+     <div class="span-9">
+       <table class="scale">
+         <tr>
+           <td colspan="4" style="text-align:left"><%=_("Significance assessment").html_safe%> <a title="<%=_('The \'Significance Assessment\' is a visible feature that allows the user to highlight the significant aspects of the study. The user is free to modify the range at which the different colours apply.').html_safe%>" href="#" class="tip_left">&nbsp;</a></td>
+         </tr>
+         <tr>
+           <td class="verylow">&#9650;</td>
+           <td class="low">&#9650;</td>
+           <td class="high">&#9650;</td>
+           <td class="veryhigh"></td>
+         </tr>
+       </table>
+     </div>  
+     
+     <div class="span-3 last">
+        <div class="buttons right" style="margin-top:8px;margin-bottom:7px">
+          <button type="submit" class="positive" style="margin:0px;" id="update_limits" name="update_limits" value="<%=_('Update')%>" onClick="javascript:changeLimits();"> <%= image_tag 'arrow_refresh.png' %><%= _("Update") %></button>         
+        </div>
+      </div>     
+     
+       <div class="clear"></div>
+      <div class="span-9">
+         <div class="span-2" style="margin-right:0px">
+            0%
+         </div>
+         <div class="span-2">
+            <input type="text" id="input_limit1" name="input_limit1" class="number" value="25" size="2" onkeyup="copyValues();"/>%
+         </div>
+         <div class="span-2">
+            <input type="text" id="input_limit2" name="input_limit2" class="number" value="50" size="2" onkeyup="copyValues();"/>%
+         </div>
+         <div class="span-2">
+            <input type="text" id="input_limit3" name="input_limit3" class="number" value="75" size="2" onkeyup="copyValues();"/>%
+         </div>
+         <div class="span-1">
+            100%
+         </div>
+      
+      </div>
+
+    <div class="clear"></div>
+ 
+
+    <div class="span-23 last">
+      <%=_('Switch to').html_safe%> <a title="<%=_('Results of indicators can be displayed as &quot;Number&quot; or as &quot;Percentages&quot; of the total value.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+      <div id="absolute_selected">
+        <%=_('Numbers').html_safe%> / <%= link_to _('Percentages').html_safe, 'javascript:switchPercentage();', :product => @product %>
+      </div>   
+      <div id="percentage_selected" style="display:none;">
+        <%= link_to _('Numbers').html_safe, 'javascript:switchAbsolute();', :product => @product %> / <%=_('Percentages').html_safe%>
+      </div>
+     
+    </div>
+	<div class="clear"></div>
+	
+<% if @main_result %>
+  <%= form_tag '/mt_results/next_step' do %>
+     <input type="hidden" name="product_id" id="product_id" value="<%=@product.id%>"/>
+     <table id="tree_main"  style="margin-top:15px; margin-left:7px; width:98%;">
+      <tr>
+        <td class="centered" style="background:#EBEEDB;width:35%">&nbsp;</td>
+        <% @product.indicators.each do |indicator| %>
+           <td class="unit_centered" title="<%=indicator.name.html_safe%>" style="width:55%"><b><span><%=indicator.name.html_safe%></span></b></td>
+        <% end %>
+        <td class="unit_centered" rowspan="2" style="width:10%"><b><%=_('DQI').html_safe%></b> <a title="<%=_('Data Quality Indicators').html_safe%>" href="#" class="tip_left">&nbsp;</a></td>
+      </tr>
+      <tr>
+        <td class="centered" style="background:#EBEEDB">&nbsp;</td>
+        <% @product.indicators.each do |indicator| %>
+           <td class="unit_centered" title="<%=indicator.unit.html_safe%>" id="<%=indicator.unit.html_safe%>"><b><span><%=indicator.unit.html_safe%></span></b></td>
+        <% end %>
+      </tr>
+	
+	  <%=mt_display_tree_recursive_first(@main_result, @product.indicators, false).html_safe%>
+	</table>
+	
+	<span class="tip_text"><i><%=_('With the checkboxes you can determine which parts and to what level of detail of the life cycle you want to display in the \'Percentage\' graph on the following page.').html_safe%></i></span>
+
+<% if @detailed %>	
+
+	<table style="margin-top:15px; margin-left:7px; width:98%;border:1px solid;border-color:#2B4950">
+	   <tr>
+	     <th  style="color:white;width:24%;background:#2B4950;text-align:center" colspan="6"><%=_('Electrical energy consumption in the use phase of the machine tool over its lifetime').html_safe%></th>
+	   </tr>
+       <tr>
+         <th style="color:white;width:24%;background:#2B4950">&nbsp;</th>
+         <th style="text-align:center;width:19;border-bottom:1px solid #2B4950"><%=_('Processing').html_safe%></th>
+         <th style="text-align:center;width:19;border-bottom:1px solid #2B4950"><%=_('Ready').html_safe%></th>
+         <th style="text-align:center;width:19;border-bottom:1px solid #2B4950"><%=_('Stand by').html_safe%></th>
+         <th style="text-align:center;width:19;border-bottom:1px solid #2B4950"><%=_('Total energy consumption').html_safe%></th>         
+         <th style="text-align:center;width:19;border-bottom:1px solid #2B4950"><%=_('Electrical Energy per Product Ratio').html_safe%></th>
+       </tr>
+	   <tr>
+	     <td style="color:white;background:#2B4950"><%=@mt_product.mt_use.description%></td>
+	     <td style="color:black;text-align:center">
+	        <%=number_with_precision(@use_shift_1_processing, :precision => 0, :delimiter => ',', :locale => 'en').to_s%>
+	        <%#=lca_format_number(@use_shift_1_processing, 0)%> 
+	     <%=_('kWh').html_safe%>
+	     </td>
+	     <td style="color:black;text-align:center">
+	        <%=number_with_precision(@use_shift_1_ready, :precision => 0, :delimiter => ',', :locale => 'en').to_s%>
+	        <%#=lca_format_number(@use_shift_1_ready, 0)%> 
+	     <%=_('kWh').html_safe%>
+	     </td>
+	     <td style="color:black;text-align:center">
+	        <%=number_with_precision(@use_shift_1_standby, :precision => 0, :delimiter => ',', :locale => 'en').to_s%>
+	        <%#=lca_format_number(@use_shift_1_standby, 0)%> 
+	     <%=_('kWh').html_safe%>
+	     </td>	     	     
+	     <td style="color:black;text-align:center">
+	        <%=number_with_precision(@use_shift_1_processing + @use_shift_1_ready + @use_shift_1_standby, :precision => 0, :delimiter => ',', :locale => 'en').to_s%>
+	        <%#=lca_format_number(@use_shift_1_processing + @use_shift_1_ready + @use_shift_1_standby, 0)%> 
+	     <%=_('kWh').html_safe%>
+	     </td>	     
+	     <td style="color:black;text-align:center"><%=lca_format_number(@energy_production_ratio, 1)%> <%=_('kWh/part').html_safe%></td>	     
+	   </tr>
+	   <tr>
+	     <td style="color:white;background:#2B4950"><%=@mt_product.mt_use.description_2%></td>
+	     <td style="color:black;text-align:center">
+	        <%=number_with_precision(@use_shift_2_processing, :precision => 0, :delimiter => ',', :locale => 'en').to_s%>	     
+	     <%#=lca_format_number(@use_shift_2_processing, 0)%> 
+	     <%=_('kWh').html_safe%>
+	     </td>
+	     <td style="color:black;text-align:center">
+	     <%=number_with_precision(@use_shift_2_ready, :precision => 0, :delimiter => ',', :locale => 'en').to_s%>
+	     <%#=lca_format_number(@use_shift_2_ready, 0)%> 
+	     <%=_('kWh').html_safe%>
+	     </td>
+	     <td style="color:black;text-align:center">
+	     <%=number_with_precision(@use_shift_2_standby, :precision => 0, :delimiter => ',', :locale => 'en').to_s%>	     
+	     <%#=lca_format_number(@use_shift_2_standby, 0)%> 
+	     <%=_('kWh').html_safe%>
+	     </td>	     	     
+	     <td style="color:black;text-align:center">
+	     <%=number_with_precision(@use_shift_2_processing + @use_shift_2_ready + @use_shift_2_standby, :precision => 0, :delimiter => ',', :locale => 'en').to_s%>	     
+	     <%#=lca_format_number(@use_shift_2_processing + @use_shift_2_ready + @use_shift_2_standby, 0)%> 
+	     <%=_('kWh').html_safe%>
+	     </td>	     
+	     <td style="color:black;text-align:center"><%=lca_format_number(@energy_production_ratio_2, 1)%> <%=_('kWh/part').html_safe%></td>	     
+	   </tr>
+	   <tr>
+	     <td style="color:white;background:#2B4950"><%=@mt_product.mt_use.description_3%></td>
+	     <td style="color:black;text-align:center">
+	     <%=number_with_precision(@use_shift_3_processing, :precision => 0, :delimiter => ',', :locale => 'en').to_s%>	     
+	     <%#=lca_format_number(@use_shift_3_processing, 0)%> 
+	     <%=_('kWh').html_safe%>
+	     </td>
+	     <td style="color:black;text-align:center">
+	     <%=number_with_precision(@use_shift_3_ready, :precision => 0, :delimiter => ',', :locale => 'en').to_s%>	     
+	     <%#=lca_format_number(@use_shift_3_ready, 0)%> 
+	     <%=_('kWh').html_safe%>
+	     </td>
+	     <td style="color:black;text-align:center">
+	     <%=number_with_precision(@use_shift_3_standby, :precision => 0, :delimiter => ',', :locale => 'en').to_s%>	     
+	     <%#=lca_format_number(@use_shift_3_standby, 0)%> 
+	     <%=_('kWh').html_safe%>
+	     </td>	     	     
+	     <td style="color:black;text-align:center">
+	     <%=number_with_precision(@use_shift_3_processing + @use_shift_3_ready + @use_shift_3_standby, :precision => 0, :delimiter => ',', :locale => 'en').to_s%>	     
+	     <%#=lca_format_number(@use_shift_3_processing + @use_shift_3_ready + @use_shift_3_standby, 0)%> 
+	     <%=_('kWh').html_safe%>
+	     </td>	     
+	     <td style="color:black;text-align:center"><%=lca_format_number(@energy_production_ratio_3, 1)%> <%=_('kWh/part').html_safe%></td>	     
+	   </tr>
+	</table>
+<% else %>
+	  <table style="margin-top:15px; margin-left:7px; width:98%;border:1px solid;border-color:#2B4950">
+	    <tr>
+	       <td style="color:white;background:#2B4950;width:35%"><%=_('Electrical Energy per Product Ratio').html_safe%></td>
+	       <td style="color:black;text-align:center"><%=lca_format_number(@energy_production_ratio, 1)%> <%=_('kWh/part').html_safe%></td>
+	    </tr>
+	  </table>
+<% end %>
+
+
+	
+    <div class="buttons last" style="float:left">
+	    <input type="hidden" name="product_id" id="product_id" value="<%=@product.id%>"/>
+	    <button type="button" class="positive" style="float:left" onClick="javascript:generateExcel();"> <%= image_tag 'page_white_excel.png' %><%= _("Export table to Excel").html_safe %></button>
+	    <button type="button" class="positive" style="float:left" onClick="javascript:generatePdf();"> <%= image_tag 'page_white_acrobat.png' %><%= _("Generate PDF").html_safe %></button>
+	<!--	<button type="button" class="positive" style="float:right" onClick="javascript:nextStep();"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button> -->		
+    </div>    	
+	
+   <div class="buttons last" style="float:right;text-align:right">
+     <a href="<%=mt_result_graphic_path(@mt_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Next step").html_safe %></a>
+   </div>
+   
+    <div class="clear"></div>   
+	
+	
+  <% end %>		
+<% end %>	      
+      	
+   <%= form_tag '/mt_results/generate_csv' do %>
+        <input type="hidden" name="limit1_csv" id="limit1_csv" value="25"/>        
+        <input type="hidden" name="limit2_csv" id="limit2_csv" value="50"/>
+        <input type="hidden" name="limit3_csv" id="limit3_csv" value="75"/>
+        <input type="hidden" name="product_id" id="product_id" value="<%=@product.id%>"/>
+   <% end %>		
+
+   <%= form_tag '/mt_results/pdf' do %>
+        <input type="hidden" name="mt_result_id" id="mt_result_id" value="<%=@mt_product.id%>"/>
+   <% end %>		
+
+
+
+
+   <div class="clear"></div>
+   <div class="navbar">
+     <!-- <div id="for-ie"> -->
+     <div>
+       <ul>
+         <li><%= link_to _('To Introduction').html_safe, mt_production_intro_url(@mt_product) %></li>
+         <li><%= link_to _('To Method').html_safe, mt_assessment_url(@mt_product) %></li>
+         <li><%= link_to _('To Data Entry').html_safe, mt_raw_material_path(@mt_product) %></li>
+         <li><%= link_to _('To Data Quality').html_safe, mt_data_quality_path(@mt_product) %></li>
+         <li><%= link_to _('To Improvements').html_safe, mt_production_improvement_path(@mt_product) %></li>
+       </ul>
+     </div>
+   </div>
+
+
+   <div class="clear"></div>
+
+
+</div>	
+
+<script type="text/javascript">
+   var limit1 = <%=@limit1%>;
+   var limit2 = <%=@limit2%>;
+   var limit3 = <%=@limit3%>;  
+   var lastInput1 = 25; 
+   var lastInput2 = 50;   
+   var lastInput3 = 75;   
+   var max = <%=@max%>;
+     function init(){
+        temp = document.getElementById('tree_main').getElementsByTagName('TD');
+        for (i in temp) {
+
+              if (temp[i].id && (temp[i].id.lastIndexOf("result_", 0) === 0)) {
+                 hidden_id = temp[i].id.substring(7, temp[i].id.length);
+                 value = parseFloat(document.getElementById("hidden_" + hidden_id).value);
+                 if (temp[i].className != 'hide') {
+                 if (value < lastInput1) {                  
+                   temp[i].className = 'results_very_low'
+                   }
+                 if ((value >= lastInput1) && (value < lastInput2)) {
+                   temp[i].className = 'results_low'
+                   }
+                 if ((value >= lastInput2) && (value < lastInput3)) {
+                   temp[i].className = 'results_high'
+                   }
+                 if (value >= lastInput3) {
+                   temp[i].className = 'results_very_high'
+                   }
+                   }
+                } else {
+                 if (temp[i].id && (temp[i].id == 'E')) {
+                 //  temp[i].className = 'hide';
+                   }
+                } 
+        };
+      }
+      
+     function changeLimits() {
+        var value1 = parseFloat(document.getElementById("input_limit1").value);
+        var value2 = parseFloat(document.getElementById("input_limit2").value);          
+        var value3 = parseFloat(document.getElementById("input_limit3").value);          
+        var canChange = true;
+
+          if (isNaN(document.getElementById("input_limit1").value)) {            
+             canChange = false;
+             }
+          if ((value1 > value2) || (value1 > value3)) {
+             canChange = false;
+             }
+          if (isNaN(document.getElementById("input_limit2").value)) {             
+             canChange = false;
+             }
+          if ((value2 < value1) || (value2 > value3)) {
+             canChange = false;
+             }             
+          if (isNaN(document.getElementById("input_limit3").value)) {             
+             canChange = false;
+             }
+          if ((value3 < value1) || (value3 < value2)) {
+             canChange = false;
+             }
+        if (canChange) {
+
+	        limit1 = (<%=@max%> * parseFloat(document.getElementById("input_limit1").value)) / 100;
+	        limit2 = (<%=@max%> * parseFloat(document.getElementById("input_limit2").value)) / 100;
+	        limit3 = (<%=@max%> * parseFloat(document.getElementById("input_limit3").value)) / 100;
+	     //   init();   
+	        lastInput1 = parseFloat(document.getElementById("input_limit1").value);
+	        lastInput2 = parseFloat(document.getElementById("input_limit2").value);          
+	        lastInput3 = parseFloat(document.getElementById("input_limit3").value);
+	        init();   
+	        }  else {
+	        document.getElementById("input_limit1").value = lastInput1;
+	        document.getElementById("input_limit2").value = lastInput2;
+	        document.getElementById("input_limit3").value = lastInput3;
+	        }
+
+
+        }
+      
+      init();
+      
+  
+      
+</script>
+ <script type="text/javascript">
+	$(document).ready(function()  {  
+	     $('tr[id^="node-<%=@first_id%>"]').expand();
+	     <% if @array_expanded %>
+		     <% @array_expanded.each do |array_expanded| %>
+		     //    $('tr[id^="node-<%=array_expanded%>"]').expand();
+		     <% end %> 
+		 <% end %>		     
+	});     
+   </script> 

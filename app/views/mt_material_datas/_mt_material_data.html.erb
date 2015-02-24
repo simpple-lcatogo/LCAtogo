@@ -1,0 +1,48 @@
+<tr id="mt_material_data_<%= mt_material_data.id %>">
+   <% if @detailed %>
+    <td>
+      <%= mt_material_data.module %>
+    </td>     
+   <% end %>
+
+     <td>
+	      <% if mt_material_data.mt_family %>
+			<%= mt_material_data.mt_family.name.html_safe %>
+	      <% end %>		
+     </td>
+     <td>
+	      <% if mt_material_data.mt_material %>
+			<%= mt_material_data.mt_material.name.html_safe %>
+	      <% end %>		
+
+     </td>
+	 <% if mt_material_data.mt_material %>
+	   <% if mt_material_data.mt_material.unit == 'kg'%>     
+          <td id="td_quantity_material_<%= mt_material_data.id %>" class="quantity_<%= mt_material_data.id %>">
+       <% else %>
+          <td class="quantity_<%= mt_material_data.id %>">
+       <% end %>
+     <% else %>
+       <td class="quantity_<%= mt_material_data.id %>">
+     <% end %>
+          <%= mt_material_data.quantity %>
+     </td>
+     <script type="text/javascript">
+		   $(".quantity_<%=mt_material_data.id%>").editInPlace({
+		        url: "/mt_material_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+		        params: "mt_material_data_id=<%=mt_material_data.id%>",
+		        saving_text: '<%=_("Saving...")%>',
+		        success: function(msg) {updateWeight();}
+		        });      
+  
+     </script>     
+     <td>
+	      <% if mt_material_data.mt_material %>
+			<%= mt_material_data.mt_material.unit.html_safe %>
+	      <% end %>		
+     </td>    
+     <td>
+	    <%= mt_material_data.comments %>		
+     </td>      
+     <td class="center"><%= link_to '&#10006;'.html_safe, mt_material_data_path(mt_material_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>

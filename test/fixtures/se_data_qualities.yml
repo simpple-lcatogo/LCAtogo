@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  se_product_id: 1
+  life_cycle: MyString
+  energy_usage: MyString
+  consumables_usage: MyString
+  utilities_usage: MyString
+  yield_loss: MyString
+
+two:
+  se_product_id: 1
+  life_cycle: MyString
+  energy_usage: MyString
+  consumables_usage: MyString
+  utilities_usage: MyString
+  yield_loss: MyString

@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  ph_product_id: 1
+  maintenance_needs: MyString
+  replacement_inverters: MyString
+  replacement_batteries: MyString
+  cleaning_modules: MyString
+  yearly_frequency: 1.5
+  distance: 1.5
+
+two:
+  ph_product_id: 1
+  maintenance_needs: MyString
+  replacement_inverters: MyString
+  replacement_batteries: MyString
+  cleaning_modules: MyString
+  yearly_frequency: 1.5
+  distance: 1.5

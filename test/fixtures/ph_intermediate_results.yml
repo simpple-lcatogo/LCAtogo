@@ -1,0 +1,39 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  ph_product_id: 1
+  evaluation: MyText
+  module_area: 1.5
+  silicon_country_id: 1
+  silicon_co2: 1.5
+  wafers_country_id: 1
+  wafers_co2: 1.5
+  cells_country_id: 1
+  cells_co2: 1.5
+  modules_country_id: 1
+  modules_co2: 1.5
+  cadmium_country_id: 1
+  cadmium_co2: 1.5
+  cis_country_id: 1
+  cis_co2: 1.5
+  amorphous_country_id: 1
+  amorphous_co2: 1.5
+
+two:
+  ph_product_id: 1
+  evaluation: MyText
+  module_area: 1.5
+  silicon_country_id: 1
+  silicon_co2: 1.5
+  wafers_country_id: 1
+  wafers_co2: 1.5
+  cells_country_id: 1
+  cells_co2: 1.5
+  modules_country_id: 1
+  modules_co2: 1.5
+  cadmium_country_id: 1
+  cadmium_co2: 1.5
+  cis_country_id: 1
+  cis_co2: 1.5
+  amorphous_country_id: 1
+  amorphous_co2: 1.5

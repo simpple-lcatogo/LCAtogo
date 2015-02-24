@@ -1,0 +1,360 @@
+<script type="text/javascript">
+  function goPrevious() {     
+     document.forms[2].submit();         
+  }
+
+  function goNext() {
+     document.forms[3].submit();     
+  }
+
+
+$(document).ready(function(){
+       $("#st_energy_data_st_energy_type").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                $("#st_energy_data_st_energy_source option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#st_energy_data_st_energy_source");
+            }
+            else {
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'st_energy_sources_for_st_energy_types'},
+                    timeout: 15000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                        $("#st_energy_data_st_energy_source option").remove();
+                        var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.st_energy_source.id + "\">" + j.st_energy_source.name + "</option>";  
+                            $(row).appendTo("select#st_energy_data_st_energy_source");                    
+                        });      
+                         $("#st_energy_data_st_energy_source").change();          
+                     }
+                });
+             };   
+           });
+           
+           
+       $("#st_process_data_st_family_process").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                $("#st_process_data_st_process option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#st_process_data_st_process");
+                $("#family_other_div").show();
+                $("#family_other_div_2").show();                
+                $("#family_no_other_div").hide();  
+                document.getElementById("unit_process").innerHTML = ""; 
+                $("#quantity_div").attr("class", "span-3");
+            }
+            else {
+                $("#family_other_div").hide();
+                $("#family_other_div_2").hide();                
+                $("#family_no_other_div").show();
+                $("#quantity_div").attr("class", "span-5");        
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'st_processes_for_st_family_processes'},
+                    timeout: 15000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                        $("#st_process_data_st_process option").remove();
+                        var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.st_process.id + "\">" + j.st_process.name + "</option>";  
+                            $(row).appendTo("select#st_process_data_st_process");                    
+                        });  
+                        $("#st_process_data_st_process").change();          
+                     }
+                });
+             };   
+           }); 
+           
+           
+        $("#st_energy_data_st_energy_source").change(function(){
+           var id_value_string = $(this).val();
+           if (id_value_string != "") {
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'unit_for_st_energy_source'},
+                    timeout: 15000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                     //   alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                      //  alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("unit_energy").innerHTML = "" + data; 
+                       }
+                    }); 
+              }
+         });                  
+
+        $("#st_process_data_st_process").change(function(){
+           var id_value_string = $(this).val();
+           if (id_value_string != "") {
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'unit_for_st_process'},
+                    timeout: 15000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                     //   alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                      //  alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("unit_process").innerHTML = "" + data; 
+                       }
+                    }); 
+              }
+         });                  
+
+                      
+         $("#st_energy_data_st_energy_type").change();
+         $("#st_energy_data_st_energy_source").change();
+         $("#st_process_data_st_family_process").change();     
+         $("#st_process_data_st_process").change();         
+ });  
+</script>
+<h1><%=_('Data entry').html_safe%>
+  <br/><span class="tool_subtitle"></span>
+</h1>
+<div class="content_skin">
+  <div class="lcamenu span-23 showdgrid last ">
+    <%= render(:partial => 'shared/lca/st_tabs') %>
+  </div>
+  <div class="clear"></div>
+
+ <%= form_for StEnergyData.new, :remote => true do |f| %>
+  <input type="hidden" name="st_energy_data[st_product_id]" id="st_product_id" value="<%=@st_product.id%>"/>
+  <fieldset class="empty">
+    <legend><%=_('Energy').html_safe%></legend>
+    <%=_('Please estimate the type and amount of energy that is consumed in the production of one product. Then press the button \'Add\' to insert the data in your list.').html_safe%>
+    <br/><br/>
+    <div class="span-7" > 
+       <%= f.label :value, _('Type').html_safe %> 
+       <br/>
+        <select class="span-7" id="st_energy_data_st_energy_type" name="st_energy_data[st_energy_type_id]">
+         
+         <% @st_energy_types.each do |st_energy_type| %>
+            <option value="<%=st_energy_type.id%>"><%=st_energy_type.name.html_safe%></option>
+         <% end %>
+       
+       </select>
+    </div>
+
+    <div class="span-8">
+       <%= f.label :value, _('Source').html_safe %> 
+       <br/>
+        <select class="span-8" id="st_energy_data_st_energy_source" name="st_energy_data[st_energy_source_id]">
+         
+         <% @st_energy_sources.each do |st_energy_source| %>
+            <option value="<%=st_energy_source.id%>"><%=st_energy_source.name.html_safe%></option>
+         <% end %>
+       
+       </select>
+    </div>
+
+    <div class="span-5">
+      <%= f.label :value, _('Quantity').html_safe %> 
+      <br />
+      <%= f.text_field :quantity, :size => 10 %> <span id="unit_energy"></span>
+    </div>
+
+
+
+    <div class="clear"></div>
+
+	<div class="span-3 buttons last">
+		<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+	</div>
+
+</fieldset>
+<% end %>
+<br>
+
+<table class="standard2">
+    <tr class="add"> 
+      <th class="span-8">
+        <%=_('Type').html_safe %><br/>
+      </th>
+      <th class="span-8">
+        <%=_('Source').html_safe %><br/>
+      </th>
+      <th class="span-3">
+        <%=_('Quantity').html_safe %>
+      </th>
+      <th class="span-3">
+        <%=_('Unit').html_safe %>
+      </th>
+      
+     <th class="span-3">
+        <%=_('Eco-costs').html_safe %>
+      </th>      
+      <th class="span-1">
+        &nbsp;
+      </th>
+    </tr>   
+    <tbody id="st_energy_datas">
+      <%= render :partial => @st_energy_datas %>
+    </tbody>
+</table>
+
+ <div class="clear"></div>
+ 
+ <%= form_for StProcessData.new, :remote => true do |f| %>
+  <input type="hidden" name="st_process_data[st_product_id]" id="st_product_id" value="<%=@st_product.id%>"/>
+  <fieldset class="empty">
+    <legend><%=_('Processes').html_safe%></legend>
+    <%=_('If you do not know the production energy consumption then select the relevant production processes from the dataset below.').html_safe%>
+    <br/><br/>
+
+    <div class="span-6" > 
+       <%= f.label :value, _('Type').html_safe %> 
+       <br/>
+        <select class="span-6" id="st_process_data_st_family_process" name="st_process_data[st_family_process_id]">
+         
+         <% @st_family_processes.each do |st_family_process| %>
+            <option value="<%=st_family_process.id%>"><%=st_family_process.name.html_safe%></option>
+         <% end %>
+          <option value=""><%=_('Other').html_safe%></option>      
+       </select>
+    </div>
+    <div id="family_other_div" style="display:none">
+	    <div class="span-4">
+	      <%= f.label :value, _('Name').html_safe %> 
+	      <br />
+	      <%= f.text_field :user_process_name, :size => 17 %>
+	    </div>
+	</div>
+	<div id="family_no_other_div"> 
+	    <div class="span-7">
+	       <%= f.label :value, _('Process').html_safe %> 
+	       <br/>
+	        <select class="span-7" id="st_process_data_st_process" name="st_process_data[st_process_id]">
+	         
+	         <% @st_processes.each do |st_process| %>
+	            <option value="<%=st_process.id%>"><%=st_process.name.html_safe%></option>
+	         <% end %>
+	       
+	       </select>
+	    </div>
+    </div>
+	    <div class="span-5" id="quantity_div">
+	      <%= f.label :value, _('Quantity').html_safe %> 
+	      <br />
+	      <%= f.text_field :quantity, :size => 10 %> <span id="unit_process"></span>
+	    </div>
+    
+
+
+    <div id="family_other_div_2" style="display:none">
+
+    
+    	<div class="span-3">
+	      <%= f.label :value, _('Unit').html_safe %> 
+	      <br />
+	      <%= f.text_field :user_unit, :size => 10 %>
+	    </div>
+    	
+	    <div class="span-4">
+	      <%= f.label :user_eco_costs, _('Eco-costs').html_safe %> 
+	      <br />
+	      <%= f.text_field :user_eco_costs, :size => 10 %> &euro;/unit
+	    </div>
+    </div>
+
+    <div class="clear"></div>
+
+	<div class="span-3 buttons last">
+		<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+	</div>
+
+</fieldset>
+<% end %>
+<br>
+
+<table class="standard2">
+    <tr class="add"> 
+      <th class="span-8">
+        <%=_('Family').html_safe %><br/>
+      </th>
+      <th class="span-8">
+        <%=_('Process').html_safe %><br/>
+      </th>
+      <th class="span-3">
+        <%=_('Quantity').html_safe %>
+      </th>
+      <th class="span-3">
+        <%=_('Unit').html_safe %>
+      </th>      
+      <th class="span-3">
+        <%=_('Eco-costs').html_safe %>
+      </th>
+      
+      <th class="span-1">
+        &nbsp;
+      </th>
+    </tr>   
+    <tbody id="st_process_datas">
+      <%= render :partial => @st_process_datas %>
+    </tbody>
+</table>
+
+ <div class="clear"></div>
+ 
+ 
+ 
+   <div class="buttons span-5" style="float:left;text-align:left">
+    <%= form_tag '/st_manufacturings/previous_step' do %>
+        <input type="hidden" name="st_product_id" id="st_product_id" value="<%=@st_product.id%>"/>
+        <button type="button" class="positive" style="float:left;text-align:left" onClick="javascript:goPrevious();"> <%= image_tag 'tick.png' %><%= _("Previous step").html_safe %></button>
+    <% end %>
+  </div>
+
+  <div class="buttons span-5 last" style="float:right;text-align:right">
+    <%= form_tag '/st_manufacturings/next_step' do %>
+        <input type="hidden" name="st_product_id" id="st_product_id" value="<%=@st_product.id%>"/>
+        <button type="button" class="positive" id="submit_button" style="float:right;text-align:right" onClick="javascript:goNext();"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+    <% end %>
+  </div>
+
+
+<div class="clear"></div>
+<div class="navbar">
+  <!-- <div id="for-ie"> -->
+  <div>
+    <ul>
+      <li><%= link_to _('To Introduction').html_safe, st_production_intro_url(@st_product) %></li>
+      <li><%= link_to _('To Data Quality').html_safe, st_data_quality_intro_path(@st_product) %></li>
+      <li><%= link_to _('To Results').html_safe, st_result_url(@st_product) %></li>
+    </ul>
+  </div>
+</div>
+<div class="clear"></div>
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ </div>

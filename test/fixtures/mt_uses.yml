@@ -1,0 +1,29 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  mt_product_id: 1
+  processing: 1.5
+  ready: 1.5
+  standby: 1.5
+  working_days: 1.5
+  parts_produced: 1.5
+  description: MyString
+  shifts_day: 1.5
+  hours_shift_processing: 1.5
+  hours_shift_ready: 1.5
+  hours_shift_standby: 1.5
+  mt_energy_process_id: 1
+
+two:
+  mt_product_id: 1
+  processing: 1.5
+  ready: 1.5
+  standby: 1.5
+  working_days: 1.5
+  parts_produced: 1.5
+  description: MyString
+  shifts_day: 1.5
+  hours_shift_processing: 1.5
+  hours_shift_ready: 1.5
+  hours_shift_standby: 1.5
+  mt_energy_process_id: 1

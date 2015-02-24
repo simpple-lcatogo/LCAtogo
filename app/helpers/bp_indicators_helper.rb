@@ -1,0 +1,2 @@
+module BpIndicatorsHelper
+end

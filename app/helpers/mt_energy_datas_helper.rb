@@ -1,0 +1,2 @@
+module MtEnergyDatasHelper
+end

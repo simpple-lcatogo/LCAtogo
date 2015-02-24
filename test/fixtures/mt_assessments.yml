@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  mt_product_id: 1
+  mt_product_type_id: 1
+  weight: 1.5
+  lifetime: 1.5
+
+two:
+  mt_product_id: 1
+  mt_product_type_id: 1
+  weight: 1.5
+  lifetime: 1.5

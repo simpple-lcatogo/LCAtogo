@@ -1,0 +1,42 @@
+<tr id="component_<%= component_data.id %>">
+  <% if !component_data.module_text || component_data.module_text.empty? %>
+     <td><%= component_data.data_module.name.html_safe %></td>
+  <% else %>
+     <td><%= component_data.module_text.html_safe %></td>
+  <% end %>   
+  <% if component_data.family %>
+     <td><%= component_data.family.name.html_safe %></td>
+  <% else %>   
+     <td>&nbsp;</td>
+  <% end %>
+  <% if component_data.material %>  
+     <td><%= component_data.material.name.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>   
+  
+  <% if component_data.aspect && component_data.ratio && component_data.diagonal%>  
+     <td style="text-align:center"><%= number_with_precision(component_data.quantity_aspect, :precision => 2, :locale => 'en') %></td>
+  <% else %>
+     <td class="quantity_material_<%= component_data.id %>" style="background: none repeat scroll 0% 0% transparent;text-align:center"><%= number_with_precision(component_data.quantity, :precision => 2, :locale => 'en') %></td>
+  <% end %>
+  <% if component_data.material %>  
+     <td><%= component_data.material.unit.html_safe %></td>
+  <% else %>
+     <% if component_data.aspect && component_data.ratio && component_data.diagonal%>
+        <td>cm<sup>2</sup></td>
+     <% else %>  
+        <td>&nbsp;</td>
+     <% end %>
+  <% end %>   
+  <td class="center"><%= link_to '&#10006;'.html_safe, component_data_path(component_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>
+
+<script type="text/javascript">
+   $(".quantity_material_<%=component_data.id%>").editInPlace({
+        url: "/component_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "component_data_id=<%=component_data.id%>",
+        saving_text: '<%=_("Saving...")%>'
+        });      
+ </script>       
+

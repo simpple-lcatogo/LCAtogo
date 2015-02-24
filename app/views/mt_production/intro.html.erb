@@ -1,0 +1,32 @@
+
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Introduction').html_safe%></span>
+</h1>
+
+
+<div class="content_skin">
+  <div class="clear"></div>
+  
+  <%=_('Welcome to the LCA to go tool for Machine Tools. If your company produces or uses any industrial machine then this webtool will help you analyse your product from an environmental perspective, specifically in calculating the Cumulative Energy Demand, also known as grey energy, in [MJ]. The webtool is straightforward and will guide you through the various Life Cycle Phases step by step where you can enter data that you have to hand. You do not have to have previous Life Cycle Assessment experience to apply the tool. The tool will be as accurate as the quality of the information that you can supply and the assumptions that you make. The output of the study will highlight the environmental impact of your product in the five different Life Cycle Phases (Raw Materials, Manufacturing, Distribution, Use, and End of Life) and it will suggest improvement options based on the information that has been provided.').html_safe%>
+  <br/><br/>
+  <%=_('The output of the study will highlight the environmental impact of your product in the five different Life Cycle Phases: Raw Materials, Manufacturing, Distribution, Use, and End of Life and will list possible improvement options for the use phase.').html_safe%>
+  <br/><br/>
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Method').html_safe, mt_assessment_url(@mt_product) %></li>
+        <li><%= link_to _('To Data Entry').html_safe, mt_raw_material_path(@mt_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, mt_data_quality_path(@mt_product) %></li>
+        <li><%= link_to _('To Results').html_safe, mt_result_path(@mt_product) %></li>
+        <li><%= link_to _('To Improvements').html_safe, mt_production_improvement_path(@mt_product) %></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="clear"></div>
+
+</div>	

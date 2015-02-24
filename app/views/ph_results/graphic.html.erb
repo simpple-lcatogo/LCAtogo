@@ -1,0 +1,127 @@
+<h1><%=_('Graphic results').html_safe%>
+</h1>
+<script type="text/javascript">
+    function switchEnergy() {
+        document.getElementById("carbon_selected").style.display = 'none';
+        document.getElementById("energy_selected").style.display = 'block';
+        document.getElementById("carbon_graph").style.display = 'none';
+        document.getElementById("energy_graph").style.display = 'block';        
+    }
+    function switchCarbon() {
+        document.getElementById("carbon_selected").style.display = 'block';    
+        document.getElementById("energy_selected").style.display = 'none';
+        document.getElementById("carbon_graph").style.display = 'block';
+        document.getElementById("energy_graph").style.display = 'none';        
+    }
+    
+</script>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/ph_results/tabs') %>
+	</div>
+	
+	<div class="buttons span-23 last">  
+    <%= form_tag '/ph_results/pdf' do %>
+        <input type="hidden" name="ph_result_id" id="result_id" value="<%=@ph_product.id%>"/>
+        <button type="submit" class="positive" style="float:left"> <%= image_tag 'page_white_acrobat.png' %><%= _("Generate PDF").html_safe %></button>
+    <% end %>
+    </div>	
+	
+    <div class="span-23 last">
+      <%=_('Switch to').html_safe%>
+      <div id="carbon_selected">
+        <%=_('Carbon footprint').html_safe%> / <%= link_to _('Energy').html_safe, 'javascript:switchEnergy();', :product => @product %>
+      </div>   
+      <div id="energy_selected" style="display:none;">
+        <%= link_to _('Carbon footprint').html_safe, 'javascript:switchCarbon();', :product => @product %> / <%=_('Energy').html_safe%>
+      </div>
+      
+    </div>
+	<div class="clear"></div>
+
+    <div id="carbon_graph">
+      <%=_('The projected system causes a total of').html_safe%> <%=lca_format_number(@ph_result.co2_total, 0)%> kg CO2-eq. <%=_('Emissions, which is equal to').html_safe%> <%=lca_format_number(@value_electricity, 0)%> g/kWh
+      <br/><br/>
+      <h2><%=_('Amount of Carbon Dioxide emitted during manufacturing of the different parts of the system').html_safe%></h2>
+   <% 
+      seriesColors_to_array = "999999|999999|999999|999999|999999|999999|999999"
+   %>   
+      
+   <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=18&amp;chts=2B4950,16,l&amp;chxt=x,y,x&amp;cht=bhg&amp;chds=a&amp;chd=t:<%=@values_co2_to_array%>&amp;chco=<%=seriesColors_to_array%>&amp;chls=2.0&amp;chs=600x<%=((@labels_size * 26) / 1) + 32 %>&amp;chxl=1:<%=@ticks_to_array%>|2:|<%=_('Carbon footprint (kg CO2)').html_safe%>|&amp;chxp=2,50&amp;chm=N*f0*,000000,0,-1,11,,:10:&amp;chxs=1,,11,-1,lt"
+     style="padding-right:20px;padding-bottom:40px;">
+      
+   <br/><br/>   
+   <h2><%=_('Comparison of Carbon footprint of different electricity production technologies per kWh').html_safe%></h2>
+   <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=38&amp;chts=2B4950,16,l&amp;chxt=y,x&amp;cht=bvg&amp;chds=a&amp;chd=t:<%=@electricity_comparative_values%>&amp;chco=<%=@electricity_comparative_series_colors%>&amp;chls=2.0&amp;chs=600x200&amp;chdl=<%=@electricity_comparative_ticks%>&amp;chm=N*f0*,000000,0,-1,11,,:0:10&amp;chxs=1,,11,0,lt&amp;chxl=1:|<%=_('g CO2 /kWh').html_safe%>&amp;chxp=1,48"
+     style="padding-right:20px;padding-bottom:40px;">
+      
+   <br/><br/>   
+   <h2><%=_('Comparison of Carbon footprint of the system and the grid per kWh').html_safe%></h2>
+   <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=38,38,38&amp;chts=2B4950,16,l&amp;chxt=x,y,x&amp;cht=bvg&amp;chds=a&amp;chd=t:<%=@electricity_country_values%>&amp;chco=<%=@electricity_country_series_colors%>&amp;chls=2.0&amp;chs=600x200&amp;chxl=0:<%=@electricity_country_ticks%>|2:|<%=_('Carbon Footprint (g CO2/kWh)').html_safe%>|&amp;chm=N*f0*,000000,0,-1,11,,:0:&amp;chxs=1,,11,-1,lt&amp;chxp=2,48"
+     style="padding-right:20px;padding-bottom:20px;">
+      
+   <br/><br/>   
+      
+    </div>
+    <div id="energy_graph" style="display:none">
+      <%=_('The projected system causes a total of').html_safe%> <%=lca_format_number((@ph_embedded_result.system_emb / 1000), 0)%> GJ <%=_('of Primary Energy Consumption and saves a total of').html_safe%> <%=lca_format_number((@ph_embedded_result.lifetime_saved / 1000), 0)%> GJ <%=_('due to replaced electricity production').html_safe%>
+      <br/><br/>
+      <h2><%=_('Energy Payback Time divided on the different parts of the system, depending on the amount of energy used to produce each part').html_safe%></h2>
+      <img 
+	     alt="" 
+	     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=18&amp;chts=2B4950,16,l&amp;chxt=x,y,x&amp;cht=bhg&amp;chds=a&amp;chd=t:<%=@values_pe_to_array%>&amp;chco=<%=seriesColors_to_array%>&amp;chls=2.0&amp;chs=600x<%=((@labels_size * 26) / 1) + 32 %>&amp;chxl=1:<%=@ticks_to_array%>|2:|<%=_('Energy payback time (years)').html_safe%>|&amp;chm=N*f2*,000000,0,-1,11,,:10:&amp;chxs=1,,11,-1,lt"
+	     style="padding-right:20px;padding-bottom:0px;">
+       
+	  <br/><br/>   
+	  <h2><%=_('Comparison between the Embodied primary energy of the system and the primary energy saved due to the electricity produced by the system throughout its lifetime').html_safe%></h2>
+	   <img 
+	     alt="" 
+	     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=38&amp;chts=2B4950,16,l&amp;chxt=y&amp;cht=bvg&amp;chds=a&amp;chd=t:<%=@energy_yield_values%>&amp;chco=<%=@energy_yield_series_colors%>&amp;chls=2.0&amp;chs=600x200&amp;chdl=<%=@energy_yield_ticks%>&amp;chm=N*f0*,000000,0,-1,11,,:0:10&amp;chxs=1,,11,0,lt"
+	     style="padding-right:20px;padding-bottom:0px;">
+	      
+	   <br/>        
+       
+    </div>
+
+
+  <div class="clear"></div>
+
+
+
+  <div class="buttons span-4" style="float:left;text-align:left">
+     <a href="<%=ph_result_path(@ph_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Previous step").html_safe %></a>
+  </div>
+  <div class="buttons span-4" style="float:left;text-align:left">
+    <%= form_tag '/ph_results/pdf' do %>
+        <input type="hidden" name="ph_result_id" id="result_id" value="<%=@ph_product.id%>"/>
+        <button type="submit" class="positive" style="float:left"> <%= image_tag 'page_white_acrobat.png' %><%= _("Generate PDF").html_safe %></button>
+    <% end %>
+     
+  </div>
+
+  <div class="buttons span-5 last" style="float:right;text-align:right">
+     <a href="<%=ph_result_optimisation_path(@ph_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Next step").html_safe %></a>
+  </div>
+
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, ph_production_intro_path(@ph_product) %></li>
+        <li><%= link_to _('To Data Entry').html_safe, ph_basic_information_path(@ph_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, ph_data_quality_intro_path(@ph_product) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+
+
+</div>	

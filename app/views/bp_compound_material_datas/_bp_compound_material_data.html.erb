@@ -1,0 +1,50 @@
+<tr id="bp_compound_material_<%= bp_compound_material_data.id %>">
+
+  <% if bp_compound_material_data.bp_compound_family %>  
+     <td><%= bp_compound_material_data.bp_compound_family.name.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>
+
+  <% if bp_compound_material_data.bp_compound_material %>  
+     <td><%= bp_compound_material_data.bp_compound_material.name.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>
+
+  <% if bp_compound_material_data.amount %>  
+     <td id="bp_compound_material_amount_<%= bp_compound_material_data.id %>" class="bp_compound_material_amount_<%= bp_compound_material_data.id %>"><%= number_with_precision(bp_compound_material_data.amount.to_s.html_safe, :precision => 4, :locale => 'en') %></td>
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>     
+  
+  <% if bp_compound_material_data.bp_unit %>  
+     <td><%= bp_compound_material_data.bp_unit.name.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>
+
+  <% if bp_compound_material_data.comment %>  
+     <td id="bp_compound_material_comment_<%= bp_compound_material_data.id %>" class="bp_compound_material_comment_<%= bp_compound_material_data.id %>"><%= bp_compound_material_data.comment.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>
+  
+  <td class="center"><%= link_to '&#10006;'.html_safe, bp_compound_material_data_path(bp_compound_material_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>
+
+
+<script type="text/javascript">
+   $(".bp_compound_material_amount_<%=bp_compound_material_data.id%>").editInPlace({
+        url: "/bp_compound_material_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "bp_compound_material_data_id=<%=bp_compound_material_data.id%>&field=amount",
+        saving_text: '<%=_("Saving...")%>'
+        });
+
+   $(".bp_compound_material_comment_<%=bp_compound_material_data.id%>").editInPlace({
+        url: "/bp_compound_material_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "bp_compound_material_data_id=<%=bp_compound_material_data.id%>&field=comment",
+        saving_text: '<%=_("Saving...")%>'
+        });
+ </script> 
+

@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  bp_product_id: 1
+  reliability: MyString
+  completeness: MyString
+  temporal: MyString
+  geographical: MyString
+  technological: MyString
+
+two:
+  bp_product_id: 1
+  reliability: MyString
+  completeness: MyString
+  temporal: MyString
+  geographical: MyString
+  technological: MyString

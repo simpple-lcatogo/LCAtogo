@@ -1,0 +1,377 @@
+<script type="text/javascript">
+
+  function updateCountry(){
+      country = $("#se_use_production_se_country_info_id").val();
+      $.ajax({
+          dataType: "json",
+          cache: false,
+          url: '/ajax_helpers',
+          data: {se_use_production_id: "<%= @se_use_production.id %>", type: 'se_use_production_update_country',  country: country},
+          timeout: 5000,
+          error: function(XMLHttpRequest, errorTextStatus, error){
+              //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+          },
+          success: function(data){
+              //console.log(data);
+
+          }
+      });
+  }
+
+  function facilityOperationTime(){
+    maximum_production = $("#se_use_production_maximum_production").val();
+    closing_times = $("#se_use_production_closing_times").val();
+    country = $("#se_use_production_se_country_info_id").val();
+
+    $.ajax({
+      dataType: "json",
+      cache: false,
+      url: '/ajax_helpers',
+      data: {se_use_production_id: "<%= @se_use_production.id %>", type: 'se_use_production_facility_operation_time', maximum_production: maximum_production, closing_times: closing_times, country: country},
+      timeout: 5000,
+      error: function(XMLHttpRequest, errorTextStatus, error){
+        //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+        },
+      success: function(data){
+        //console.log(data);
+        if (!isNaN(data)){
+          $("#se_use_production_operation_time").val(data);
+          executeCalcFunctions();          
+        }
+        else{
+          alert("<%= _('Invalid data') %>");  
+        }  
+      } 
+    });
+  }
+
+  function totalDowntime(with_or_without_sensor){
+    $.ajax({
+      dataType: "json",
+      cache: false,
+      url: '/ajax_helpers',
+      data: {se_use_production_id: "<%= @se_use_production.id %>", type: 'se_use_production_total_downtime', with_or_without: with_or_without_sensor},
+      timeout: 5000,
+      error: function(XMLHttpRequest, errorTextStatus, error){
+        //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+        },
+      success: function(data){
+        var span_result;
+
+        if (with_or_without_sensor == "with") {
+          span_result = "#total_downtime_with_sensor";
+        }
+        else if (with_or_without_sensor == "without"){
+          span_result = "#total_downtime_without_sensor";
+        }
+
+        if (data == 0){
+          $(span_result).text("-");
+        }
+        else{  
+          $(span_result).text(data.toFixed(2));
+        }  
+      } 
+    });
+  }
+
+  function productiveTime(with_or_without_sensor){
+    $.ajax({
+      dataType: "json",
+      cache: false,
+      url: '/ajax_helpers',
+      data: {se_use_production_id: "<%= @se_use_production.id %>", type: 'se_use_production_productiveTime', with_or_without: with_or_without_sensor},
+      timeout: 5000,
+      error: function(XMLHttpRequest, errorTextStatus, error){
+        //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+        },
+      success: function(data){
+        var span_result;
+
+        if (with_or_without_sensor == "with") {
+          span_result = "#productive_time_with_sensor";
+        }
+        else if (with_or_without_sensor == "without"){
+          span_result = "#productive_time_without_sensor";
+        }
+
+        if (data == 0){
+          $(span_result).text("-");
+        }
+        else{  
+          $(span_result).text(data.toFixed(2));
+        }  
+      } 
+    });
+  }
+
+  
+  function executeCalcFunctions(){
+    totalDowntime("with");
+    totalDowntime("without");
+    productiveTime("with");
+    productiveTime("without");
+  }
+
+  function checkFields() {
+     var isOk = true;
+     if (document.getElementById("se_use_production_maximum_production").value == "") {
+        isOk = false;
+        alert("<%=_('Theoretic maximum production time field can\'t be blank').html_safe%>");
+     }
+     if (document.getElementById("se_use_production_closing_times").value == "") {
+        isOk = false;
+        alert("<%=_('Facility closing times field can\'t be blank').html_safe%>");
+     }
+     if (isNaN(document.getElementById("se_use_production_maximum_production").value)) {
+        isOk = false;
+        alert("<%=_('Theoretic maximum production time field must be numeric').html_safe%>");
+     }
+     if (isNaN(document.getElementById("se_use_production_closing_times").value)) {
+        isOk = false;
+        alert("<%=_('Facility closing times field must be numeric').html_safe%>");
+     }
+     
+     return isOk;     
+  }
+
+  function goPrevious() {
+     if (checkFields()) {
+        document.forms[2].submit();
+     }         
+  }
+
+  function goNext() {
+     if (checkFields()) {
+        document.forms[3].submit();
+     }     
+  }
+
+
+  $(document).ready(function(){
+    executeCalcFunctions();
+
+    $("#se_use_production_maximum_production, #se_use_production_closing_times").keyup(function(){
+      facilityOperationTime();
+    });
+
+    $("#se_use_production_se_country_info_id").change(function(){
+        updateCountry();
+    });
+
+
+	         $(".edit_se_use_production").validate({
+		   	    rules: {
+			      "se_use_production[maximum_production]": {
+			                required:true,
+			                number:true
+			                },
+			      "se_use_production[closing_times]": {
+			                required:true,
+			                number:true
+			                },
+			      "se_use_production[operation_time]": {
+			                required:true,
+			                number:true
+			                }
+			    },
+				messages: {
+                  "se_use_production[maximum_production]": {
+                        required:"<%=_('This field is mandatory').html_safe%>",
+                        number:"<%=_('Please enter a number').html_safe%>"
+                        },
+                  "se_use_production[closing_times]": {
+                        required:"<%=_('This field is mandatory').html_safe%>",
+                        number:"<%=_('Please enter a number').html_safe%>"
+                        },
+			      "se_use_production[operation_time]": {
+                        required:"<%=_('This field is mandatory').html_safe%>",
+                        number:"<%=_('Please enter a number').html_safe%>"
+                        }
+				}		    
+		       });
+
+
+  });
+</script>
+
+<h1><%=_('Product Assessment').html_safe%>
+  <br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/lca/se_tabs') %>
+	</div>
+<div class="clear"></div>
+<%= form_for(@se_use_production) do |f| %>
+  <% if @se_use_production.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@se_use_production.errors.count, "error") %> prohibited this ph_maintenance from being saved:</h2>
+
+      <ul>
+      <% @se_use_production.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+
+<fieldset class="empty">
+  <legend><%=_('Production time').html_safe%></legend>
+  <div class="field">
+    <%=_('Theoretic maximum production time').html_safe%> <a title="<%=_('Default value: 24 hours x 365 days = 8.760 hours/year.').html_safe%>" href="#" class="tip_left">&nbsp;</a><br />
+    <%= f.text_field :maximum_production %>
+    <%=_('h/year').html_safe%>
+  </div>   
+
+  <div class="field">
+    <%=_('Facility closing times').html_safe%> <a title="<%=_('Scheduled facility closing times (e.g. holidays or longer production stops for for facility maintenance activities).').html_safe%>" href="#" class="tip_left">&nbsp;</a><br />
+    <%= f.text_field :closing_times %>
+    <%=_('h/year').html_safe%>
+  </div>   
+
+  <div class="field">
+    <%=_('Facility operation time').html_safe%> <a title="<%=_('Theoretic maximum production time minus facility closing times.').html_safe%>" href="#" class="tip_left">&nbsp;</a><br />
+    <%= f.text_field :operation_time, :disabled => true %>
+    <%=_('h/year').html_safe%>
+  </div>   
+</fieldset>  
+
+<br/><br/>
+
+<fieldset class="empty">
+ 
+  <div class="field">
+    <%=_('Country of operation').html_safe%><br />
+     <select id="se_use_production_se_country_info_id" name="se_use_production[se_country_info_id]">
+	     <% @se_country_infos.each do |se_country_info| %>
+	        <% if @se_use_production.se_country_info && @se_use_production.se_country_info.id == se_country_info.id %>
+	           <option selected="true" value="<%=se_country_info.id%>"><%=se_country_info.name.html_safe%></option>
+	        <% else %>
+	           <option value="<%=se_country_info.id%>"><%=se_country_info.name.html_safe%></option>
+	        <% end %>   
+	     <% end %>
+     </select>         
+  </div>     
+
+  
+<% end %>
+
+<br><br>
+
+<div class="clearfix"></div>
+
+<%= form_for SeUseProductionData.new, :remote => true do |f| %>
+  <input type="hidden" name="se_use_production_data[se_product_id]" id="se_product_id" value="<%=@se_product.id%>"/> 
+  <div class="span-6">
+    <%=_('Downtime level description').html_safe%> <a title="<%=_('Depending on the reason for a downtime, various escalation levels might be relevant. Some will lead to rather short interruptions, some hazardous incidents might lead to much longer production stops. Describe the kind of downtime you are modelling. Make sure, you cover all relevant downtimes with the various kinds of downtimes you are modelling.').html_safe%>" href="#" class="tip_left">&nbsp;</a><br />
+    <%= f.text_field :downtime_level_description, :size => 18 %>
+  </div>
+
+  <div class="span-7">
+    <%=_('Occurrence - with sensor').html_safe%> <a title="<%=_('How often per year a downtime of the stated kind is likely to happen?').html_safe%>" href="#" class="tip_left">&nbsp;</a><br />
+    <%= f.text_field :occurrance_with_sensor, :size => 18 %>
+    <%=_('incidents/year').html_safe%>
+  </div>
+
+  <div class="span-8 last">
+    <%=_('Average duration - with sensor').html_safe%> <a title="<%=_('Time from production stop until products leave the line again.').html_safe%>" href="#" class="tip_right">&nbsp;</a><br />
+    <%= f.text_field :avg_duration_with_sensor, :size => 18 %>
+    <%=_('minutes').html_safe%>
+  </div>
+
+  <div class="span-7">
+    <%=_('Occurrence - without sensor').html_safe%> <a title="<%=_('How often per year a downtime of the stated kind is likely to happen?').html_safe%>" href="#" class="tip_left">&nbsp;</a><br />
+    <%= f.text_field :occurance_without_sensor, :size => 18 %>
+    <%=_('incidents/year').html_safe%>
+  </div>
+
+  <div class="span-8">
+    <%=_('Average duration - without sensor').html_safe%> <a title="<%=_('Time from production stop until products leave the line again.').html_safe%>" href="#" class="tip_right">&nbsp;</a><br />
+    <%= f.text_field :avg_duration_without_sensor, :size => 18 %>
+    <%=_('minutes').html_safe%>
+  </div>
+ <div class="clear"></div>
+  <div class="span-3 buttons last">
+     <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+  </div>
+
+<% end %>
+</fieldset>
+<table class="standard2" style="border-collapse: collapse;">
+    <tr class="add"> 
+      <th class="span-7">
+        <%=_('Downtime level').html_safe %><br/>
+      </th>
+      <th class="span-8" style="text-align:center;">
+        <%=_('With sensor').html_safe %><br/>
+      </th>
+      <th class="span-8" style="text-align:center;">
+        <%=_('Without sensor').html_safe %>
+      </th>
+      <th class="span-1">
+        &nbsp;
+      </th>
+    </tr>   
+    <tbody id="se_use_production_datas">
+      <%= render :partial => @se_use_production_datas %>
+    </tbody> 
+    <tfoot style="border-top: 1px solid black;">
+      <tr>
+        <td><%= _("Total downtime") %></td>
+        <td>
+          <span id="total_downtime_with_sensor" class="left prepend-2"> - </span>
+          <span class="right append-2"><%= _("h/year").html_safe %></span>
+        </td>
+        <td>
+          <span id="total_downtime_without_sensor" class="left prepend-2"> - </span>
+          <span class="right append-2"><%= _("h/year").html_safe %></span>
+        </td>
+      </tr>
+      <tr>
+        <td><%= _("Productive time") %></td>
+        <td>
+          <span id="productive_time_with_sensor" class="left prepend-2"> - </span>
+          <span class="right append-2"><%= _("h/year").html_safe %></span>
+        </td>
+        <td>
+          <span id="productive_time_without_sensor" class="left prepend-2"> - </span>
+          <span class="right append-2"><%= _("h/year").html_safe %></span>
+        </td>
+      </tr>  
+    </tfoot>  
+  </table>
+
+ <div class="clear"></div>
+
+  <div class="buttons span-5" style="float:left;text-align:left">
+    <%= form_tag '/se_use_productions/previous_step' do %>
+        <input type="hidden" name="se_product_id" id="se_product_id" value="<%=@se_product.id%>"/>
+        <button type="button" class="positive" style="float:left;text-align:left" onClick="javascript:goPrevious();"> <%= image_tag 'tick.png' %><%= _("Previous step").html_safe %></button>
+    <% end %>
+  </div>
+
+  <div class="buttons span-5 last" style="float:right;text-align:right">
+    <%= form_tag '/se_use_productions/next_step' do %>
+        <input type="hidden" name="se_product_id" id="se_product_id" value="<%=@se_product.id%>"/>
+        <button type="button" class="positive" id="submit_button" style="float:right;text-align:right" onClick="javascript:goNext();"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+    <% end %>
+  </div>
+
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, se_production_intro_path(@product.se_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, se_data_quality_intro_url(@product.se_product) %></li>
+        <li><%= link_to _('To Results').html_safe, se_result_path(@product.se_product) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+
+
+</div>

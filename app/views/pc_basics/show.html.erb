@@ -1,0 +1,549 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#pcb_type_yes").click(function(){
+            $("#pc_basic_rohs_compliant").val("yes");
+            $("#pcb_type_no").prop('checked', false);
+        });
+        $("#pcb_type_no").click(function(){
+            $("#pc_basic_rohs_compliant").val("no");
+            $("#pcb_type_yes").prop('checked', false);
+        });    
+
+        $("#assessment").change(function(){
+            if($("#assessment option:selected").val() == 'sophisticated'){
+                $("#sophisticated").show();
+            }
+            else{
+                $("#sophisticated").hide();
+            };
+        });
+        $("#assessment").change();
+        
+       var first_time = true;
+       $("#pc_basic_pcb_type").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                $("#pc_basic_pc_coating_type_id option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#pc_basic_pc_coating_type_id");
+            }
+            else {
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'pc_coating_types_for_pcb_type'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){
+                        // Clear all options from sub category select
+                        $("#pc_basic_pc_coating_type_id option").remove();
+			            var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+			            $(row).appendTo("#pc_basic_pc_coating_type_id");
+                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.pc_coating_type.id + "\">" + j.pc_coating_type.name + "</option>";  
+                            $(row).appendTo("select#pc_basic_pc_coating_type_id");                    
+                        }); 
+                        if (first_time) {
+                          first_time = false;
+					      <% if @pc_product && @pc_product.pc_basic && @pc_product.pc_basic.pc_coating_type %>
+						       $("#pc_basic_pc_coating_type_id").val(<%=@pc_product.pc_basic.pc_coating_type.id%>);
+						  <% end %>   
+                          
+                        }
+           
+                     }
+                });
+             };   
+           });     
+        
+        $("#pc_basic_pcb_type").change();
+
+
+
+    });
+
+	  function checkFields() {
+	     var isOk = true;	  
+	     var layers = parseInt($("#pc_basic_layers").val(), 10);   	     
+	     if ($("#pc_basic_pcb_type option:selected").val() == 'rigid'){
+	        if (layers > 20) {
+	           alert("<%=_('Maximum number of layers for rigid PCBs = 20').html_safe%>");
+	           isOk = false;
+	        }
+	     }
+	     if ($("#pc_basic_pcb_type option:selected").val() == 'elastic'){
+	        if (layers > 6) {
+	           alert("<%=_('Maximum number of layers for elastic PCBs = 6').html_safe%>");
+	           isOk = false;
+	        }	     
+	     }
+	     if ($("#pc_basic_pc_country_info_id").val() == '') {
+             alert("<%=_('\'Country of the PCB production\' is a mandatory field').html_safe%>");
+             isOk = false;
+         }
+          if ($("#pc_basic_pcb_mark").val() == '') {
+              alert("<%=_('\'Mark of the PCB\' is a mandatory field').html_safe%>");
+              isOk = false;
+          }
+          if ($("#pc_basic_pcb_area").val() == '') {
+              alert("<%=_('\'Area of PCB\' is a mandatory field').html_safe%>");
+              isOk = false;
+          } else {
+              if (isNaN($("#pc_basic_pcb_area").val())) {
+                  alert("<%=_('\'Area of PCB\' must be numeric').html_safe%>");
+                  isOk = false;
+              }
+          }
+          if ($("#pc_basic_pcb_number").val() == '') {
+              alert("<%=_('\'Number of PCBs\' is a mandatory field').html_safe%>");
+              isOk = false;
+          } else {
+              if (isNaN($("#pc_basic_pcb_number").val())) {
+                  alert("<%=_('\'Number of PCBs\' must be numeric').html_safe%>");
+                  isOk = false;
+              }
+          }
+          if ($("#pc_basic_layers").val() == '') {
+              alert("<%=_('\'Number of layers\' is a mandatory field').html_safe%>");
+              isOk = false;
+          } else {
+              if (isNaN($("#pc_basic_layers").val())) {
+                  alert("<%=_('\'Number of layers\' must be numeric').html_safe%>");
+                  isOk = false;
+              }
+          }
+          if ($("#pc_basic_pc_coating_type_id").val() == '') {
+              alert("<%=_('\'Type of finish coating\' is a mandatory field').html_safe%>");
+              isOk = false;
+          }
+          if($("#assessment option:selected").val() == 'sophisticated'){
+              if ($("#water").val() == '') {
+                  alert("<%=_('\'Water consumption\' is a mandatory field').html_safe%>");
+                  isOk = false;
+              } else {
+                  if (isNaN($("#water").val())) {
+                      alert("<%=_('\'Water consumption\' must be numeric').html_safe%>");
+                      isOk = false;
+                  }
+              }
+              if ($("#electric").val() == '') {
+                  alert("<%=_('\'Electric energy consumption\' is a mandatory field').html_safe%>");
+                  isOk = false;
+              } else {
+                  if (isNaN($("#electric").val())) {
+                      alert("<%=_('\'Electric energy consumption\' must be numeric').html_safe%>");
+                      isOk = false;
+                  }
+              }
+              if ($("#heat").val() == '') {
+                  alert("<%=_('\'Heat energy consumption\' is a mandatory field').html_safe%>");
+                  isOk = false;
+              } else {
+                  if (isNaN($("#heat").val())) {
+                      alert("<%=_('\'Heat energy consumption\' must be numeric').html_safe%>");
+                      isOk = false;
+                  }
+              }
+              if ($("#waste").val() == '') {
+                  alert("<%=_('\'Quantity of sludge and waste (solid waste)\' is a mandatory field').html_safe%>");
+                  isOk = false;
+              } else {
+                  if (isNaN($("#waste").val())) {
+                      alert("<%=_('\'Quantity of sludge and waste (solid waste)\' must be numeric').html_safe%>");
+                      isOk = false;
+                  }
+              }
+              if ($("#ghg").val() == '') {
+                  alert("<%=_('\'Values of gas emissions to air\' is a mandatory field').html_safe%>");
+                  isOk = false;
+              } else {
+                  if (isNaN($("#ghg").val())) {
+                      alert("<%=_('\'Values of gas emissions to air\' must be numeric').html_safe%>");
+                      isOk = false;
+                  }
+              }
+              if ($("#pcbs").val() == '') {
+                  alert("<%=_('\'Level of PCBs production (all types together)\' is a mandatory field').html_safe%>");
+                  isOk = false;
+              } else {
+                  if (isNaN($("#pcbs").val())) {
+                      alert("<%=_('\'Level of PCBs production (all types together)\' must be numeric').html_safe%>");
+                      isOk = false;
+                  }
+              }
+
+          }
+
+
+
+	     return isOk;   
+	  }
+	  
+	  function goNext() {
+	     if (checkFields()) {
+	        $("#pc_basic_comments").val($("#comments").val());
+	        $("#pc_basic_assessment").val($("#assessment").val());
+	        $("#pc_basic_water").val($("#water").val());	        
+	        $("#pc_basic_electric").val($("#electric").val());
+	        $("#pc_basic_heat").val($("#heat").val());
+	        $("#pc_basic_waste").val($("#waste").val());
+	        $("#pc_basic_ghg").val($("#ghg").val());
+	        $("#pc_basic_pcbs").val($("#pcbs").val());
+
+	        document.forms[0].submit();
+	     }     
+	  }		  
+</script>
+		  
+<h1><%=_('Product Assessment').html_safe%>
+  <br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+
+<div class="content_skin">
+
+  <div class="lcamenu span-23 showdgrid last ">
+    <%= render(:partial => 'shared/lca/pc_tabs') %>
+  </div>
+  <div class="clear"></div>
+
+ <%= form_for @pc_basic do |f| %>
+  <input type="hidden" name="pc_basic[rohs_compliant]" id="pc_basic_rohs_compliant" value="<%=@pc_basic.rohs_compliant%>"/>
+  <input type="hidden" name="pc_basic[comments]" id="pc_basic_comments" value=""/>
+  <input type="hidden" name="pc_basic[assessment]" id="pc_basic_assessment" value=""/>
+  <input type="hidden" name="pc_basic[water]" id="pc_basic_water" value=""/>
+  <input type="hidden" name="pc_basic[electric]" id="pc_basic_electric" value=""/>
+  <input type="hidden" name="pc_basic[heat]" id="pc_basic_heat" value=""/>
+  <input type="hidden" name="pc_basic[waste]" id="pc_basic_waste" value=""/>
+  <input type="hidden" name="pc_basic[ghg]" id="pc_basic_ghg" value=""/>
+  <input type="hidden" name="pc_basic[pcbs]" id="pc_basic_pcbs" value=""/>            
+  
+  <fieldset style="border:1px solid #2b4950;padding-bottom:0px;">
+	  <div class="span-10" >
+	     <strong><%= _("Choose the country of the PCB production:").html_safe %></strong>
+	  </div>  
+	  <div class="span-6" >
+		  <select id="pc_basic_pc_country_info_id" name="pc_basic[pc_country_info_id]" class="span-4">
+		    <option value=""></option>
+		    <% @pc_country_infos.each do |pc_country_info| %>
+		        <% if @pc_product.pc_basic && @pc_product.pc_basic.pc_country_info && @pc_product.pc_basic.pc_country_info.id == pc_country_info.id %>
+		           <option value="<%=pc_country_info.id%>" selected="true"><%=pc_country_info.name.html_safe%></option>
+		        <% else %>
+		           <option value="<%=pc_country_info.id%>"><%=pc_country_info.name.html_safe%></option>
+		        <% end %>
+		    <% end %>   
+		  </select>
+		</div>
+   
+		<div class="clear"></div>    
+
+
+	<div class="span-10" >
+	  <%= f.label :pcb_mark, _('Mark of the PCB').html_safe %>
+	</div>  
+	<div class="span-5" >
+	  <%= f.text_field :pcb_mark, :style => "width:150px"%>
+	</div>
+  
+	
+  </fieldset>	  
+  
+  <fieldset class="empty">
+    <legend><%= _("PCB's main settings").html_safe %></strong></legend>
+
+  <style>
+    #dt { margin-left:40px;}
+    #dt p { margin-bottom:25px;}
+
+  </style>
+
+
+  <div id="dt">
+		<div class="span-5" >
+		  <%= f.label :pcb_type, _('Type of PCB').html_safe %>
+		</div>  
+		<div class="span-5" >
+		  <select id="pc_basic_pcb_type" name="pc_basic[pcb_type]" class="span-4">
+		     <% if @pc_product.pc_basic && @pc_product.pc_basic.pcb_type == 'elastic' %>
+			     <option value="rigid"><%=_('Rigid').html_safe%></option>
+	             <option value="elastic" selected="true"><%=_('Flexible').html_safe%></option>
+	         <% else %>
+			     <option value="rigid" selected="true"><%=_('Rigid').html_safe%></option>
+	             <option value="elastic"><%=_('Flexible').html_safe%></option>
+	         <% end %>    		     
+		  </select>
+		</div>
+		<div class="clear"></div>    
+  
+  
+		<div class="span-5" >
+		  <%= f.label :pcb_area, _('Area of PCB').html_safe %>
+		</div>  
+		<div class="span-5" >
+		  <%= f.text_field :pcb_area, :style => "width:150px"%> <%=_('m<sup>2</sup>').html_safe%>
+		</div>
+		<div class="clear"></div>    
+  
+		<div class="span-5" >
+		  <%= f.label :pcb_number, _('Number of PCBs').html_safe %>
+		</div>  
+		<div class="span-5" >
+		  <%= f.text_field :pcb_number, :style => "width:150px"%>
+		</div>
+		<div class="clear"></div>  
+
+		<div class="span-5" >
+		  <%= f.label :layers, _('Number of layers').html_safe %>
+		</div>  
+		<div class="span-5" >
+		  <%= f.text_field :layers, :style => "width:150px"%>
+		</div>
+		<div class="clear"></div>  
+
+  
+		  <div class="span-5" >
+		     <strong><%= _("Type of finish coating").html_safe %></strong>
+		  </div>  
+		  <div class="span-5" >
+			  <select id="pc_basic_pc_coating_type_id" name="pc_basic[pc_coating_type_id]" class="span-4">
+			    <option value=""></option>
+			    <% @pc_coating_types.each do |pc_coating_type| %>
+			        <% if @pc_product.pc_basic && @pc_product.pc_basic.pc_coating_type && @pc_product.pc_basic.pc_coating_type.id == pc_coating_type.id %>
+			           <option value="<%=pc_coating_type.id%>" selected="true"><%=pc_coating_type.name.html_safe%></option>
+			        <% else %>
+			           <option value="<%=pc_coating_type.id%>"><%=pc_coating_type.name.html_safe%></option>
+			        <% end %>   
+			    <% end %>   
+			  </select>
+			</div>
+			<div class="clear"></div>      
+        </div>
+  </fieldset>        
+        
+      <% end %>
+      <%= form_for PcTransportData.new, :remote => true do |f| %>
+        <input type="hidden" name="pc_transport_data[pc_product_id]" id="pc_product_id" value="<%=@pc_product.id%>"/>
+        <fieldset class="empty">
+        <legend><%=_('Transport').html_safe%></legend>
+        <p><%=_('Distance from producer to client [km]').html_safe%></p>
+	    <div class="span-6" > 
+	       <%= f.label :value, _('Type').html_safe %> 
+	       <br/>
+	        <select class="span-4" id="pc_transport_data_pc_transport_type_id" name="pc_transport_data[pc_transport_type_id]">         
+	         <% @pc_transport_types.each do |pc_transport_type| %>
+	            <option value="<%=pc_transport_type.id%>"><%=pc_transport_type.name.html_safe%></option>
+	         <% end %>
+	       </select>
+	    </div>
+	
+  	    <div class="span-6">
+  	      <%= f.label :distance, _('Distance').html_safe %> 
+	      <br />
+	      <%= f.text_field :distance, :style => "width:150px" %> <%=_('km').html_safe%>
+	    </div>
+
+        <div class="clear"></div>
+
+		<div class="span-3 buttons last">
+			<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+		</div>
+	
+	
+	<% end %>
+	<br>
+	
+	<table class="standard2">
+	    <tr class="add">
+	      <th class="span-6">
+	        <%=_('Type').html_safe %><br/>
+	      </th>
+	      <th class="span-6">
+	        <%=_('Distance').html_safe %><br/>
+	      </th>
+	      <th class="span-6">
+	        <%=_('Unit').html_safe %><br/>
+	      </th>
+	      
+	      <th class="span-1">
+	        &nbsp;
+	      </th>
+	    </tr>   
+	    <tbody id="pc_transport_datas">
+	      <%= render :partial => @pc_transport_datas %>
+	    </tbody>
+	</table>
+    </fieldset>
+     
+    <br/> 
+     
+    <fieldset class="empty"> 
+     <legend><%= _("Other information").html_safe %></legend>
+  
+ <div id="dt">    
+   
+	<div class="span-10" >
+	  <b><%=_('Is the PCB RoHS directive compliant?').html_safe %></b>
+	</div>  
+
+	<div class="span-5" >
+      <input type="hidden" name="pc_basic[assessment]" id="pc_basic_assessment" value=""/>	
+      <% if @pc_basic.rohs_compliant %>
+		  <% if @pc_basic.rohs_compliant == 'yes' %>
+		     <input type="radio" name="pcb_type_yes" id="pcb_type_yes" value="yes" checked="checked"><%=_('Yes').html_safe%> <input type="radio" name="pcb_type_no" id="pcb_type_no" value="no"><%=_('No').html_safe%>
+		  <% end %>
+		  <% if @pc_basic.rohs_compliant == 'no' %>
+		     <input type="radio" name="pcb_type_yes" id="pcb_type_yes" value="yes"><%=_('Yes').html_safe%> <input type="radio" name="pcb_type_no" id="pcb_type_no" value="no" checked="checked"><%=_('No').html_safe%>
+		  <% end %>
+		  <% if @pc_basic.rohs_compliant == '' %>
+		     <input type="radio" name="pcb_type_yes" id="pcb_type_yes" value="yes"><%=_('Yes').html_safe%> <input type="radio" name="pcb_type_no" id="pcb_type_no" value="no"><%=_('No').html_safe%>
+		  <% end %>
+		  
+     <% else %>
+	    <input type="radio" name="pcb_type_yes" id="pcb_type_yes" value="yes"><%=_('Yes').html_safe%> <input type="radio" name="pcb_type_no" id="pcb_type_no" value="no"><%=_('No').html_safe%>     
+     <% end %>		     
+	</div>
+	<div class="clear"></div>   
+    <br/>
+	<div class="span-10" >
+	  <b><%=_('Comments').html_safe %></b>
+	</div>  
+	<div class="span-5" >
+	  <textarea cols="45" id="comments" name="comments" rows="3" style="width:400px;"><%=@pc_basic.comments%></textarea>
+	</div>
+	<div class="clear"></div>    
+ </div>
+
+</fieldset> 
+    
+ 
+
+    
+<br/>
+
+ <fieldset class="empty">
+
+
+
+    <legend><%= _("Assessment method").html_safe %> <a title="<%=_('The Basic method is recommended for PCB or electronic products designers; the Sophisticated method is for PCBs producers - more information see Introduction').html_safe%>" href="#" class="tip_left">&nbsp;</a></legend>
+
+ <div id="dt">
+	<div class="span-10" >
+	  <b><%=_('Which type of assessment do you want to carry out?').html_safe %></b>
+	</div>  
+	<div class="span-5" >
+	  <select name="assessment" id="assessment" class="span-4">
+	     <% if @pc_basic.assessment == 'basic' %>
+	        <option value=""></option>
+	        <option value="basic" selected="true"><%=_('Basic').html_safe%></option>	      
+	        <option value="sophisticated"><%=_('Sophisticated').html_safe%></option>
+	     <% else %>
+	        <% if @pc_basic.assessment == 'sophisticated' %>	     
+		        <option value=""></option>	     
+		        <option value="basic"><%=_('Basic').html_safe%></option>	      
+		        <option value="sophisticated" selected="true"><%=_('Sophisticated').html_safe%></option>
+		    <% else %>
+		        <option value="" selected="true"></option>	     
+		        <option value="basic"><%=_('Basic').html_safe%></option>	      
+		        <option value="sophisticated"><%=_('Sophisticated').html_safe%></option>		    
+		    <% end %>    	     
+	     <% end %>   	     
+	  </select>
+	</div>
+	<div class="clear"></div> 
+ 
+
+  <div id="sophisticated" style="display:none">
+  <br/><br/>
+    <u><i><b><%= _("Please input the following information:").html_safe %></b></i></u>
+    <br/><br/>
+    <div class="span-10">
+     &nbsp;
+	</div>  
+	<div class="span-10" style="padding-bottom:15px">
+       <%= _("Annual values (12 months)").html_safe %>
+	</div>
+	<div class="clear"></div>   
+    
+	<div class="span-10">
+	  <b><%=_('Water consumption').html_safe %></b>
+	</div>  
+	<div class="span-10">
+	  <input type="text" name="water" id="water" value="<%=@pc_basic.water%>" style="width:150px"/>  <%=_('m<sup>3</sup>').html_safe%>
+	</div>
+	<div class="clear"></div>   
+
+	<div class="span-10">
+	  <b><%=_('Electric energy consumption').html_safe %></b>
+	</div>  
+	<div class="span-5" >
+	  <input type="text" name="electric" id="electric" value="<%=@pc_basic.electric%>" style="width:150px"/>  <%=_('kWh').html_safe%>	
+	</div>
+	<div class="clear"></div>   
+
+	<div class="span-10">
+	  <b><%=_('Heat energy consumption').html_safe %></b>
+	</div>  
+	<div class="span-5" >
+	  <input type="text" name="heat" id="heat" value="<%=@pc_basic.heat%>" style="width:150px"/>  <%=_('GJ').html_safe%>	
+	</div>
+	<div class="clear"></div>   
+
+	<div class="span-10">
+	  <b><%=_('Quantity of sludge and waste (solid waste)').html_safe %></b>
+	</div>  
+	<div class="span-5" >
+	  <input type="text" name="waste" id="waste" value="<%=@pc_basic.waste%>" style="width:150px"/>  <%=_('kg').html_safe%>	
+	</div>
+	<div class="clear"></div>   
+
+	<div class="span-10">
+	  <b><%=_('Values of gas emissions to air').html_safe %></b> <a title="<%=_('The measured or approval values of gas emissions to air coming from technological sources or emitters in the company').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+	</div>  
+	<div class="span-5" >
+	  <input type="text" name="ghg" id="ghg" value="<%=@pc_basic.ghg%>" style="width:150px"/>  <%=_('kg').html_safe%>	
+	</div>
+	<div class="clear"></div>   
+
+	<div class="span-10">
+	  <b><%=_('Level of PCBs production (all types together)').html_safe %></b>
+	</div>  
+	<div class="span-5" >
+	  <input type="text" name="pcbs" id="pcbs" value="<%=@pc_basic.pcbs%>" style="width:150px"/>  <%=_('m<sup>2</sup>').html_safe%>	
+	</div>
+	<div class="clear"></div>   
+
+  </div>
+  </div>
+</fieldset>
+
+  <div class="buttons span-5 last" style="float:right;text-align:right">
+    <button type="submit" class="positive" style="float:right;text-align:right" onclick="javascript:goNext();"> <img alt="Tick" src="/images/tick.png?1377781308"><%=_('Next step').html_safe%></button>
+  </div>
+
+  <br />
+  <br />
+  <br />
+
+
+    <div class="clear"></div>
+    <div class="navbar">
+      <!-- <div id="for-ie"> -->
+      <div>
+        <ul>
+          <li><%= link_to _('To Introduction').html_safe, pc_production_intro_url(@pc_product) %></li>
+          <li><%= link_to _('To Data Quality').html_safe, pc_data_quality_intro_path(@pc_product) %></li>
+          <li><%= link_to _('To Results').html_safe, pc_result_path(@product.pc_product) %></li>
+        </ul>
+      </div>
+    </div>
+
+
+    <div class="clear"></div>
+
+
+</div>

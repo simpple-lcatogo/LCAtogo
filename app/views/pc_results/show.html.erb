@@ -1,0 +1,197 @@
+<h1><%=_('Results').html_safe%>
+</h1>
+<script type="text/javascript">
+	 function generatePdf () {
+	   document.forms[0].submit();
+	 }
+</script>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+        <%= render(:partial => 'shared/pc_results/tabs') %>
+	</div>
+	
+	<div class="clear"></div>
+	
+    <h2><%=_('KEPIs DETAILED RESULTS').html_safe%></h2>
+
+	<table style="border:solid 1px" id="treeMain">
+	  <thead>
+	   <tr style="border:solid 1px">
+	     <th style="text-align:left;background:#2B4950;color:#EBEEDB"><%=_('Indicator').html_safe%></th>
+	     <th style="text-align:left;background:#2B4950;color:#EBEEDB"><%=_('Units').html_safe%></th>
+	     <th style="text-align:right;background:#2B4950;color:#EBEEDB"><%=_('For 1 PCB').html_safe%></th>
+	     <th style="text-align:right;background:#2B4950;color:#EBEEDB"><%=_('For').html_safe%> <%=@pc_product.pc_basic.pcb_number%> <%=_('PCBs').html_safe%></th>	     
+	   </tr>
+	  </thead>
+	  <% @indicators.each_with_index do |indicator, index| %>
+	   <% if @indicators_checked.include?indicator %>	  
+
+	     <% bg_color = "#006400" 
+	        if index == 0
+	           bg_color = "#696969" 
+	        end 
+	        if index == 1
+	           bg_color = "#9933FF"	        
+	        end 
+	        if index == 2
+	           bg_color = "#8B0000"	        
+	        end 
+	        if index == 3
+	           bg_color = "#1E90FF"	        
+	        end 
+	     
+	     %> 
+		      <% if index == 4 %>
+		      <tr>
+	             <td colspan="2" style="background:#006400;color:#FFF"><%=_('Possible materials for recycling:').html_safe%></td>
+	             <td colspan="2">&nbsp;</td>	        
+		      </tr>	 
+		       <% end %> 	     
+ 	      <tr>
+ 	         <% if indicator.name == 'Energy consumption'%>
+                <td style="background:<%=bg_color%>;color:#FFF"><%=_('Energy consumption Ec (Ec = Ecm+Ecp)').html_safe%></td>
+             <% else %>
+                <td style="background:<%=bg_color%>;color:#FFF"><%=indicator.name.html_safe%></td>
+             <% end %>   	        
+             <td style="background:<%=bg_color%>;color:#FFF"><%=indicator.unit.html_safe%></td>
+             <% @pc_result_values.each do |pc_result_value| %>
+                <% if pc_result_value.indicator.id == indicator.id %>
+	               <td style="text-align:right;"><%=lca_format_number(pc_result_value.value_one, 4) %></td>
+	               <td style="text-align:right;"><%=lca_format_number(pc_result_value.value_n, 2) %></td>	               
+	            <% end %>
+	         <% end %>    
+	      </tr>	  
+	      <% if index == 1 %>
+		      <tr>
+	             <td style="background:#9933FF;color:#FFF"><%=_('Ecm - Energy consumed during materials production for PCB').html_safe%></td>
+	             <td style="background:#9933FF;color:#FFF"><%=_('kWh').html_safe%></td>	        
+	             <td style="text-align:right;"><%=lca_format_number(@ecm, 4)%></td>
+	             <td style="text-align:right;"><%=lca_format_number(@ecm * @pc_product.pc_basic.pcb_number, 2)%></td>             
+		      </tr>
+		      <tr>
+	             <td style="background:#9933FF;color:#FFF"><%=_('Ecp - Energy consumed during production processes of the PCB').html_safe%></td>
+	             <td style="background:#9933FF;color:#FFF"><%=_('kWh').html_safe%></td>	        
+	             <td style="text-align:right;"><%=lca_format_number(@ecp, 4)%></td>
+	             <td style="text-align:right;"><%=lca_format_number(@ecp * @pc_product.pc_basic.pcb_number, 2)%></td>             
+		      </tr>	   
+		      	   
+	      <% end %>	       
+	      <% if index == 3 %>
+		      <tr>
+	             <td style="background:#1E90FF;color:#FFF"><%=_('CF of materials').html_safe%></td>
+	             <td style="background:#1E90FF;color:#FFF"><%=_('kg CO2 eq').html_safe%></td>	        
+	             <td style="text-align:right;"><%=lca_format_number(@cf_m, 4)%></td>
+	             <td style="text-align:right;"><%=lca_format_number(@cf_m * @pc_product.pc_basic.pcb_number, 2)%></td>             
+		      </tr>	   	      
+		      <tr>
+	             <td style="background:#1E90FF;color:#FFF"><%=_('CF of production processes').html_safe%></td>
+	             <td style="background:#1E90FF;color:#FFF"><%=_('kg CO2 eq').html_safe%></td>
+	             <td style="text-align:right;"><%=lca_format_number(@cf_p, 4)%></td>
+	             <td style="text-align:right;"><%=lca_format_number(@cf_p * @pc_product.pc_basic.pcb_number, 2)%></td>
+		      </tr>	   	      
+		      <tr>
+	             <td style="background:#1E90FF;color:#FFF"><%=_('CF of gas emissions to air').html_safe%></td>
+	             <td style="background:#1E90FF;color:#FFF"><%=_('kg CO2 eq').html_safe%></td>
+	             <td style="text-align:right;"><%=lca_format_number(@cf_ghg, 4)%></td>
+	             <td style="text-align:right;"><%=lca_format_number(@cf_ghg * @pc_product.pc_basic.pcb_number, 2)%></td>
+		      </tr>	   	      
+		      <tr>
+	             <td style="background:#1E90FF;color:#FFF"><%=_('CF of transport').html_safe%></td>
+	             <td style="background:#1E90FF;color:#FFF"><%=_('kg CO2 eq').html_safe%></td>
+	             <td style="text-align:right;"><%=lca_format_number(@cf_t, 4)%></td>
+	             <td style="text-align:right;"><%=lca_format_number(@cf_t * @pc_product.pc_basic.pcb_number, 2)%></td>             	        
+		      </tr>	   	      
+		      <% end %>  
+ 	      
+	      <% end %>
+      <% end %>
+	</table>
+	<br/>
+	
+
+<% if @pc_product.pc_basic.rohs_compliant %>
+	<table style="border:solid 1px">
+	  <tr>
+	    <td colspan="2" style="text-align:left;background:#2B4950;color:#EBEEDB">
+	       <b><%=_('ROHS compliance information').html_safe%></b>
+	    </td>
+	  </tr>
+	  <tr style="border:solid 1px">
+	    <td colspan="2" style="border:solid 1px">
+	     
+	          <% if @pc_product.pc_basic.rohs_compliant == 'yes' %>
+	             <%=_('The product marked').html_safe%> <%=@pc_product.pc_basic.pcb_mark%> <%=_('meets the EU-directive 2011/65/EU (RoHS) requirements.').html_safe%>
+	          <% end %>   
+	          <% if @pc_product.pc_basic.rohs_compliant == 'no' %>	          
+	             <%=_('The product marked').html_safe%> <%=@pc_product.pc_basic.pcb_mark%> <%=_('does not meet the EU-directive 2011/65/EU (RoHS) requirements.').html_safe%>
+	          <% end %>   
+	       
+	    </td>
+	  </tr>
+	  <tr style="border:solid 1px">
+	    <td style="border:solid 1px;width:100px;background:#2B4950;color:#FFF;border:0px"><%=_('Comments').html_safe%></td>
+	    <td style="border:solid 1px"><%=@pc_product.pc_basic.comments%></td>	    
+	  </tr>
+	</table>  
+<% end %>	
+<% if @graphic_ticks %>
+  <h1><%=_('CARBON FOOTPRINT (CF)').html_safe%> <span style="font-size:16px"></span></h1>
+
+
+<%
+	   max_min_array = ""
+	   min_tmp = @min_graphic
+	   step = (@max_graphic - @min_graphic) / 10
+	 
+	   while min_tmp <= @max_graphic
+	      max_min_array += "|" + min_tmp.to_i.to_s
+	      min_tmp += step
+	   end
+	   max_min_array += "|" + min_tmp.to_i.to_s
+	    %>
+<br/>
+   <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=18&amp;chts=2B4950,16,l&amp;chxt=x,y&amp;cht=bhg&amp;chds=<%=@min_graphic%>,<%=@max_graphic%>&amp;chd=t:<%=@graphic_values%>&amp;chco=<%=@graphic_colors%>&amp;chls=2.0&amp;chs=800x<%=((6 * 21) / 1) + 32 %>&amp;chxl=0:<%=max_min_array%>|1:|<%=@graphic_ticks%>&amp;chm=N*f2*,000000,0,-1,11,,:10:&amp;chxs=1,,11,-1,lt"
+     style="padding-right:20px;padding-bottom:00px;">
+     
+    <div style="width:800px;text-align:center;font-size:11px;color:#888888">
+       <%=_('kg CO<sub>2</sub> eq').html_safe%> 
+    </div>     
+    <br/><br/>
+  <div class="clear"></div>
+	
+<% end %>	
+	
+    <div class="buttons last" style="float:left">
+	    <input type="hidden" name="product_id" id="product_id" value="<%=@product.id%>"/>
+	    <button type="button" class="positive" style="float:left" onClick="javascript:generatePdf();"> <%= image_tag 'page_white_acrobat.png' %><%= _("Generate PDF").html_safe %></button>		
+    </div>   	
+	
+   <div class="buttons last" style="float:right;text-align:right">
+     <a href="<%=pc_comparison_url(@st_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Next step").html_safe %></a>
+   </div>
+	
+	
+   <%= form_tag '/pc_results/pdf' do %>
+        <input type="hidden" name="pc_result_id" id="pc_result_id" value="<%=@pc_product.id%>"/>
+   <% end %>		
+	
+
+   <div class="clear"></div>
+   <div class="navbar">
+     <!-- <div id="for-ie"> -->
+     <div>
+       <ul>
+         <li><%= link_to _('To Introduction').html_safe, pc_production_intro_url(@pc_product) %></li>
+         <li><%= link_to _('To Data Entry').html_safe, pc_basic_url(@pc_product) %></li>
+         <li><%= link_to _('To Data Quality').html_safe, pc_data_quality_intro_path(@pc_product) %></li>
+       </ul>
+     </div>
+   </div>
+
+
+   <div class="clear"></div>
+
+
+</div>

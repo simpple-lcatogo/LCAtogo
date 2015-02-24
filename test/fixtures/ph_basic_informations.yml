@@ -1,0 +1,25 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  ph_product_id: 1
+  ph_country_info_id: 1
+  radiation: 1.5
+  temperature: 1.5
+  mounting_type_id: 1
+  perfomance_ratio: 1.5
+  known: MyString
+  module_types: MyString
+  co2_factor: 1.5
+  conversion_factor: 1.5
+
+two:
+  ph_product_id: 1
+  ph_country_info_id: 1
+  radiation: 1.5
+  temperature: 1.5
+  mounting_type_id: 1
+  perfomance_ratio: 1.5
+  known: MyString
+  module_types: MyString
+  co2_factor: 1.5
+  conversion_factor: 1.5

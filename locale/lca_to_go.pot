@@ -1,0 +1,859 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the lca_to_go package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: lca_to_go 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-08-11 15:28+0200\n"
+"PO-Revision-Date: 2014-08-11 15:28+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+msgid "% of materials in the machine tool"
+msgstr ""
+
+msgid "% of the total material input is discarded as waste"
+msgstr ""
+
+msgid "% of the total weight of your machine tool."
+msgstr ""
+
+msgid "1. Compare your product with:"
+msgstr ""
+
+msgid "2. Choose LCA items to compare"
+msgstr ""
+
+msgid "230V supply"
+msgstr ""
+
+msgid "24V supply"
+msgstr ""
+
+msgid ":CED over entire lifetime"
+msgstr ""
+
+msgid "Actual mode of transport, distances and packaging materials are known."
+msgstr ""
+
+msgid "Actual mode of transport, distances and packaging materials are unknown and therefore based on assumptions."
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "Add any necessary comments needed here such as assumption made."
+msgstr ""
+
+msgid "Additional energy flow"
+msgstr ""
+
+msgid "Additional manufacturing energy"
+msgstr ""
+
+msgid "Air compressor"
+msgstr ""
+
+msgid "Assessment method"
+msgstr ""
+
+msgid "At the bottom right of the image there is a pull down menu option to select the scenario that you want to be used in the initial calculation."
+msgstr ""
+
+msgid "Author"
+msgstr ""
+
+msgid "Batteries"
+msgstr ""
+
+msgid "CNC air-conditioning"
+msgstr ""
+
+msgid "CNC total"
+msgstr ""
+
+msgid "Cabling"
+msgstr ""
+
+msgid "Chip conveyor"
+msgstr ""
+
+msgid "Comments"
+msgstr ""
+
+msgid "Comparison"
+msgstr ""
+
+msgid "Component"
+msgstr ""
+
+msgid "Component name"
+msgstr ""
+
+msgid "Component type"
+msgstr ""
+
+msgid "Consumable"
+msgstr ""
+
+msgid "Cooling fan"
+msgstr ""
+
+msgid "Country Energy Mix"
+msgstr ""
+
+msgid "DATA ENTRY"
+msgstr ""
+
+msgid "DATA QUALITY"
+msgstr ""
+
+msgid "DQI"
+msgstr ""
+
+msgid "Data"
+msgstr ""
+
+msgid "Data Entry"
+msgstr ""
+
+msgid "Data Quality"
+msgstr ""
+
+msgid "Data Quality Indicators"
+msgstr ""
+
+msgid "Data Update"
+msgstr ""
+
+msgid "Data entry"
+msgstr ""
+
+msgid "Data from on-site measurement ie. energy consumption measurement according to a standard e.g. ISO/CD 14955."
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Description of the product"
+msgstr ""
+
+msgid "Detailed Assessment"
+msgstr ""
+
+msgid "Detailed Results"
+msgstr ""
+
+msgid "Detailed assessment"
+msgstr ""
+
+msgid "Detailed results"
+msgstr ""
+
+msgid "Distance"
+msgstr ""
+
+msgid "Distribution"
+msgstr ""
+
+msgid "Distribution - CED of the Transport and Packaging"
+msgstr ""
+
+msgid "Distribution of machine (with packaging). Estimation of distances and means of transportation."
+msgstr ""
+
+msgid "Distribution options"
+msgstr ""
+
+msgid "E-R module supply"
+msgstr ""
+
+msgid "Efficiency"
+msgstr ""
+
+msgid "Electrical Energy per Product Ratio"
+msgstr ""
+
+msgid "Electrical Power Consumption"
+msgstr ""
+
+msgid "Electrical energy consumption in the use phase of the machine tool over its lifetime"
+msgstr ""
+
+msgid "End of life"
+msgstr ""
+
+msgid "End of life - CED in [MJ]"
+msgstr ""
+
+msgid "End of life scenario"
+msgstr ""
+
+msgid "End of life scenario is assumed based on general experience and representative examples."
+msgstr ""
+
+msgid "End of life scenario is predefined and known."
+msgstr ""
+
+msgid "End of life scenario is roughly estimated."
+msgstr ""
+
+msgid "End-of-life"
+msgstr ""
+
+msgid "Energy"
+msgstr ""
+
+msgid "Energy consumption data from general energy balance of the plant allocated to the specific machine tool. No differentiation in shifts and production, ready for operation and standby mode."
+msgstr ""
+
+msgid "Energy consumption data from product data sheet or measured according to own standards. Differentiation in Shifts and production, ready for operation and standby mode."
+msgstr ""
+
+msgid "Enter a memorable title for the shift scenario that you are considering. E.g. Standard 3 shift scenario."
+msgstr ""
+
+msgid "Enter details of the typical method of distribution of your product. If it travels a portion by road and a portion by sea then select add and record the other forms of transport used."
+msgstr ""
+
+msgid "Enter number of good parts produced during processing state within one hour."
+msgstr ""
+
+msgid "Enter the amount of material removed through processing (e.g. weight of metal chippings from drilling)."
+msgstr ""
+
+msgid "Enter the number of shifts per day that you are considering, it may be one 8 hour shift each day or it may be three 8 hour shifts each day."
+msgstr ""
+
+msgid "Enter the total weight of the standard packaging that you use in the majority of cases."
+msgstr ""
+
+msgid "Enter the typical hours in your selected scenario when the process is actually producing parts, when it is in the Ready for operation mode, in Standby mode and when the machine is turned Off completely, with no power consumption. It is unusual for a machine to be in full production for a full 24 hours, it may be stopped for planned maintenance, or in a manually operated machine the operator may have a break which should be considered, or turned &quot;Off&quot; overnight."
+msgstr ""
+
+msgid "Environmental Assessment"
+msgstr ""
+
+msgid "Export table to Excel"
+msgstr ""
+
+msgid "Family"
+msgstr ""
+
+msgid "Fan ER module"
+msgstr ""
+
+msgid "Fluid system"
+msgstr ""
+
+msgid "For ease of use, the database of available materials has been kept small. Should the material you are looking for not be included in the list, please use a similar material as a substitute."
+msgstr ""
+
+msgid "Form of Energy"
+msgstr ""
+
+msgid "Framing/Panel"
+msgstr ""
+
+msgid "General"
+msgstr ""
+
+msgid "Generate PDF"
+msgstr ""
+
+msgid "Give a description or a name to each of your scenarios, e.g. 1 Shift, 2 shifts, 3 shifts."
+msgstr ""
+
+msgid "Give each of the components a name for your own traceability."
+msgstr ""
+
+msgid "Graphic Results"
+msgstr ""
+
+msgid "Graphic results"
+msgstr ""
+
+msgid "Hours per day"
+msgstr ""
+
+msgid "Hydraulic system"
+msgstr ""
+
+msgid "IMPROVEMENTS"
+msgstr ""
+
+msgid "INDICATOR"
+msgstr ""
+
+msgid "INTRODUCTION"
+msgstr ""
+
+msgid "If any electricity consumption related to the product manufacturing has not been recorded in the previous section use this opportunity to record the kWh."
+msgstr ""
+
+msgid "Illustrative"
+msgstr ""
+
+msgid "Improvement Guidelines"
+msgstr ""
+
+msgid "Improvements"
+msgstr ""
+
+msgid "In this section you can highlight the quality of the data that you entered as part of the study, defining whether it is robust, indicative or just illustrative."
+msgstr ""
+
+msgid "In this state the machine is idle, it is not machining. This could be a scenario when a workpiece is not in the machine. Enter the Electrical Power Consumption when the machine is in this state in kW."
+msgstr ""
+
+msgid "In this state the machine is in production and is machining or carrying out its primary function. Enter the Electrical Power Consumption when the machine is in this state in kW."
+msgstr ""
+
+msgid "In this state the machine is not ready to process parts, fluids may not be at the operating temperature, the machine may be in a mode that allows maintenance to take place. Enter the Electrical Power Consumption when the machine is in this state in kW."
+msgstr ""
+
+msgid "In your scenario what is the typical hourly production rate on your product."
+msgstr ""
+
+msgid "Incineration"
+msgstr ""
+
+msgid "Indicate the material mass contained in the final supplier part. Also define what process the supplier most likely carried out in the manufacture of the part. Once you have selected a process, a ‘Value’ box with further instructions will appear. E.g. Supplier part is a 'Cooling and Lubrication unit' containing; among other materials; 1,000 kg steel with holes drilled for mounting. Assume that 10% of the final mass were discarded as chippings and select 'Drilling Steel', entering a 'Value' of 100 kg. etc."
+msgstr ""
+
+msgid "Indicate your product/process type"
+msgstr ""
+
+msgid "Indicative"
+msgstr ""
+
+msgid "Input the kWh energy consumption to manufacture and assemble your product until the point where it is ready for shipping."
+msgstr ""
+
+msgid "Insolation"
+msgstr ""
+
+msgid "Introduction"
+msgstr ""
+
+msgid "Inverter"
+msgstr ""
+
+msgid "Landfill"
+msgstr ""
+
+msgid "Lifetime"
+msgstr ""
+
+msgid "METHOD"
+msgstr ""
+
+msgid "MJ"
+msgstr ""
+
+msgid "Machine sub-system"
+msgstr ""
+
+msgid "Machine sub-systems"
+msgstr ""
+
+msgid "Main manufacturing process"
+msgstr ""
+
+msgid "Maintenance"
+msgstr ""
+
+msgid "Manufacturing"
+msgstr ""
+
+msgid "Manufacturing - CED of the different Manufacturing inputs"
+msgstr ""
+
+msgid "Manufacturing process"
+msgstr ""
+
+msgid "Manufacturing resources"
+msgstr ""
+
+msgid "Manufacturing waste"
+msgstr ""
+
+msgid "Material"
+msgstr ""
+
+msgid "Materials"
+msgstr ""
+
+msgid "Materials - CED of different machine components"
+msgstr ""
+
+msgid "Materials and masses are based partly on assumptions e.g. data from other models or default data is used as input in some parts."
+msgstr ""
+
+msgid "Materials and masses are taken from a manufacturers bill of material of the assessed product."
+msgstr ""
+
+msgid "Materials/Processes"
+msgstr ""
+
+msgid "Mist collector"
+msgstr ""
+
+msgid "Module/Laminate"
+msgstr ""
+
+msgid "Monitoring module"
+msgstr ""
+
+msgid "Mounting"
+msgstr ""
+
+msgid "My products"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Name of current product"
+msgstr ""
+
+msgid "Name of the product"
+msgstr ""
+
+msgid "Next step"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Number of shifts per day"
+msgstr ""
+
+msgid "Numbers"
+msgstr ""
+
+msgid "Off"
+msgstr ""
+
+msgid "On-site measured resource consumption (energy, gas, waste, etc.)."
+msgstr ""
+
+msgid "Only default data is used or data are based rough on assumptions in percent of total weight."
+msgstr ""
+
+msgid "Only default data is used or the input is entirely based on rough assumptions."
+msgstr ""
+
+msgid "Operating resources"
+msgstr ""
+
+msgid "Optimized System"
+msgstr ""
+
+msgid "Options"
+msgstr ""
+
+msgid "Organisation"
+msgstr ""
+
+msgid "Other"
+msgstr ""
+
+msgid "Overhead energy"
+msgstr ""
+
+msgid "Overhead energy - i.e. Energy not related to a specific process but needed for manufacture, e.g. Air Conditioning, Lighting, Heating, etc.. Please indicate the value per product being evaluated in this study."
+msgstr ""
+
+msgid "Overland"
+msgstr ""
+
+msgid "Overseas"
+msgstr ""
+
+msgid "Packaging"
+msgstr ""
+
+msgid "Part of the Distribution chain (transport mode, distance or packaging) are based on assumptions."
+msgstr ""
+
+msgid "Parts produced per hour"
+msgstr ""
+
+msgid "Percentages"
+msgstr ""
+
+msgid "Performance Ratio"
+msgstr ""
+
+msgid "Please define the End-of-life treatment for all materials"
+msgstr ""
+
+msgid "Please enter a recognisable reference name for the part or component that you are entering."
+msgstr ""
+
+msgid "Please enter the number of days per year when it is planned for your product to be in production."
+msgstr ""
+
+msgid "Please enter the relevant data below if your part or component is not listed in the Predefined supplier parts above."
+msgstr ""
+
+msgid "Please indicate for each of the life cycle phases if the data that you entered is either Robust, Indicative, or Illustrative."
+msgstr ""
+
+msgid "Please indicate the total machine weight, without packaging."
+msgstr ""
+
+msgid "Please indicate the typical machine lifetime in years assuming an average use intensity."
+msgstr ""
+
+msgid "Please indicate the weight of material removed in chipping processes or the amount of material processed in non-chipping processes."
+msgstr ""
+
+msgid "Please indicate which type of machine tool you will be evaluating. (eg. Drilling machine, milling machine, etc.)"
+msgstr ""
+
+msgid "Please list any raw materials that are used in the manufacture or assembly of your product."
+msgstr ""
+
+msgid "Please select a recognisable reference name for the part or component that you are entering."
+msgstr ""
+
+msgid "Please select supplier parts which have been predefined, if your part or supplier is not listed you may define your own supplier parts and components below."
+msgstr ""
+
+msgid "Please select the main use scenario for which the breakdown of energy consumption per sub-system will be calculated"
+msgstr ""
+
+msgid "Please select the typical method of transportation used by the supplier."
+msgstr ""
+
+msgid "Predefined supplier parts"
+msgstr ""
+
+msgid "Previous step"
+msgstr ""
+
+msgid "Process"
+msgstr ""
+
+msgid "Processing"
+msgstr ""
+
+msgid "Product Assessment"
+msgstr ""
+
+msgid "Product definition"
+msgstr ""
+
+msgid "Projected System"
+msgstr ""
+
+msgid "Quantity"
+msgstr ""
+
+msgid "RESULTS"
+msgstr ""
+
+msgid "Raw materials"
+msgstr ""
+
+msgid "Ready"
+msgstr ""
+
+msgid "Ready for operation"
+msgstr ""
+
+msgid "Record any additional resources that are consumed during the use phase of the product."
+msgstr ""
+
+msgid "Record any data here related to other forms of energy resources that are consumed during the use phase."
+msgstr ""
+
+msgid "Record any waste from the manufacture of your product, including the material removed in the above specified processes."
+msgstr ""
+
+msgid "Record the total weight of waste material from your manufacturing phase to produce your product."
+msgstr ""
+
+msgid "Record the type of packaging that is typically used including the weight and what happens to the packaging at the end of its life."
+msgstr ""
+
+msgid "Recycling"
+msgstr ""
+
+msgid "Resource"
+msgstr ""
+
+msgid "Results"
+msgstr ""
+
+msgid "Results of indicators can be displayed as &quot;Number&quot; or as &quot;Percentages&quot; of the total value."
+msgstr ""
+
+msgid "Robust"
+msgstr ""
+
+msgid "Rough Assessment"
+msgstr ""
+
+msgid "Rough assessment"
+msgstr ""
+
+msgid "Saving..."
+msgstr ""
+
+msgid "Scenario 1"
+msgstr ""
+
+msgid "Scenario 2"
+msgstr ""
+
+msgid "Scenario 3"
+msgstr ""
+
+msgid "Select a rough assessment if this is your initial study of your product or process. If you have already completed a rough assessment and you have highlighted your main lifecycle phases that you want to look at in more detail then you should select the Detailed assessment option."
+msgstr ""
+
+msgid "Select and add the main manufacturing processes that are used to produce the components in your product or the product itself."
+msgstr ""
+
+msgid "Select one of the three End of Life scenarios"
+msgstr ""
+
+msgid "Select the country that supplies the electricity to the machine."
+msgstr ""
+
+msgid "Select the family category that your part most belongs too."
+msgstr ""
+
+msgid "Select this option if the product will be mainly incinerated."
+msgstr ""
+
+msgid "Select this option if the product will be mainly recycled."
+msgstr ""
+
+msgid "Select this option if the product will be mainly sent to Landfill."
+msgstr ""
+
+msgid "Shift 1"
+msgstr ""
+
+msgid "Shift 2"
+msgstr ""
+
+msgid "Shift 3"
+msgstr ""
+
+msgid "Shift regime"
+msgstr ""
+
+msgid "Significance assessment"
+msgstr ""
+
+msgid "Specify the volumen of packaging per product."
+msgstr ""
+
+msgid "Spindle cooling pump"
+msgstr ""
+
+msgid "Stand by"
+msgstr ""
+
+msgid "Standby"
+msgstr ""
+
+msgid "Sub-system"
+msgstr ""
+
+msgid "Supplier name"
+msgstr ""
+
+msgid "Supplier part"
+msgstr ""
+
+msgid "Supplier part name"
+msgstr ""
+
+msgid "Supplier parts"
+msgstr ""
+
+msgid "Supply Country"
+msgstr ""
+
+msgid "Switch to"
+msgstr ""
+
+msgid "The 'Significance Assessment' is a visible feature that allows the user to highlight the significant aspects of the study. The user is free to modify the range at which the different colours apply."
+msgstr ""
+
+msgid "The output of the study will highlight the environmental impact of your product in the five different Life Cycle Phases: Raw Materials, Manufacturing, Distribution, Use, and End of Life and will list possible improvement options for the use phase."
+msgstr ""
+
+msgid "The total energy consumption of the plant is used to estimate the energy consumption per manufactured machine. Predefined processes are used. No overhead energy is considered."
+msgstr ""
+
+msgid "This page illustrates the main results from the data that you have just entered. The Detailed results tab will show the actual MJ (MegaJoules) value calculated for each of the categories. The Graphic Results tab will show the results in a graphical format using bar and pie charts. The Comparison tab will allow a comparison of the results of other studies carried out by the user, this may be helpful to compare the impact of the use of different materials or different use scenarios."
+msgstr ""
+
+msgid "Tick the box which applies in the majority of cases, if you mainly distribute your product in continental Europe then select overland, if a significant portion of the distribution is to customers overseas (USA, Asia, ...) then select overseas."
+msgstr ""
+
+msgid "To Data Entry"
+msgstr ""
+
+msgid "To Data Quality"
+msgstr ""
+
+msgid "To Improvements"
+msgstr ""
+
+msgid "To Introduction"
+msgstr ""
+
+msgid "To Method"
+msgstr ""
+
+msgid "To Results"
+msgstr ""
+
+msgid "Total"
+msgstr ""
+
+msgid "Total energy consumption"
+msgstr ""
+
+msgid "Total weight"
+msgstr ""
+
+msgid "Transport"
+msgstr ""
+
+msgid "Transport type"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Type/Source"
+msgstr ""
+
+msgid "UNITS"
+msgstr ""
+
+msgid "Unasigned remaining energy"
+msgstr ""
+
+msgid "Unassigned remaining energy"
+msgstr ""
+
+msgid "Unit"
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+msgid "Use"
+msgstr ""
+
+msgid "Use this section to add details of the sub-systems within the product that consume energy."
+msgstr ""
+
+msgid "Use this section to enter details for different use scenarios for your product."
+msgstr ""
+
+msgid "Use this section to record the end of life scenario for all listed items that have previously been entered."
+msgstr ""
+
+msgid "Use: Cumulative Energy Demand of the electricity consumption, other energy consumption and operating resources in different use Scenarios [MJ]"
+msgstr ""
+
+msgid "Use: Cumulative energy demand for the electricity consumption per machine sub-system in the "
+msgstr ""
+
+msgid "User defined supplier parts"
+msgstr ""
+
+msgid "Value"
+msgstr ""
+
+msgid "Version of the product"
+msgstr ""
+
+msgid "Waste"
+msgstr ""
+
+msgid "Waste in production"
+msgstr ""
+
+msgid "Waste in production process"
+msgstr ""
+
+msgid "Waste streams"
+msgstr ""
+
+msgid "Welcome to the LCA to go tool for Machine Tools. If your company produces or uses any industrial machine then this webtool will help you analyse your product from an environmental perspective, specifically in calculating the Cumulative Energy Demand, also known as grey energy, in [MJ]. The webtool is straightforward and will guide you through the various Life Cycle Phases step by step where you can enter data that you have to hand. You do not have to have previous Life Cycle Assessment experience to apply the tool. The tool will be as accurate as the quality of the information that you can supply and the assumptions that you make. The output of the study will highlight the environmental impact of your product in the five different Life Cycle Phases (Raw Materials, Manufacturing, Distribution, Use, and End of Life) and it will suggest improvement options based on the information that has been provided."
+msgstr ""
+
+msgid "With the checkboxes you can determine which parts and to what level of detail of the life cycle you want to display in the 'Percentage' graph on the following page."
+msgstr ""
+
+msgid "Working days per year"
+msgstr ""
+
+msgid "You have accounted for"
+msgstr ""
+
+msgid "You have declared details for"
+msgstr ""
+
+msgid "You should aim to account for at least 80% of the total weight of your machine tool to allow a robust calculation of the environmental impact to be calculated. The tool will only take into account the material weight provided."
+msgstr ""
+
+msgid "You should aim to account for at least 80% of the total weight of your machine tool to allow a robust calculation of the environmental impact. The tool will only take into account the material weight provided."
+msgstr ""
+
+msgid "[MJ]"
+msgstr ""
+
+msgid "day(s)/year"
+msgstr ""
+
+msgid "hours"
+msgstr ""
+
+msgid "kW"
+msgstr ""
+
+msgid "kWh"
+msgstr ""
+
+msgid "kWh/part"
+msgstr ""
+
+msgid "kg"
+msgstr ""
+
+msgid "kg/h"
+msgstr ""
+
+msgid "km"
+msgstr ""
+
+msgid "parts/hour"
+msgstr ""
+
+msgid "shift(s)/day"
+msgstr ""
+
+msgid "years"
+msgstr ""

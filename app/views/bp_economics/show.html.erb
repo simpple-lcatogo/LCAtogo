@@ -1,0 +1,296 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#bp_electronic_economic_bp_economical_phase_id").change(function(){
+            var id_value_string = $(this).val();
+            if ((id_value_string == "") ||  (id_value_string == null)) {
+                // if the id is empty remove all the sub_selection options from being selectable and do not do any ajax
+                $("#bp_electronic_economic_bp_economical_family_id option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#bp_electronic_economic_bp_economical_family_id");
+            }
+            else {
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'bp_economical_families_for_phase'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                       $("#bp_electronic_economic_bp_economical_family_id option").remove();
+                       var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.bp_economical_family.id + "\">" + j.bp_economical_family.name + "</option>";  
+                            $(row).appendTo("select#bp_electronic_economic_bp_economical_family_id");                    
+                        }); 
+                        $("#bp_electronic_economic_bp_economical_family_id").change();          
+                     }
+                });
+             };   
+           });
+           
+           
+           
+           
+        $("#bp_electronic_economic_bp_economical_family_id").change(function(){
+                var id_value_string = $(this).val();
+                var phase_id = document.getElementById("bp_electronic_economic_bp_economical_phase_id").value;
+                var phase_selected = $("#bp_electronic_economic_bp_economical_phase_id option[value='" + phase_id + "']").text();
+                var text_selected = $("#bp_electronic_economic_bp_economical_family_id option[value='" + id_value_string + "']").text();
+                var isEnergy = false;
+                document.getElementById("material_flow").style.display = 'none';
+                document.getElementById("compound_material_flow").style.display = 'none';
+                document.getElementById("vehicle_flow").style.display = 'none';
+                document.getElementById("manufacturing_process_flow").style.display = 'none';
+                document.getElementById("distribution_default_value_flow").style.display = 'none';
+                $("#bp_electronic_economic_bp_material_id option").remove();
+                $("#bp_electronic_economic_bp_compound_material_id option").remove();
+                $("#bp_electronic_economic_bp_vehicle_id option").remove();
+                $("#bp_electronic_economic_bp_manufacturing_process_id option").remove();
+                $("#bp_electronic_economic_bp_distribution_user_value_id option").remove();
+                $("#bp_electronic_economic_bp_manufacturing_process_id option").remove();
+                
+                
+                if (text_selected == 'Raw materials') {
+                   document.getElementById("material_flow").style.display = 'block';
+                } 
+                if (text_selected == 'Compounding materials and master-batch') {
+                   document.getElementById("compound_material_flow").style.display = 'block';
+                } 
+                if ((text_selected == '') || (text_selected == 'Transport')) {
+                   document.getElementById("vehicle_flow").style.display = 'block';
+                } 
+                if (text_selected == 'Processes') {
+                   document.getElementById("manufacturing_process_flow").style.display = 'block';
+                }
+                if (text_selected == 'Finishing') {
+                   document.getElementById("manufacturing_process_flow").style.display = 'block';
+                } 
+                 
+                if (text_selected == 'Packaging') {
+                   document.getElementById("distribution_default_value_flow").style.display = 'block';
+                } 
+               if ((text_selected == 'Transport') || (phase_selected == 'Transport')) {
+                   document.getElementById("unit_span").innerHTML = "&euro; / kg*km";
+                } else {
+                   document.getElementById("unit_span").innerHTML = "&euro; / kg";
+                }  
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, bp_phase_id: phase_id, bp_product_id: <%=@bp_product.id%>, type: 'bp_economical_flows_for_family'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                       $("#electronic_economic_material_id option").remove();
+                       $("#electronic_economic_energy_type_id option").remove();                       
+                       var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){                            
+                            if (j.bp_material != null) {
+                               row = "<option value=\"" + j.bp_material.id + "\">" + j.bp_material.name + "</option>";
+                               $(row).appendTo("select#bp_electronic_economic_bp_material_id");                               
+                            } 
+                            if (j.bp_compound_material != null) {                            
+                               row = "<option value=\"" + j.bp_compound_material.id + "\">" + j.bp_compound_material.name + "</option>";
+                               $(row).appendTo("select#bp_electronic_economic_bp_compound_material_id");                               
+                            }
+                            if (j.bp_vehicle != null) {                            
+                               row = "<option value=\"" + j.bp_vehicle.id + "\">" + j.bp_vehicle.name + "</option>";
+                               $(row).appendTo("select#bp_electronic_economic_bp_vehicle_id");                               
+                            }
+                            if (j.bp_manufacturing_process != null) {                            
+                               row = "<option value=\"" + j.bp_manufacturing_process.id + "\">" + j.bp_manufacturing_process.name + "</option>";
+                               $(row).appendTo("select#bp_electronic_economic_bp_manufacturing_process_id");                               
+                            }
+                            if (j.bp_distribution_default_value != null) {
+                               row = "<option value=\"" + j.bp_distribution_default_value.id + "\">" + j.bp_distribution_default_value.name + "</option>";
+                               $(row).appendTo("select#bp_electronic_economic_bp_distribution_default_value_id");                               
+                                
+                            }
+                    
+                    
+                    
+                        }); 
+                        $("#electronic_economic_material_id").change();   
+                        $("#electronic_economic_energy_type_id").change();         
+                     }
+                });
+           //  };                                                                                                
+           });                
+
+
+
+
+
+           $("#bp_electronic_economic_bp_economical_phase_id").change();
+           
+ });           
+</script>
+
+<h1><%=_('Economical Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></h1>
+<div class="content_skin">
+
+
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/bp_economical/tabs') %>
+	</div>
+
+<div class="clear"></div>
+
+
+    <%= form_for BpElectronicEconomic.new, :remote => true do |f| %>
+	    <fieldset class="empty">
+	      <legend><%=_('Economic assessment').html_safe%></legend>
+	      <input type="hidden" name="bp_economic_id" id="bp_economic_id" value="<%=@bp_product.bp_economic.id%>"/>
+	      <input type="hidden" name="unitHidden" id="unitHidden" value=""/>	      
+
+          <p><%=_('Select and enter the cost of each material and/or process considered:').html_safe%></p>
+          <p style="font-size:11px; font-style:italic;"><%= _("(Note: in case you consider the logistic/transport costs included in &quot;Raw materials&quot;, do not double count them as &quot;Transport&quot;)").html_safe%></p>
+	      <!-- Life Cycle Phase --> 
+		  <div class="span-3">    
+		     <%= f.label :value, _('Phase').html_safe %>
+		     <br/>
+		     <select id="bp_electronic_economic_bp_economical_phase_id" name="bp_electronic_economic[bp_economical_phase_id]">
+		     <% @bp_economical_phases.each do |bp_economical_phase| %>
+		        <option value="<%=bp_economical_phase.id%>"><%=bp_economical_phase.name.html_safe%></option>
+		     <% end %>
+		     </select>
+		  </div>
+
+
+	      <!-- Family -->
+		  <div class="span-8">    
+		     <%= f.label :value, _('Family').html_safe %>
+		     <br/>
+		     <select id="bp_electronic_economic_bp_economical_family_id" name="bp_electronic_economic[bp_economical_family_id]">
+		     <% @bp_economical_families.each do |bp_economical_family| %>
+		        <option value="<%=bp_economical_family.id%>"><%=bp_economical_family.name.html_safe%></option>
+		     <% end %>
+		     </select>
+		  </div>
+	      
+	      <!-- Flow Material -->
+		  <div class="span-7" id="material_flow" style="display:none">    
+		     <%= f.label :value, _('Flow').html_safe %>
+		     <br/>
+		     <select id="bp_electronic_economic_bp_material_id" name="bp_electronic_economic[bp_material_id]">
+		     </select>
+		  </div>
+
+	      <!-- Flow Compound Material -->
+		  <div class="span-5" id="compound_material_flow" style="display:none">    
+		     <%= f.label :value, _('Flow').html_safe %>
+		     <br/>
+		     <select id="bp_electronic_economic_bp_compound_material_id" name="bp_electronic_economic[bp_compound_material_id]">
+		     </select>
+		  </div>
+
+	      <!-- Flow Vehicle -->
+		  <div class="span-5" id="vehicle_flow" style="display:none">    
+		     <%= f.label :value, _('Flow').html_safe %>
+		     <br/>
+		     <select id="bp_electronic_economic_bp_vehicle_id" name="bp_electronic_economic[bp_vehicle_id]">
+		     </select>
+		  </div>
+
+	      <!-- Flow Manufacturing process -->
+		  <div class="span-5" id="manufacturing_process_flow" style="display:none">    
+		     <%= f.label :value, _('Flow').html_safe %>
+		     <br/>
+		     <select id="bp_electronic_economic_bp_manufacturing_process_id" name="bp_electronic_economic[bp_manufacturing_process_id]">
+		     </select>
+		  </div>
+
+	      <!-- Flow Distribution Default Value -->
+		  <div class="span-5" id="distribution_default_value_flow" style="display:none">    
+		     <%= f.label :value, _('Flow').html_safe %>
+		     <br/>
+		     <select id="bp_electronic_economic_bp_distribution_default_value_id" name="bp_electronic_economic[bp_distribution_default_value_id]">
+		     </select>
+		  </div>
+
+
+
+
+	      <!-- Quantity -->
+          <div class="span-5"> 
+             <%= f.label :value, _('Quantity').html_safe %>
+             </br>
+             <%= f.text_field :quantity, :size => 8%> &nbsp; <span id="unit_span">&euro; / kg</span>
+          </div>
+	      <div class="clear"></div>
+		  <div class="span-3 buttons last">
+		     <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+		  </div>
+          <div class="clear"></div>	      
+	    </fieldset>
+    <% end %>
+    
+    <table class="standard2">
+	  <tr class="add"> 
+	    <th>
+	      <%=_('Life Cycle Phase').html_safe %><br/>
+	    </th>
+	    <th>
+	      <%=_('Family').html_safe %><br/>
+	    </th>	    
+	    <th>
+	      <%=_('Flow').html_safe %><br/>
+	    </th>
+	    <th>
+	      <%=_('Quantity').html_safe %>
+	    </th>	    	    
+	    <th>
+	      <%=_('Unit').html_safe %>
+	    </th>	    
+	    <th>
+	      &nbsp;
+	    </th>
+	  </tr>	  
+	  <tbody id="assesments">
+	    <%= render :partial => @bp_electronic_economics, :locals => { :list => true } %>
+	  </tbody>   
+	 </table>
+
+  <div class="buttons" style="float:left;text-align:left">
+      <%= form_tag '/bp_results/generate_csv_economic' do %>
+          <input type="hidden" name="product_id" id="product_id" value="<%=@product.id%>"/>
+          <button type="submit" class="positive" style="float:left" onClick="javascript:generateExcel();"> <%= image_tag 'page_white_excel.png' %><%= _("Export table to Excel").html_safe %></button>
+
+      <% end %>
+  </div>
+
+  <div class="buttons" style="float:right;text-align:right">
+     <a href="<%=bp_economic_graphic_path(@bp_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Next step").html_safe %></a>
+  </div>
+ 	 
+
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, bp_production_intro_path(@bp_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, bp_data_quality_intro_path(@bp_product) %></li>
+        <li><%= link_to _('To Data Entry').html_safe, bp_production_url(@bp_product) %></li>
+        <li><%= link_to _('To Results').html_safe, bp_result_url(@bp_product) %></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="clear"></div>
+
+</div>

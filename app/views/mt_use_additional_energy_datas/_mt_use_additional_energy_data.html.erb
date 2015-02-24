@@ -1,0 +1,53 @@
+<tr id="mt_use_additional_energy_data_<%= mt_use_additional_energy_data.id %>">
+     <td>
+	      <% if mt_use_additional_energy_data.mt_energy_family %>
+			<%= mt_use_additional_energy_data.mt_energy_family.name.html_safe %>
+	      <% end %>		
+     </td>
+     <td>
+	      <% if mt_use_additional_energy_data.mt_energy_process %>
+			<%= mt_use_additional_energy_data.mt_energy_process.name.html_safe %>
+	      <% end %>		
+     </td>     
+     <td class="processing_<%= mt_use_additional_energy_data.id %>">
+          <%= mt_use_additional_energy_data.processing %>
+     </td>
+     <script type="text/javascript">
+		   $(".processing_<%=mt_use_additional_energy_data.id%>").editInPlace({
+		        url: "/mt_use_additional_energy_datas/update_processing" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+		        params: "mt_use_additional_energy_data_id=<%=mt_use_additional_energy_data.id%>",
+		        saving_text: '<%=_("Saving...")%>',
+		        success: function(msg) {}
+		        });  
+     </script>        
+     <td class="ready_<%= mt_use_additional_energy_data.id %>">
+          <%= mt_use_additional_energy_data.ready %>
+     </td>
+     <script type="text/javascript">
+		   $(".ready_<%=mt_use_additional_energy_data.id%>").editInPlace({
+		        url: "/mt_use_additional_energy_datas/update_ready" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+		        params: "mt_use_additional_energy_data_id=<%=mt_use_additional_energy_data.id%>",
+		        saving_text: '<%=_("Saving...")%>',
+		        success: function(msg) {}
+		        });  
+     </script>        
+     
+     <td class="standby_<%= mt_use_additional_energy_data.id %>">
+          <%= mt_use_additional_energy_data.standby %>
+     </td>
+     <script type="text/javascript">
+		   $(".standby_<%=mt_use_additional_energy_data.id%>").editInPlace({
+		        url: "/mt_use_additional_energy_datas/update_standby" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+		        params: "mt_use_additional_energy_data_id=<%=mt_use_additional_energy_data.id%>",
+		        saving_text: '<%=_("Saving...")%>',
+		        success: function(msg) {}
+		        });  
+     </script>        
+     
+     <td>
+	      <% if mt_use_additional_energy_data.mt_energy_process %>
+			<%= mt_use_additional_energy_data.mt_energy_process.unit.html_safe %>/h
+	      <% end %>	
+     </td>
+     <td class="center"><%= link_to '&#10006;'.html_safe, mt_use_additional_energy_data_path(mt_use_additional_energy_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>

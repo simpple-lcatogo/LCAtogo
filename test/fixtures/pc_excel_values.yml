@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  indicator_id: 1
+  name: MyString
+  lifecycle: MyString
+  category: MyString
+  family: MyString
+  value: 1.5
+
+two:
+  indicator_id: 1
+  name: MyString
+  lifecycle: MyString
+  category: MyString
+  family: MyString
+  value: 1.5

@@ -1,0 +1,511 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#reuse_end_of_life_family_id").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                // if the id is empty remove all the sub_selection options from being selectable and do not do any ajax
+                $("#reuse_end_of_life_material_id option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#reuse_end_of_life_material_id");
+            }
+            else {
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'materials_for_family'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                        $("#reuse_end_of_life_material_id option").remove();
+                        var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.material.id + "\">" + j.material.name + "</option>";  
+                            $(row).appendTo("select#reuse_end_of_life_material_id");                    
+                        });            
+                     }
+                });
+             };   
+           });     
+           
+
+        $("#recycling_end_of_life_family_id").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                // if the id is empty remove all the sub_selection options from being selectable and do not do any ajax
+                $("#recycling_end_of_life_material_id option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#recycling_end_of_life_material_id");
+            }
+            else {
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'materials_for_family'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                        $("#recycling_end_of_life_material_id option").remove();
+                        var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.material.id + "\">" + j.material.name + "</option>";  
+                            $(row).appendTo("select#recycling_end_of_life_material_id");                    
+                        });            
+                     }
+                });
+             };   
+           });     
+
+           $("#reuse_end_of_life_family_id").change();
+           $("#recycling_end_of_life_family_id").change();
+              
+           <% @recycling_end_of_lives.each do |recycling_end_of_life| %>
+			   $(".quantity_recycling_<%=recycling_end_of_life.id%>").editInPlace({
+			        url: "/recycling_end_of_lives/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+			        params: "recycling_end_of_life_id=<%=recycling_end_of_life.id%>",
+			        saving_text: '<%=_("Saving...")%>'
+			        });        
+           <% end %>             
+           <% @reuse_end_of_lives.each do |reuse_end_of_life| %>
+			   $(".quantity_reuse_<%=reuse_end_of_life.id%>").editInPlace({
+			        url: "/reuse_end_of_lives/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+			        params: "reuse_end_of_life_id=<%=reuse_end_of_life.id%>",
+			        saving_text: '<%=_("Saving...")%>'
+			        });        
+           <% end %>             
+              
+               
+    });
+</script>    
+
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/lca/tabs') %>
+	</div>
+<div class="clear"></div>	
+<% form_tag '/end_of_life/next_step', :id => 'next_step' do -%>
+     <input type="hidden" name="product_id" id="product_id" value="<%=@product.id%>"/>
+<!--   <fieldset class="empty">
+	 <legend><%=_('Landfill').html_safe%></legend>
+
+     Total Weight to Landfill <input type="text" name="landfill" id="landfill" value="<%=@product.end_of_life.landfill%>"/> <%=_('kg').html_safe%><br/>
+   </fieldset>
+   
+   -->     
+<% end %>
+<div class="clear"></div>
+
+
+<fieldset class="empty">
+  <legend><%=_('Recycling').html_safe%></legend>
+  <%=_('WEEE Pre-treatment separation quotas (for material recycling)').html_safe %>
+  <br/><br/>
+    <table>
+       <tr>
+          <td width="25%"><b><%=_('Overall collection rate').html_safe%></b></td>
+          <td id="collection_rate" style="padding-right:0px">
+            <%=@product.end_of_life.collection_rate%>
+          </td>
+          <td style="padding-left:0px">%</td>
+          <td><span class="tip_text"><i><%=_('50% is the default value for WEEE recycling in Europe. Change to a higher collection rate only, if you have in place a takeback program, which justifies this assumption.').html_safe %></i></span></td>
+			<script type="text/javascript">
+			   $("#collection_rate").editInPlace({
+			        url: "/end_of_life/update_collection_rate" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+			        params: "product_id=<%=@product.id%>",
+			        saving_text: '<%=_("Saving...")%>'
+			        });
+			</script>          
+       </tr>
+    </table>
+  <br/><br/>
+    <table class="standard2">
+        <tr>
+          <th><%=_('Material').html_safe%></th>
+          <th><%=_('Material recycling (%)').html_safe%></th>          
+          <th><%=_('Comment').html_safe%></th>
+        </tr>  
+	  <% @families.each do |family| 
+	        if family.name != 'Housing & internal structural elements'
+	          is_present = false
+	          value = -1
+	          @manufacturing_datas.each do |manufacturing_data|
+	             if manufacturing_data.family && manufacturing_data.family.id == family.id
+	                is_present = true
+	             end	          
+	          end	  
+              if family.name == 'Printed Circuit Board Assemblies'
+                 value = 30
+              end
+              if family.name == 'Processor' || family.name == 'Memory'
+                 value = 30
+              end
+              if family.name == 'Storage'
+                 value = 50
+              end
+              if family.name == 'Battery'
+                 value = 80                      
+              end
+              if family.name == 'Cables'
+                 value = 30
+              end	          
+              if family.name == 'Power supply'
+                 value = 30
+              end	          
+
+	          if value != -1 && is_present%>
+	                <tr>
+	                   <td><%=family.name.html_safe%></td>
+	                   <td id="recycling_data_family_<%=family.id%>">
+	                       <% has_recycling_data = false
+	                          value_recycling_data = 0
+	                          @recycling_datas.each do |recycling_data|
+	                             if recycling_data.family && recycling_data.family.id == family.id
+	                                has_recycling_data = true
+	                                value_recycling_data = recycling_data.value
+	                             end
+	                          end
+	                          if has_recycling_data	                          
+	                       %>
+	                         <%=value_recycling_data%>
+	                       <% else %>
+                             <%=value%>
+	                       <% end %>
+	                   </td>
+					<script type="text/javascript">
+					   $("#recycling_data_family_<%=family.id%>").editInPlace({
+					        url: "/recycling_datas/update_value" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+					        params: "family_id=<%=family.id%>&product_id=<%=@product.id%>",
+					        saving_text: '<%=_("Saving...")%>'
+					        });
+					</script>
+	                   <td>
+	                     <% if family.name == 'Printed Circuit Board Assemblies' %>
+	                       <%=_('Default value, adjust only, if you have control over pre-treatment processes, which guarantee a higher level of separation for material recycling, or/and if separability is clearly enhanced by design (dismantling within seconds).').html_safe%>
+	                     <% end %>  	                  
+	                     <% if family.name == 'Processor' || family.name == 'Memory' %>
+	                       <%=_('Default value, adjust only, if you have control over pre-treatment processes, which guarantee a higher level of separation for material recycling, or/and if separability is clearly enhanced by design (dismantling within seconds).').html_safe%>
+	                     <% end %>  	                  
+	                     <% if family.name == 'Storage' %>
+	                       <%=_('Default value, adjust only, if you have control over pre-treatment processes, which guarantee a higher level of separation for material recycling (manual dismantling of the HDD).').html_safe%>
+	                     <% end %>  	                  
+	                     <% if family.name == 'Power Supply' %>
+	                       <%=_('Default value, adjust only, if you have control over pre-treatment processes, which guarantee a higher level of separation for material recycling (manual dismantling of the HDD).').html_safe%>
+	                     <% end %>  	                  
+	                     <% if family.name == 'Battery' %>
+	                       <%=_('Default value, adjust only, if separability is clearly enhanced by design (manual dismantling within seconds).').html_safe%>
+	                     <% end %>  	                  
+	                     <% if family.name == 'Cables' %>
+	                       <%=_('Default value, adjust only, if you have control over pre-treatment processes, which guarantee a higher level of separation for material recycling, or/and if separability is clearly enhanced by design (dismantling within seconds).').html_safe%>
+	                     <% end %>  	                  
+	                     <% if family.name == 'Power supply' %>
+	                       <%=_('Default value, adjust only, if you have control over pre-treatment processes, which guarantee a higher level of separation for material recycling (manual dismantling).').html_safe%>
+	                     <% end %>  	                  
+
+	                   </td>
+	                 </tr>
+	                     <% if family.name == 'Storage' %>
+			                <tr>
+			                   <td><%=_('SSD')%></td>
+			                   <td id="ssd_storage">
+			                      <% if @product.ssd_storage %>
+			                         <%=@product.ssd_storage%>
+			                      <% else %>
+			                         30
+			                      <% end %>
+			                   </td>
+			                   <td>
+	                             <%=_('Default value, adjust only, if you have control over pre-treatment processes, which guarantee a higher level of separation for material recycling, or/and if separability is clearly enhanced by design (dismantling within seconds).').html_safe%>			                   
+			                   </td>
+			                   
+			                </tr>   	 
+					<script type="text/javascript">
+					   $("#ssd_storage").editInPlace({
+					        url: "/recycling_datas/update_ssd_storage" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+					        params: "product_id=<%=@product.id%>",
+					        saving_text: '<%=_("Saving...")%>'
+					        });
+					</script>			                
+			                
+			                                    
+	                     <% end %>
+	               
+	               
+	               
+	               
+	               
+	               
+	              <%
+	                end
+
+	          
+	          
+	       end
+	     end %> 
+	  <% @families.each do |family| 
+	       if family.name == 'Housing & internal structural elements'
+	        family.materials.each do |material|        
+	          is_present = false
+	          @manufacturing_datas.each do |manufacturing_data|
+	             if manufacturing_data.material && manufacturing_data.material.id == material.id
+	                is_present = true
+	             end	          
+	          end
+	          
+	          
+	          value = -1
+              if material.name == 'wood (oak)' 
+                 value = 0
+                 name = material.name
+              end
+              if material.name == 'steel'
+                 value = 80
+                 name = material.name
+              end     
+              if material.name == 'aluminium'
+                 value = 80
+                 name = material.name
+              end
+              if material.name == 'PC/ABS'
+                 value = 0
+                 name = material.name
+              end
+	          
+	          %>
+	          <% if value != -1 && is_present%>
+	                <tr>
+	                   <td><%=name.html_safe%></td>
+	                   <td id="recycling_data_<%=material.id%>">
+	                       <% has_recycling_data = false
+	                          value_recycling_data = 0
+	                          @recycling_datas.each do |recycling_data|
+	                             if recycling_data.material && recycling_data.material.id == material.id
+	                                has_recycling_data = true
+	                                value_recycling_data = recycling_data.value
+	                             end
+	                          end
+	                          if has_recycling_data	                          
+	                       %>
+	                         <%=value_recycling_data%>
+	                       <% else %>
+                             <%=value%>
+	                       <% end %>
+	                   </td>
+					<script type="text/javascript">
+					   $("#recycling_data_<%=material.id%>").editInPlace({
+					        url: "/recycling_datas/update_value" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+					        params: "material_id=<%=material.id%>&product_id=<%=@product.id%>",
+					        saving_text: '<%=_("Saving...")%>'
+					        });
+					</script>
+	                   <td>
+	                     <% if material.name == 'wood (oak)' %>
+	                       <%=_('Default value, adjust only, if you have control over pre-treatment processes, which guarantee a higher level of separation for material recycling, and if separability is clearly enhanced by design (dismantling within seconds).').html_safe%>
+	                     <% end %>
+	                     <% if material.name == 'steel' %>
+	                       <%=_('Default value, adjust only, if you have control over pre-treatment processes, which guarantee a higher level of separation for material recycling, or/and if separability is clearly enhanced by design (dismantling within seconds) and if composites are avoided.').html_safe%>
+	                     <% end %>  	                  
+	                     <% if material.name == 'aluminium' %>
+	                       <%=_('Default value, adjust only, if you have control over pre-treatment processes, which guarantee a higher level of separation for material recycling, or/and if separability is clearly enhanced by design (dismantling within seconds) and if composites are avoided.').html_safe%>
+	                     <% end %>  	                  
+	                     <% if material.name == 'PC/ABS' %>
+	                       <%=_('Default value, adjust only, if you have control over pre-treatment processes, which guarantee a higher level of separation for material recycling, or/and if separability is clearly enhanced by design (dismantling within seconds) and if composites are avoided.').html_safe%>
+	                     <% end %>  	                  
+
+	                   </td>
+	                 </tr>
+	               
+	              <%
+	                end
+	
+	          end	
+	          @manufacturing_datas.each do |manufacturing_data|
+	             if !manufacturing_data.material && manufacturing_data.family.id == family.id
+	                value = 0
+	                if manufacturing_data.material_user_type == 'metal'
+	                  value = 80
+	                end 
+	             %>
+	                <tr>
+	                   <td><%=manufacturing_data.material_user_name.html_safe%></td>
+	                   <td id="recycling_data_<%=manufacturing_data.id%>">
+	                       <% has_recycling_data = false
+	                          value_recycling_data = 0
+	                          @recycling_datas.each do |recycling_data|
+	                             if recycling_data.manufacturing_data && recycling_data.manufacturing_data.id == manufacturing_data.id
+	                                has_recycling_data = true
+	                                value_recycling_data = recycling_data.value
+	                             end
+	                          end
+	                          if has_recycling_data	                          
+	                       %>
+	                         <%=value_recycling_data%>
+	                       <% else %>
+                             <%=value%>
+	                       <% end %>
+	                   </td>
+					<script type="text/javascript">
+					   $("#recycling_data_<%=manufacturing_data.id%>").editInPlace({
+					        url: "/recycling_datas/update_value" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+					        params: "manufacturing_data_id=<%=manufacturing_data.id%>&product_id=<%=@product.id%>",
+					        saving_text: '<%=_("Saving...")%>'
+					        });
+					</script>	                   
+	                   
+	               </tr>
+	               <%    
+	             end	          
+              end
+	            end	                    
+	          
+	       end %>
+    </table>
+</fieldset>    
+
+<fieldset class="empty">
+  <legend><%=_('Reuse').html_safe%></legend>
+  <%=_('Reuse of components from this device at end of life for other devices. If you don\'t make any entries here, no reuse is considered').html_safe %>
+  <br/><br/>
+  <%=_('1) Are any original components from beginning of first life reusable? If yes, state likeliness of reuse and anticipated remaining life time (second use) below').html_safe %>
+  <br/><br/>  
+    <table class="standard2">
+        <tr>
+          <th><%=_('Material').html_safe%></th>
+          <th style="text-align:center"><%=_('Percentage of units contained in the product at end-of-life, which is likely to be reused').html_safe%> <a title="<%=_('Make an estimate, which share of the components still contained at end-of-product will be reused. Take into consideration, that you most likely will not get back all devices, and whether a reuse performance-wise will still make sense in a couple of years from now (will there be a reuse market for this component?).').html_safe%>" href="#" class="tip">&nbsp;</a></th>          
+          <th style="text-align:center"><%=_('Anticipated second life for reused components (years)')%> <a title="<%=_('Make an estimate, for how long a component disassembled for reuse might be used in its second life. Make a conservative estimate. Consider only uses of roughly similar quality (e.g. reuse of displays for emergency lighting, but not reuse of electronics components as art work.').html_safe%>" href="#" class="tip">&nbsp;</a></th>
+        </tr>  
+	    <% @manufacturing_datas.each do |manufacturing_data| %> 
+	        <tr>
+	           <td>
+	             <% if manufacturing_data.material %>
+	                <%=manufacturing_data.material.name.html_safe%>
+	             <% else %>
+	                <%=manufacturing_data.material_user_name.html_safe%>
+	             <% end %>   
+	           
+	           </td>
+
+               <td style="text-align:center" id="contained_<%=manufacturing_data.id%>"><%=manufacturing_data.contained_data%></td>
+               <td style="text-align:center" id="anticipated_<%=manufacturing_data.id%>"><%=manufacturing_data.anticipated_data%></td>	                         
+	<!--           <td>
+	              <% if manufacturing_data.repair_data && manufacturing_data.repair_data.upgrade_year %>
+	                 <%=number_with_precision(manufacturing_data.repair_data.upgrade_year - @average_technical_lifetime, :precision => 2)%>
+	              <% else %>	           	           
+	                 <%=number_with_precision(@average_technical_lifetime, :precision => 2)%>
+	              <% end %>
+	           </td>
+	           -->	
+					<script type="text/javascript">
+					   $("#contained_<%=manufacturing_data.id%>").editInPlace({
+					        url: "/reuse_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+					        params: "field=contained&manufacturing_data_id=<%=manufacturing_data.id%>&product_id=<%=@product.id%>",
+					        saving_text: '<%=_("Saving...")%>'
+					        });
+					   $("#anticipated_<%=manufacturing_data.id%>").editInPlace({
+					        url: "/reuse_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+					        params: "field=anticipated&manufacturing_data_id=<%=manufacturing_data.id%>&product_id=<%=@product.id%>",
+					        saving_text: '<%=_("Saving...")%>'
+					        });							        
+					</script>
+                 </tr>	              
+	      <% 	    
+	       end
+	     %>  
+     </table>
+     
+  <br/><br/>
+  <%=_('2) Are any components implemented for repair/upgrade over lifetime reusable at end of life of the device? If yes, state likeliness of reuse and anticipated remaining life time (second use) below').html_safe %>
+  <br/><br/>  
+    <table class="standard2">
+        <tr>
+          <th><%=_('Material').html_safe%></th>
+          <th style="text-align:center"><%=_('Percentage of units contained in the product at end-of-life, which is likely to be reused').html_safe%> <a title="<%=_('Make an estimate, which share of the components still contained at end-of-product will be reused. Take into consideration, that you most likely will not get back all devices, and whether a reuse performance-wise will still make sense in a couple of years from now (will there be a reuse market for this component?).').html_safe%>" href="#" class="tip">&nbsp;</a></th>          
+          <th style="text-align:center"><%=_('Anticipated second life for reused components (years)')%> <a title="<%=_('Make an estimate, for how long a component disassembled for reuse might be used in its second life. Make a conservative estimate. Consider only uses of roughly similar quality (e.g. reuse of displays for emergency lighting, but not reuse of electronics components as art work.').html_safe%>" href="#" class="tip">&nbsp;</a></th>
+          <th style="text-align:center"><%=_('Age at device end-of-life (years)')%></th>          
+        </tr>  
+	    <% @manufacturing_datas.each do |manufacturing_data| %>  
+	       <% if manufacturing_data.repair_data && manufacturing_data.family.name != 'Housing & internal structural elements'%>
+	        <tr>
+	           <td>
+	             <% if manufacturing_data.material %>
+	                <%=manufacturing_data.material.name.html_safe%>
+	             <% else %>
+	                <%=manufacturing_data.material_user_name.html_safe%>
+	             <% end %>   
+	           
+	           </td>
+
+               <td style="text-align:center" id="repair_contained_<%=manufacturing_data.id%>"><%=manufacturing_data.repair_contained_data%></td>
+               <td style="text-align:center" id="repair_anticipated_<%=manufacturing_data.id%>"><%=manufacturing_data.repair_anticipated_data%></td>	                         
+	           <td style="text-align:center">
+	              <% if manufacturing_data.repair_data && manufacturing_data.repair_data.upgrade_year %>
+	                 <%=number_with_precision(@average_technical_lifetime - manufacturing_data.repair_data.upgrade_year , :precision => 2)%>
+	              <% else %>	           	           
+	                 <%=number_with_precision(@average_technical_lifetime, :precision => 2)%>
+	              <% end %>   
+	           </td>
+					<script type="text/javascript">
+					   $("#repair_contained_<%=manufacturing_data.id%>").editInPlace({
+					        url: "/reuse_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+					        params: "field=contained_repair&manufacturing_data_id=<%=manufacturing_data.id%>&product_id=<%=@product.id%>",
+					        saving_text: '<%=_("Saving...")%>'
+					        });
+					   $("#repair_anticipated_<%=manufacturing_data.id%>").editInPlace({
+					        url: "/reuse_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+					        params: "field=anticipated_repair&manufacturing_data_id=<%=manufacturing_data.id%>&product_id=<%=@product.id%>",
+					        saving_text: '<%=_("Saving...")%>'
+					        });							        
+					</script>
+                 </tr>	              
+	      <% 	    
+	         end
+	       end
+	     %>  
+     </table>     
+     
+  </fieldset>
+
+
+
+<div class="buttons span-4 last" style="float:right">
+	<button class="positive" onclick="javascript:doNextStep();"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+  </div>    	
+
+
+<div class="clear"></div>
+<div class="navbar">
+  <!-- <div id="for-ie"> -->
+  <div>
+    <ul>
+      <li><%= link_to _('To Introduction').html_safe, production_intro_path(@product) %></li>
+      <li><%= link_to _('To Data Quality').html_safe, data_quality_intro_path(@product) %></li>
+      <li><%= link_to _('To Results').html_safe, product_result_url(@product) %></li>
+    </ul>
+  </div>
+</div>
+
+
+<div class="clear"></div>
+
+
+
+
+</div>	
+  <script type="text/javascript">
+     function doNextStep() {
+        document.getElementById("next_step").submit();
+     }
+  </script>  

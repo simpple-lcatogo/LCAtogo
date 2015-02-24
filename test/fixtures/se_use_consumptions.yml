@@ -1,0 +1,55 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  se_country_id: 1
+  electricity_operational_with: 1.5
+  electricity_downtimes_with: 1.5
+  electricity_overhead_with: 1.5
+  electricity_operational_without: 1.5
+  electricity_downtimes_without: 1.5
+  electricity_overhead_without: 1.5
+  heat_operational_with: 1.5
+  heat_downtimes_with: 1.5
+  heat_overhead_with: 1.5
+  heat_operational_without: 1.5
+  heat_downtimes_without: 1.5
+  heat_overhead_without: 1.5
+  gas_operational_with: 1.5
+  gas_downtimes_with: 1.5
+  gas_overhead_with: 1.5
+  gas_operational_without: 1.5
+  gas_downtimes_without: 1.5
+  gas_overhead_without: 1.5
+  other_operational_with: 1.5
+  other_downtimes_with: 1.5
+  other_overhead_with: 1.5
+  other_operational_without: 1.5
+  other_downtimes_without: 1.5
+  other_overhead_without: 1.5
+
+two:
+  se_country_id: 1
+  electricity_operational_with: 1.5
+  electricity_downtimes_with: 1.5
+  electricity_overhead_with: 1.5
+  electricity_operational_without: 1.5
+  electricity_downtimes_without: 1.5
+  electricity_overhead_without: 1.5
+  heat_operational_with: 1.5
+  heat_downtimes_with: 1.5
+  heat_overhead_with: 1.5
+  heat_operational_without: 1.5
+  heat_downtimes_without: 1.5
+  heat_overhead_without: 1.5
+  gas_operational_with: 1.5
+  gas_downtimes_with: 1.5
+  gas_overhead_with: 1.5
+  gas_operational_without: 1.5
+  gas_downtimes_without: 1.5
+  gas_overhead_without: 1.5
+  other_operational_with: 1.5
+  other_downtimes_with: 1.5
+  other_overhead_with: 1.5
+  other_operational_without: 1.5
+  other_downtimes_without: 1.5
+  other_overhead_without: 1.5

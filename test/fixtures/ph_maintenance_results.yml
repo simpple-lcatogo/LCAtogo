@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  ph_product_id: 1
+  years_included: 1.5
+
+two:
+  ph_product_id: 1
+  years_included: 1.5

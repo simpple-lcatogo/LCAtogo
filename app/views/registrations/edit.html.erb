@@ -1,0 +1,313 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        $("#user_activity").change(function(){
+            if($("#user_activity option:selected").val() == 'other'){
+                $("#user_other_main_activity").show();
+            }
+            else{
+                $("#user_other_main_activity").hide();
+            };
+        });
+
+        $("#user_other_main_activity").hide();
+
+         $(".user_edit").validate({
+		  errorPlacement: function(error, element) {
+		    error.appendTo( element.parent("div").next("div") );
+		  },			          
+	   	    rules: {
+		      "user[name]": {
+		                required:true
+		                },
+		      "user[surname]": {
+		                required:true
+		                },
+		      "user[organization]": {
+		                required:true
+		                },
+		      "user[activity]": {
+		                required:true
+		                },
+		      "user[phone]": {
+		                required:true
+		                },
+		      "user[email]": {
+		                required:true
+		                },
+		      "user[password]": {
+		                required:true
+		                },		                
+		      "user[password_confirmation]": {
+		                required:true
+		                }
+		    },
+			messages: {
+              "user[name]": {
+                    required:"<%=_('This field is mandatory').html_safe%>"
+                    },
+              "user[surname]": {
+                    required:"<%=_('This field is mandatory').html_safe%>"
+                    },
+              "user[organization]": {
+                    required:"<%=_('This field is mandatory').html_safe%>"
+                    },
+              "user[activity]": {
+                    required:"<%=_('This field is mandatory').html_safe%>"
+                    },
+              "user[phone]": {
+                    required:"<%=_('This field is mandatory').html_safe%>"
+                    },
+              "user[email]": {
+                    required:"<%=_('This field is mandatory').html_safe%>"
+                    },
+              "user[password]": {
+                    required:"<%=_('This field is mandatory').html_safe%>"
+                    },
+              "user[password_confirmation]": {
+                    required:"<%=_('This field is mandatory').html_safe%>"
+                    }
+			}		    
+	       });
+
+    });
+</script>
+<style type="text/css">
+.error {
+  font-size:10px;
+}
+</style>
+<h1><%=_('Edit user')%></h1>
+
+<div class="content_skin">
+	<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>  	
+	  <%= devise_error_messages! %>
+
+  <div class="span-5">
+    <label><%=_('Name').html_safe %></label><span class="red"> *</span><br/>
+    <div>
+       <%= f.text_field :name, :size => 20 %>
+    </div>
+    <div>
+    </div>
+  </div>
+
+  <div class="span-5">
+    <label><%=_('Surname').html_safe %></label><span class="red"> *</span><br/>
+    <div>    
+       <%= f.text_field :surname, :size => 20 %>
+    </div>
+    <div>
+    </div> 
+  </div>
+
+  <div class="span-5">
+    <label><%=_('Organization').html_safe %></label><span class="red"> *</span><br/>
+    <div>    
+       <%= f.text_field :organization, :size => 42  %>
+    </div>
+    <div>
+    </div>
+    
+  </div>
+
+  <div class="clear"></div>
+
+    <div class="span-5">
+        <label><%=_('Default Industrial Sector').html_safe %></label><span class="red"> *</span><br/>
+        <select name="user[sector]" id="user_sector" class="span-4">
+          <% if current_user.sector == 'bio_based' %>
+              <option value="bio_based" selected="true"><%=_('Bio-based plastics').html_safe%></option>
+          <% else %>
+              <option value="bio_based"><%=_('Bio-based plastics').html_safe%></option>
+          <% end %>
+          <% if current_user.sector == 'industrial' %>
+              <option value="industrial" selected="true"><%=_('Industrial machines').html_safe%></option>
+          <% else %>
+              <option value="industrial"><%=_('Industrial machines').html_safe%></option>
+          <% end %>
+          <% if current_user.sector == 'electronics' %>
+              <option value="electronics" selected="true"><%=_('Electronics').html_safe%></option>
+          <% else %>
+              <option value="electronics"><%=_('Electronics').html_safe%></option>
+          <% end %>
+          <% if current_user.sector == 'printed' %>
+              <option value="printed" selected="true"><%=_('Printed Circuit Boards').html_safe%></option>
+          <% else %>
+              <option value="printed"><%=_('Printed Circuit Boards').html_safe%></option>
+          <% end %>
+          <% if current_user.sector == 'renewable' %>
+              <option value="renewable" selected="true"><%=_('Renewable Energy - Photovoltaics').html_safe%></option>
+          <% else %>
+              <option value="renewable"><%=_('Renewable Energy - Photovoltaics').html_safe%></option>
+          <% end %>
+          <% if current_user.sector == 'semiconductors' %>
+              <option value="semiconductors" selected="true"><%=_('Semiconductors').html_safe%></option>
+          <% else %>
+              <option value="semiconductors"><%=_('Semiconductors').html_safe%></option>
+          <% end %>
+          <% if current_user.sector == 'sensors' %>
+              <option value="sensors" selected="true"><%=_('Sensors').html_safe%></option>
+          <% else %>
+              <option value="sensors"><%=_('Sensors').html_safe%></option>
+          <% end %>
+          <% if current_user.sector == 'textiles' %>
+              <option value="textiles" selected="true"><%=_('Smart Textiles').html_safe%></option>
+          <% else %>
+              <option value="textiles"><%=_('Smart Textiles').html_safe%></option>
+          <% end %>
+        </select>
+    </div>
+
+    <div class="span-5">
+        <label><%=_('Main activity').html_safe %></label><span class="red"> *</span><br/>
+        <select name="user[activity]" id="user_activity" class="span-4">
+          <% if current_user.activity == 'manufacturing_production' %>
+             <option value="manufacturing_production" selected="true"><%=_('Manufacturing / Production').html_safe%></option>
+          <% else %>
+             <option value="manufacturing_production"><%=_('Manufacturing / Production').html_safe%></option>
+          <% end %>
+          <% if current_user.activity == 'services_private_sector' %>
+             <option value="services_private_sector" selected="true"><%=_('Services - private sector').html_safe%></option>
+          <% else %>
+             <option value="services_private_sector"><%=_('Services - private sector').html_safe%></option>
+          <% end %>
+          <% if current_user.activity == 'services_public_sector' %>
+             <option value="services_public_sector" selected="true"><%=_('Services - public sector').html_safe%></option>
+          <% else %>
+             <option value="services_public_sector"><%=_('Services - public sector').html_safe%></option>
+          <% end %>
+          <% if current_user.activity == 'academic_research' %>
+             <option value="academic_research" selected="true"><%=_('Academic / Research').html_safe%></option>
+          <% else %>
+             <option value="academic_research"><%=_('Academic / Research').html_safe%></option>
+          <% end %>
+          <% if current_user.activity == 'other' %>
+             <option value="other" selected="true"><%=_('Other (please specify)').html_safe%></option>
+          <% else %>
+             <option value="other"><%=_('Other (please specify)').html_safe%></option>
+          <% end %>
+        </select>
+    </div>
+
+    <style> #user_other_main_activity{margin-top:19px;}</style>
+
+    <div class="span-5">
+      <%= f.text_field :other_main_activity, :size => 42 , :class => "other_main_activity"%>
+    </div>
+  
+    <div class="clear"></div>
+
+    <div class="span-10">
+        <label><%=_('Postal address').html_safe %></label><br/>
+         <%= f.text_field :postal, :size => 45 %>
+    </div>
+
+    <div class="span-4">
+      <label><%=_('Phone number').html_safe %></label><span class='red'>*</span><br/>
+      <div>      
+         <%= f.text_field :phone, :size => 14 %>
+      </div>
+      <div>
+      </div>
+      
+    </div>
+
+    <div class="span-5">
+        <label><%=_('Country').html_safe %></label><br/>
+        <div>
+           <%= f.select :country_id, @countries.map {|r| [r.name,r.id]}, {:include_blank => true},  {:class=>"span-5"} %>
+	    </div>
+	    <div>
+	    </div>
+        
+    </div>
+
+    <div class="clear"></div>
+
+  <div class="span-7 last">
+    <label><%=_('Default Language').html_safe %></label><span class="red"> *</span><br/>
+    <select name="user[language]" id="user_language">
+      <% if current_user.language == 'english' %>    
+      	<option value="english" selected="true"><%=_('English').html_safe%></option>
+      <% else %>
+        <option value="english"><%=_('English').html_safe%></option>
+      <% end %>      
+      <% if current_user.language == 'spanish' %>      
+      	<option value="spanish" selected="true"><%=_('Spanish').html_safe%></option>
+      <% else %>
+        <option value="spanish"><%=_('Spanish').html_safe%></option>      
+      <% end %>      
+      <% if current_user.language == 'german' %>      
+      	<option value="german" selected="true"><%=_('German').html_safe%></option>
+      <% else %>
+        <option value="german"><%=_('German').html_safe%></option>
+      <% end %>
+      <% if current_user.language == 'polish' %>      
+      	<option value="polish" selected="true"><%=_('Polish').html_safe%></option>      	
+      <% else %>
+        <option value="polish"><%=_('Polish').html_safe%></option>
+      <% end %>            
+      <% if current_user.language == 'french' %>      
+      	<option value="french" selected="true"><%=_('French').html_safe%></option>
+      <% else %>
+        <option value="french"><%=_('French').html_safe%></option>
+      <% end %>            
+      <% if current_user.language == 'dutch' %>      
+      	<option value="dutch" selected="true"><%=_('Dutch').html_safe%></option>
+      <% else %>
+        <option value="dutch"><%=_('Dutch').html_safe%></option>
+      <% end %>            
+    </select>
+  </div>
+
+  <div class="clear"></div> 
+  
+  <div class="span-10 last">
+    <label><%=_('E-mail').html_safe %></label><span class='red'>*</span><br/>
+    <span class="tip_text"><%= _("Your email address and password will be the credentials for the site.").html_safe %></span><br/>
+    <div>    
+       <%= f.text_field :email, :size => 45 %>
+    </div>
+    <div>
+    </div>
+    
+  </div>
+
+  <div class="clear"></div>
+
+  <div class="span-5">
+    <label><%=_('Password').html_safe %></label><span class='red'>*</span><br/>
+    <div>    
+       <%= f.password_field :password, :size => 20 %>
+    </div>
+    <div>
+    </div>
+    
+  </div>
+
+  <div class="span-5 last">
+    <label><%=_('Password confirmation').html_safe %></label><span class='red'>*</span><br/>
+    <div>
+       <%= f.password_field :password_confirmation, :size => 20 %>
+    </div>
+    <div>
+    </div>
+    
+  </div>
+
+  <div class="clear"></div>
+  <div class="span-12 last">
+	  <label><%=_('Current password')%></label><br />
+	  <span class="tip_text"><%=_("We need your current password to confirm your changes.").html_safe%></span><br />
+	  <%= f.password_field :current_password %>
+  </div>
+
+  <div class="buttons span-23 last">
+    <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Update").html_safe %></button>
+  </div>
+
+
+	<% end %>
+	
+</div>

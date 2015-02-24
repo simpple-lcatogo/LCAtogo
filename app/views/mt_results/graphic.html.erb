@@ -1,0 +1,378 @@
+<h1><%=_('Graphic results').html_safe%>
+</h1>
+<script type="text/javascript">
+   function showAbsolute() {
+      document.getElementById("percentage_graph").style.display = 'none';
+      document.getElementById("absolute_graph").style.display = 'block';      
+   }
+   function showPercentage() {
+      document.getElementById("percentage_graph").style.display = 'block';
+      document.getElementById("absolute_graph").style.display = 'none';      
+   }
+   
+</script>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/mt_results/tabs') %>
+	</div>
+
+ <div class="clear"></div>
+ 
+	<div class="buttons last" style="float:left">  
+    <%= form_tag '/mt_results/pdf' do %>
+        <input type="hidden" name="mt_result_id" id="mt_result_id" value="<%=@mt_product.id%>"/>
+        <button type="submit" class="positive" style="float:left"> <%= image_tag 'page_white_acrobat.png' %><%= _("Generate PDF").html_safe %></button>
+    <% end %>
+    </div>	 
+ 
+  <div class="clear"></div>
+ 
+ <h1><%=_('Total').html_safe%></h1>
+<div id="percentage_graph">
+<% @combineds.each_with_index do |combined, index| %>
+	    <% 
+	       if @sort == 'no'
+	         values = combined.collect {|x| x[0] }
+	         ticks = combined.collect {|x| x[1] }.reverse      
+	         seriesColors = combined.collect {|x| x[2] }
+	       end 
+	       if @sort == 'asc'
+	         values = combined.collect {|x| x[0] }
+	         ticks = combined.collect {|x| x[1] }.reverse    
+	         seriesColors = combined.collect {|x| x[2] }  
+	       end
+	       if @sort == 'desc' 
+	          values = combined.collect {|x| x[0] }
+	          ticks = combined.collect {|x| x[1] }.reverse
+	          seriesColors = combined.collect {|x| x[2] }
+	       end
+	        
+	       ticks_to_array = ""
+	       ticks.each do |tick|
+	          ticks_to_array += "|" + tick.to_s
+	       end
+	       
+	       values_to_array = ""
+	       values.each_with_index do |value, index|
+	          if (index + 1) < values.size
+	             values_to_array += value.to_s + ","
+	          else
+	             values_to_array += value.to_s
+	          end   
+	       end	   
+	       
+	       seriesColors_to_array = ""
+	       seriesColors.each_with_index do |seriesColor, index|	 
+	           if (index + 1) < seriesColors.size      
+	       	      seriesColors_to_array += seriesColor.to_s.gsub("#","") + "|"
+	       	   else 
+	       	      seriesColors_to_array += seriesColor.to_s.gsub("#","")
+	       	   end   
+	       end
+	       
+       min = combined.sort_by { |x| x[0] }.collect {|x| x[0] }[0]
+       max = combined.sort_by { |x| x[0] }.collect {|x| x[0] }.reverse[0]
+       
+       num_ticks = 0 
+       i = 0
+
+       if max
+	       while i < max
+	          i += 10
+	       end
+	   end    
+
+       max = i
+       if i > 100
+          max = (i + 10)
+       end
+       if max < 100
+          max = 100
+       end
+
+       max = 110
+       if !min || min > 0
+          min = 0
+       else   
+          modulo = min.modulo(10)
+          min -= modulo
+       end	       
+
+	   max_min_array = ""
+	   min_tmp = min
+	   while min_tmp <= max
+	      max_min_array += "|" + min_tmp.to_s
+	      min_tmp += 10
+	   end
+
+	    %>
+   <h6 style="color:#2B4950;font-size:16px;"><b><%=@indicators_checked[index].name.html_safe%> [<%=@indicators_checked[index].unit.html_safe%>]</b></h6>   
+   <a href="javascript:showAbsolute();"><%=_('Numbers').html_safe%></a> / <%=_('Percentages').html_safe%><br/>
+   <div class="clear"></div>
+   <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=13&amp;chts=2B4950,16,l&amp;chxt=x,y&amp;cht=bhg&amp;chds=<%=min%>,<%=max%>&amp;chd=t:<%=values_to_array%>&amp;chco=<%=seriesColors_to_array%>&amp;chls=2.0&amp;chs=680x<%=((@labels.size * 21) / @indicators_checked.size) + 32 %>&amp;chxl=0:<%=max_min_array%>|1:<%=ticks_to_array%>&amp;chm=N*f0*%,000000,0,-1,11,,:10:&amp;chxs=1,,11,-1,lt"
+     style="padding-right:20px;padding-bottom:40px;">
+   
+   <br/>
+   <% end %>   
+</div>
+
+<div id="absolute_graph" style="display:none">
+<% @combineds_absolute.each_with_index do |combined, index| %>
+
+	    <% 
+
+	       if @sort == 'no'
+	         values = combined.collect {|x| x[0] }
+	         ticks = combined.collect {|x| x[1] }.reverse      
+	         seriesColors = combined.collect {|x| x[2] }
+	       end 
+	       if @sort == 'asc'
+	         values = combined.collect {|x| x[0] }
+	         ticks = combined.collect {|x| x[1] }.reverse    
+	         seriesColors = combined.collect {|x| x[2] }  
+	       end
+	       if @sort == 'desc' 
+	          values = combined.collect {|x| x[0] }
+	          ticks = combined.collect {|x| x[1] }.reverse
+	          seriesColors = combined.collect {|x| x[2] }
+	       end 
+	       ticks_to_array = ""
+	       ticks.each do |tick|
+	          ticks_to_array += "|" + tick.to_s
+	       end
+  
+	       values_to_array = ""
+	       values.each_with_index do |value, index|
+	          if (index + 1) < values.size
+	             values_to_array += value.to_s + ","
+	          else
+	             values_to_array += value.to_s
+	          end   
+	       end	   
+
+	       seriesColors_to_array = ""
+	       seriesColors.each_with_index do |seriesColor, index|	 
+	           if (index + 1) < seriesColors.size      
+	       	      seriesColors_to_array += seriesColor.to_s.gsub("#","") + "|"
+	       	   else 
+	       	      seriesColors_to_array += seriesColor.to_s.gsub("#","")
+	       	   end   
+	       end
+
+       min = combined.sort_by { |x| x[0] }.collect {|x| x[0] }[0]
+       max = combined.sort_by { |x| x[0] }.collect {|x| x[0] }.reverse[0]
+       num_ticks = 0 
+       i = 0
+       puts i.to_s
+       puts max.to_s
+     #  if max
+	  #     while i < max
+	   #       i += 10
+	    #   end
+	   #end    
+      # max = i
+
+       if i > 100
+          max = (i + 10)
+       end
+       if max < 100
+          max = 100
+       end
+       if !min || min > 0
+          min = 0
+       else   
+          modulo = min.modulo(10)
+          min -= modulo
+       end	       
+
+	   max_min_array = ""
+	   min_tmp = min
+	   step = (max - min) / 10
+
+   if step <= 0
+     step = 10
+   end
+	   
+	   
+	   while min_tmp <= max
+	      max_min_array += "|" + min_tmp.to_i.to_s
+	      min_tmp += step
+	   end
+
+	    %>
+   <h6 style="color:#2B4950;font-size:16px;"><b><%=@indicators_checked[index].name.html_safe%> (<%=@indicators_checked[index].unit.gsub('','').gsub('','').html_safe%>)</b></h6>
+   &nbsp;Numbers / <a href="javascript:showPercentage();">Percentages</a><br/>
+   <div class="clear"></div>    
+	    
+   <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=13&amp;chts=2B4950,16,l&amp;chxt=x,y&amp;cht=bhg&amp;chds=<%=min%>,<%=max%>&amp;chd=t:<%=values_to_array%>&amp;chco=<%=seriesColors_to_array%>&amp;chls=2.0&amp;chs=680x<%=((@labels.size * 21) / @indicators_checked.size) + 32 %>&amp;chxl=0:<%=max_min_array%>|1:<%=ticks_to_array%>&amp;chm=N*f0*,000000,0,-1,11,,:10:&amp;chxs=1,,11,-1,lt"
+     style="padding-right:20px;padding-bottom:0px;">
+      <div style="width:800px;text-align:center;font-size:11px;color:#888888">
+        <%=_('MJ').html_safe%>
+      </div>
+      <br/><br/>
+   <% end 
+
+   %>   
+</div>
+  <div class="clear"></div>
+  <!-- Materials -->
+  <br/>
+  <h1><%=_('Materials - CED of different machine components').html_safe%></h1>  
+<% if @detailed %>
+  <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=@components_values%>&amp;chco=<%=@components_colors%>&amp;chls=2.0&amp;chs=800x200&amp;chl=<%=@components_ticks%>"
+     style="padding-right:20px;padding-bottom:40px;">  
+  <div class="clear"></div>
+<% else %>
+  <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=@materials_values%>&amp;chco=<%=@materials_colors%>&amp;chls=2.0&amp;chs=800x200&amp;chl=<%=@materials_ticks%>"
+     style="padding-right:20px;padding-bottom:40px;">  
+  <div class="clear"></div>
+<% end 
+	   
+%>
+  <!-- Manufacturing -->
+  
+  <h1><%=_('Manufacturing - CED of the different Manufacturing inputs').html_safe%></h1>  
+  <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=@manufacturing_values%>&amp;chco=<%=@manufacturing_colors%>&amp;chls=2.0&amp;chs=800x200&amp;chl=<%=@manufacturing_ticks%>"
+     style="padding-right:20px;padding-bottom:40px;">  
+  <div class="clear"></div>
+
+  <!-- Distribution -->
+
+  <h1><%=_('Distribution - CED of the Transport and Packaging').html_safe%></h1>  
+  <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=@distribution_values%>&amp;chco=<%=@distribution_colors%>&amp;chls=2.0&amp;chs=800x200&amp;chl=<%=@distribution_ticks%>"
+     style="padding-right:20px;padding-bottom:40px;">  
+  <div class="clear"></div>
+
+ <!-- Use -->
+  <% if @detailed %>
+     <h1><%=_('Use').html_safe%> - <%=@selected_shift%><%=_(':CED over entire lifetime').html_safe%></h1>
+  <% else %>
+     <h1><%=_('Use').html_safe%><%=_(':CED over entire lifetime').html_safe%></h1>
+  <% end %>   
+  <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=@use_values%>&amp;chco=<%=@use_colors%>&amp;chls=2.0&amp;chs=800x200&amp;chl=<%=@use_ticks%>"
+     style="padding-right:20px;padding-bottom:40px;">  
+  <div class="clear"></div>
+
+<% if @detailed %>
+<%
+	   max_min_array = ""
+	   min_tmp = @min_use_shifts	   
+	   step = (@max_use_shifts - @min_use_shifts) / 9
+	 
+	   while min_tmp <= @max_use_shifts
+	      max_min_array += "|" + min_tmp.to_i.to_s
+	      min_tmp += step
+	   end
+	   max_min_array += "|" + min_tmp.to_i.to_s
+	    %>
+	    
+  <h6 style="color:#2B4950;font-size:16px;"><b><%=_('Use: Cumulative energy demand for the electricity consumption per machine sub-system in the ').html_safe%><%=@selected_shift%> <%=_('[MJ]').html_safe%></b></h6>	    
+
+
+  <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=@use_machine_values%>&amp;chco=<%=@use_machine_colors%>&amp;chls=2.0&amp;chs=800x200&amp;chl=<%=@use_machine_ticks%>"
+     style="padding-right:20px;padding-bottom:40px;">  
+  <div class="clear"></div>	    
+	    
+	    
+ <h6 style="color:#2B4950;font-size:16px;"><b><%=_('Use: Cumulative Energy Demand of the electricity consumption, other energy consumption and operating resources in different use Scenarios [MJ]').html_safe%></b></h6>	    
+
+   <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=13&amp;chts=2B4950,16,l&amp;chxt=x,y&amp;cht=bhg&amp;chds=<%=@min_use_shifts%>,<%=@max_use_shifts%>&amp;chd=t:<%=@use_shifts_values%>&amp;chco=<%=@use_shifts_colors%>&amp;chls=2.0&amp;chs=800x<%=((12 * 21) / 1) + 32 %>&amp;chxl=0:<%=max_min_array%>|1:|<%=@use_shifts_ticks%>&amp;chm=N*f1*,000000,0,-1,11,,:10:&amp;chxs=1,,11,-1,lt"
+     style="padding-right:20px;padding-bottom:0px;">
+    <div style="width:800px;text-align:center;font-size:11px;color:#888888">
+      <%=_('MJ').html_safe%>
+    </div>
+    <br/><br/>
+
+  <div class="clear"></div>
+
+
+
+<% end %>
+
+
+
+<% if @detailed %>
+  <h1><%=_('End of life - CED in [MJ]').html_safe%></h1>
+
+
+<%
+	   max_min_array = ""
+	   min_tmp = @min_endoflife
+	   step = (@max_endoflife - @min_endoflife) / 10
+	 
+	   while min_tmp <= @max_endoflife
+	      max_min_array += "|" + min_tmp.to_i.to_s
+	      min_tmp += step
+	   end
+	   max_min_array += "|" + min_tmp.to_i.to_s
+	    %>
+<br/>
+   <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=18&amp;chts=2B4950,16,l&amp;chxt=x,y&amp;cht=bhg&amp;chds=<%=@min_endoflife%>,<%=@max_endoflife%>&amp;chd=t:<%=@endoflife_values%>&amp;chco=<%=@endoflife_colors%>&amp;chls=2.0&amp;chs=600x<%=((3 * 21) / 1) + 32 %>&amp;chxl=0:<%=max_min_array%>|1:|<%=@endoflife_ticks%>&amp;chm=N*f1*,000000,0,-1,11,,:10:&amp;chxs=1,,11,-1,lt"
+     style="padding-right:20px;padding-bottom:0px;">
+
+    <div style="width:800px;text-align:center;font-size:11px;color:#888888">
+      <%=_('MJ').html_safe%>
+    </div>
+    <br/><br/>
+  <div class="clear"></div>
+
+<% end %>
+
+<div class="clear"></div>
+
+	<div class="buttons last" style="float:left">  
+    <%= form_tag '/mt_results/pdf' do %>
+        <input type="hidden" name="mt_result_id" id="mt_result_id" value="<%=@mt_product.id%>"/>
+        <button type="submit" class="positive" style="float:left"> <%= image_tag 'page_white_acrobat.png' %><%= _("Generate PDF").html_safe %></button>
+    <% end %>
+    </div>	
+
+  <div class="buttons" style="float:right">
+     <a href="<%=mt_comparison_url(@mt_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Next step").html_safe %></a>
+   </div>
+
+   <div class="clear"></div>
+<div class="navbar">
+  <!-- <div id="for-ie"> -->
+  <div>
+    <ul>
+      <li><%= link_to _('To Introduction').html_safe, mt_production_intro_url(@mt_product) %></li>
+      <li><%= link_to _('To Method').html_safe, mt_assessment_url(@mt_product) %></li>
+      <li><%= link_to _('To Data Entry').html_safe, mt_raw_material_path(@mt_product) %></li>
+      <li><%= link_to _('To Data Quality').html_safe, mt_data_quality_path(@mt_product) %></li>
+      <li><%= link_to _('To Improvements').html_safe, mt_production_improvement_path(@mt_product) %></li>
+    </ul>
+  </div>
+</div>
+
+
+<div class="clear"></div>
+
+<br/>   
+
+
+
+
+
+
+</div>	

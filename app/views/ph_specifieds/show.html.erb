@@ -1,0 +1,290 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#ph_specified_ph_module_type_id").change(function(){
+           var id_value_string = $(this).val();
+           if (id_value_string != "") {
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'module_efficiency'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                        alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                        alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("ph_specified_efficiency").value = "" + data; 
+                       }
+                    });
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'module_lifetime'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                        alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                        alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("ph_specified_lifetime").value = "" + data; 
+                       }
+                    }); 
+                    
+              var lastValue = $('#ph_specified_ph_module_type_id option:last-child').val();   
+              if (id_value_string == lastValue) {
+             //   document.getElementById("efficiency_tip").style.display = 'block';
+                } else {
+             //   document.getElementById("efficiency_tip").style.display = 'none';
+                }  
+              }
+         });   
+         <% if @ph_specified.lifetime.blank? %>
+            $("#ph_specified_ph_module_type_id").change();
+         <% end %>     
+         
+jQuery.validator.addMethod("greaterThanZero", function(value, element) {
+    return this.optional(element) || (parseFloat(value) > 0);
+}, "* Amount must be greater than zero");         
+         
+     $("#edit_ph_specified_<%=@ph_specified.id%>").validate({
+   	    rules: {
+	      "ph_specified[lifetime]": {
+	                required:true,
+	                number:true,
+	                range:[14, 41]
+	                },
+	      "ph_specified[efficiency]": {
+	                required:true,
+	                number:true
+	                }
+	    },
+		messages: {
+          "ph_specified[lifetime]": {
+                required:"<%=_('This field is mandatory').html_safe%>",
+                number:"<%=_('Please enter a number').html_safe%>",
+                range:"<%=_('Please enter a number between 14 and 41').html_safe%>",
+                },
+          "ph_specified[efficiency]": {
+                required:"<%=_('This field is mandatory').html_safe%>",
+                number:"<%=_('Please enter a number').html_safe%>"
+                }           
+		}		    
+       });              
+
+
+		  <% if @ph_specified.ph_product.ph_basic_information.known == 'both' || @ph_specified.ph_product.ph_basic_information.known == 'total_surface'%>
+ 	          $("#ph_specified_area").rules("add", {
+		         required: true,    
+		         number:true,
+		         greaterThanZero:true,
+		         messages: {
+		           required: "<%=_('This field is mandatory').html_safe%>",
+		           number:"<%=_('Please enter a number').html_safe%>",
+		           greaterThanZero:"<%=_('Value must be greater than 0').html_safe%>"
+		           }         
+		      });	         		  
+		  <% end %>
+		  <% if @ph_specified.ph_product.ph_basic_information.known == 'both' || @ph_specified.ph_product.ph_basic_information.known == 'power_demand'%>
+ 	          $("#ph_specified_power").rules("add", {
+		         required: true,    
+		         number:true,
+		         greaterThanZero:true,
+		         messages: {
+		           required: "<%=_('This field is mandatory').html_safe%>",
+		           number:"<%=_('Please enter a number').html_safe%>",
+		           greaterThanZero:"<%=_('Value must be greater than 0').html_safe%>"
+		           }         
+		      });
+		  <% end %>
+     });    
+     
+     
+
+     
+</script>         
+
+<h1><%=_('Module Specification').html_safe%>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/lca/ph_tabs') %>
+	</div>
+
+<%= form_for(@ph_specified) do |f| %>
+  <% if @ph_specified.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@ph_specified.errors.count, "error") %> prohibited this ph_specified from being saved:</h2>
+
+      <ul>
+      <% @ph_specified.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%=_('Module Types').html_safe%> <a title="<%=_('What kind of technology is being used for the solar cells').html_safe%>" href="#" class="tip_left">&nbsp;</a><br />
+    <select id="ph_specified_ph_module_type_id" name="ph_specified[ph_module_type_id]">
+	    <% @ph_module_types.each do |ph_module_type| %>
+	       <% if @ph_specified.ph_module_type && @ph_specified.ph_module_type.id == ph_module_type.id %>	    
+	          <option selected="true" value="<%=ph_module_type.id%>"><%=ph_module_type.name.html_safe%></option>
+	       <% else %>
+	          <option value="<%=ph_module_type.id%>"><%=ph_module_type.name.html_safe%></option>
+	       <% end %>   
+	    <% end %>
+    </select>  
+  </div>
+
+  <% if @ph_specified.ph_product.ph_basic_information.known == 'both' || @ph_specified.ph_product.ph_basic_information.known == 'total_surface'%> 
+	  <div class="field">
+	    <%=_('Give the area and its unit if known to you').html_safe%> <a title="<%=_('Net area of the system').html_safe%>" href="#" class="tip_left">&nbsp;</a><br />
+	    <%= f.text_field :area %>
+	     <select id="ph_specified_area_unit_id" name="ph_specified[area_unit_id]">
+		     <% @ph_area_units.each do |ph_area_unit| %>
+		        <% if @ph_specified.area_unit && @ph_specified.area_unit.id == ph_area_unit.id %>
+		           <option selected="true" value="<%=ph_area_unit.id%>"><%=ph_area_unit.name.html_safe%></option>
+		        <% else %>
+		           <option value="<%=ph_area_unit.id%>"><%=ph_area_unit.name.html_safe%></option>
+		        <% end %>   
+		     <% end %>
+	     </select>              
+	  </div>
+  <% end %>
+    
+  <% if @ph_specified.ph_product.ph_basic_information.known == 'both' || @ph_specified.ph_product.ph_basic_information.known == 'power_demand'%>    
+	  <div class="field">
+	    <%=_('Give the power demand and its unit if known to you').html_safe%> <a title="<%=_('Which of the following parameters are known to you?').html_safe%>" href="#" class="tip_left">&nbsp;</a><br />
+	    <% if !@user_power_before %>
+	       <%= f.text_field :power %>
+           <select id="ph_specified_power_unit_id" name="ph_specified[power_unit_id]">
+		     <% @ph_power_units.each do |ph_power_unit| %>
+		        <% if @ph_specified.power_unit && @ph_specified.power_unit.id == ph_power_unit.id %>
+		           <option selected="true" value="<%=ph_power_unit.id%>"><%=ph_power_unit.name.html_safe%></option>
+		        <% else %>
+		           <option value="<%=ph_power_unit.id%>"><%=ph_power_unit.name.html_safe%></option>
+		        <% end %>   
+		     <% end %>
+	     </select>        	       
+	    <% else %>   
+	       <%= f.text_field :power, :value => @user_power_before, :readonly => 'readonly' %> <%=_('kWh/a').html_safe%>
+	    <% end %>
+	         
+	    
+	  </div>
+  <% end %>
+  	  
+  <div class="field">
+    <%=_('Nominal Module Efficiency').html_safe%><br />
+    <%= f.text_field :efficiency %> %
+    <div id="efficiency_tip" style="display:none">
+      <span class="tip_text"><%=_('No specific module type chosen, no specific efficiency available.').html_safe%></span>
+    </div>
+  </div>
+  <div class="field">
+    <%=_('Module Lifetime').html_safe%><br />
+    <%= f.text_field :lifetime %> <%=_('a (14&lt;a&lt;41)').html_safe%>
+  </div>
+  
+  <h2><%=_('Optimization Parameters (What parameters can theoretically influenced by you)?').html_safe%> <a title="<%=_('Which of the following parameters can be influenced by you, to be able to get a system with a better power output').html_safe%>" href="#" class="tip_right">&nbsp;</a></h2>
+  
+  <div class="field">
+    <%=_('<b>Efficiency</b>: For example by chosing a different module?').html_safe%><br />
+    <select id="ph_specified_bench_efficiency" name="ph_specified[bench_efficiency]">
+        <% if @ph_specified.bench_efficiency == 'yes' %>
+           <option selected="true" value="yes"><%=_('Yes').html_safe%></option>
+        <% else %>   
+           <option value="yes"><%=_('Yes').html_safe%></option>
+        <% end %>   
+        <% if @ph_specified.bench_efficiency == 'no' %>
+           <option selected="true" value="no"><%=_('No').html_safe%></option>
+        <% else %>
+           <option value="no"><%=_('No').html_safe%></option>
+        <% end %>
+     </select>
+  </div>
+  <div class="field">
+    <%=_('<b>Radiation</b>: For example by adjusting the orientation of your modules?').html_safe%><br />
+    <select id="ph_specified_bench_insolation" name="ph_specified[bench_insolation]">
+        <% if @ph_specified.bench_insolation == 'yes' %>
+           <option selected="true" value="yes"><%=_('Yes').html_safe%></option>
+        <% else %>   
+           <option value="yes"><%=_('Yes').html_safe%></option>
+        <% end %>   
+        <% if @ph_specified.bench_insolation == 'no' %>
+           <option selected="true" value="no"><%=_('No').html_safe%></option>
+        <% else %>
+           <option value="no"><%=_('No').html_safe%></option>
+        <% end %>
+     </select>
+  </div>
+  <div class="field">
+    <%=_('<b>Performance Ratio</b>: For example by preventing degradation, shade or unproductive periods?').html_safe%><br />
+    <select id="ph_specified_bench_performance" name="ph_specified[bench_performance]">
+        <% if @ph_specified.bench_performance == 'yes' %>
+           <option selected="true" value="yes"><%=_('Yes').html_safe%></option>
+        <% else %>   
+           <option value="yes"><%=_('Yes').html_safe%></option>
+        <% end %>   
+        <% if @ph_specified.bench_performance == 'no' %>
+           <option selected="true" value="no"><%=_('No').html_safe%></option>
+        <% else %>
+           <option value="no"><%=_('No').html_safe%></option>
+        <% end %>
+     </select>
+  </div>
+  <div class="field">
+    <%=_('<b>Lifetime</b>: For example by chosing a different module or better maintenance? (Maximum 30 years)').html_safe%><br />
+    <select id="ph_specified_bench_lifetime" name="ph_specified[bench_lifetime]">
+        <% if @ph_specified.bench_lifetime == 'yes' %>
+           <option selected="true" value="yes"><%=_('Yes').html_safe%></option>
+        <% else %>   
+           <option value="yes"><%=_('Yes').html_safe%></option>
+        <% end %>   
+        <% if @ph_specified.bench_lifetime == 'no' %>
+           <option selected="true" value="no"><%=_('No').html_safe%></option>
+        <% else %>
+           <option value="no"><%=_('No').html_safe%></option>
+        <% end %>
+     </select>
+  </div>
+  <div class="buttons" style="float:left">
+     <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+   </div>
+  </div>
+<!--
+  <div class="clear"></div>
+
+  <div class="span-20" style="text-align:center;font-size:11">
+     <ul style="padding-left:0;margin-right:130px">	        	        
+	    <li class="link_booklabels"><%= link_to _('To Results'), ph_result_summary_path(@ph_product) %></li>
+	                	       
+        <li class="link_booklabels"><%= link_to _('To Data Quality').html_safe, ph_data_quality_intro_path(@ph_product) %></li>	        
+	        
+        <li class="link_booklabels"><%= link_to _('To Introduction').html_safe, ph_production_intro_path(@ph_product) %></li>
+        <div class="clear"></div>
+     </ul>
+  </div>  
+  
+  <div class="clear"></div>
+-->
+
+
+      <div class="clear"></div>
+      <div class="navbar">
+        <!-- <div id="for-ie"> -->
+        <div>
+          <ul>
+            <li><%= link_to _('To Introduction').html_safe, ph_production_intro_path(@ph_product) %></li>
+            <li><%= link_to _('To Data Quality').html_safe, ph_data_quality_intro_path(@ph_product) %></li>
+            <li><%= link_to _('To Results').html_safe, ph_result_summary_path(@ph_product) %></li>
+          </ul>
+        </div>
+      </div>
+      <div class="clear"></div>
+
+  <br/> 
+<% end %>
+</div>

@@ -1,0 +1,138 @@
+<script type="text/javascript">
+    function switchAbsolute() {
+        document.getElementById("absolute_selected").style.display = 'block';
+        document.getElementById("absolute_graph").style.display = 'block';        
+        document.getElementById("percentage_selected").style.display = 'none';        
+        document.getElementById("percentage_graph").style.display = 'none';        
+     }   
+    function switchPercentage() {
+        document.getElementById("absolute_selected").style.display = 'none';
+        document.getElementById("absolute_graph").style.display = 'none';        
+        document.getElementById("percentage_selected").style.display = 'block';        
+        document.getElementById("percentage_graph").style.display = 'block';        
+     }   
+	
+</script>
+
+<h1><%=_('Graphics').html_safe%>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/st_results/tabs') %>
+	</div>
+	
+  <div class="clear"></div>	
+	
+	<div class="buttons last" style="float:left">  
+    <%= form_tag '/st_results/pdf' do %>
+        <input type="hidden" name="st_result_id" id="st_result_id" value="<%=@st_product.id%>"/>
+        <button type="submit" class="positive" style="float:left"> <%= image_tag 'page_white_acrobat.png' %><%= _("Generate PDF").html_safe %></button>
+    <% end %>
+    </div>	
+	
+  <!-- Totals -->
+  <div class="clear"></div>
+  <br/>
+  
+  <h1><%=_('Eco-costs').html_safe%></h1>  
+    <br/>  
+    <div class="span-23 last">
+      <%=_('Switch to').html_safe%>
+      <div id="absolute_selected">
+        <%=_('Numbers').html_safe%> / <%= link_to _('Percentages').html_safe, 'javascript:switchPercentage();', :product => @product %>
+      </div>   
+      <div id="percentage_selected" style="display:none;">
+        <%= link_to _('Numbers').html_safe, 'javascript:switchAbsolute();', :product => @product %> / <%=_('Percentages').html_safe%>
+      </div>
+     
+    </div>
+	<div class="clear"></div>
+  
+   <div id="absolute_graph">
+	   <img 
+	     alt="" 
+	     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=18&amp;chts=2B4950,16,l&amp;chxt=x,y&amp;cht=bhg&amp;chds=a&amp;chd=t:<%=@total_values%>&amp;chco=<%=@total_colors%>&amp;chls=2.0&amp;chs=600x<%=((@labels_size * 30) / 1) %>&amp;chxl=1:<%=@total_ticks%>|2:|<%=_('Carbon footprint (kg CO2)').html_safe%>|&amp;chxp=2,50&amp;chm=N*f0* &euro;,000000,0,-1,11,,:10:&amp;chxs=1,,11,-1,lt"
+	     style="padding-right:20px;padding-bottom:40px;">
+   </div>  
+   <div id="percentage_graph" style="display:none">   
+	   <img 
+	     alt="" 
+	     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=18&amp;chts=2B4950,16,l&amp;chxt=x,y&amp;cht=bhg&amp;chds=a&amp;chd=t:<%=@percentage_values%>&amp;chco=<%=@total_colors%>&amp;chls=2.0&amp;chs=600x<%=((@labels_size * 30) / 1) %>&amp;chxl=1:<%=@total_ticks%>|2:|<%=_('Carbon footprint (kg CO2)').html_safe%>|&amp;chxp=2,50&amp;chm=N*f1*%,000000,0,-1,11,,:10:&amp;chxs=1,,11,-1,lt"
+	     style="padding-right:20px;padding-bottom:40px;">
+   </div>
+  
+  <div class="clear"></div>
+  <!-- Materials -->
+  <br/>
+  
+  <% if @show_materials %>
+	  <h1><%=_('Materials').html_safe%></h1>  
+	  
+	  <img 
+	     alt="" 
+	     src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=@materials_values%>&amp;chco=<%=@materials_colors%>&amp;chls=2.0&amp;chs=800x200&amp;chl=<%=@materials_ticks%>"
+	     style="padding-right:20px;padding-bottom:40px;">  
+	  <div class="clear"></div>
+  <% end %>
+  
+    
+  <!-- Manufacturing -->
+  <% if @show_manufacturing %>
+	  <h1><%=_('Manufacturing').html_safe%></h1>  
+	  <img 
+	     alt="" 
+	     src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=@manufacturing_values%>&amp;chco=<%=@manufacturing_colors%>&amp;chls=2.0&amp;chs=800x200&amp;chl=<%=@manufacturing_ticks%>"
+	     style="padding-right:20px;padding-bottom:40px;">  
+	  <div class="clear"></div>
+  <% end %>    
+
+  <!-- Distribution -->
+  <% if @show_distribution %>
+	  <h1><%=_('Distribution').html_safe%></h1>  
+	  <img 
+	     alt="" 
+	     src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=@distribution_values%>&amp;chco=<%=@distribution_colors%>&amp;chls=2.0&amp;chs=800x200&amp;chl=<%=@distribution_ticks%>"
+	     style="padding-right:20px;padding-bottom:40px;">  
+	  <div class="clear"></div>
+  <% end %>
+
+  <!-- Use -->
+  <% if @show_use %>
+      <h1><%=_('Use').html_safe%></h1>
+	  <img 
+	     alt="" 
+	     src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=@use_values%>&amp;chco=<%=@use_colors%>&amp;chls=2.0&amp;chs=800x200&amp;chl=<%=@use_ticks%>"
+	     style="padding-right:20px;padding-bottom:40px;">  
+	  <div class="clear"></div>
+  <% end %>
+  
+  <div class="clear"></div>
+  
+	<div class="buttons last" style="float:left">  
+    <%= form_tag '/st_results/pdf' do %>
+        <input type="hidden" name="st_result_id" id="st_result_id" value="<%=@st_product.id%>"/>
+        <button type="submit" class="positive" style="float:left"> <%= image_tag 'page_white_acrobat.png' %><%= _("Generate PDF").html_safe %></button>
+    <% end %>
+    </div>	
+
+  <div class="buttons" style="float:right">
+     <a href="<%=st_comparison_url(@st_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Next step").html_safe %></a>
+   </div>
+
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, st_production_intro_url(@st_product) %></li>
+        <li><%= link_to _('To Data Entry').html_safe, st_material_detail_path(@st_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, st_data_quality_intro_path(@st_product) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+
+
+  
+</div>

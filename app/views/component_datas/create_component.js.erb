@@ -1,0 +1,12 @@
+
+$("#error_explanation_component").empty();
+$("#error_explanation_component").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#components").append("<%= escape_javascript(render(@component_data)) %>");
+/* Highlight the new comment */
+$("#component_<%= @component_data.id %>").effect("highlight", {}, 3000);
+
+$("#component_data_ratio").val("");
+$("#component_data_aspect").val("");
+$("#component_data_diagonal").val("");
+$("#component_data_quantity").val("");

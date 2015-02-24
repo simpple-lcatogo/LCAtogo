@@ -1,0 +1,44 @@
+# encoding: UTF-8
+<tr id="bp_material_<%= bp_material_data.id %>">
+
+  <% if bp_material_data.bp_material %>  
+     <td><%= bp_material_data.bp_material.name.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>
+
+  <% if bp_material_data.quantity %>  
+     <td id="bp_material_quantity_<%= bp_material_data.id %>" class="bp_material_quantity_<%= bp_material_data.id %>" ><%= number_with_precision(bp_material_data.quantity.to_s.html_safe, :precision => 2, :locale => 'en') %></td>
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>     
+  
+  <% if bp_material_data.bp_unit %>  
+     <td><%= bp_material_data.bp_unit.name.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>
+
+  <% if bp_material_data.comment %>  
+     <td id="bp_material_comment_<%= bp_material_data.id %>" class="bp_material_comment_<%= bp_material_data.id %>"><%= bp_material_data.comment.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>
+  <td class="center"><%= link_to '&#10006;'.html_safe, bp_material_data_path(bp_material_data.id, :authenticity_token => form_authenticity_token), :class => "delete", :method => :delete, :remote => true %></td>
+</tr>
+
+
+<script type="text/javascript">
+   $(".bp_material_quantity_<%=bp_material_data.id%>").editInPlace({
+        url: "/bp_material_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "bp_material_data_id=<%=bp_material_data.id%>&field=quantity",
+        saving_text: '<%=_("Saving...")%>'
+        });
+
+   $(".bp_material_comment_<%=bp_material_data.id%>").editInPlace({
+        url: "/bp_material_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "bp_material_data_id=<%=bp_material_data.id%>&field=comment",
+        saving_text: '<%=_("Saving...")%>'
+        });
+ </script> 
+

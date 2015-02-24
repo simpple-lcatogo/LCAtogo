@@ -1,0 +1,25 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  pc_product_id: 1
+  pc_country_info_id: 1
+  pcb_type: MyString
+  pcb_area: 1.5
+  pcb_number: 1.5
+  layers: 1.5
+  pc_coating_type_id: 1
+  rohs_compliant: MyString
+  comments: MyText
+  assessment: MyString
+
+two:
+  pc_product_id: 1
+  pc_country_info_id: 1
+  pcb_type: MyString
+  pcb_area: 1.5
+  pcb_number: 1.5
+  layers: 1.5
+  pc_coating_type_id: 1
+  rohs_compliant: MyString
+  comments: MyText
+  assessment: MyString

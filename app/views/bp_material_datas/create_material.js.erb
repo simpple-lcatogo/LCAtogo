@@ -1,0 +1,11 @@
+
+$("#error_explanation_material").empty();
+$("#error_explanation_material").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#bp_materials").append("<%= escape_javascript(render(@bp_material_data)) %>");
+/* Highlight the new comment */
+$("#bp_material_<%= @bp_material_data.id %>").effect("highlight", {}, 3000);
+
+
+$("#bp_material_data_quantity").val("");
+$("#bp_material_data_comment").val("");

@@ -1,0 +1,182 @@
+<script type="text/javascript">
+  var checkflag = "false";
+  function initial_value(field) {
+        var title = "<%=_('Unselect all')%>";
+        checkflag = "true";
+		if( document.getElementsByTagName ) {
+		    tableCells = document.getElementsByTagName('input');
+		    } else if( document.all && document.all.tags ) {
+		    tableCells = document.all.tags('input');
+		    }
+
+		if( tableCells ) {
+		   for (var i = 0; i < tableCells.length; i++) {
+		   if (tableCells[i] != null) {
+		       if (tableCells[i].id) {		               
+		          if (tableCells[i].id.match(/^product_indicator_ids_/) != null) {
+		              if (!tableCells[i].checked) {
+		                 title = "<%=_('Select all')%>";
+		                 checkflag = "false";
+		                 }
+  		              }
+		           }
+		        }
+		     }
+		  }              
+       return title;
+  }
+  
+  function check(field) {
+		if( document.getElementsByTagName ) {
+		    tableCells = document.getElementsByTagName('input');
+		    } else if( document.all && document.all.tags ) {
+		    tableCells = document.all.tags('input');
+		    }
+		if( tableCells ) {
+		   for (var i = 0; i < tableCells.length; i++) {
+		   if (tableCells[i] != null) {
+		       if (tableCells[i].id) {         
+		          if (tableCells[i].id.match(/^product_indicator_ids_/) != null) {
+		              if (checkflag == "false") {
+		                 tableCells[i].checked = true;
+		                 } else {
+		                 tableCells[i].checked = false;
+		                 }
+		              }
+		           }
+		        }
+		     }
+		  }              
+  
+  
+    if (checkflag == "false") {
+      checkflag = "true";
+      return "<%=_('Unselect All')%>"; 
+      } else {
+      checkflag = "false";
+      return "<%=_('Select All')%>"; 
+       }
+}  
+</script>
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/lca/bp_tabs') %>
+	</div>
+	
+	<% form_for @product do |f| %>
+	
+     <input class="positive_button" id="check_all_button" type="button" value="<%=_('Select all')%>" onClick="this.value=check(this.form.booklabel)">	
+	 <input type="hidden" name="from_bp_indicators" id="from_bp_indicators" value=""/>
+	 <input type="hidden" name="product[id]" id="product_id" value="<%=@product.id%>"/>
+	 <br/><br/>
+
+	<table class="standard2" style="margin-top:0px">
+	    <tr>
+	      <th></th>
+	      <th><%=_('Indicator').html_safe%></th>
+	      <th><%=_('Unit').html_safe%></th>
+          <th><%=_('Acronym').html_safe%></th>
+<!--	      <th><%=_('Comment').html_safe%></th> -->
+	    </tr>	
+	<% for indicator in @indicators %>
+	
+		<tr>	
+		 <% if @product.indicators.size == 0 %>
+	       <td><%= check_box_tag "product[indicator_ids][]", indicator.id, true %></td>
+	     <% else %>
+	       <td><%= check_box_tag "product[indicator_ids][]", indicator.id, @product.indicators.include?(indicator) %></td>
+	     <% end %>  
+	     <td><%= indicator.name.html_safe %>
+           <% indicator_image = ''
+              image_class = 'tip_image'
+              if indicator.name == 'Global Warming'
+                indicator_image = 'Global_warming'
+              end
+              if indicator.name == 'Water Footprint'
+                indicator_image = 'Water_footprint'
+              end
+              if indicator.name == 'Land Use'
+                indicator_image = 'Land_use'
+              end
+              if indicator.name == 'Cumulative Energy Demand (CED) - non-renewable' || indicator.name == 'Cumulative Energy Demand (CED) - renewable'
+                indicator_image = 'CED'
+                image_class = 'tip_image_top'
+              end
+              if indicator.name == 'Eutrophication'
+                indicator_image = 'Eutrophication'
+              end
+              if indicator.name == 'Acidification'
+                indicator_image = 'Acidification'
+              end
+              if indicator.name == 'Photochemical Ozone Creation Potential'
+                indicator_image = 'Photochemical'
+                image_class = 'tip_image_top'
+              end
+              if indicator.name == 'Respiratory Inorganics'
+                indicator_image = 'Respiratory'
+              end
+
+
+              %>
+
+           <% if I18n.locale == :es %>
+              <a title="<%=_('<img src=\'/images/indicators_es/' + indicator_image + '.jpg\'/><br/><div style=\'width:890px\'>&nbsp;</div>').html_safe%>" href="#" class="<%=image_class%>">&nbsp;</a>
+           <% else %>
+              <a title="<%=_('<img src=\'/images/indicators/' + indicator_image + '.jpg\'/><br/><div style=\'width:890px\'>&nbsp;</div>').html_safe%>" href="#" class="<%=image_class%>">&nbsp;</a>
+           <% end %>
+         </td>
+	     <td><%= indicator.unit.html_safe %></td>
+	     <td><%= indicator.abbr.html_safe %></td>	     
+<!--	     <td><%= indicator.comment.html_safe if indicator.comment %></td> -->
+	    </tr> 
+	
+	<% end %>
+	</table>
+	
+	<br/>
+
+
+     <div class="buttons span-12 last" style="float:right">	
+	  <button type="submit" class="positive" style="float:right;text-align:right"><%= image_tag 'tick.png' %><%=_('Generate results').html_safe%>	  
+	  </button>
+	 </div> 
+	 
+	 
+<!--	 <%=_('or')%>&nbsp;<a href="javascript:clearForm(document.forms[0]);"><%=_('Cancel').html_safe%></a> -->
+	<% end %>
+	
+<div class="buttons span-5" style="float:left;text-align:left">
+  <%= form_tag '/bp_indicators/previous_step' do %>
+    <input type="hidden" name="bp_product_id" id="bp_product_id" value="<%=@bp_product.id%>"/>	
+	<button type="submit" class="positive" style="float:left;text-align:left"> <%= image_tag 'tick.png' %><%= _("Previous step").html_safe %></button>
+  <% end %>
+  </div>   
+		
+	<br/><br/>
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, bp_production_intro_path(@bp_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, bp_data_quality_intro_path(@bp_product) %></li>
+        <li><%= link_to _('To Results').html_safe, bp_result_url(@bp_product) %></li>
+        <li><%= link_to _('To Economic Data'), bp_economic_url(@bp_product) %></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="clear"></div>
+
+
+
+</div>
+
+<script type="text/javascript">
+   document.getElementById("check_all_button").value = initial_value(document.forms[0].booklabel);
+</script>   

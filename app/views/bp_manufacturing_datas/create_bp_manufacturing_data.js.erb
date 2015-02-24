@@ -1,0 +1,12 @@
+$("#error_explanation_material").empty();
+$("#error_explanation_material").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#bp_manufacturing_datas").append("<%= escape_javascript(render(@bp_manufacturing_data)) %>");
+/* Highlight the new comment */
+$("#bp_manufacturing_data_<%= @bp_manufacturing_data.id %>").effect("highlight", {}, 3000);
+
+
+$("#bp_manufacturing_data_quantity").val("");
+$("#bp_manufacturing_data_comment").val("");
+
+

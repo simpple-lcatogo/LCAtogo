@@ -1,0 +1,28 @@
+<tr id="repair_<%= repair_use.id %>">
+  <td><%= repair_use.family.name.html_safe %></td>
+  <% if repair_use.material %>    
+    <td><%= repair_use.material.name.html_safe %></td>
+  <% else %>
+    <td>&nbsp;</td>
+  <% end %>  
+  <td class="quantity_repair_<%= repair_use.id %>" style="background: none repeat scroll 0% 0% transparent;text-align:center"><%= number_with_precision(repair_use.quantity, :precision => 2, :locale => 'en') %></td>
+  <% if repair_use.material %>  
+       <% if repair_use.material && (repair_use.material.name == 'DDR3 - 4GB' || repair_use.material.name == 'DDR3 - 8GB' || repair_use.material.name == 'SSD') %>
+            <td><%=_('unit(s)').html_safe%></td>
+       <% else %>  
+            <td><%=_('unit(s)').html_safe%></td>
+       <% end %>
+    
+  <% else %>
+    <td>&nbsp;</td>
+  <% end %>  
+  <td class="center"><%= link_to '&#10006;'.html_safe, repair_use_path(repair_use, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>
+
+<script type="text/javascript">
+   $(".quantity_repair_<%=repair_use.id%>").editInPlace({
+        url: "/repair_uses/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "repair_use_id=<%=repair_use.id%>",
+        saving_text: '<%=_("Saving...")%>'
+        });
+ </script>    

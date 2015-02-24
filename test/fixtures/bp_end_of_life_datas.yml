@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  bp_product: 
+  bp_end_of_life_default_scenario: 
+  custom_landfill: 1.5
+  custom_incineration: 1.5
+  custom_composting: 1.5
+  custom_recycling: 1.5
+  default_transport_distance: 1.5
+  custom_transport_distance: 1.5
+
+two:
+  bp_product: 
+  bp_end_of_life_default_scenario: 
+  custom_landfill: 1.5
+  custom_incineration: 1.5
+  custom_composting: 1.5
+  custom_recycling: 1.5
+  default_transport_distance: 1.5
+  custom_transport_distance: 1.5

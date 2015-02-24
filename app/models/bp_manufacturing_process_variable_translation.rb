@@ -1,0 +1,3 @@
+class BpManufacturingProcessVariableTranslation < ActiveRecord::Base
+	belongs_to :bp_manufacturing_process_variable
+end

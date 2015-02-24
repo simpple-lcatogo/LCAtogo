@@ -1,0 +1,30 @@
+<tr id="mt_overhead_energy_data_<%= mt_overhead_energy_data.id %>">
+     <td>
+	      <% if mt_overhead_energy_data.mt_energy_family %>
+			<%= mt_overhead_energy_data.mt_energy_family.name.html_safe %>
+	      <% end %>		
+     </td>
+     <td>
+	      <% if mt_overhead_energy_data.mt_energy_process %>
+			<%= mt_overhead_energy_data.mt_energy_process.name.html_safe %>
+	      <% end %>		
+
+     </td>
+     <td class="quantity_<%=mt_overhead_energy_data.id%>">
+          <%= mt_overhead_energy_data.quantity %>
+     </td>
+     <script type="text/javascript">
+		   $(".quantity_<%=mt_overhead_energy_data.id%>").editInPlace({
+		        url: "/mt_overhead_energy_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+		        params: "mt_overhead_energy_data_id=<%=mt_overhead_energy_data.id%>",
+		        saving_text: '<%=_("Saving...")%>'
+		        });      
+  
+     </script>            
+     <td>
+	      <% if mt_overhead_energy_data.mt_energy_process %>
+			<%= mt_overhead_energy_data.mt_energy_process.unit.html_safe %>
+	      <% end %>		
+     </td>     
+     <td class="center"><%= link_to '&#10006;'.html_safe, mt_overhead_energy_data_path(mt_overhead_energy_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>

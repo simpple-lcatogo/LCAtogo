@@ -1,0 +1,2 @@
+module PcAssessmentMethodHelper
+end

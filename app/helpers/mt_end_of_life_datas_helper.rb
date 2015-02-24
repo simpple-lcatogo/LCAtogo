@@ -1,0 +1,2 @@
+module MtEndOfLifeDatasHelper
+end

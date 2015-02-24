@@ -1,0 +1,107 @@
+<style type="text/css">
+  td {
+      border-width:1px;
+      border-color:#ffffff;
+      border-style:solid;
+  }
+  table {
+      margin: 0 auto; /* or margin: 0 auto 0 auto */
+  }
+</style>
+<h1><%=_('Improvements').html_safe%>
+</span>
+</h1>
+
+
+<div class="content_skin">
+  <div class="clear"></div>
+  
+  <table class="standard2" style="width:75%;border-width:0px">
+     <tr>
+       <th style="text-align:center"><%=_('Machine sub-system').html_safe%></th>
+       <th style="text-align:center"><%=_('Improvement Guidelines').html_safe%></th>
+     </tr>  
+     <tr style="background:#d3d3d3;">
+        <td><%=_('General').html_safe%></td>
+        <td style="text-align:center"><a target="_blank" href="/measures_pdf/Improvement_General.pdf"><img src="/images/Icon-manual.png" width="26"/></a></td>
+     </tr>
+     <tr style="background:#a9a9a9">
+        <td><%=_('24V supply').html_safe%></td>
+        <td style="text-align:center"><a target="_blank" href="/measures_pdf/Improvement_24V_supply.pdf"><img src="/images/Icon-manual.png" width="26"/></a></td>
+     </tr>
+     <tr style="background:#d3d3d3">
+        <td><%=_('230V supply').html_safe%></td>
+        <td style="text-align:center"><a target="_blank" href="/measures_pdf/Improvement_230V_supply.pdf"><img src="/images/Icon-manual.png" width="26"/></a></td>
+     </tr>
+     <tr style="background:#a9a9a9">
+        <td><%=_('Air compressor').html_safe%></td>
+        <td style="text-align:center"><a target="_blank" href="/measures_pdf/Improvement_Air_compressor.pdf"><img src="/images/Icon-manual.png" width="26"/></a></td>
+     </tr>
+     <tr style="background:#d3d3d3">
+        <td><%=_('Chip conveyor').html_safe%></td>
+        <td style="text-align:center"><a target="_blank" href="/measures_pdf/Improvement_Chip_conveyor.pdf"><img src="/images/Icon-manual.png" width="26"/></a></td>
+     </tr>
+     <tr style="background:#a9a9a9">
+        <td><%=_('CNC air-conditioning').html_safe%></td>
+        <td style="text-align:center"><a target="_blank" href="/measures_pdf/Improvement_CNC_air-conditioning.pdf"><img src="/images/Icon-manual.png" width="26"/></a></td>
+     </tr>
+     <tr style="background:#d3d3d3">
+        <td><%=_('CNC total').html_safe%></td>
+        <td style="text-align:center"><a target="_blank" href="/measures_pdf/Improvement_CNC_total.pdf"><img src="/images/Icon-manual.png" width="26"/></a></td>
+     </tr>
+     <tr style="background:#a9a9a9">
+        <td><%=_('Cooling fan').html_safe%></td>
+        <td style="text-align:center"><a target="_blank" href="/measures_pdf/Improvement_Cooling_fan.pdf"><img src="/images/Icon-manual.png" width="26"/></a></td>
+     </tr>
+     <tr style="background:#d3d3d3">
+        <td><%=_('E-R module supply').html_safe%></td>
+        <td style="text-align:center"><a target="_blank" href="/measures_pdf/Improvement_E-R_module_supply.pdf"><img src="/images/Icon-manual.png" width="26"/></a></td>
+     </tr>
+     <tr style="background:#a9a9a9">
+        <td><%=_('Fan ER module').html_safe%></td>
+        <td style="text-align:center"><a target="_blank" href="/measures_pdf/Improvement_Fan_ER_module.pdf"><img src="/images/Icon-manual.png" width="26"/></a></td>
+     </tr>
+     <tr style="background:#d3d3d3">
+        <td><%=_('Fluid system').html_safe%></td>
+        <td style="text-align:center"><a target="_blank" href="/measures_pdf/Improvement_Fluid_system.pdf"><img src="/images/Icon-manual.png" width="26"/></a></td>
+     </tr>
+     <tr style="background:#a9a9a9">
+        <td><%=_('Hydraulic system').html_safe%></td>
+        <td style="text-align:center"><a target="_blank" href="/measures_pdf/Improvement_Hydraulic_system.pdf"><img src="/images/Icon-manual.png" width="26"/></a></td>
+     </tr>
+     <tr style="background:#d3d3d3">
+        <td><%=_('Mist collector').html_safe%></td>
+        <td style="text-align:center"><a target="_blank" href="/measures_pdf/Improvement_Mist_collector.pdf"><img src="/images/Icon-manual.png" width="26"/></a></td>
+     </tr>
+     <tr style="background:#a9a9a9">
+        <td><%=_('Monitoring module').html_safe%></td>
+        <td style="text-align:center"><a target="_blank" href="/measures_pdf/Improvement_Monitoting_module.pdf"><img src="/images/Icon-manual.png" width="26"/></a></td>
+     </tr>
+     <tr style="background:#d3d3d3">
+        <td><%=_('Spindle cooling pump').html_safe%></td>
+        <td style="text-align:center"><a target="_blank" href="/measures_pdf/Improvement_Spindle_cooling_pump.pdf"><img src="/images/Icon-manual.png" width="26"/></a></td>
+     </tr>
+  </table>
+  
+
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, mt_production_intro_url(@mt_product) %></li>
+        <li><%= link_to _('To Method').html_safe, mt_assessment_url(@mt_product) %></li>
+        <li><%= link_to _('To Data Entry').html_safe, mt_raw_material_path(@mt_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, mt_data_quality_path(@mt_product) %></li>
+        <li><%= link_to _('To Results').html_safe, mt_result_path(@mt_product) %></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="clear"></div>
+
+
+
+</div>	

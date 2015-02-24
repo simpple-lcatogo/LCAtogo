@@ -1,0 +1,86 @@
+<h1><%=_('Data Quality').html_safe%> <a title="<%=_('In this section you can highlight the quality of the data that you entered as part of the study, defining whether it is robust, indicative or just illustrative.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/pc_data_qualities/tabs') %>
+	</div>
+	<div class="clear"></div>
+<%= form_for(@pc_data_quality) do |f| %>
+  <table class="standard2">
+   <tbody>
+    <tr>
+      <th colspan="4">&nbsp;</th>
+    </tr>
+    <tr>
+        
+      <td><%=_('Water consumption').html_safe%></td>
+	  <td><%= f.radio_button :water_consumption, "robust" %>  <%=_('Robust').html_safe%></td>
+	  <td><%= f.radio_button :water_consumption, "indicative" %>  <%=_('Indicative').html_safe%></td>
+	  <td><%= f.radio_button :water_consumption, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	<tr>
+      <td><%=_('Electric energy consumption').html_safe%></td>
+      <td><%= f.radio_button :electric_consumption, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :electric_consumption, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :electric_consumption, "illustrative" %>  <%=_('Illustrative').html_safe%></td>  
+	</tr>
+	<tr>
+      <td><%=_('Heat energy consumption').html_safe%></td>
+      <td><%= f.radio_button :heat_consumption, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :heat_consumption, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :heat_consumption, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	<tr>
+      <td><%=_('Quantity of sludge and waste (solid waste)').html_safe%></td>
+      <td><%= f.radio_button :sludge, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :sludge, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :sludge, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	<tr>
+      <td><%=_('Values of GHC emissions to air').html_safe%></td>
+      <td><%= f.radio_button :ghc_emissions, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :ghc_emissions, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :ghc_emissions, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	<tr>
+      <td><%=_('Values of PCBs production').html_safe%></td>
+      <td><%= f.radio_button :pcbs_production, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :pcbs_production, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :pcbs_production, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	
+	</tbody> 
+   </table>
+   
+  <div class="buttons last" style="float:left">
+     <a href="<%=pc_data_quality_intro_path(@pc_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Previous step").html_safe %></a>
+  </div>
+   
+   
+  <div class="buttons" style="float:right">
+     <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Data Update").html_safe %></button>
+   </div>
+
+
+      <div class="clear"></div>
+      <div class="navbar">
+        <!-- <div id="for-ie"> -->
+        <div>
+          <ul>
+            <li><%= link_to _('To Introduction').html_safe, pc_production_intro_url(@pc_product) %></li>
+            <li><%= link_to _('To Data Entry').html_safe, pc_basic_path(@pc_product) %></li>
+            <li><%= link_to _('To Results').html_safe, pc_result_path(@pc_product) %></li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="clear"></div>
+
+</div>
+
+	
+	
+<% end %>
+
+</div>	

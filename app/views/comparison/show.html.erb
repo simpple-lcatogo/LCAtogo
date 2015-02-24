@@ -1,0 +1,137 @@
+<script type="text/javascript">
+  var checkflag = "false";
+  function initial_value(field) {
+        var title = "<%=_('Unselect all')%>";
+        checkflag = "true";
+		if( document.getElementsByTagName ) {
+		    tableCells = document.getElementsByTagName('input');
+		    } else if( document.all && document.all.tags ) {
+		    tableCells = document.all.tags('input');
+		    }
+
+		if( tableCells ) {
+		   for (var i = 0; i < tableCells.length; i++) {
+		   if (tableCells[i] != null) {
+		       if (tableCells[i].id) {		               
+		          if (tableCells[i].id.match(/^indicator_/) != null) {
+		              if (!tableCells[i].checked) {
+		                 title = "<%=_('Select all')%>";
+		                 checkflag = "false";
+		                 }
+  		              }
+		           }
+		        }
+		     }
+		  }              
+       return title;
+  }
+  
+  function check(field) {
+		if( document.getElementsByTagName ) {
+		    tableCells = document.getElementsByTagName('input');
+		    } else if( document.all && document.all.tags ) {
+		    tableCells = document.all.tags('input');
+		    }
+		if( tableCells ) {
+		   for (var i = 0; i < tableCells.length; i++) {
+		   if (tableCells[i] != null) {
+		       if (tableCells[i].id) {         
+		          if (tableCells[i].id.match(/^indicator_/) != null) {
+		              if (checkflag == "false") {
+		                 tableCells[i].checked = true;
+		                 } else {
+		                 tableCells[i].checked = false;
+		                 }
+		              }
+		           }
+		        }
+		     }
+		  }              
+  
+  
+    if (checkflag == "false") {
+      checkflag = "true";
+      return "<%=_('Unselect All')%>"; 
+      } else {
+      checkflag = "false";
+      return "<%=_('Select All')%>"; 
+       }
+}  
+
+  function checkFields() {
+     var isOk = true;
+     return isOk;   
+  }
+</script>
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Results').html_safe%></span>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/results/tabs') %>
+	</div>
+	<%=_('Please be aware that you must have selected the same indicators/KEPIs for both products, before comparing them. If not, an error message will appear.').html_safe%>
+	<br/>
+<%= form_tag '/product_results/compare' do %>
+    <div class="span-11" style="width:445px">
+      <h6><%=_('1. Compare your product to:').html_safe%></h6>
+        <% @products_to_compare.each do |product| %>
+           <input type="checkbox" name="compare_product_<%=product.id%>" id="compare_product_<%=product.id%>"/> <%=product.name%><br/>        
+        <% end %>
+    </div>
+      <div class="span-9">
+        <h6><%=_('2. Select type of results').html_safe%></h6>
+        <input type="radio" name="result_type" id="result_type" value="lifecycle" checked="checked"><%=_('per lifecycle').html_safe%><br/>
+        <input type="radio" name="result_type" id="result_type" value="year"><%=_('per year').html_safe%><br/>
+      </div>
+
+    <div class="clear"></div>
+	<div class="span-11" style="width:445px">
+
+		<h6><%=_('3. Choose the indicator to compare').html_safe%></h6>
+		<input class="positive_button" id="check_all_button" type="button" value="<%=_('Select all')%>" onClick="this.value=check(this.form.booklabel)">
+		<br/><br/>
+		<% @indicators.each do |indicator|%>
+		   <input type="checkbox" name="indicator_<%=indicator.id%>" id="indicator_<%=indicator.id%>"/> <%=indicator.name.html_safe%><br/>
+		<% end %>
+	</div>    	
+	<div class="span-9">
+		<h6><%=_('4. Choose LCA items to compare').html_safe%></h6>
+		<input type="checkbox" name="total" id="total"/> <%=_('Total').html_safe%><br/>	
+		<input type="checkbox" name="manufacturing" id="manufacturing"/> <%=_('Manufacturing').html_safe%><br/>	
+		<input type="checkbox" name="distribution" id="distribution"/> <%=_('Distribution').html_safe%><br/>
+		<input type="checkbox" name="use" id="use"/> <%=_('Use').html_safe%><br/>
+		<input type="checkbox" name="end_of_life" id="end_of_life"/> <%=_('End-of-life').html_safe%><br/>
+	</div>	
+ 	<div class="clear"></div>	
+ 	
+  <div class="buttons span-10" style="float:left;text-align:left">
+     <a href="<%=product_result_graphic_path(@product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Previous step").html_safe %></a>
+  </div>
+ 	
+ 	
+   <div class="buttons span-5 last" style="float:right;text-align:right">
+	    <input type="hidden" name="product_id" id="product_id" value="<%=@product.id%>"/>	
+		<button type="submit" class="positive" style="float:right"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+    </div>    	
+ <% end %>	
+	
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, production_intro_path(@product) %></li>
+        <li><%= link_to _('To Data Entry').html_safe, scenario_url(@product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, data_quality_intro_path(@product) %></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="clear"></div>
+
+
+	
+</div>	

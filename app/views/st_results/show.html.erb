@@ -1,0 +1,578 @@
+<script type="text/javascript">
+	$.fn.expandAll = function() {
+	    $(this).find("tr").removeClass("collapsed").addClass("expanded").each(function(){
+	        $(this).expand();
+	    });
+	}; 
+	$(document).ready(function()  {
+        $(":checkbox").click(function(){
+           var isChecked = false;
+
+           var toRemove = 'check_';
+           var id_value_string = $(this).attr('id').replace(toRemove,'');           
+
+           if ($(this).is(':checked')){
+              isChecked = true;
+            }
+            else{
+              isChecked = false;
+            }
+            $.ajax({
+                dataType: "json",
+                cache: false,
+                url: '/ajax_helpers',
+                data: {id: id_value_string, type: 'st_result_check', isChecked: isChecked},
+                timeout: 15000,
+                error: function(XMLHttpRequest, errorTextStatus, error){
+//                    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                },
+                success: function(data){
+  //                 alert('successs');                    
+                 }
+            });            
+            
+        });	
+	
+	  $("#tree_main").treeTable();   	
+	});
+	
+     function copyValues() {
+        document.getElementById("limit1_csv").value = document.getElementById("input_limit1").value
+        document.getElementById("limit2_csv").value = document.getElementById("input_limit2").value
+        document.getElementById("limit3_csv").value = document.getElementById("input_limit3").value
+     }
+	
+	
+     function switchPercentage() {
+        temp = document.getElementById('tree_main').getElementsByTagName('TD');
+        for (i in temp) {
+              if (temp[i].id && ( (temp[i].id.lastIndexOf("result_", 0) === 0) || (temp[i].id.lastIndexOf("year_result_", 0) === 0))) {
+                 if (temp[i].id.lastIndexOf("result_", 0) === 0) {
+                    hidden_id = temp[i].id.substring(7, temp[i].id.length);
+                    } else {
+                    hidden_id = temp[i].id.substring(12, temp[i].id.length);
+                    }
+             value = parseFloat(document.getElementById("hidden_" + hidden_id).value);
+             <% if I18n.locale == :en %>
+                temp[i].innerHTML = value.toFixed(1) + "%";
+             <% else %>
+                temp[i].innerHTML = (value.toFixed(1) + "%").replace(".", ",");
+             <% end %>                
+             }
+           }
+        document.getElementById("absolute_selected").style.display = 'none';
+        document.getElementById("percentage_selected").style.display = 'block';        
+     }	
+	
+     function switchAbsolute() {
+        temp = document.getElementById('tree_main').getElementsByTagName('TD');
+        for (i in temp) {
+              if (temp[i].id && ( (temp[i].id.lastIndexOf("result_", 0) === 0) || (temp[i].id.lastIndexOf("year_result_", 0) === 0))) {
+                 if (temp[i].id.lastIndexOf("result_", 0) === 0) {
+                    hidden_id = temp[i].id.substring(7, temp[i].id.length);
+                    } else {
+                    hidden_id = temp[i].id.substring(12, temp[i].id.length);
+                    }
+             if (document.getElementById("hidden_" + hidden_id)) {
+                 if (temp[i].id.lastIndexOf("result_", 0) === 0) {
+	                 value = document.getElementById("absolute_" + hidden_id).value;
+	              } else {
+	                 value = document.getElementById("absolute_year_" + hidden_id).value;
+	              }   
+	             temp[i].innerHTML = value;
+	            }
+             }
+           }        
+        document.getElementById("absolute_selected").style.display = 'block';
+        document.getElementById("percentage_selected").style.display = 'none';        
+     }   
+	
+	 function generateExcel () {
+	   document.forms[0].submit();
+	 }	
+
+	 function generatePdf () {
+	   document.forms[1].submit();
+	 }	
+	
+</script>
+
+<h1><%=_('Results').html_safe%>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/st_results/tabs') %>
+	</div>
+  <!-- Totals -->
+<div class="clear"></div>
+
+
+     <div class="span-9">
+       <table class="scale">
+         <tr>
+           <td colspan="4" style="text-align:left"><%=_("Significance assessment").html_safe%> <a title="<%=_('It allows performing a &quot;Significance assessment&quot; of the environmental assessment results by the application of four colours, one colour for each of the four scores ranges. The user can modify the values of the ranges intervals (25, 50 and 75%).').html_safe%>" href="#" class="tip_left">&nbsp;</a></td>
+         </tr>
+         <tr>
+           <td class="verylow">&#9650;</td>
+           <td class="low">&#9650;</td>
+           <td class="high">&#9650;</td>
+           <td class="veryhigh"></td>
+         </tr>
+       </table>
+      </div>
+      
+      <div class="span-3 last">
+        <div class="buttons right" style="margin-top:8px;margin-bottom:7px">
+          <button type="submit" class="positive" style="margin:0px;" id="update_limits" name="update_limits" value="<%=_('Update')%>" onClick="javascript:changeLimits();"> <%= image_tag 'arrow_refresh.png' %><%= _("Update") %></button>         
+        </div>
+      </div>
+      
+      
+      <div class="clear"></div>
+      <div class="span-9">
+         <div class="span-2" style="margin-right:0px">
+            0%
+         </div>
+         <div class="span-2">
+            <input type="text" id="input_limit1" name="input_limit1" class="number" value="25" size="2" onkeyup="copyValues();"/>%
+         </div>
+         <div class="span-2">
+            <input type="text" id="input_limit2" name="input_limit2" class="number" value="50" size="2" onkeyup="copyValues();"/>%
+         </div>
+         <div class="span-2">
+            <input type="text" id="input_limit3" name="input_limit3" class="number" value="75" size="2" onkeyup="copyValues();"/>%
+         </div>         
+         <div class="span-1">
+            100%
+         </div>
+      
+      </div>
+    <div class="clear"></div>
+
+    <div class="span-23 last">
+      <%=_('Switch to').html_safe%> <a title="<%=_('Results of indicators can be displayed as &quot;Number&quot; or as &quot;Percentages&quot; of the total value.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+      <div id="absolute_selected">
+        <%=_('Numbers').html_safe%> / <%= link_to _('Percentages').html_safe, 'javascript:switchPercentage();', :product => @product %>
+      </div>   
+      <div id="percentage_selected" style="display:none;">
+        <%= link_to _('Numbers').html_safe, 'javascript:switchAbsolute();', :product => @product %> / <%=_('Percentages').html_safe%>
+      </div>
+     
+    </div>
+	<div class="clear"></div>
+
+
+
+     <table id="tree_main"  style="margin-top:15px; margin-left:7px; width:98%;">
+      <tr>
+        <td class="centered" style="background:#EBEEDB">&nbsp;</td>        
+        <td class="unit_centered"><b><span><%=_('Eco-costs in &euro; for the whole product life cycle').html_safe%></span></b></td>
+        <td class="unit_centered"><b><span><%=_('Eco-costs in &euro; per year of use').html_safe%></span></b></td>
+        <td class="unit_centered" rowspan="2"><b><%=_('DQI').html_safe%><a title="<%=_('Data Quality Indicators').html_safe%>" class="tip_left">&nbsp;</a></b></td>
+      </tr>
+	
+	  <%=st_display_tree_recursive_first(@main_result, false).html_safe%>
+	</table>
+
+     <span class="tip_text">
+      <i><%=_('Select/deselect the Life Cycle Stages to be displayed graphically by clicking in the "squares".').html_safe%><br/>
+       <%=_('Expand the Life Cycle Stages list by using the "triangles" at the left of the names.').html_safe%></i>
+    </span>   
+
+    <div class="clear"></div>
+
+    <div class="buttons last" style="float:left">
+	    <input type="hidden" name="product_id" id="product_id" value="<%=@product.id%>"/>
+	    <button type="button" class="positive" style="float:left" onClick="javascript:generateExcel();"> <%= image_tag 'page_white_excel.png' %><%= _("Export table to Excel").html_safe %></button>
+	    <button type="button" class="positive" style="float:left" onClick="javascript:generatePdf();"> <%= image_tag 'page_white_acrobat.png' %><%= _("Generate PDF").html_safe %></button>
+<!--		<button type="button" class="positive" style="float:right" onClick="javascript:nextStep();"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button> -->		
+    </div>    	
+
+   <div class="buttons last" style="float:right;text-align:right">
+     <a href="<%=st_result_graphic_path(@st_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Next step").html_safe %></a>
+   </div>
+   
+    <div class="clear"></div>   
+<!--
+
+
+
+  <h1><%=_('Totals').html_safe%></h1>  
+  <table class="standard2"> 
+    <tr>
+      <th width="33%"><%=_('Ecocosts per life cycle stage').html_safe%></th>
+      <th width="33%"><%=_('Euro total life-time').html_safe%></th>
+      <th width="33%"><%=_('Euro per year').html_safe%></th>
+    </tr>
+    <tr>
+      <td><%=_('Materials production').html_safe%></td>
+      <td><%=lca_format_number(@materials, 2)%> &euro;</td>
+      <td><%=lca_format_number(@materials * @auxiliary, 2)%> &euro;</td>
+    </tr>
+    <tr>
+      <td><%=_('Manufacturing').html_safe%></td>
+      <td><%=@manufacturing%> &euro;</td>
+      <td><%=@manufacturing * @auxiliary%> &euro;</td>
+    </tr>
+    <tr>
+      <td><%=_('Distribution').html_safe%></td>
+      <td><%=@distribution%> &euro;</td>
+      <td><%=@distribution * @auxiliary%> &euro;</td>
+    </tr>
+    <tr>
+      <td><%=_('Use').html_safe%></td>
+      <td><%=@use%> &euro;</td>
+      <td><%=@use_year%> &euro;</td>
+    </tr>
+    <tr>
+      <td><%=_('End-of-life').html_safe%></td>
+      <td><%=@end_of_life%> &euro;</td>
+      <td><%=@end_of_life * @auxiliary%> &euro;</td>
+    </tr>
+    <tr>
+      <td><%=_('Total').html_safe%></td>
+      <td><%=@total%> &euro;</td>
+      <td><%=@total_year%> &euro;</td>
+    </tr>
+
+  </table>
+
+  <h1><%=_('Detailed').html_safe%></h1>  
+
+
+
+  <h2><%=_('Materials').html_safe%></h2>  
+  <table class="standard2"> 
+    <tr>
+      <th width="33%"></th>
+      <th width="33%"><%=_('Euro total life-time').html_safe%></th>
+      <th width="33%"><%=_('Euro per year').html_safe%></th>
+    </tr>
+  <% @st_product.st_material_datas.each do |st_material_data| %>
+    <% material_name = '' 
+       if st_material_data.st_material
+          material_name = st_material_data.st_material.name
+       else   
+          material_name = st_material_data.user_material_name          
+       end
+    %>
+    <tr> 
+      <td><%=material_name%></td>
+      <td>
+         <% if st_material_data.eco_cost && st_material_data.quantity %>
+            <%= st_material_data.quantity * st_material_data.eco_cost %> &euro;
+         <% else %>
+             -
+         <% end %>
+      </td>
+      <td>
+         <% if st_material_data.eco_cost && st_material_data.quantity %>
+            <%= st_material_data.quantity * st_material_data.eco_cost * @auxiliary%> &euro;
+         <% else %>
+             -
+         <% end %>
+      </td>
+      
+    </tr>   
+  <% end %>
+  </table>
+  <div class="clear"></div>
+  
+  
+
+
+  <h2><%=_('Manufacturing').html_safe%></h2>  
+  <table class="standard2"> 
+    <tr>
+      <th width="33%"></th>
+      <th width="33%"><%=_('Euro total life-time').html_safe%></th>
+      <th width="33%"><%=_('Euro per year').html_safe%></th>
+    </tr>
+  <% @st_product.st_energy_datas.each do |st_energy_data| %>
+    <tr> 
+      <td><%=st_energy_data.st_energy_source.name%></td>
+      <td>
+         <% if st_energy_data.eco_cost && st_energy_data.quantity %>
+            <%= st_energy_data.quantity * st_energy_data.eco_cost %> &euro;
+         <% else %>
+             -
+         <% end %>
+      </td>
+      <td>
+         <% if st_energy_data.eco_cost && st_energy_data.quantity %>
+            <%= st_energy_data.quantity * st_energy_data.eco_cost * @auxiliary%> &euro;
+         <% else %>
+             -
+         <% end %>
+      </td>      
+    </tr>   
+  <% end %>
+  <% @st_product.st_process_datas.each do |st_process_data| %>
+    <% process_name = '' 
+       if st_process_data.st_process
+          process_name = st_process_data.st_process.name
+       else   
+          process_name = st_process_data.user_process_name          
+       end
+    %>
+  
+  
+    <tr> 
+      <td><%=process_name%></td>
+      <td>
+         <% if st_process_data.eco_cost && st_process_data.quantity %>
+            <%= st_process_data.quantity * st_process_data.eco_cost %> &euro;
+         <% else %>
+             -
+         <% end %>
+      </td>
+      <td>
+         <% if st_process_data.eco_cost && st_process_data.quantity %>
+            <%= st_process_data.quantity * st_process_data.eco_cost * @auxiliary%> &euro;
+         <% else %>
+             -
+         <% end %>
+      </td>      
+    </tr>   
+  <% end %>
+  
+  </table>
+  <div class="clear"></div>
+  
+
+
+
+  <h2><%=_('Distribution').html_safe%></h2>  
+  <table class="standard2"> 
+    <tr>
+      <th width="33%"></th>
+      <th width="33%"><%=_('Euro total life-time').html_safe%></th>
+      <th width="33%"><%=_('Euro per year').html_safe%></th>
+    </tr>
+  <% @st_product.st_packaging_datas.each do |st_packaging_data| %>
+    <tr> 
+      <td><%=st_packaging_data.st_packaging_type.name%></td>
+      <td>
+         <% if st_packaging_data.eco_cost && st_packaging_data.quantity %>
+            <%= st_packaging_data.quantity * st_packaging_data.eco_cost %> &euro;
+         <% else %>
+             -
+         <% end %>
+      </td>
+      <td>
+         <% if st_packaging_data.eco_cost && st_packaging_data.quantity %>
+            <%= st_packaging_data.quantity * st_packaging_data.eco_cost * @auxiliary%> &euro;
+         <% else %>
+             -
+         <% end %>
+      </td>      
+    </tr>   
+  <% end %>
+  <% @st_product.st_transport_datas.each do |st_transport_data| %>
+    <tr> 
+      <td><%=st_transport_data.st_transport.name%></td>
+      <td>
+         <% if st_transport_data.eco_cost && st_transport_data.quantity && st_transport_data.distance %>
+            <%= st_transport_data.quantity * st_transport_data.distance * st_transport_data.eco_cost %> &euro;
+         <% else %>
+             -
+         <% end %>
+      </td>
+      <td>
+         <% if st_transport_data.eco_cost && st_transport_data.quantity && st_transport_data.distance %>
+            <%= st_transport_data.quantity * st_transport_data.distance * st_transport_data.eco_cost / @auxiliary%> &euro;
+         <% else %>
+             -
+         <% end %>
+      </td>      
+    </tr>   
+  <% end %>
+  
+  </table>
+  <div class="clear"></div>
+
+
+
+
+  <h2><%=_('Use').html_safe%></h2>  
+  <table class="standard2"> 
+    <tr>
+      <th width="33%"></th>
+      <th width="66%"><%=_('Euro total life-time').html_safe%></th>      
+    </tr>
+  <% @st_product.st_consumption_datas.each do |st_consumption_data| %>
+    <tr> 
+      <td><%=st_consumption_data.st_energy_source.name%></td>
+      <td>
+         <% if st_consumption_data.quantity && st_consumption_data.eco_cost %>
+            <%= st_consumption_data.quantity * st_consumption_data.eco_cost * @tmp %> &euro;
+         <% end %>
+      </td>
+    </tr>   
+  <% end %>
+  <% @st_product.st_consumable_datas.each do |st_consumable_data| %>
+    <tr> 
+      <td><%=st_consumable_data.st_material.name%></td>
+      <td>
+         <% if st_consumable_data.quantity && st_consumable_data.eco_cost %>
+           <%= st_consumable_data.quantity * st_consumable_data.eco_cost * @tmp%> &euro;
+         <% end %>
+      </td>
+    </tr>   
+  <% end %>
+  
+  </table>
+  
+  -->
+  <div class="clear"></div>
+
+   
+   <%= form_tag '/st_results/generate_csv' do %>
+        <input type="hidden" name="limit1_csv" id="limit1_csv" value="25"/>        
+        <input type="hidden" name="limit2_csv" id="limit2_csv" value="50"/>
+        <input type="hidden" name="limit3_csv" id="limit3_csv" value="75"/>   
+        <input type="hidden" name="product_id" id="product_id" value="<%=@product.id%>"/>
+   <% end %>		
+
+   <%= form_tag '/st_results/pdf' do %>
+        <input type="hidden" name="st_result_id" id="st_result_id" value="<%=@st_product.id%>"/>
+   <% end %>		
+  
+  
+  
+<!--
+  
+  <div class="clear"></div>
+	
+  <div class="span-23" style="text-align:center;font-size:11">
+    <ul style="padding-left:0;margin-right:230px">
+      <li class="link_booklabels"><%= link_to _('To Data Quality').html_safe, st_data_quality_intro_path(@st_product) %></li>
+
+      <li class="link_booklabels"><%= link_to _('To Data Entry').html_safe, st_material_detail_path(@st_product) %></li>
+
+      <li class="link_booklabels"><%= link_to _('To Introduction'),  st_production_intro_url(@st_product) %></li>
+      <div class="clear"></div>
+    </ul>
+  </div>
+	
+  <div class="clear"></div>
+-->
+
+
+   <div class="clear"></div>
+   <div class="navbar">
+     <!-- <div id="for-ie"> -->
+     <div>
+       <ul>
+         <li><%= link_to _('To Introduction').html_safe, st_production_intro_url(@st_product) %></li>
+         <li><%= link_to _('To Data Entry').html_safe, st_material_detail_path(@st_product) %></li>
+         <li><%= link_to _('To Data Quality').html_safe, st_data_quality_intro_path(@st_product) %></li>
+       </ul>
+     </div>
+   </div>
+   <div class="clear"></div>
+
+
+
+</div>
+
+
+<script type="text/javascript">
+   var limit1 = <%=@limit1%>;
+   var limit2 = <%=@limit2%>;
+   var limit3 = <%=@limit3%>;  
+   var lastInput1 = 25; 
+   var lastInput2 = 50;   
+   var lastInput3 = 75;   
+   var max = <%=@max%>;
+     function init(){
+        temp = document.getElementById('tree_main').getElementsByTagName('TD');
+        for (i in temp) {
+
+              if (temp[i].id && ( (temp[i].id.lastIndexOf("result_", 0) === 0) || (temp[i].id.lastIndexOf("year_result_", 0) === 0))) {
+                 if (temp[i].id.lastIndexOf("result_", 0) === 0) {
+                    hidden_id = temp[i].id.substring(7, temp[i].id.length);
+                    } else {
+                    hidden_id = temp[i].id.substring(12, temp[i].id.length);
+                    }
+                 value = parseFloat(document.getElementById("hidden_" + hidden_id).value);
+                 if (temp[i].className != 'hide') {
+                 if (value < lastInput1) {                  
+                   temp[i].className = 'results_very_low'
+                   }
+                 if ((value >= lastInput1) && (value < lastInput2)) {
+                   temp[i].className = 'results_low'
+                   }
+                 if ((value >= lastInput2) && (value < lastInput3)) {
+                   temp[i].className = 'results_high'
+                   }
+                 if (value >= lastInput3) {
+                   temp[i].className = 'results_very_high'
+                   }
+                   }
+                } else {
+                 if (temp[i].id && (temp[i].id == 'E')) {
+                 //  temp[i].className = 'hide';
+                   }
+                } 
+        };
+      }
+      
+     function changeLimits() {
+        var value1 = parseFloat(document.getElementById("input_limit1").value);
+        var value2 = parseFloat(document.getElementById("input_limit2").value);          
+        var value3 = parseFloat(document.getElementById("input_limit3").value);          
+        var canChange = true;
+
+          if (isNaN(document.getElementById("input_limit1").value)) {            
+             canChange = false;
+             }
+          if ((value1 > value2) || (value1 > value3)) {
+             canChange = false;
+             }
+          if (isNaN(document.getElementById("input_limit2").value)) {             
+             canChange = false;
+             }
+          if ((value2 < value1) || (value2 > value3)) {
+             canChange = false;
+             }             
+          if (isNaN(document.getElementById("input_limit3").value)) {             
+             canChange = false;
+             }
+          if ((value3 < value1) || (value3 < value2)) {
+             canChange = false;
+             }
+        if (canChange) {
+
+	        limit1 = (<%=@max%> * parseFloat(document.getElementById("input_limit1").value)) / 100;
+	        limit2 = (<%=@max%> * parseFloat(document.getElementById("input_limit2").value)) / 100;
+	        limit3 = (<%=@max%> * parseFloat(document.getElementById("input_limit3").value)) / 100;
+	     //   init();   
+	        lastInput1 = parseFloat(document.getElementById("input_limit1").value);
+	        lastInput2 = parseFloat(document.getElementById("input_limit2").value);          
+	        lastInput3 = parseFloat(document.getElementById("input_limit3").value);
+	        init();   
+	        }  else {
+	        document.getElementById("input_limit1").value = lastInput1;
+	        document.getElementById("input_limit2").value = lastInput2;
+	        document.getElementById("input_limit3").value = lastInput3;
+	        }
+
+
+        }
+      
+      init();
+      
+  
+      
+</script>
+ <script type="text/javascript">
+	$(document).ready(function()  {  
+	     $('tr[id^="node-<%=@first_id%>"]').expand();
+	     <% if @array_expanded %>
+		     <% @array_expanded.each do |array_expanded| %>
+		         $('tr[id^="node-<%=array_expanded%>"]').expand();
+		     <% end %> 
+		 <% end %>		     
+	});     
+   </script>

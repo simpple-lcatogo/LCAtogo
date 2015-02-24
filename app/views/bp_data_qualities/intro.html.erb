@@ -1,0 +1,94 @@
+<h1><%=_('Introduction').html_safe%></h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/bp_data_qualities/tabs') %>
+	</div>
+
+    <div class="clear"></div>
+    <%=_('Assessing the data quality helps you to get an impression, how reliable your overall assessment result is, and to improve your data collection strategy to enhance the overall quality of the assessment. Please define the level of quality of the data used in accordance with the following guidelines:').html_safe%>
+    <br/><br/>
+
+	<table class="standard2">
+	   <thead>
+	      <tr>
+	        <th></th>
+	        <th><div style="float:left;padding-top:7px;text-align:center"><%=_('Robust').html_safe%></div><div><%= image_tag('bullet-green-icon.png')%></div></th>
+	        <th><div style="float:left;padding-top:7px"><%=_('Indicative').html_safe%></div><div><%= image_tag('bullet-yellow-icon.png')%></div></th>
+	        <th><div style="float:left;padding-top:7px"><%=_('Illustrative').html_safe%></div><div><%= image_tag('bullet-red-icon.png')%></div></th>
+	      </tr>	      
+	   </thead>
+	   <tbody>
+	      <tr>
+	        <th><%=_('Reliability').html_safe%></th>
+	        <td><%=_('On-site measured data or verified data provided by a third party').html_safe%></td>
+	        <td><%=_('Data partly based on assumptions or combined on-site measured data with default data').html_safe%></td>
+	        <td><%=_('Only default data used').html_safe%></td>	        
+	      </tr>
+	      <tr>
+	        <th><%=_('Completeness').html_safe%></th>
+	        <td><%=_('Representative data from a sufficient sample of production sites  or company specific data').html_safe%></td>
+	        <td><%=_('Representative data from a smaller number of production sites').html_safe%></td>
+	        <td><%=_('Representativeness unknown or incomplete data').html_safe%></td>	        
+	      </tr>
+	      <tr>
+	        <th><%=_('Temporal correlation').html_safe%></th>
+	        <td><%=_('Data with less than three years of difference to year of the study').html_safe%></td>
+	        <td><%=_('Less than six years difference').html_safe%></td>
+	        <td><%=_('Age of data unknown or more than 6 years of difference').html_safe%></td>	        
+	      </tr>
+	      <tr>
+	        <th><%=_('Geographical correlation').html_safe%></th>
+	        <td><%=_('Data from the Country where the product is manufactured').html_safe%></td>
+	        <td><%=_('Data from a Country/area with similar production conditions').html_safe%></td>
+	        <td><%=_('Unknown geography or data from Country/area with different production conditions').html_safe%></td>	        
+	      </tr>
+	      <tr>
+	        <th><%=_('Technological correlation').html_safe%></th>
+	        <td><%=_('Data based on current industrial manufacturing technologies').html_safe%></td>
+	        <td><%=_('Data from pilot plants').html_safe%></td>
+	        <td><%=_('Data based on laboratory trials').html_safe%></td>	        
+	      </tr>
+      
+	   </tbody>	   
+	</table>
+	
+	
+  <div class="buttons last" style="float:right;text-align:right">
+     <a href="<%=bp_data_quality_path(@bp_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Next step").html_safe %></a>
+  </div>
+  <!--
+  <div class="clear"></div>		
+
+  <div class="span-23" style="text-align:center;font-size:11">
+     <ul style="padding-left:0;margin-right:130px">	        	        
+	    <li class="link_booklabels"><%= link_to _('To Economic Data'),  bp_economic_url(@bp_product) %></li>	       
+	        
+	    <li class="link_booklabels"><%= link_to _('To Results'), bp_result_url(@bp_product) %></li>
+	        
+        <li class="link_booklabels"><%= link_to _('To Data Entry').html_safe, bp_production_url(@bp_product) %></li>	        
+	        
+	    <li class="link_booklabels"><%= link_to _('To Introduction').html_safe, bp_production_intro_path(@bp_product) %></li>
+        <div class="clear"></div>
+     </ul>
+  </div>
+  
+  <div class="clear"></div>
+-->
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, bp_production_intro_path(@bp_product) %></li>
+        <li><%= link_to _('To Data Entry').html_safe, bp_production_url(@bp_product) %></li>
+        <li><%= link_to _('To Results').html_safe, bp_result_url(@bp_product) %></li>
+        <li><%= link_to _('To Economic Data'), bp_economic_url(@bp_product) %></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="clear"></div>
+
+
+</div>	

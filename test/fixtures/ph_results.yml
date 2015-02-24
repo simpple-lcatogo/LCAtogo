@@ -1,0 +1,25 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  ph_product_id: 1
+  lifetime: 1.5
+  co2_total: 1.5
+  cabling: 1.5
+  module: 1.5
+  framing: 1.5
+  mounting: 1.5
+  inverter: 1.5
+  batteries: 1.5
+  maintenance: 1.5
+
+two:
+  ph_product_id: 1
+  lifetime: 1.5
+  co2_total: 1.5
+  cabling: 1.5
+  module: 1.5
+  framing: 1.5
+  mounting: 1.5
+  inverter: 1.5
+  batteries: 1.5
+  maintenance: 1.5

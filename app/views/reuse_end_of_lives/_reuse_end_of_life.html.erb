@@ -1,0 +1,19 @@
+<tr id="reuse_<%= reuse_end_of_life.id %>">
+  <td><%= reuse_end_of_life.family.name.html_safe %></td>
+  <% if reuse_end_of_life.material %>
+     <td><%= reuse_end_of_life.material.name.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>   
+  <td class="quantity_reuse_<%= reuse_end_of_life.id %>" style="background: none repeat scroll 0% 0% transparent;text-align:center"><%= number_with_precision(reuse_end_of_life.quantity, :precision => 2, :locale => 'en') %></td>
+  <td>%</td>
+  <td class="center"><%= link_to '&#10006;'.html_safe, reuse_end_of_life_path(reuse_end_of_life, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>
+
+<script type="text/javascript">
+   $(".quantity_reuse_<%=reuse_end_of_life.id%>").editInPlace({
+        url: "/reuse_end_of_lives/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "reuse_end_of_life_id=<%=reuse_end_of_life.id%>",
+        saving_text: '<%=_("Saving...")%>'
+        });           
+ </script>   

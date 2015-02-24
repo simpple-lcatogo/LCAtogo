@@ -1,0 +1,421 @@
+<script type="text/javascript">
+   function showAbsoluteYear() {
+      document.getElementById("percentage_graph").style.display = 'none';
+      document.getElementById("absolute_year_graph").style.display = 'block';
+      document.getElementById("absolute_percentage_graph").style.display = 'none';
+   }
+   function showAbsoluteLifecycle() {
+       document.getElementById("percentage_graph").style.display = 'none';
+       document.getElementById("absolute_year_graph").style.display = 'none';
+       document.getElementById("absolute_percentage_graph").style.display = 'block';
+   }
+
+   function showPercentage() {
+      document.getElementById("percentage_graph").style.display = 'block';
+      document.getElementById("absolute_year_graph").style.display = 'none';
+       document.getElementById("absolute_percentage_graph").style.display = 'none';
+   }
+	 function generatePdf () {
+	   document.forms[0].submit();
+	 }	
+   
+   
+   
+</script>
+
+   <%= form_tag '/product_results/pdf' do %>
+        <input type="hidden" name="product_result_id" id="result_id" value="<%=@product.id%>"/>
+   <% end %>	
+
+
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Results').html_safe%></span>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/results/tabs') %>
+	</div>
+
+ <br/><br/>
+ <div class="buttons span-23 last">
+    <button type="button" class="positive" style="float:left" onClick="javascript:generatePdf();"> <%= image_tag 'page_white_acrobat.png' %><%= _("Generate PDF").html_safe %></button>
+ </div>    
+ <br/><br/>
+
+<div id="percentage_graph" style="display:none">
+<% @combineds.each_with_index do |combined, index| %>
+	    <% if @sort == 'no'
+	         values = combined.collect {|x| x[0] }
+	         ticks = combined.collect {|x| x[1] }.reverse      
+	         seriesColors = combined.collect {|x| x[2] }
+	       end 
+	       if @sort == 'asc'
+	         values = combined.collect {|x| x[0] }
+	         ticks = combined.collect {|x| x[1] }.reverse    
+	         seriesColors = combined.collect {|x| x[2] }  
+	       end
+	       if @sort == 'desc' 
+	          values = combined.collect {|x| x[0] }
+	          ticks = combined.collect {|x| x[1] }.reverse
+	          seriesColors = combined.collect {|x| x[2] }
+	       end 
+	       ticks_to_array = ""
+	       ticks.each do |tick|
+	          ticks_to_array += "|" + tick.to_s
+	       end
+	       values_to_array = ""
+	       values.each_with_index do |value, index|
+	          if (index + 1) < values.size
+	             values_to_array += value.to_s + ","
+	          else
+	             values_to_array += value.to_s
+	          end   
+	       end	   
+	       seriesColors_to_array = ""
+	       seriesColors.each_with_index do |seriesColor, index|	 
+	           if (index + 1) < seriesColors.size      
+	       	      seriesColors_to_array += seriesColor.to_s.gsub("#","") + "|"
+	       	   else 
+	       	      seriesColors_to_array += seriesColor.to_s.gsub("#","")
+	       	   end   
+	       end
+       min = combined.sort_by { |x| x[0] }.collect {|x| x[0] }[0]
+       max = combined.sort_by { |x| x[0] }.collect {|x| x[0] }.reverse[0]
+       
+       num_ticks = 0 
+       i = 0
+       if max
+	       while i < max
+	          i += 10
+	       end
+	   end    
+       max = i
+       if i > 100
+          max = (i + 10)
+       end
+       if max < 100
+          max = 100
+       end
+       max = 110
+       if !min || min > 0
+          min = 0
+       else   
+          modulo = min.modulo(10)
+          min -= modulo
+       end	       
+	   max_min_array = ""
+	   min_tmp = min
+	   while min_tmp <= max
+	      max_min_array += "|" + min_tmp.to_s
+	      min_tmp += 10
+	   end
+	    %>
+	    
+   <% if @indicators_checked[index].name == 'Carbon footprint' || @indicators_checked[index].name == 'Copper' || @indicators_checked[index].name == 'Aluminium' || @indicators_checked[index].name == 'Cobalt' || @indicators_checked[index].name == 'Steel'%>	    
+      <h6 style="color:#2B4950;font-size:16px;"><b><%=@indicators_checked[index].name.html_safe%> (<%=@indicators_checked[index].unit.gsub('<sub>','').gsub('</sub>','').html_safe%>)</b> <span style="font-size:12px"></span></h6>
+   <% else %>
+      <h6 style="color:#2B4950;font-size:16px;"><b><%=@indicators_checked[index].name.html_safe%> (mg)</b> <span style="font-size:12px"></span></h6>
+   <% end %>
+      <a href="javascript:showAbsoluteLifecycle();"><%=_('Absolute values per lifecycle').html_safe%></a> / <a href="javascript:showAbsoluteYear();"><%=_('Absolute values per year').html_safe%></a> / ><%=_('Percentage values').html_safe%><br/>
+   <div class="clear"></div>
+   <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=12&amp;chts=2B4950,16,l&amp;chxt=x,y&amp;cht=bhg&amp;chds=<%=min%>,<%=max%>&amp;chd=t:<%=values_to_array%>&amp;chco=<%=seriesColors_to_array%>&amp;chls=2.0&amp;chs=600x<%=((@labels.size * 20) / @indicators_checked.size) + 32 %>&amp;chds=a&amp;chxl=1:<%=ticks_to_array%>&amp;chm=N*f0*%,000000,0,-1,11,,:10:&amp;chxs=1,,11,-1,lt"
+     style="padding-right:20px;padding-bottom:40px;">
+   
+   <br/><br/>
+   
+   <% if @indicators_checked[index].name == 'Carbon footprint' %>
+
+		   <h6 style="color:#2B4950;font-size:16px;"><b><%=_('Carbon Footprint - Production (%)').html_safe%></b> <span style="font-size:12px"></span></h6>
+		  <img 
+		     alt="" 
+		     src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=@manufacturing_values%>&amp;chco=<%=@manufacturing_colors%>&amp;chls=2.0&amp;chs=800x200&amp;chl=<%=@manufacturing_ticks%>"
+		     style="padding-right:20px;padding-bottom:40px;">  
+		   
+		   <br/><br/>
+		     
+
+		   <h6 style="color:#2B4950;font-size:16px;"><b><%=_('Carbon footprint - Use (%)').html_safe%></b> <span style="font-size:12px"></span></h6>
+		  <img 
+		     alt="" 
+		     src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=@use_values%>&amp;chco=<%=@use_colors%>&amp;chls=2.0&amp;chs=800x200&amp;chl=<%=@use_ticks%>"
+		     style="padding-right:20px;padding-bottom:40px;">  
+		   
+		   <br/><br/>   
+   
+   <% end %>   
+   
+   <% end %>   
+</div>
+
+<div id="absolute_year_graph" style="display:none">
+<% @combineds_year.each_with_index do |combined, index| %>
+	    <% if @sort == 'no'
+	         values = combined.collect {|x| x[0] }
+	         ticks = combined.collect {|x| x[1] }.reverse      
+	         seriesColors = combined.collect {|x| x[2] }
+	       end 
+	       if @sort == 'asc'
+	         values = combined.collect {|x| x[0] }
+	         ticks = combined.collect {|x| x[1] }.reverse    
+	         seriesColors = combined.collect {|x| x[2] }  
+	       end
+	       if @sort == 'desc' 
+	          values = combined.collect {|x| x[0] }
+	          ticks = combined.collect {|x| x[1] }.reverse
+	          seriesColors = combined.collect {|x| x[2] }
+	       end 
+	       ticks_to_array = ""
+	       ticks.each do |tick|
+	          ticks_to_array += "|" + tick.to_s
+	       end
+	       values_to_array = ""
+	       values.each_with_index do |value, index|
+	          if (index + 1) < values.size
+	             values_to_array += value.to_s + ","
+	          else
+	             values_to_array += value.to_s
+	          end   
+	       end	   
+	       seriesColors_to_array = ""
+	       seriesColors.each_with_index do |seriesColor, index|	 
+	           if (index + 1) < seriesColors.size      
+	       	      seriesColors_to_array += seriesColor.to_s.gsub("#","") + "|"
+	       	   else 
+	       	      seriesColors_to_array += seriesColor.to_s.gsub("#","")
+	       	   end   
+	       end
+       min = combined.sort_by { |x| x[0] }.collect {|x| x[0] }[0]
+       max = combined.sort_by { |x| x[0] }.collect {|x| x[0] }.reverse[0]
+       num_ticks = 0 
+       i = 0
+       if max
+	       while i < max
+	          i += 10
+	       end
+	   end    
+       max = i
+       if i > 100
+          max = (i + 10)
+       end
+       if max < 100
+          max = 100
+       end
+       if !min || min > 0
+          min = 0
+       else   
+          modulo = min.modulo(10)
+          min -= modulo
+       end	       
+	   max_min_array = ""
+	   min_tmp = min
+	   step = (max - min) / 10
+	 
+	   iterations = 0
+	   while min_tmp <= max  && iterations < 40
+	      max_min_array += "|" + min_tmp.to_s
+	      min_tmp += step
+	      iterations = iterations + 1
+	   end
+	    %>
+   <% if @indicators_checked[index].name == 'Carbon footprint' || @indicators_checked[index].name == 'Copper' || @indicators_checked[index].name == 'Aluminium' || @indicators_checked[index].name == 'Cobalt' || @indicators_checked[index].name == 'Steel'%>	    
+      <h6 style="color:#2B4950;font-size:16px;"><b><%=@indicators_checked[index].name.html_safe%> (<%=@indicators_checked[index].unit.gsub('<sub>','').gsub('</sub>','').html_safe%>)</b> <span style="font-size:12px"></h6>
+   <% else %>
+      <h6 style="color:#2B4950;font-size:16px;"><b><%=@indicators_checked[index].name.html_safe%> (mg)</b></h6>
+   <% end %>
+   <a href="javascript:showAbsoluteLifecycle();">><%=_('Absolute values per lifecycle').html_safe%></a> / ><%=_('Absolute values per year').html_safe%> / <a href="javascript:showPercentage();">><%=_('Percentage values').html_safe%></a><br/>
+   <div class="clear"></div>    
+	    
+   <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=12&amp;chts=2B4950,16,l&amp;chxt=x,y&amp;cht=bhg&amp;chds=<%=min%>,<%=max%>&amp;chd=t:<%=values_to_array%>&amp;chco=<%=seriesColors_to_array%>&amp;chls=2.0&amp;chs=600x<%=((@labels.size * 20) / @indicators_checked.size) + 32 %>&amp;chds=a&amp;chxl=1:<%=ticks_to_array%>&amp;chm=N*f0*,000000,0,-1,11,,:10:&amp;chxs=1,,11,-1,lt"
+     style="padding-right:20px;padding-bottom:40px;">
+   
+   <br/><br/>   
+   
+   <% if @indicators_checked[index].name == 'Carbon footprint' %>
+		   <h6 style="color:#2B4950;font-size:16px;"><b><%=_('Carbon Footprint - Production (%)').html_safe%></b></h6>
+		  <img 
+		     alt="" 
+		     src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=@manufacturing_values%>&amp;chco=<%=@manufacturing_colors%>&amp;chls=2.0&amp;chs=800x200&amp;chl=<%=@manufacturing_ticks%>"
+		     style="padding-right:20px;padding-bottom:40px;">  
+		   
+		   <br/><br/>
+		   <h6 style="color:#2B4950;font-size:16px;"><b><%=_('Carbon footprint - Use (%)').html_safe%></b></h6>
+		  <img 
+		     alt="" 
+		     src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=@use_values%>&amp;chco=<%=@use_colors%>&amp;chls=2.0&amp;chs=800x200&amp;chl=<%=@use_ticks%>"
+		     style="padding-right:20px;padding-bottom:40px;">  
+		   
+		   <br/><br/>   
+   
+   <% end %>
+     
+ <% end %>   
+ 
+</div>
+
+
+
+    <div id="absolute_percentage_graph" style="display:block">
+      <% @combineds_absolute.each_with_index do |combined, index| %>
+          <% if @sort == 'no'
+               values = combined.collect {|x| x[0] }
+               ticks = combined.collect {|x| x[1] }.reverse
+               seriesColors = combined.collect {|x| x[2] }
+             end
+             if @sort == 'asc'
+               values = combined.collect {|x| x[0] }
+               ticks = combined.collect {|x| x[1] }.reverse
+               seriesColors = combined.collect {|x| x[2] }
+             end
+             if @sort == 'desc'
+               values = combined.collect {|x| x[0] }
+               ticks = combined.collect {|x| x[1] }.reverse
+               seriesColors = combined.collect {|x| x[2] }
+             end
+             ticks_to_array = ""
+             ticks.each do |tick|
+               ticks_to_array += "|" + tick.to_s
+             end
+             values_to_array = ""
+             values.each_with_index do |value, index|
+               if (index + 1) < values.size
+                 values_to_array += value.to_s + ","
+               else
+                 values_to_array += value.to_s
+               end
+             end
+             seriesColors_to_array = ""
+             seriesColors.each_with_index do |seriesColor, index|
+               if (index + 1) < seriesColors.size
+                 seriesColors_to_array += seriesColor.to_s.gsub("#","") + "|"
+               else
+                 seriesColors_to_array += seriesColor.to_s.gsub("#","")
+               end
+             end
+             min = combined.sort_by { |x| x[0] }.collect {|x| x[0] }[0]
+             max = combined.sort_by { |x| x[0] }.collect {|x| x[0] }.reverse[0]
+             num_ticks = 0
+             i = 0
+             if max
+               while i < max
+                 i += 10
+               end
+             end
+             max = i
+             if i > 100
+               max = (i + 10)
+             end
+             if max < 100
+               max = 100
+             end
+             if !min || min > 0
+               min = 0
+             else
+               modulo = min.modulo(10)
+               min -= modulo
+             end
+             max_min_array = ""
+             min_tmp = min
+             step = (max - min) / 10
+
+             iterations = 0
+             while min_tmp <= max  && iterations < 40
+               max_min_array += "|" + min_tmp.to_s
+               min_tmp += step
+               iterations = iterations + 1
+             end
+          %>
+          <% if @indicators_checked[index].name == 'Carbon footprint' || @indicators_checked[index].name == 'Copper' || @indicators_checked[index].name == 'Aluminium' || @indicators_checked[index].name == 'Cobalt' || @indicators_checked[index].name == 'Steel'%>
+              <h6 style="color:#2B4950;font-size:16px;"><b><%=@indicators_checked[index].name.html_safe%> (<%=@indicators_checked[index].unit.gsub('<sub>','').gsub('</sub>','').html_safe%>)</b></h6>
+          <% else %>
+              <h6 style="color:#2B4950;font-size:16px;"><b><%=@indicators_checked[index].name.html_safe%> (mg)</b></h6>
+          <% end %>
+          <%=_('Absolute values per lifecycle').html_safe%> / <a href="javascript:showAbsoluteYear();"><%=_('Absolute values per year').html_safe%></a> / <a href="javascript:showPercentage();"><%=_('Percentage values').html_safe%></a><br/>
+          <div class="clear"></div>
+
+          <img
+          alt=""
+          src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=12&amp;chts=2B4950,16,l&amp;chxt=x,y&amp;cht=bhg&amp;chds=<%=min%>,<%=max%>&amp;chd=t:<%=values_to_array%>&amp;chco=<%=seriesColors_to_array%>&amp;chls=2.0&amp;chs=600x<%=((@labels.size * 20) / @indicators_checked.size) + 32 %>&amp;chds=a&amp;chxl=1:<%=ticks_to_array%>&amp;chm=N*f0*,000000,0,-1,11,,:10:&amp;chxs=1,,11,-1,lt"
+          style="padding-right:20px;padding-bottom:40px;">
+
+          <br/><br/>
+
+          <% if @indicators_checked[index].name == 'Carbon footprint' %>
+              <h6 style="color:#2B4950;font-size:16px;"><b><%=_('Carbon Footprint - Production (%)').html_safe%></b></h6>
+              <img
+              alt=""
+              src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=@manufacturing_values%>&amp;chco=<%=@manufacturing_colors%>&amp;chls=2.0&amp;chs=800x200&amp;chl=<%=@manufacturing_ticks%>"
+              style="padding-right:20px;padding-bottom:40px;">
+
+              <br/><br/>
+              <h6 style="color:#2B4950;font-size:16px;"><b><%=_('Carbon footprint - Use (%)').html_safe%></b></h6>
+              <img
+              alt=""
+              src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=@use_values%>&amp;chco=<%=@use_colors%>&amp;chls=2.0&amp;chs=800x200&amp;chl=<%=@use_ticks%>"
+              style="padding-right:20px;padding-bottom:40px;">
+
+              <br/><br/>
+
+          <% end %>
+
+      <% end %>
+
+    </div>
+
+   
+   <div class="buttons span-4 last">
+      <button type="button" class="positive" style="float:left" onClick="javascript:generatePdf();"> <%= image_tag 'page_white_acrobat.png' %><%= _("Generate PDF").html_safe %></button>
+   </div>    
+   
+  <div class="buttons span-4 last" style="float:right;text-align:left">
+     <a href="<%=comparison_url(@product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Next step").html_safe %></a>
+  </div>
+   
+   
+   
+ <br/><br/>
+
+
+    <div class="clear"></div>
+    <div class="navbar">
+      <!-- <div id="for-ie"> -->
+      <div>
+        <ul>
+          <li><%= link_to _('To Introduction').html_safe, production_intro_path(@product) %></li>
+          <li><%= link_to _('To Data Entry').html_safe, scenario_url(@product) %></li>
+          <li><%= link_to _('To Data Quality').html_safe, data_quality_intro_path(@product) %></li>
+        </ul>
+      </div>
+    </div>
+    <div class="clear"></div>
+
+
+
+</div>
+
+<script type="text/javascript">
+   $(".kepi_explanation").editInPlace({
+        url: "/products/update_comments" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "product_id=<%=@product.id%>&type=kepi_explanation",
+        saving_text: '<%=_("Saving...")%>'
+        });
+   $(".comparison_comments").editInPlace({
+        url: "/products/update_comments" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "product_id=<%=@product.id%>&type=comparison_comments",
+        saving_text: '<%=_("Saving...")%>'
+        });
+   $(".production_comments").editInPlace({
+        url: "/products/update_comments" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "product_id=<%=@product.id%>&type=production_comments",
+        saving_text: '<%=_("Saving...")%>'
+        });
+   $(".use_comments").editInPlace({
+        url: "/products/update_comments" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "product_id=<%=@product.id%>&type=use_comments",
+        saving_text: '<%=_("Saving...")%>'
+        });
+        
+</script>        

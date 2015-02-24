@@ -1,0 +1,38 @@
+<h1><%=_('Product Assessment').html_safe%>
+  <br/><span class="tool_subtitle"><%=_('Assessment Method').html_safe%></span>
+</h1>
+
+<div class="content_skin">
+
+  <p><strong><%= _("Selection:").html_safe %></strong></p>
+
+  <input type="radio" name="1" value="male">Basic Module
+  <input type="radio" name="1" value="female">Sophisticated Module
+
+  <div class="buttons span-5 last" style="float:right;text-align:right">
+    <button type="submit" class="positive" style="float:right;text-align:right" onclick="javascript:goNext();"> <img alt="Tick" src="/images/tick.png?1377781308"><%=_('Next step').html_safe%></button>
+  </div>
+
+  <br />
+  <br />
+  <br />
+
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, pc_production_intro_url(@pc_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, pc_data_quality_intro_path(@pc_product) %></li>
+        <li><%= link_to _('To Results').html_safe, pc_result_path(@product.pc_product) %></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="clear"></div>
+
+
+
+</div>

@@ -1,0 +1,23 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  co2: 1.5
+  mg: 1.5
+  poly: 1.5
+  wafers: 1.5
+  cells: 1.5
+  modules: 1.5
+  cdte: 1.5
+  cigs: 1.5
+
+two:
+  name: MyString
+  co2: 1.5
+  mg: 1.5
+  poly: 1.5
+  wafers: 1.5
+  cells: 1.5
+  modules: 1.5
+  cdte: 1.5
+  cigs: 1.5

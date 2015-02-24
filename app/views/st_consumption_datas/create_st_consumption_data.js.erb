@@ -1,0 +1,12 @@
+$("#error_explanation_st_consumption_data").empty();
+$("#error_explanation_st_consumption_data").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#st_consumption_datas").append("<%= escape_javascript(render(@st_consumption_data)) %>");
+/* Highlight the new comment */
+$("#st_consumption_data_<%= @st_consumption_data.id %>").effect("highlight", {}, 3000);
+
+$("#st_consumption_data_with_sensor").val("");
+$("#st_consumption_data_without_sensor").val("");
+$("#st_consumption_data_recycling_revenue").val("");
+$("#st_consumption_data_description").val("");
+$("#st_consumption_data_global_warming_potential").val("");

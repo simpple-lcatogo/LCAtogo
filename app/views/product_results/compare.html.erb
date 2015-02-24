@@ -1,0 +1,128 @@
+<h1><%=_('Comparison').html_safe%>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/results/tabs') %>
+	</div>
+
+ <div class="buttons span-23 last">      
+   <%= form_tag '/product_results/pdf_compare' do %>
+        <input type="hidden" name="product_id" id="product_id" value="<%=@product.id%>"/>
+        <% if @total_check %>
+          <input type="hidden" name="total" id="total" value="true"/>
+        <% end %>        
+        <% if @manufacturing_check %>
+          <input type="hidden" name="manufacturing" id="manufacturing" value="true"/>
+        <% end %>
+        <% if @distribution_check %>
+          <input type="hidden" name="distribution" id="distribution" value="true"/>
+        <% end %>
+       <% if @use_check %>
+           <input type="hidden" name="use" id="use" value="true"/>
+       <% end %>
+        <% if @end_of_life_check %>
+          <input type="hidden" name="end_of_life" id="end_of_life" value="true"/>
+        <% end %>
+        <% @indicators_checked.each do |indicator| %>
+          <input type="hidden" name="indicator_<%=indicator.id%>" id="indicator_<%=indicator.id%>" value="true"/>
+        <% end %>
+       <% @products_checked.each do |product| %>
+           <input type="hidden" name="compare_product_<%=product.id%>" id="compare_product_<%=product.id%>"/>
+       <% end %>
+       <input type="hidden" name="result_type" id="result_type" value="<%=@result_type%>"/>
+        <button type="submit" class="positive" style="float:left"> <%= image_tag 'page_white_acrobat.png' %><%= _("Summary Report").html_safe %></button> 
+   <% end %>		
+ </div>     
+ <div class="clear"></div>
+   
+   <% @indicators_checked.each_with_index do |indicator, index| %>
+    <h2>
+	   <% if @indicators_checked[index].name == 'Carbon footprint' || @indicators_checked[index].name == 'Copper' || @indicators_checked[index].name == 'Aluminium' || @indicators_checked[index].name == 'Cobalt' || @indicators_checked[index].name == 'Steel '%>	    
+	      <b><%=@indicators_checked[index].name.html_safe%> (<%=@indicators_checked[index].unit.gsub('<sub>','').gsub('</sub>','').html_safe%>)</b> <span style="font-size:12px;font-weight:normal"> - <%=_('per').html_safe%> <%=@result_type%>
+	   <% else %>
+	      <b><%=@indicators_checked[index].name.html_safe%> (mg)</b> <span style="font-size:12px;font-weight:normal"> - <%=_('per').html_safe%> <%=@result_type%>
+	   <% end %>      
+    
+    
+   
+       <% if indicator.name == 'Steel' %>
+          <span style="font-size:12px;font-weight:normal"> - <%=_('Although production of ferroalloys is not as energy-intensive as those of many other metals, the bulk use of steel frequently dominates the life cycle impacts of industrial products due to the use of coke and electricity for production and the related emissions from smelters.').html_safe%></span>
+       <% end %>
+       <% if indicator.name == 'Copper' %>       
+          <span style="font-size:12px;font-weight:normal"> - <%=_('Copper is one of the most important metals in the electronics industry due to its great electric conductivity, its production however has a great environmental impact. Copper is largely mined in the Andean mountains, where water usage conflicts with agriculture are common, and partly in rainforest regions with severe impacts on surrounding ecosystems. Regional copper smelters are a main source of sulfur dioxide emissions.').html_safe%></span>
+       <% end %>
+       <% if indicator.name == 'Aluminium' %>                 
+          <span style="font-size:12px;font-weight:normal"> - <%=_('Aluminum features some outstanding properties, such as excellent ductility and processing properties, great corrosive resistance and especially its low weight. The down-side of the aluminum medal is the enormous energy consumption during primary aluminum production as well as the generation of an immense amount of red mud - a bauxite residue as a byproduct which is super alkaline and highly toxic. ').html_safe%></span>
+       <% end %>
+       <% if indicator.name == 'Gold' %>                
+          <span style="font-size:12px;font-weight:normal"> - <%=_('The king of metals is used in a variety of contacts and wires because of its excellent conducting characteristics. Mining gold however bears a great environmental risk, as the leaching process during which the gold is separated from the ore is performed using highly toxic sodium cyanide. Even dermal contact with pure Cyanide - a possible byproduct of gold ore leaching - can be lethal.').html_safe%></span>
+       <% end %>
+       <% if indicator.name == 'Platinum, Ruthenium, Palladium' %>                 
+          <span style="font-size:12px;font-weight:normal"> - <%=_('The high value of Platinum Group Metals is partly related to the very low concentration of these precious metals in mined ores. Huge amounts of soil and rock have to be moved to get hold of tiny amounts of these metals.').html_safe%></span>
+       <% end %>
+       <% if indicator.name == 'Indium' %>                 
+          <span style="font-size:12px;font-weight:normal"> - <%=_('Excelling in all possible electronic attributes Indium has made itself a most-wanted material in display manufacturing. Unfortunately natural deposits are very limited and Europe has yet to establish an approach on Indium recycling. Without recovery in place efficient use of Indium is all that can be done to lower the dependence on this metal.').html_safe%></span>
+       <% end %>
+       <% if indicator.name == 'Neodymium' %>                 
+          <span style="font-size:12px;font-weight:normal"> - <%=_('As an important part of rare earth magnets Neodymium can be found in hard drives. Neodymium production requires a thorough handling of unwanted byproducts such as the radioactive Thorium or Uranium that are often contained within the Neodymium ores.').html_safe%></span>
+       <% end %>
+       <% if indicator.name == 'other Rare Earth metals (Yttrium, Cerbium, ...)' %>                 
+          <span style="font-size:12px;font-weight:normal"> - <%=_('The list of Rare Earth Metals contains as many as 17 different elements, covering almost the complete range of high-tech electronic applications. Unfortunately the lineup of environmental issues during the production process is considerably longer. Radioactive byproducts, strong acids and highly toxic emissions released uncontrolled during the production process left rivers contaminated and ecosystems depopulated.').html_safe%></span>
+       <% end %>
+       <% if indicator.name == 'Cobalt' %>                
+          <span style="font-size:12px;font-weight:normal"> - <%=_('Used as part of the cathode in Li-Ion batteries technology Cobalt plays an important role in producing high-capacity batteries for cell phones, laptops or cameras. More than two thirds of the world\'s cobalt is mined in the Democratic Republic of Congo, which is still dealing with great issues on working conditions as an UN-estimated 50% of cobalt mining in Congo is done in mines controlled by armed forces which employ illegal taxation, extortion, forced labor, and violence to ensure the flow of mineral wealth.').html_safe%></span>
+       <% end %>
+       <% if indicator.name == 'Tantalum' %>                
+          <span style="font-size:12px;font-weight:normal"> - <%=_('Tantalum, primarily being used in some capacitors, just as cobalt is mined in some civil war regions in Africa. Although efforts are underway to control the supply chain and even to support those miners, who depend on the mining income, Tantalum remains to be among the critical raw materials.').html_safe%></span>
+       <% end %>
+       
+
+    </h2>
+    <%
+       height =  (@phases_selected * 14) + ((@products_checked.size + 1) * @phases_selected) * 14 + 30
+
+    %>
+    <%
+       axis_format = ''
+       index_axis = 0
+       while index_axis <=  @products_checked.size
+           axis_format += 'N*f2*,000000,' + index_axis.to_s + ',-1,11,,:10:'
+           if index_axis != @products_checked.size
+              axis_format += '|'
+           end 
+           index_axis = index_axis + 1
+       end   
+      # axis_format = 'N*f2*,000000,0,-1,11,,:10:|N*f2*,000000,1,-1,11,,:10:'
+   %>
+
+    <img src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chts=2B4950,16,l&amp;cht=bhg&amp;chs=600x<%=height%>&amp;chd=t:<%=@values_array[index]%>&amp;chco=<%=@colors_array.to_s%>&amp;chxt=y&amp;chdl=<%=@compare_products%>&amp;chxt=x,y&&amp;chma=20,20,20,20&amp;chbh=14,0,14&amp;&amp;chm=<%=axis_format.to_s%>&amp;chdlp=r&amp;chxs=1,,11,-1,lt&amp;chxl=1:<%=@compare_titles_to_array%>&amp;chds=a" alt="Grouped chart">
+    
+    
+
+  <% end %>
+      
+   <br/><br/><br/>
+   <div class="clear"></div>
+
+  <div class="buttons span-10" style="float:left;text-align:left">
+    <a href="<%=comparison_path(@product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Previous step").html_safe %></a>
+  </div>
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, production_intro_path(@product) %></li>
+        <li><%= link_to _('To Data Entry').html_safe, scenario_url(@product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, data_quality_intro_path(@product) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+
+
+	
+	
+	
+</div>

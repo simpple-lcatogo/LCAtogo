@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  indicator_id: 1
+  flow_name: MyString
+  functional_unit: MyString
+  local_name: MyString
+  life_cycle_phase: MyString
+  category: MyString
+  family: MyString
+  value: 1.5
+
+two:
+  indicator_id: 1
+  flow_name: MyString
+  functional_unit: MyString
+  local_name: MyString
+  life_cycle_phase: MyString
+  category: MyString
+  family: MyString
+  value: 1.5

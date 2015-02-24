@@ -1,0 +1,16 @@
+<ul>
+  <% if @product.id %>
+     <li><%= tab_link_to _('Scenario').html_safe, scenario_url(@product), :product => @product, :index => 1 %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>
+     <li><%= tab_link_to _('Manufacturing').html_safe, manufacturing_url(@product), :product => @product, :index => 2 %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>
+     <li><%= tab_link_to _('Distribution').html_safe, distribution_url(@product), :product => @product, :index => 3 %></li>     
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>     
+     <li><%= tab_link_to _('Use').html_safe, use_url(@product), :product => @product, :index => 4 %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>          
+     <li><%= tab_link_to _('End-of-life').html_safe, end_of_life_url(@product), :product => @product, :index => 5 %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>          
+     <li><%= tab_link_to _('KEPIs Selection').html_safe, indicator_url(@product), :product => @product, :index => 6 %></li>     
+   <% end %>               
+<div class="clear"></div>
+</ul>

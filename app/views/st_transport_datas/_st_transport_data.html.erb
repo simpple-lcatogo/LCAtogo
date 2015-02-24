@@ -1,0 +1,31 @@
+<tr id="st_transport_data_<%= st_transport_data.id %>">
+     <td>
+	      <% if st_transport_data.st_family_transport %>
+			<%= st_transport_data.st_family_transport.name.html_safe %>
+	      <% end %>		
+     </td>
+     <td>
+	      <% if st_transport_data.st_transport %>
+			<%= st_transport_data.st_transport.name.html_safe %>
+	      <% end %>		
+     </td>     
+     <td>
+          <%= st_transport_data.distance %> <%=_('km').html_safe%>
+     </td>     
+     <td>
+          <%= st_transport_data.quantity %>
+     </td>
+     <td>
+	      <% if st_transport_data.st_transport %>
+			<%= st_transport_data.st_transport.unit.html_safe %>
+	      <% end %>		
+     </td>         
+     <td>
+       <% if st_transport_data.eco_cost %>
+          <%= lca_format_number(st_transport_data.quantity * st_transport_data.distance * st_transport_data.eco_cost, 4)  %> &euro;
+       <% else %>
+          -
+       <% end %>   
+     </td>       
+     <td class="center"><%= link_to '&#10006;'.html_safe, st_transport_data_path(st_transport_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>

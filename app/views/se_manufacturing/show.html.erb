@@ -1,0 +1,239 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+    	$("#se_manufacturing_data_se_component_id").change(function(){
+			$("#se_quantity_unit").html($("#se_manufacturing_data_se_component_id option:selected").data('unit'));
+    	});
+
+
+	         $(".edit_se_manufacturing").validate({
+		   	    rules: {
+			      "se_manufacturing[sensor_lifetime]": {
+			                required:true,
+			                number:true
+			                },
+			      "se_manufacturing[battery_lifetime]": {
+			                required:true,
+			                number:true
+			                },
+			      "se_manufacturing[cable_lifetime]": {
+			                required:true,
+			                number:true
+			                },
+			      "se_manufacturing[purchase]": {
+			                required:true,
+			                number:true
+			                },
+			      "se_manufacturing[installation]": {
+			                required:true,
+			                number:true
+			                },
+			      "se_manufacturing[maintenance]": {
+			                required:true,
+			                number:true
+			                },
+			      "se_manufacturing[cables]": {
+			                required:true,
+			                number:true
+			                }			                
+			                
+			    },
+				messages: {
+                  "se_manufacturing[sensor_lifetime]": {
+                        required:"<%=_('This field is mandatory').html_safe%>",
+                        number:"<%=_('Please enter a number').html_safe%>"
+                        },
+                  "se_manufacturing[battery_lifetime]": {
+                        required:"<%=_('This field is mandatory').html_safe%>",
+                        number:"<%=_('Please enter a number').html_safe%>"
+                        },
+			      "se_manufacturing[cable_lifetime]": {
+                        required:"<%=_('This field is mandatory').html_safe%>",
+                        number:"<%=_('Please enter a number').html_safe%>"
+                        },
+			      "se_manufacturing[purchase]": {
+                        required:"<%=_('This field is mandatory').html_safe%>",
+                        number:"<%=_('Please enter a number').html_safe%>"
+                        },     
+			      "se_manufacturing[installation]": {
+                        required:"<%=_('This field is mandatory').html_safe%>",
+                        number:"<%=_('Please enter a number').html_safe%>"
+                        },     
+			      "se_manufacturing[maintenance]": {
+                        required:"<%=_('This field is mandatory').html_safe%>",
+                        number:"<%=_('Please enter a number').html_safe%>"
+                        },     
+			      "se_manufacturing[cables]": {
+                        required:"<%=_('This field is mandatory').html_safe%>",
+                        number:"<%=_('Please enter a number').html_safe%>"
+                        }
+                        
+				}		    
+		       });
+
+    });
+</script>     
+
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/lca/se_tabs') %>
+	</div>
+<div class="clear"></div>
+    <%= form_for SeManufacturingData.new, :remote => true do |f| %>
+	    <fieldset class="empty">
+	      <legend><%=_('Sensor nodes: Abridged Bill-of-Materials').html_safe%></legend>
+	      <input type="hidden" name="se_product_id" id="product_id" value="<%=@se_product.id%>"/>
+
+	       <!-- Sensor node description -->
+	      <div class="span-5" > 
+	         <%= f.label :value, _('Sensor node<br/>description').html_safe %> <a title="<%=_('Add an unambiguous name for the type of sensor node. This should help you to differentiate different types of sensors or sensor nodes.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+	         </br>
+	         <%= f.text_field :sensor_node_description, :size => 15%>
+	      </div>
+
+	      <!-- Number -->
+	      <div class="span-6" > 
+	         <%= f.label :value, _('Number of<br/>sensors/nodes').html_safe %> <a title="<%=_('Number of sensors / nodes of the given type.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+	         </br>
+	         <%= f.text_field :number, :size => 5%>
+	      </div>
+
+	      <!-- Component -->
+	      <div class="span-4" > 
+	         <%= f.label :value, _('Component').html_safe %> 
+	         </br>
+	         <%= f.select :se_component_id, @se_components.map{|c| [c.name,c.id,{'data-unit' =>c.unit}]}, :include_blank => true %>
+	      </div>
+
+	      <!-- Sensor node description -->
+	      <div class="span-6" > 
+	         <%= f.label :value, _('Quantity per sensor node').html_safe %> 
+	         </br>
+	         <%= f.text_field :quantity, :size => 5%> <span id="se_quantity_unit"></span>
+	         
+	      </div>	      
+    
+	      <div class="clear"></div>
+	      	     
+		  <div class="span-3 buttons last">
+		     <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+		  </div>
+          
+	    </fieldset>
+    <% end %>
+  
+     <table class="standard2">
+	  <tr class="add"> 
+	    <th>
+	      <%=_('Sensor node').html_safe %><br/>
+	    </th>
+	    <th>
+	      <%=_('Number').html_safe %><br/>
+	    </th>
+	    <th>
+	      <%=_('Component').html_safe %><br/>
+	    </th>
+	    <th>
+	      <%=_('Quantity').html_safe %>
+	    </th>
+	    <th>
+	      <%=_('Unit').html_safe %>
+	    </th>
+	    
+	    <th>
+	      &nbsp;
+	    </th>
+	  </tr>	  
+	  <tbody id="se_manufacturings">
+	    <%= render :partial => @se_manufacturing_datas, :locals => { :list => true } %>
+	  </tbody>   
+	 </table>
+	 
+  <br/><br/>	 
+  
+<%= form_for(@se_manufacturing) do |f| %>
+  <% if @se_manufacturing.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@se_manufacturing.errors.count, "error") %> prohibited this ph_maintenance from being saved:</h2>
+
+      <ul>
+      <% @se_manufacturing.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+ <fieldset class="empty">  
+  <div class="field">
+    <%=_('Sensor system lifetime').html_safe%> <a title="<%=_('State the anticipated or guaranteed sensor system lifetime. Note, that all costs will be spread evenly over the full system\'s lifetime, not considering depreciation / recovery periods and imputed interest. This is the typical approach for environmental life cycle assessments.').html_safe%>" href="#" class="tip_left">&nbsp;</a><br />
+    <%= f.text_field :sensor_lifetime %>
+    <%=_('years').html_safe%>
+  </div>  
+
+  <div class="field">
+    <%=_('Battery lifetime').html_safe%> <a title="<%=_('If the sensors are battery powered, state a battery lifetime. Lifetime is the time after which the battery is scheduled for replacement.').html_safe%>" href="#" class="tip_left">&nbsp;</a><br />
+    <%= f.text_field :battery_lifetime %>
+    <%=_('years').html_safe%>
+  </div>  
+
+  <div class="field">
+    <%=_('Cable lifetime').html_safe%> <a title="<%=_('Maximum acceptable operational time of using cables.').html_safe%>" href="#" class="tip_left">&nbsp;</a><br />
+    <%= f.text_field :cable_lifetime %>
+    <%=_('years').html_safe%>
+  </div>  
+ </fieldset>
+
+
+
+<fieldset class="empty">  
+  <legend><%=_('Cost of Sensor System').html_safe%> <a title="<%=_('If sensor system is in the planning stage, add approximated costs for the facility owner / operator related to acquisition, installation and average maintenance costs for the sensor system over the anticipated sensor system lifetime.').html_safe%>" href="#" class="tip_left">&nbsp;</a></legend>
+  <div class="field">
+    <%=_('Purchase').html_safe%><br />
+    <%= f.text_field :purchase %>
+    <%=_('&euro;').html_safe%>
+  </div>   
+
+  <div class="field">
+    <%=_('Installation').html_safe%><br />
+    <%= f.text_field :installation %>
+    <%=_('&euro;').html_safe%>
+  </div>   
+
+  <div class="field">
+    <%=_('Maintenance (including battery change)').html_safe%><br />
+    <%= f.text_field :maintenance %>
+    <%=_('&euro;/year').html_safe%>
+  </div>   
+ </fieldset>
+  <div class="field">
+    <%=_('Cables').html_safe%><br />
+    <%= f.text_field :cables %>
+    <%=_('kg').html_safe%>
+  </div>  
+
+
+      <div class="buttons span-5 last" style="float:right;text-align:right">     
+         <input type="hidden" name="se_product_id" id="se_product_id" value="<%=@se_product.id%>"/>
+         <button type="submit" class="positive" style="float:right;text-align:right"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>     
+      </div>
+  <% end %>      
+
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, se_production_intro_path(@product.se_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, se_data_quality_intro_url(@product.se_product) %></li>
+        <li><%= link_to _('To Results').html_safe, se_result_path(@product.se_product) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+
+
+</div>

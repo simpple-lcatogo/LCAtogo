@@ -1,0 +1,532 @@
+<h1><%=_('Detailed Results').html_safe%>
+</h1>
+<style type="text/css">
+ .treeMain table, th, tr, td { border:solid 1px}
+ thead th {background:#008B8B}
+ 
+ 
+
+</style>
+<script type="text/javascript">
+    function getValue(value) {
+    var valueTxt = parseFloat(value);
+    <% if I18n.locale == :en %>
+        return valueTxt.toFixed(1);
+    <% else %>
+        return (valueTxt.toFixed(1)).replace(".", ".");
+    <% end %>
+    }
+
+    function switchPercentage() {
+        td = document.getElementById("result_co2_total");
+        value =document.getElementById("percentage_result_co2_total").value    
+        td.innerHTML = getValue(value) + "%";
+
+        td = document.getElementById("result_co2_cabling");
+        value =document.getElementById("percentage_result_co2_cabling").value    
+        td.innerHTML = getValue(value) + "%";
+
+        td = document.getElementById("result_co2_module");
+        value =document.getElementById("percentage_result_co2_module").value    
+        td.innerHTML = getValue(value) + "%";
+
+        td = document.getElementById("result_co2_framing");
+        value =document.getElementById("percentage_result_co2_framing").value    
+        td.innerHTML = getValue(value) + "%";
+
+        td = document.getElementById("result_co2_mounting");
+        value =document.getElementById("percentage_result_co2_mounting").value    
+        td.innerHTML = getValue(value) + "%";
+
+        td = document.getElementById("result_co2_inverter");
+        value =document.getElementById("percentage_result_co2_inverter").value    
+        td.innerHTML = getValue(value) + "%";
+
+        td = document.getElementById("result_co2_batteries");
+        value =document.getElementById("percentage_result_co2_batteries").value    
+        td.innerHTML = getValue(value) + "%";
+
+        td = document.getElementById("result_co2_maintenance");
+        value =document.getElementById("percentage_result_co2_maintenance").value    
+        td.innerHTML = getValue(value) + "%";
+
+        td = document.getElementById("result_pe_total");
+        value =document.getElementById("percentage_result_pe_total").value    
+        td.innerHTML = getValue(value) + "%";
+
+        td = document.getElementById("result_pe_cabling");
+        value =document.getElementById("percentage_result_pe_cabling").value    
+        td.innerHTML = getValue(value) + "%";
+
+        td = document.getElementById("result_pe_module");
+        value =document.getElementById("percentage_result_pe_module").value    
+        td.innerHTML = getValue(value) + "%";
+
+        td = document.getElementById("result_pe_framing");
+        value =document.getElementById("percentage_result_pe_framing").value    
+        td.innerHTML = getValue(value) + "%";
+
+        td = document.getElementById("result_pe_mounting");
+        value =document.getElementById("percentage_result_pe_mounting").value    
+        td.innerHTML = getValue(value) + "%";
+
+        td = document.getElementById("result_pe_inverter");
+        value =document.getElementById("percentage_result_pe_inverter").value    
+        td.innerHTML = getValue(value) + "%";
+
+        td = document.getElementById("result_pe_batteries");
+        value =document.getElementById("percentage_result_pe_batteries").value    
+        td.innerHTML = getValue(value) + "%";
+
+        td = document.getElementById("result_pe_maintenance");
+        value =document.getElementById("percentage_result_pe_maintenance").value    
+        td.innerHTML = getValue(value) + "%";
+
+        
+        document.getElementById("absolute_selected").style.display = 'none';
+        document.getElementById("percentage_selected").style.display = 'block';        
+        $("#unit_header_1").hide();
+        $("#unit_header_2").hide();        
+           
+     }	
+	
+     function switchAbsolute() {
+        td = document.getElementById("result_co2_total");
+        value = document.getElementById("absolute_result_co2_total").value    
+        td.innerHTML = getValue(value);
+
+        td = document.getElementById("result_co2_cabling");
+        value =document.getElementById("absolute_result_co2_cabling").value    
+        td.innerHTML = getValue(value);
+
+        td = document.getElementById("result_co2_module");
+        value =document.getElementById("absolute_result_co2_module").value    
+        td.innerHTML = getValue(value);
+
+        td = document.getElementById("result_co2_framing");
+        value =document.getElementById("absolute_result_co2_framing").value    
+        td.innerHTML = getValue(value);
+
+        td = document.getElementById("result_co2_mounting");
+        value =document.getElementById("absolute_result_co2_mounting").value    
+        td.innerHTML = getValue(value);
+
+        td = document.getElementById("result_co2_inverter");
+        value =document.getElementById("absolute_result_co2_inverter").value    
+        td.innerHTML = getValue(value);
+
+        td = document.getElementById("result_co2_batteries");
+        value =document.getElementById("absolute_result_co2_batteries").value    
+        td.innerHTML = getValue(value);
+
+        td = document.getElementById("result_co2_maintenance");
+        value =document.getElementById("absolute_result_co2_maintenance").value    
+        td.innerHTML = getValue(value);
+
+        td = document.getElementById("result_pe_total");
+        value = document.getElementById("absolute_result_pe_total").value    
+        td.innerHTML = getValue(value);
+
+        td = document.getElementById("result_pe_cabling");
+        value =document.getElementById("absolute_result_pe_cabling").value    
+        td.innerHTML = getValue(value);
+
+        td = document.getElementById("result_pe_module");
+        value =document.getElementById("absolute_result_pe_module").value    
+        td.innerHTML = getValue(value);
+
+        td = document.getElementById("result_pe_framing");
+        value =document.getElementById("absolute_result_pe_framing").value    
+        td.innerHTML = getValue(value);
+
+        td = document.getElementById("result_pe_mounting");
+        value =document.getElementById("absolute_result_pe_mounting").value    
+        td.innerHTML = getValue(value);
+
+        td = document.getElementById("result_pe_inverter");
+        value =document.getElementById("absolute_result_pe_inverter").value    
+        td.innerHTML = getValue(value);
+
+        td = document.getElementById("result_pe_batteries");
+        value =document.getElementById("absolute_result_pe_batteries").value    
+        td.innerHTML = getValue(value);
+
+        td = document.getElementById("result_pe_maintenance");
+        value =document.getElementById("absolute_result_pe_maintenance").value    
+        td.innerHTML = getValue(value);
+
+
+        document.getElementById("absolute_selected").style.display = 'block';
+        document.getElementById("percentage_selected").style.display = 'none';        
+        $("#unit_header_1").show();
+        $("#unit_header_2").show();        
+        
+     }   
+
+</script>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/ph_results/tabs') %>
+	</div>
+	
+    <div class="span-23 last">
+      <%=_('Switch to').html_safe%>
+      <div id="absolute_selected">
+        <%=_('Absolute values').html_safe%> / <%= link_to _('Percentage values').html_safe, 'javascript:switchPercentage();', :product => @product %>
+      </div>   
+      <div id="percentage_selected" style="display:none;">
+        <%= link_to _('Absolute values').html_safe, 'javascript:switchAbsolute();', :product => @product %> / <%=_('Percentage values').html_safe%>
+      </div>
+      
+    </div>
+	<div class="clear"></div>
+	
+	
+	<table style="border:solid 1px" id="treeMain">
+	  <thead>
+	   <tr style="border:solid 1px">
+	     <th style="border:solid 1px"></th>
+	     <th style="text-align:center">CO2 <div style="display:inline" id="unit_header_1">[kg]</div> <a title="<%=_('Carbon Dioxide emissions').html_safe%>" href="#" class="tip_left">&nbsp;</a></th>
+	     <th style="text-align:center">PE <div style="display:inline" id="unit_header_2">[MJ]</div> <a title="<%=_('Primary energy used').html_safe%>" href="#" class="tip_left">&nbsp;</a></th>
+	     <th style="text-align:center">DQI</th>	     
+	   </tr>
+	  </thead> 
+	   <tr>
+	     <td><%=_('Total').html_safe%></td>
+	     <td id="result_co2_total" style="text-align:right">
+	        <%=@ph_result.co2_total%>
+         </td>	        
+	        <input type="hidden" id="absolute_result_co2_total" name="absolute_result_co2_total" value="<%=@ph_result.co2_total%>"/>
+	        <input type="hidden" id="percentage_result_co2_total" name="percentage_result_co2_total" value="100"/>	     	    
+	     <td id="result_pe_total" style="text-align:right">
+	        <%=@ph_embedded_result.embedded_energy_total%>
+	     </td>   
+	     <td rowspan="5" style="text-align:center">
+	       <% if @dqi_module %>
+	           <% if @dqi_module == 1 %>
+	              <%= image_tag('bullet-green-icon.png')%> 
+	           <% end %>
+	           <% if @dqi_module == 2 %>
+	              <%= image_tag('bullet-yellow-icon.png')%> 
+	           <% end %>
+	           <% if @dqi_module == 3 %>
+                  <%= image_tag('bullet-red-icon.png')%>
+	           <% end %>  
+	      <% end %>  	     
+	     
+	     </td>
+	        <input type="hidden" id="absolute_result_pe_total" name="absolute_result_pe_total" value="<%=@ph_embedded_result.embedded_energy_total%>"/>
+	        <input type="hidden" id="percentage_result_pe_total" name="percentage_result_pe_total" value="100"/>	        
+	   </tr>  	   	     
+	   <tr>
+	     <td><%=_('Cabling').html_safe%></td>
+	     <td id="result_co2_cabling" style="text-align:right">
+	        <%=lca_format_number(@ph_result.cabling, 1)%>
+	     </td>	       
+	       <input type="hidden" id="absolute_result_co2_cabling" name="absolute_result_co2_cabling" value="<%=lca_format_number(@ph_result.cabling, 1)%>"/>
+	       <input type="hidden" id="percentage_result_co2_cabling" name="percentage_result_co2_cabling" value="<%=@ph_result.cabling*100/@ph_result.co2_total%>"/>
+	     <td id="result_pe_cabling" style="text-align:right">
+	       <%=@ph_embedded_result.pe_pv_cabling%>
+	     </td>	  
+	       <input type="hidden" id="absolute_result_pe_cabling" name="absolute_result_pe_cabling" value="<%=@ph_embedded_result.pe_pv_cabling%>"/>
+	       <input type="hidden" id="percentage_result_pe_cabling" name="percentage_result_pe_cabling" value="<%=@ph_embedded_result.pe_pv_cabling*100/@ph_embedded_result.embedded_energy_total%>"/>	        	       
+	   </tr>  	   
+	   <tr>
+	     <td><%=_('Module/Laminate').html_safe%></td>
+	     <td id="result_co2_module" style="text-align:right">
+	       <%=@ph_result.module%>
+	     </td>	       
+	       <input type="hidden" id="absolute_result_co2_module" name="absolute_result_co2_module" value="<%=@ph_result.module%>"/>
+	       <input type="hidden" id="percentage_result_co2_module" name="percentage_result_co2_module" value="<%=@ph_result.module*100/@ph_result.co2_total%>"/>	       	       
+	     <td id="result_pe_module" style="text-align:right">
+	       <%=@ph_embedded_result.pe_pv_module%>
+	     </td>	  
+	       <input type="hidden" id="absolute_result_pe_module" name="absolute_result_pe_module" value="<%=@ph_embedded_result.pe_pv_module%>"/>
+	       <input type="hidden" id="percentage_result_pe_module" name="percentage_result_pe_module" value="<%=@ph_embedded_result.pe_pv_module*100/@ph_embedded_result.embedded_energy_total%>"/>	       
+	   </tr>  	   
+	   <tr>
+	     <td><%=_('Framing/Panel').html_safe%></td>
+	     <td id="result_co2_framing" style="text-align:right">
+	       <%=@ph_result.framing%>
+	     </td>	       
+	       <input type="hidden" id="absolute_result_co2_framing" name="absolute_result_co2_framing" value="<%=@ph_result.framing%>"/>
+	       <input type="hidden" id="percentage_result_co2_framing" name="percentage_result_co2_framing" value="<%=@ph_result.framing*100/@ph_result.co2_total%>"/>	       
+	     <td id="result_pe_framing" style="text-align:right">
+	       <%=@ph_embedded_result.pe_pv_framing%>
+	     </td>	  
+
+	       <input type="hidden" id="absolute_result_pe_framing" name="absolute_result_pe_framing" value="<%=@ph_embedded_result.pe_pv_framing%>"/>
+	       <input type="hidden" id="percentage_result_pe_framing" name="percentage_result_pe_framing" value="<%=@ph_embedded_result.pe_pv_framing*100/@ph_embedded_result.embedded_energy_total%>"/>	       	       
+	   </tr>  	   
+	   <tr>
+	     <td><%=_('Mounting').html_safe%></td>
+	     <td id="result_co2_mounting" style="text-align:right">
+	       <%=@ph_result.mounting%>
+	     </td>	       
+	       <input type="hidden" id="absolute_result_co2_mounting" name="absolute_result_co2_mounting" value="<%=@ph_result.mounting%>"/>
+	       <input type="hidden" id="percentage_result_co2_mounting" name="percentage_result_co2_mounting" value="<%=@ph_result.mounting*100/@ph_result.co2_total%>"/>	       	       
+	     <td id="result_pe_mounting" style="text-align:right">
+	       <%=@ph_embedded_result.pe_pv_mounting%>
+	     </td>	  
+
+	       <input type="hidden" id="absolute_result_pe_mounting" name="absolute_result_pe_mounting" value="<%=@ph_embedded_result.pe_pv_mounting%>"/>
+	       <input type="hidden" id="percentage_result_pe_mounting" name="percentage_result_pe_mounting" value="<%=@ph_embedded_result.pe_pv_mounting*100/@ph_embedded_result.embedded_energy_total%>"/>	       	       	       
+	   </tr>  	   
+	   <tr>
+	     <td><%=_('Inverter').html_safe%></th>
+	     <td id="result_co2_inverter" style="text-align:right">
+	       <%=@ph_result.inverter%>
+	     </td>	       
+	       <input type="hidden" id="absolute_result_co2_inverter" name="absolute_result_co2_inverter" value="<%=@ph_result.inverter%>"/>
+	       <input type="hidden" id="percentage_result_co2_inverter" name="percentage_result_co2_inverter" value="<%=@ph_result.inverter*100/@ph_result.co2_total%>"/>	       
+	     <td id="result_pe_inverter" style="text-align:right">
+	       <%=@ph_embedded_result.pe_inverter%>
+	     </td>	  
+	     <td style="text-align:center">
+	       <% if @ph_product.ph_data_quality %>
+	           <% if @ph_product.ph_data_quality.inverter == 'robust' %>
+	              <%= image_tag('bullet-green-icon.png')%> 
+	           <% end %>
+	           <% if @ph_product.ph_data_quality.inverter == 'indicative' %>
+	              <%= image_tag('bullet-yellow-icon.png')%>
+	           <% end %>
+	           <% if @ph_product.ph_data_quality.inverter == 'illustrative' %>
+                  <%= image_tag('bullet-red-icon.png')%>
+	           <% end %>
+	       <% end %>   	     	    
+	     </td>
+	       <input type="hidden" id="absolute_result_pe_inverter" name="absolute_result_pe_inverter" value="<%=@ph_embedded_result.pe_inverter%>"/>
+	       <input type="hidden" id="percentage_result_pe_inverter" name="percentage_result_pe_inverter" value="<%=@ph_embedded_result.pe_inverter*100/@ph_embedded_result.embedded_energy_total%>"/>	       
+	   </tr>  	   
+	   <tr>
+	     <td><%=_('Batteries').html_safe%></td>
+	     <td id="result_co2_batteries" style="text-align:right">
+	       <%=@ph_result.batteries%>
+	     </td>	       
+	       <input type="hidden" id="absolute_result_co2_batteries" name="absolute_result_co2_batteries" value="<%=@ph_result.batteries%>"/>
+	       <input type="hidden" id="percentage_result_co2_batteries" name="percentage_result_co2_batteries" value="<%=@ph_result.batteries*100/@ph_result.co2_total%>"/>	       
+	     <td id="result_pe_batteries" style="text-align:right">
+	       <%=@ph_embedded_result.pe_batteries%>
+	     </td>	  
+	     <td style="text-align:center">
+	       <% if @ph_product.ph_data_quality %>
+	           <% if @ph_product.ph_data_quality.batteries == 'robust' %>
+	             <%= image_tag('bullet-green-icon.png')%> 
+	           <% end %>
+	           <% if @ph_product.ph_data_quality.batteries == 'indicative' %>
+	              <%= image_tag('bullet-yellow-icon.png')%>
+	           <% end %>
+	           <% if @ph_product.ph_data_quality.batteries == 'illustrative' %>
+                  <%= image_tag('bullet-red-icon.png')%>
+	           <% end %>
+	       <% end %>	     	   
+	     </td>
+	       <input type="hidden" id="absolute_result_pe_batteries" name="absolute_result_pe_batteries" value="<%=@ph_embedded_result.pe_batteries%>"/>
+	       <input type="hidden" id="percentage_result_pe_batteries" name="percentage_result_pe_batteries" value="<%=@ph_embedded_result.pe_batteries*100/@ph_embedded_result.embedded_energy_total%>"/>	       
+	   </tr>
+	   <tr>
+	     <td><%=_('Maintenance').html_safe%></td>
+	     <td id="result_co2_maintenance" style="text-align:right">
+	       <%=@ph_result.maintenance%>
+	     </td>	       
+	       <input type="hidden" id="absolute_result_co2_maintenance" name="absolute_result_co2_maintenance" value="<%=@ph_result.maintenance%>"/>
+	       <input type="hidden" id="percentage_result_co2_maintenance" name="percentage_result_co2_maintenance" value="<%=@ph_result.maintenance*100/@ph_result.co2_total%>"/>	       
+	     <td id="result_pe_maintenance" style="text-align:right">
+	       <%=@ph_embedded_result.pe_maintenance%>
+	     </td>	  
+	     <td style="text-align:center">
+	       <% if @ph_product.ph_data_quality %>
+	           <% if @ph_product.ph_data_quality.maintenance == 'robust' %>
+	              <%= image_tag('bullet-green-icon.png')%> 
+	           <% end %>
+	           <% if @ph_product.ph_data_quality.maintenance == 'indicative' %>
+	              <%= image_tag('bullet-yellow-icon.png')%>
+	           <% end %>
+	           <% if @ph_product.ph_data_quality.maintenance == 'illustrative' %>
+                  <%= image_tag('bullet-red-icon.png')%>
+	           <% end %>
+	       <% end %>	     	    
+	     </td>
+	       <input type="hidden" id="absolute_result_pe_maintenance" name="absolute_result_pe_maintenance" value="<%=@ph_embedded_result.pe_maintenance%>"/>
+	       <input type="hidden" id="percentage_result_pe_maintenance" name="percentage_result_pe_maintenance" value="<%=@ph_embedded_result.pe_maintenance*100/@ph_embedded_result.embedded_energy_total%>"/>	       
+	   </tr>  	   
+	   
+	</table>
+	<br/>
+
+	<table style="border:solid 1px">
+	  <tr> 	   
+	   <th style="background:#008B8B"><%=_('Energy Payback Time').html_safe%> <a title="<%=_('The period of time that the system requires to generate as much energy as was required for its manufacturing').html_safe%>" href="#" class="tip_left">&nbsp;</a></th><td style="text-align:center"> <%=lca_format_number(@ph_embedded_result.energy_payback, 2)%> years</td>
+	  </tr>
+	  <tr>        
+       <th style="background:#008B8B"><%=_('Net saved CO2').html_safe%> <a title="<%=_('Amount of Carbon Dioxide emissions saved by using the system').html_safe%>" href="#" class="tip_left">&nbsp;</a></th><td style="text-align:center"> <%=lca_format_number(@ph_embedded_result.net_saved_co2, 2)%> kg CO2</td>
+	  </tr>
+	  <tr>
+	   <th style="background:#008B8B"><%=_('Lifetime electricity production').html_safe%> <a title="<%=_('Amount of electricity produced by the system over its operational lifetime').html_safe%>" href="#" class="tip_left">&nbsp;</a></th><td style="text-align:center"> <%=lca_format_number(@ph_result.lifetime, 2)%> kWh</td>
+	  </tr>	
+    </table>
+	
+	<br/>
+	
+	<table style="border:solid 1px">
+	  <tr> 
+	   <th style="background:#008B8B"><%=_('Lifetime saved Primary Energy by replaced electricity').html_safe%> <a title="<%=_('Amount of primary energy saved by using electricity from the system and not from the grid').html_safe%>" href="#" class="tip_left">&nbsp;</a></th><td style="text-align:center"> <%=lca_format_number(@ph_embedded_result.lifetime_saved, 2)%> MJ PE</td>
+	  </tr>
+	  <tr> 
+	   <th style="background:#008B8B"><%=_('Estimated Peak Power').html_safe%> <a title="<%=_('Calculated peak power of the system').html_safe%>" href="#" class="tip_left">&nbsp;</a></th><td style="text-align:center"> <%=lca_format_number(@ph_embedded_result.peak_power, 2)%> kWp</td>
+	  </tr>
+	  <tr> 	   
+	   <th style="background:#008B8B"><%=_('Averaged yearly electricity production').html_safe%> <a title="<%=_('Avereged annual electricty production by the system').html_safe%>" href="#" class="tip_left">&nbsp;</a></th><td style="text-align:center"> <%=lca_format_number(@ph_embedded_result.averaged_power, 2)%> kWh/a</td>
+	  </tr>
+	  <tr> 	   
+	   <th style="background:#008B8B"><%=_('Averaged yearly avoided consumption of Primary Energy').html_safe%> <a title="<%=_('Avereged annual primary energy saved by using electricity from the system and not from the grid').html_safe%>" href="#" class="tip_left">&nbsp;</a></th><td style="text-align:center"> <%=lca_format_number(@ph_embedded_result.averaged_consumption, 2)%> MJ</td>
+	  </tr>
+	  <tr> 	   
+	   <th style="background:#008B8B"><%=_('Energy yield Ratio').html_safe%> <a title="<%=_('Ratio of energy produced by the system over its operational lifetime to the amount of energy used for manufacturing and using the system').html_safe%>" href="#" class="tip_left">&nbsp;</a></th><td style="text-align:center"> <%=lca_format_number(@ph_embedded_result.energy_yield, 2)%></td>
+	  </tr>
+	  <tr>        
+       <th style="background:#008B8B"><%=_('Estimated CO2-equivalent emissions per kWh electricty produced').html_safe%> <a title="<%=_('Ratio of energy produced by the system over its operational lifetime to the amount of Carbon Dioxide emitted during manufacturing the system').html_safe%>" href="#" class="tip_left">&nbsp;</a></th><td style="text-align:center"> <%=lca_format_number(@ph_embedded_result.estim_co2, 2)%> g/kWh</td>
+	  </tr>
+	  <tr>        
+       <th style="background:#008B8B"><%=_('Temperature induced efficiency losses').html_safe%> <a title="<%=_('Estimated efficiency losses due to degradation').html_safe%>" href="#" class="tip_left">&nbsp;</a></th><td style="text-align:center"> <%=lca_format_number(@ph_embedded_result.temperature_induced, 2)%>%</td>
+	  </tr>
+   </table> 
+
+<!--
+	<br/><br/><br/>
+	<hr/>
+	
+	CO2 Total: <%=@ph_result.co2_total%><br/>
+	CO2 PV Cabling : <%=@ph_result.cabling%><br/>
+	CO2 PV Module : <%=@ph_result.module%><br/>
+	CO2 PV Framing/Panel : <%=@ph_result.framing%><br/>	
+	CO2 PV Mounting : <%=@ph_result.mounting%><br/>	
+	CO2 Inverter : <%=@ph_result.inverter%><br/>	
+	CO2 Batteries : <%=@ph_result.batteries%><br/>
+	CO2 Maintenance : <%=@ph_result.maintenance%><br/>
+	<br/>
+	<hr/>
+	Years of oncluded Maintenance : <%=@ph_maintenance_result.years_included%><br/>
+	Inverter Replacement included : <%=@ph_maintenance_result.inverter_replacement%><br/>
+	Batteries Replacement included : <%=@ph_maintenance_result.batteries_replacement%><br/>	 
+	Tap Water l: <%=@ph_maintenance_result.tap_water_l%><br/>
+	Tap Water co2: <%=@ph_maintenance_result.tap_water_co2%><br/>
+	Tap Water pe: <%=@ph_maintenance_result.tap_water_pe%><br/>
+    Needed replacement cycles 1: <%=@ph_maintenance_result.needed_cycles_1%><br/>
+    Needed quantity of replacements 1: <%=@ph_maintenance_result.needed_replacements_1%><br/>
+    Embodied CO2 for replacements (kg) 1: <%=@ph_maintenance_result.embodied_co2_1%><br/>
+    Embodied PE for replacements (MJ) 1: <%=@ph_maintenance_result.embodied_pe_1%><br/>
+
+    Needed replacement cycles 2: <%=@ph_maintenance_result.needed_cycles_2%><br/>
+    Needed quantity of replacements 2: <%=@ph_maintenance_result.needed_replacements_2%><br/>
+    Embodied CO2 for replacements (kg) 2: <%=@ph_maintenance_result.embodied_co2_2%><br/>
+    Embodied PE for replacements (MJ) 2: <%=@ph_maintenance_result.embodied_pe_2%><br/>
+	
+	Driven kilometers per maintenance: <%=@ph_maintenance_result.driven_maintenance%><br/>
+	Driven kilometers per year: <%=@ph_maintenance_result.driven_year%><br/>
+	Driven kilometeres during contract: <%=@ph_maintenance_result.driven_contract%><br/>
+	Embodied CO2 for transport: <%=@ph_maintenance_result.embodied_co2_transport%><br/>
+	Embodied PE for transport: <%=@ph_maintenance_result.embodied_pe_transport%><br/>
+	
+	Embodied CO2 for cleaning: <%=@ph_maintenance_result.embodied_co2_cleaning%><br/>
+	Embodied PE for cleaning:  <%=@ph_maintenance_result.embodied_pe_cleaning%><br/>
+	Total embodied CO2 for cleaning: <%=@ph_maintenance_result.total_embodied_co2_cleaning%><br/>
+	Total embodied PE for cleaning:	<%=@ph_maintenance_result.total_embodied_pe_cleaning%><br/>
+	
+	Needed replacement cycles: <%=@ph_maintenance_result.needed_cycles_batteries%><br/>
+    Needed quantity of replacements: <%=@ph_maintenance_result.needed_replacements_batteries%><br/>
+    Embodied CO2 for replacements: <%=@ph_maintenance_result.embodied_co2_batteries%><br/>
+    Embodied PE for replacements: <%=@ph_maintenance_result.embodied_pe_batteries%><br/>
+	
+	
+    Embodied Carbon Dioxide: <%=@ph_maintenance_result.embodied_carbon_dioxide%><br/>
+    Embodied Primary Energy: <%=@ph_maintenance_result.embodied_primary_energy%><br/>
+	
+	<hr/>
+	
+	PE PV Cabling: <%=@ph_embedded_result.pe_pv_cabling%><br/>
+	PE PV Module: <%=@ph_embedded_result.pe_pv_module%><br/>
+	PE PV Framing: <%=@ph_embedded_result.pe_pv_framing%><br/>
+	PE PV Mounting: <%=@ph_embedded_result.pe_pv_mounting%><br/>
+	PE Inverter: <%=@ph_embedded_result.pe_inverter%><br/>
+	PE Batteries: <%=@ph_embedded_result.pe_batteries%><br/>
+	PE Maintenance: <%=@ph_embedded_result.pe_maintenance%><br/>
+	Embedded Primary Energy Total: <%=@ph_embedded_result.embedded_energy_total%><br/>
+	
+    Lifetime Production: <%=@ph_embedded_result.lifetime_production%><br/>
+    
+    
+    System Emb.Energy: <%=@ph_embedded_result.system_emb%><br/>
+    
+    
+  
+	
+	
+	<hr/>
+	
+	<table>
+	   <tr>
+	     <th>Useable product</th>
+	     <th>CO2</th>
+	     <th>PE</th>
+	   </tr>
+	   <% @ph_database_materials.each do |ph_database_material| %>
+		   <tr>
+		     <td><%=ph_database_material.module%> - <%=ph_database_material.target%></td>
+		     <% if ph_database_material.default_value_co2 != 0 %>
+		        <td><%=ph_database_material.default_value_co2%></td>
+		     <% else %>
+		         <% @ph_database_material_values.each do |ph_database_material_value| %>
+		            <% if ph_database_material_value.ph_database_material.id == ph_database_material.id %>
+		               <td><%=ph_database_material_value.co2_value%></td> 
+		            <% end %>
+		         <% end %>
+		     <% end %>   
+		     <% if ph_database_material.default_value_pe != 0 %>		     
+		        <td><%=ph_database_material.default_value_pe%></td>
+		     <% else %>
+		         <% @ph_database_material_values.each do |ph_database_material_value| %>
+		            <% if ph_database_material_value.ph_database_material.id == ph_database_material.id %>
+		               <td><%=ph_database_material_value.pe_value%></td>
+		            <% end %>
+		         <% end %>		     
+		     <% end %>		        
+		   </tr>	   
+	   <% end %>
+	   
+	</table>
+	-->
+	
+  <div class="buttons" style="float:left">
+     <!-- <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Data Update").html_safe %></button> -->
+   </div>
+  <br/>	
+  
+  <div class="buttons span-5" style="float:left;text-align:left">
+     <a href="<%=ph_result_summary_path(@ph_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Previous step").html_safe %></a>
+  </div>
+
+  <div class="buttons span-5 last" style="float:right;text-align:right">
+     <a href="<%=ph_result_graphic_path(@ph_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Next step").html_safe %></a>
+  </div>
+
+
+<div class="clear"></div>
+<div class="navbar">
+  <!-- <div id="for-ie"> -->
+  <div>
+    <ul>
+      <li><%= link_to _('To Introduction').html_safe, ph_production_intro_path(@ph_product) %></li>
+      <li><%= link_to _('To Data Entry').html_safe, ph_basic_information_path(@ph_product) %></li>
+      <li><%= link_to _('To Data Quality').html_safe, ph_data_quality_intro_path(@ph_product) %></li>
+    </ul>
+  </div>
+</div>
+<div class="clear"></div>
+
+	
+	
+</div>	
+<script type="text/javascript">
+  switchAbsolute();
+</script>

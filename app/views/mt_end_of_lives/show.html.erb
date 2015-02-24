@@ -1,0 +1,353 @@
+<script type="text/javascript">
+  function checkFields() {
+     var isOk = true;
+      $('select').each(function(i){
+          var option = this.options[this.selectedIndex];
+          if (option.value == '') {
+              isOk = false;
+          }
+      });
+      if (!isOk) {
+          alert("<%=_('Please define the End-of-life treatment for all materials').html_safe%>");
+      }
+     return isOk;   
+  }
+  
+  function goPrevious() {
+     if (checkFields()) {
+        document.getElementById("arrow").value = 'previous';
+        document.forms[0].submit();
+     }         
+  }
+
+  function goNext() {
+     if (checkFields()) {
+        document.getElementById("arrow").value = 'next';
+        document.forms[0].submit();
+     }     
+  }
+</script>  
+<h1>
+  <% if @mt_product.mt_assessment && @mt_product.mt_assessment.assessment_type == 'rough' %>
+     <%=_('Rough Assessment').html_safe%>
+  <% else %>
+     <%=_('Detailed Assessment').html_safe%>
+  <% end %>   
+
+  <br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+
+<div class="content_skin">
+  <div class="lcamenu span-23 showdgrid last ">
+    <%= render(:partial => 'shared/lca/mt_tabs') %>
+  </div>
+  <div class="clear"></div>
+  <%= form_for @mt_end_of_life do |f| %>
+    <input type="hidden" name="mt_product_id" id="mt_product_id" value="<%=@mt_product.id%>"/>
+    <input type="hidden" name="arrow" id="arrow" value=""/>
+  
+    <% if !@detailed %>  
+      <fieldset class="empty">
+        <legend><%=_('Waste streams').html_safe%></legend>
+    
+        <div class="span-10" >
+          <%= f.label :waste_streams, _('Select one of the three End of Life scenarios').html_safe %>
+        </div>  
+        
+        <div class="span-10" style="">
+ 	      <%= f.radio_button :waste_streams, "recycling" %>  <%=_('Recycling').html_safe%> <a title="<%=_('Select this option if the product will be mainly recycled.').html_safe%>" href="#" class="tip_left">&nbsp;</a><br/>
+	      <%= f.radio_button :waste_streams, "incineration" %>  <%=_('Incineration').html_safe%> <a title="<%=_('Select this option if the product will be mainly incinerated.').html_safe%>" href="#" class="tip_left">&nbsp;</a><br/>
+	      <%= f.radio_button :waste_streams, "landfill" %>  <%=_('Landfill').html_safe%> <a title="<%=_('Select this option if the product will be mainly sent to Landfill.').html_safe%>" href="#" class="tip_left">&nbsp;</a><br/>
+        </div>
+        <div class="clear"></div>        
+      </fieldset>
+    <% else %>
+         <div class="clear"></div>
+         <%=_('Use this section to record the end of life scenario for all listed items that have previously been entered.').html_safe%>
+         <div class="clear"></div>
+		 <div class="span-23" style="border-style:solid; border-bottom:thin dotted black;">
+            <h2><%=_('Raw materials').html_safe%></h2>
+         </div>
+         
+         <div class="clear"></div>
+         <br/>
+    
+<table class="standard2">
+    <tr class="add"> 
+	  <th class="span-8">
+	     <%=_('Component').html_safe %><br/>
+	  </th>      
+      <th class="span-8">
+        <%=_('Family').html_safe %><br/>
+      </th>
+      <th class="span-8">
+        <%=_('Material').html_safe %><br/>
+      </th>
+      <th class="span-3">
+        <%=_('Quantity').html_safe %>
+      </th>
+      <th class="span-3">
+        <%=_('Unit').html_safe %>
+      </th>     
+      <th class="span-8">
+        <%=_('End of life scenario').html_safe %>
+      </th>         
+      <th class="span-1">
+        &nbsp;
+      </th>
+    </tr>   
+    <tbody id="mt_material_datas">    
+       <% @mt_material_datas.each do |mt_material_data| %>
+			<tr id="mt_material_data_<%= mt_material_data.id %>">
+			     <td style="padding-top:10px;vertical-align:top">
+			       <%= mt_material_data.module %>
+			     </td>     		
+			     <td style="padding-top:10px;vertical-align:top">
+				      <% if mt_material_data.mt_family %>
+						<%= mt_material_data.mt_family.name.html_safe %>
+				      <% end %>		
+			     </td>
+			     <td style="padding-top:10px;vertical-align:top">
+				      <% if mt_material_data.mt_material %>
+						<%= mt_material_data.mt_material.name.html_safe %>
+				      <% end %>		
+			
+			     </td>
+   	             <td style="padding-top:10px;vertical-align:top">
+			          <%= mt_material_data.quantity %>
+			     </td>
+			     <td style="padding-top:10px;vertical-align:top">
+				      <% if mt_material_data.mt_material %>
+						<%= mt_material_data.mt_material.unit.html_safe %>
+				      <% end %>		
+			     </td>
+			     <td width="20%" style="padding-top:10px;vertical-align:top">
+				     <select id="mt_material_data_<%=mt_material_data.id%>_scenario" name="mt_material_data_<%=mt_material_data.id%>_scenario">
+				        <% if mt_material_data.scenario == '' %>
+					  	   <option value="" selected="true"></option>
+					  	<% else %>
+					  	   <option value=""></option>
+					  	<% end %>   				     
+				        <% if mt_material_data.scenario == 'recycling' %>
+					  	   <option value="recycling" selected="true"><%=_('Recycling').html_safe%></option>
+					  	<% else %>
+					  	   <option value="recycling"><%=_('Recycling').html_safe%></option>
+					  	<% end %>   
+				        <% if mt_material_data.scenario == 'incineration' %>				  	
+					  	   <option value="incineration" selected="true"><%=_('Incineration').html_safe%></option>
+					  	<% else %>
+					  	   <option value="incineration"><%=_('Incineration').html_safe%></option>
+					  	<% end %>   
+				        <% if mt_material_data.scenario == 'landfill' %>				  	
+					  	   <option value="landfill" selected="true"><%=_('Landfill').html_safe%></option>
+					  	<% else %>
+					  	   <option value="landfill"><%=_('Landfill').html_safe%></option>
+					  	<% end %>   								
+					 </select>
+			     </td>
+			     
+			</tr>            
+       <% end %>
+    </tbody>
+   </table>  
+    
+         <div class="clear"></div>
+		 <div class="span-23" style="border-style:solid; border-bottom:thin dotted black;">
+            <h2><%=_('Predefined supplier parts').html_safe%></h2>
+         </div>         
+         <div class="clear"></div>
+         <br/>
+		<table class="standard2">
+		    <tr class="add"> 
+		      <th class="span-8">
+		        <%=_('Supplier name').html_safe %><br/>
+		      </th>
+		      <th class="span-8">
+		        <%=_('Material').html_safe %><br/>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Quantity').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Unit').html_safe %>
+		      </th>
+		      <th class="span-8">
+		        <%=_('End of life scenario').html_safe %>
+		      </th>		                
+		      <th class="span-1">
+		        &nbsp;
+		      </th>
+		    </tr>   
+		    <tbody id="mt_predefined_supplier_datas">
+		      <% @mt_predefined_supplier_datas.each do |mt_predefined_supplier_data| %>
+					<tr id="mt_predefined_supplier_data_<%= mt_predefined_supplier_data.id %>">
+					     <td style="padding-top:10px;vertical-align:top">
+						      <% if mt_predefined_supplier_data.mt_family %>
+								<%= mt_predefined_supplier_data.mt_family.name.html_safe %>
+						      <% end %>		
+					     </td>
+					     <td style="padding-top:10px;vertical-align:top">
+						      <% if mt_predefined_supplier_data.mt_material %>
+								<%= mt_predefined_supplier_data.mt_material.name.html_safe %>
+						      <% end %>		
+					
+					     </td>
+				          <td style="padding-top:10px;vertical-align:top">
+					          <%= mt_predefined_supplier_data.quantity %>
+					     </td>
+					     <td style="padding-top:10px;vertical-align:top">
+						      <% if mt_predefined_supplier_data.mt_material %>
+								<%= mt_predefined_supplier_data.mt_material.unit.html_safe %>
+						      <% end %>		
+					     </td>
+
+			     <td width="20%" style="padding-top:10px;vertical-align:top">
+				     <select id="mt_predefined_supplier_data_<%=mt_predefined_supplier_data.id%>_scenario" name="mt_predefined_supplier_data_<%=mt_predefined_supplier_data.id%>_scenario">
+				        <% if mt_predefined_supplier_data.scenario == '' %>
+					  	   <option value="" selected="true"></option>
+					  	<% else %>
+					  	   <option value=""></option>
+					  	<% end %>   				     				     
+				        <% if mt_predefined_supplier_data.scenario == 'recycling' %>
+					  	   <option value="recycling" selected="true"><%=_('Recycling').html_safe%></option>
+					  	<% else %>
+					  	   <option value="recycling"><%=_('Recycling').html_safe%></option>
+					  	<% end %>   
+				        <% if mt_predefined_supplier_data.scenario == 'incineration' %>				  	
+					  	   <option value="incineration" selected="true"><%=_('Incineration').html_safe%></option>
+					  	<% else %>
+					  	   <option value="incineration"><%=_('Incineration').html_safe%></option>
+					  	<% end %>   
+				        <% if mt_predefined_supplier_data.scenario == 'landfill' %>				  	
+					  	   <option value="landfill" selected="true"><%=_('Landfill').html_safe%></option>
+					  	<% else %>
+					  	   <option value="landfill"><%=_('Landfill').html_safe%></option>
+					  	<% end %>   								
+					 </select>
+			     </td>
+					     
+				   </tr>		      		      		    
+		      <% end %>
+		    </tbody>
+		</table>
+    
+       <div class="clear"></div>
+		 <div class="span-23" style="border-style:solid; border-bottom:thin dotted black;">
+            <h2><%=_('User defined supplier parts').html_safe%></h2>
+         </div>
+           <div class="clear"></div>
+           <br/>
+		<table class="standard2">
+		    <tr class="add">
+		      <th class="span-8">
+		        <%=_('Supplier part').html_safe %><br/>
+		      </th>
+		      <th class="span-8">
+		        <%=_('Family').html_safe %><br/>
+		      </th>
+		      <th class="span-8">
+		        <%=_('Material').html_safe %><br/>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Quantity').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Unit').html_safe %>
+		      </th>
+		      <th class="span-8">
+		        <%=_('End of life scenario').html_safe %>
+		      </th>		                		            
+		      <th class="span-1">
+		        &nbsp;
+		      </th>
+		    </tr>   
+		    <tbody id="mt_supplier_part_datas">
+		      <% @mt_user_supplier_datas.each do |mt_user_supplier_data| %>
+				<tr id="mt_user_supplier_data_<%= mt_user_supplier_data.id %>">
+				     <td style="padding-top:10px;vertical-align:top">
+					      <% if mt_user_supplier_data.mt_supplier_part_data %>
+							<%= mt_user_supplier_data.mt_supplier_part_data.name.html_safe %>
+					      <% end %>		
+				     </td>
+				     <td style="padding-top:10px;vertical-align:top">
+					      <% if mt_user_supplier_data.mt_family %>
+							<%= mt_user_supplier_data.mt_family.name.html_safe %>
+					      <% end %>		
+				
+				     </td>     
+				     <td style="padding-top:10px;vertical-align:top">
+					      <% if mt_user_supplier_data.mt_material %>
+							<%= mt_user_supplier_data.mt_material.name.html_safe %>
+					      <% end %>
+				     </td>					 
+				     <td style="padding-top:10px;vertical-align:top">
+				          <%= mt_user_supplier_data.quantity %>
+				     </td>
+				     <td style="padding-top:10px;vertical-align:top">
+				        <% if mt_user_supplier_data.mt_material.unit%>
+				           <%= mt_user_supplier_data.mt_material.unit.html_safe %>
+				        <% end %>  
+				     </td>     
+				     <td width="20%" style="padding-top:10px;vertical-align:top">
+					     <select id="mt_user_supplier_data_<%=mt_user_supplier_data.id%>_scenario" name="mt_user_supplier_data_<%=mt_user_supplier_data.id%>_scenario">
+					        <% if mt_user_supplier_data.scenario == '' %>
+						  	   <option value="" selected="true"></option>
+						  	<% else %>
+						  	   <option value=""></option>
+						  	<% end %>   				     				     					     
+					        <% if mt_user_supplier_data.scenario == 'recycling' %>
+						  	   <option value="recycling" selected="true"><%=_('Recycling').html_safe%></option>
+						  	<% else %>
+						  	   <option value="recycling"><%=_('Recycling').html_safe%></option>
+						  	<% end %>   
+					        <% if mt_user_supplier_data.scenario == 'incineration' %>				  	
+						  	   <option value="incineration" selected="true"><%=_('Incineration').html_safe%></option>
+						  	<% else %>
+						  	   <option value="incineration"><%=_('Incineration').html_safe%></option>
+						  	<% end %>   
+					        <% if mt_user_supplier_data.scenario == 'landfill' %>				  	
+						  	   <option value="landfill" selected="true"><%=_('Landfill').html_safe%></option>
+						  	<% else %>
+						  	   <option value="landfill"><%=_('Landfill').html_safe%></option>
+						  	<% end %>   								
+						 </select>
+				     </td>
+				</tr>
+		      
+		      <% end %>
+		    </tbody>
+		</table>		
+    
+    
+    
+    <% end %>
+
+
+   <% end %>
+		<div class="buttons span-5 last" style="float:left;text-align:left">
+		      <button type="submit" class="positive" style="float:left;text-align:left" onClick="javascript:goPrevious();"> <%= image_tag 'tick.png' %><%= _("Previous step").html_safe %></button>
+		</div>
+      
+		<div class="buttons span-5 last" style="float:right;text-align:right">
+		      <button type="submit" class="positive" style="float:right;text-align:right" onClick="javascript:goNext();"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+		</div>
+
+
+   <div class="clear"></div>
+   <div class="navbar">
+     <!-- <div id="for-ie"> -->
+     <div>
+       <ul>
+         <li><%= link_to _('To Introduction').html_safe, mt_production_intro_url(@mt_product) %></li>
+         <li><%= link_to _('To Method').html_safe, mt_assessment_url(@mt_product) %></li>
+         <li><%= link_to _('To Data Quality').html_safe, mt_data_quality_path(@mt_product) %></li>
+         <li><%= link_to _('To Results').html_safe, mt_result_path(@mt_product) %></li>
+         <li><%= link_to _('To Improvements').html_safe, mt_production_improvement_path(@mt_product) %></li>
+       </ul>
+     </div>
+   </div>
+
+
+   <div class="clear"></div>
+
+</div>      

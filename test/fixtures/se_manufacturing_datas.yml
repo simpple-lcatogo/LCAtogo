@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  sensor_type: MyString
+  sensor_nodes: 1.5
+  ics: 1.5
+  memory: 1.5
+  pcb: 1.5
+  battery: 1.5
+  steel: 1.5
+  se_product_id: 1
+
+two:
+  sensor_type: MyString
+  sensor_nodes: 1.5
+  ics: 1.5
+  memory: 1.5
+  pcb: 1.5
+  battery: 1.5
+  steel: 1.5
+  se_product_id: 1

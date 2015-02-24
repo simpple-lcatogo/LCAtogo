@@ -1,0 +1,2 @@
+module SeRecyclingDatasHelper
+end

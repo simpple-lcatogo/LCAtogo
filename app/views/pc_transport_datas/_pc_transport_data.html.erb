@@ -1,0 +1,15 @@
+<tr id="pc_transport_data_<%= pc_transport_data.id %>">
+     <td>
+          <% if pc_transport_data.pc_transport_type %>
+    		<%= pc_transport_data.pc_transport_type.name.html_safe %>
+          <% end %>		
+     </td>
+     <td>
+          <%= pc_transport_data.distance %>
+     </td>
+     <td>
+          <%=_('km').html_safe%>
+     </td>
+
+     <td class="center"><%= link_to '&#10006;'.html_safe, pc_transport_data_path(pc_transport_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>

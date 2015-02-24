@@ -1,0 +1,10 @@
+
+$("#error_explanation_recycling").empty();
+$("#error_explanation_recycling").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#recyclings").append("<%= escape_javascript(render(@recycling_end_of_life)) %>");
+/* Highlight the new comment */
+$("#recycling_<%= @recycling_end_of_life.id %>").effect("highlight", {}, 3000);
+
+$("#recycling_end_of_life_value").val("");
+$("#recycling_end_of_life_name").val("");

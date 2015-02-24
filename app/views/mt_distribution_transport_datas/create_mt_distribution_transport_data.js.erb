@@ -1,0 +1,14 @@
+$("#error_explanation_mt_distribution_transport_data").empty();
+$("#error_explanation_mt_distribution_transport_data").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#mt_distribution_transport_datas").append("<%= escape_javascript(render(@mt_distribution_transport_data)) %>");
+/* Highlight the new comment */
+$("#mt_distribution_transport_data_<%= @mt_distribution_transport_data.id %>").effect("highlight", {}, 3000);
+
+$("#mt_distribution_transport_data_with_sensor").val("");
+$("#mt_distribution_transport_data_without_sensor").val("");
+$("#mt_distribution_transport_data_recycling_revenue").val("");
+$("#mt_distribution_transport_data_description").val("");
+$("#mt_distribution_transport_data_global_warming_potential").val("");
+
+updateWeight();

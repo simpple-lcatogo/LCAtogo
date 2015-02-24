@@ -1,0 +1,8 @@
+<ul>
+  <% if @product.id %>
+	 <li><%= tab_link_to _('Results').html_safe, pc_result_path(@product.pc_product), :product => @product, :index => 1 %></li>
+	 <li style="padding-top:10px;padding-bottom:10px"> > </li>
+     <li><%= tab_link_to _('Comparison').html_safe, pc_comparison_path(@product.pc_product), :product => @product, :index => 2 %></li>     
+   <% end %>
+<div class="clear"></div>
+</ul>

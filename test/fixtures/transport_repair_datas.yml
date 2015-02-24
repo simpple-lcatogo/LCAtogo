@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  product_id: 1
+  distance: 1.5
+  amount: 1.5
+  comment: MyText
+
+two:
+  product_id: 1
+  distance: 1.5
+  amount: 1.5
+  comment: MyText

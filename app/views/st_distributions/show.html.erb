@@ -1,0 +1,289 @@
+<script type="text/javascript">
+  function goPrevious() {     
+     document.forms[2].submit();         
+  }
+
+  function goNext() {
+     document.forms[3].submit();     
+  }
+   $(document).ready(function(){
+      $("#st_transport_data_st_family_transport").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                $("#st_transport_data_st_transport option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#st_transport_data_st_transport");
+            }
+            else {
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'st_transports_for_st_family_transports'},
+                    timeout: 15000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                        $("#st_transport_data_st_transport option").remove();
+                        var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.st_transport.id + "\">" + j.st_transport.name + "</option>";  
+                            $(row).appendTo("select#st_transport_data_st_transport");                    
+                        });   
+                        $("#st_transport_data_st_transport").change();         
+                     }
+                });
+             };   
+             
+             
+	        $("#st_packaging_data_st_packaging_type").change(function(){
+	           var id_value_string = $(this).val();
+	           if (id_value_string != "") {
+	                $.ajax({
+	                    dataType: "json",
+	                    cache: false,
+	                    url: '/ajax_helpers',
+	                    data: {id: id_value_string, type: 'unit_for_st_packaging'},
+	                    timeout: 15000,
+	                    error: function(XMLHttpRequest, errorTextStatus, error){
+	                      //  alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+	                      //  alert(error);
+	                    },
+	                    success: function(data){
+	                       document.getElementById("unit_packaging").innerHTML = "" + data; 
+	                       }
+	                    }); 
+	              }
+	         });                  
+             
+	        $("#st_transport_data_st_transport").change(function(){
+	           var id_value_string = $(this).val();
+	           if (id_value_string != "") {
+	                $.ajax({
+	                    dataType: "json",
+	                    cache: false,
+	                    url: '/ajax_helpers',
+	                    data: {id: id_value_string, type: 'unit_for_st_transport'},
+	                    timeout: 15000,
+	                    error: function(XMLHttpRequest, errorTextStatus, error){
+	                     //   alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+	                     //   alert(error);
+	                    },
+	                    success: function(data){
+	                       document.getElementById("unit_transport").innerHTML = "" + data; 
+	                       }
+	                    }); 
+	              }
+	         });                  
+             
+             
+             
+             
+           });
+     $("#st_transport_data_st_family_transport").change();
+     $("#st_packaging_data_st_packaging_type").change();
+     $("#st_transport_data_st_transport").change();
+     
+     });
+</script>      
+
+<h1><%=_('Data entry').html_safe%>
+  <br/><span class="tool_subtitle"></span>
+</h1>
+<div class="content_skin">
+  <div class="lcamenu span-23 showdgrid last ">
+    <%= render(:partial => 'shared/lca/st_tabs') %>
+  </div>
+  <div class="clear"></div>
+ <%= form_for StPackagingData.new, :remote => true do |f| %>
+  <input type="hidden" name="st_packaging_data[st_product_id]" id="st_product_id" value="<%=@st_product.id%>"/>
+  <fieldset class="empty">
+    <legend><%=_('Packaging').html_safe%></legend>
+  <div class="clear"></div>
+  <%=_('Specify the weight of packaging materials used per product.').html_safe%>
+  <br/><br/>
+    
+    <div class="span-6" > 
+       <%= f.label :value, _('Material').html_safe %> 
+       <br/>
+        <select class="span-6" id="st_packaging_data_st_packaging_type" name="st_packaging_data[st_packaging_type_id]">
+         
+         <% @st_packaging_types.each do |st_packaging_type| %>
+            <option value="<%=st_packaging_type.id%>"><%=st_packaging_type.name.html_safe%></option>
+         <% end %>
+       
+       </select>
+    </div>
+
+
+    <div class="span-5">
+      <%= f.label :value, _('Quantity').html_safe %> 
+      <br />
+      <%= f.text_field :quantity, :size => 10 %> <span id="unit_packaging"></span>
+    </div>
+
+
+
+    <div class="clear"></div>
+
+	<div class="span-3 buttons last">
+		<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+	</div>
+
+</fieldset>
+<% end %>
+<br>
+
+<table class="standard2">
+    <tr class="add"> 
+      <th class="span-8">
+        <%=_('Material').html_safe %><br/>
+      </th>
+      <th class="span-3">
+        <%=_('Quantity').html_safe %>
+      </th>
+      <th class="span-3">
+        <%=_('Unit').html_safe %>
+      </th>      
+      <th class="span-3">
+        <%=_('Eco-costs').html_safe %>
+      </th>
+      
+      <th class="span-1">
+        &nbsp;
+      </th>
+    </tr>   
+    <tbody id="st_packaging_datas">
+      <%= render :partial => @st_packaging_datas %>
+    </tbody>
+</table>
+
+ <div class="clear"></div>
+ <%= form_for StTransportData.new, :remote => true do |f| %>
+  <input type="hidden" name="st_transport_data[st_product_id]" id="st_product_id" value="<%=@st_product.id%>"/>
+  <fieldset class="empty">
+    <legend><%=_('Transport').html_safe%></legend>
+ <div class="clear"></div>
+   <%=_('Please estimate the volume of the transport packaging for one product.Take only the transports from final manufacturing to the point of sale into account.').html_safe%>
+  <br/><br/>
+    <div class="span-5" > 
+       <%= f.label :value, _('Family').html_safe %> 
+       <br/>
+        <select class="span-5" id="st_transport_data_st_family_transport" name="st_transport_data[st_family_transport_id]">
+         
+         <% @st_family_transports.each do |st_family_transport| %>
+            <option value="<%=st_family_transport.id%>"><%=st_family_transport.name.html_safe%></option>
+         <% end %>
+       
+       </select>
+    </div>
+
+    <div class="span-5">
+       <%= f.label :value, _('Type').html_safe %> 
+       <br/>
+        <select class="span-5" id="st_transport_data_st_transport" name="st_transport_data[st_transport_id]">
+         
+         <% @st_transports.each do |st_transport| %>
+            <option value="<%=st_transport.id%>"><%=st_transport.name.html_safe%></option>
+         <% end %>
+       
+       </select>
+    </div>
+
+    <div class="span-5">
+      <%= f.label :value, _('Distance').html_safe %> 
+      <br />
+      <%= f.text_field :distance, :size => 10 %> <%=_('km').html_safe%>
+    </div>
+
+
+    <div class="span-5">
+      <%= f.label :value, _('Volume').html_safe %> 
+      <br />
+      <%= f.text_field :quantity, :size => 10 %> <span id="unit_transport"></span>
+    </div>
+
+
+
+    <div class="clear"></div>
+
+	<div class="span-3 buttons last">
+		<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+	</div>
+
+</fieldset>
+<% end %>
+<br>
+
+<table class="standard2">
+    <tr class="add"> 
+      <th class="span-8">
+        <%=_('Family').html_safe %><br/>
+      </th>
+      <th class="span-8">
+        <%=_('Type').html_safe %><br/>
+      </th>
+      <th class="span-3">
+        <%=_('Distance').html_safe %>
+      </th>      
+      <th class="span-3">
+        <%=_('Volume').html_safe %>
+      </th>
+      <th class="span-3">
+        <%=_('Unit').html_safe %>
+      </th>
+      <th class="span-3">
+        <%=_('Eco-costs').html_safe %>
+      </th>      
+      <th class="span-1">
+        &nbsp;
+      </th>
+    </tr>   
+    <tbody id="st_transport_datas">
+      <%= render :partial => @st_transport_datas %>
+    </tbody>
+</table>
+
+ <div class="clear"></div>
+ 
+ 
+ 
+   <div class="buttons span-5" style="float:left;text-align:left">
+    <%= form_tag '/st_distributions/previous_step' do %>
+        <input type="hidden" name="st_product_id" id="st_product_id" value="<%=@st_product.id%>"/>
+        <button type="button" class="positive" style="float:left;text-align:left" onClick="javascript:goPrevious();"> <%= image_tag 'tick.png' %><%= _("Previous step").html_safe %></button>
+    <% end %>
+  </div>
+
+  <div class="buttons span-5 last" style="float:right;text-align:right">
+    <%= form_tag '/st_distributions/next_step' do %>
+        <input type="hidden" name="st_product_id" id="st_product_id" value="<%=@st_product.id%>"/>
+        <button type="button" class="positive" id="submit_button" style="float:right;text-align:right" onClick="javascript:goNext();"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+    <% end %>
+  </div>
+
+
+<div class="clear"></div>
+<div class="navbar">
+  <!-- <div id="for-ie"> -->
+  <div>
+    <ul>
+      <li><%= link_to _('To Introduction').html_safe, st_production_intro_url(@st_product) %></li>
+      <li><%= link_to _('To Data Quality').html_safe, st_data_quality_intro_path(@st_product) %></li>
+      <li><%= link_to _('To Results').html_safe, st_result_url(@st_product) %></li>
+    </ul>
+  </div>
+</div>
+<div class="clear"></div>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ </div>

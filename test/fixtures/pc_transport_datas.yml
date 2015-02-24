@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  pc_product_id: 1
+  pc_transport_type_id: 1
+  distance: 1.5
+
+two:
+  pc_product_id: 1
+  pc_transport_type_id: 1
+  distance: 1.5

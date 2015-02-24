@@ -1,0 +1,12 @@
+
+$("#error_explanation_material").empty();
+$("#error_explanation_material").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#materials").append("<%= escape_javascript(render(@material_data)) %>");
+/* Highlight the new comment */
+$("#material_<%= @material_data.id %>").effect("highlight", {}, 3000);
+
+$("#material_data_ratio").val("");
+$("#material_data_aspect").val("");
+$("#material_data_diagonal").val("");
+$("#material_data_quantity").val("");

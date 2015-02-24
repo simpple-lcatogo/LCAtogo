@@ -1,0 +1,10 @@
+
+$("#error_explanation_consumable").empty();
+$("#error_explanation_consumable").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#consumables").append("<%= escape_javascript(render(@consumable_use)) %>");
+/* Highlight the new comment */
+$("#consumable_<%= @consumable_use.id %>").effect("highlight", {}, 3000);
+
+$("#consumable_use_value").val("");
+$("#consumable_use_name").val("");

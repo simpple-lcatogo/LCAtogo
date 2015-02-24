@@ -1,0 +1,455 @@
+# encoding: UTF-8
+<script type="text/javascript">
+    $(document).ready(function(){
+      
+      $("#bp_material").change(function(){
+        var text = $("#bp_material option:selected").text();
+        $("#material_information_1").hide();
+        $("#material_information_2").hide();        
+        if (text == 'TPS blend type I (for film applications)') {
+            $("#material_information_1").show();        
+        }
+        if (text == 'TPS blend type II (for film applications)') {
+            $("#material_information_2").show();        
+        }
+        
+        
+        });      
+      
+      
+      $("#bp_materiall").change(function(){
+        var id_value_string = $(this).val();
+        if (id_value_string != "") {
+          $.ajax({
+            dataType: "json",
+            cache: false,
+            url: '/ajax_helpers',
+            data: {id: id_value_string, type:'bp_material'},
+            timeout: 5000,
+            error: function(XMLHttpRequest, errorTextStatus, error){
+                alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                alert(error);
+            },
+            success: function(data){
+                $("#table_bp_material_info").find("tr:gt(0)").remove();
+                // Fill sub category select
+                
+                if (!jQuery.isEmptyObject(data)){
+                  $.each(data, function(i, j){
+                    $('#table_bp_material_info tr:last').after('<tr><td><%=_("name").html_safe  %></td><td>' + j.bp_material.name + '</td></tr>');
+                  });
+                }else{
+                    //alert("No data");
+                    $('#table_bp_material_info tr:last').after('<tr><td>' + '<%=_("Process without data variables").html_safe %>'  + '</td3><td>' + ' - ' + '</tr></td>');
+                }   
+                
+               }
+            }); 
+        }          
+
+      });
+
+      $("#bp_compound_material").change(function(){
+        var id_value_string = $(this).val();
+        if (id_value_string != "") {
+          $.ajax({
+            dataType: "json",
+            cache: false,
+            url: '/ajax_helpers',
+            data: {id: id_value_string, type:'bp_compound_material'},
+            timeout: 5000,
+            error: function(XMLHttpRequest, errorTextStatus, error){
+                alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                alert(error);
+            },
+            success: function(data){
+                $("#table_bp_compound_material_info").find("tr:gt(0)").remove();
+                // Fill sub category select
+                
+                if (!jQuery.isEmptyObject(data)){
+                  $.each(data, function(i, j){
+                    $('#table_bp_compound_material_info tr:last').after('<tr><td><%=_("name").html_safe  %></td><td>' + j.bp_compound_material.name + '</td></tr>');
+                  });
+                }else{
+                    //alert("No data");
+                    $('#table_bp_compound_material_info tr:last').after('<tr><td>' + '<%=_("Process without data variables").html_safe %>'  + '</td><td>' + ' - ' + '</tr></td>');
+                }   
+                
+               }
+            }); 
+        }          
+
+      });
+
+      $("#bp_compound_family").change(function(){
+            
+            $("#bp_compound_material").html("");
+            
+            var id_value_string = $(this).val();
+            if ((id_value_string == "") ||  (id_value_string == null)) {
+                // if the id is empty remove all the sub_selection options from being selectable and do not do any ajax
+                $("#bp_compound_family option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#bp_compound_material");
+            }
+            else {
+             
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {bp_compound_family_id: id_value_string, type: 'bp_compound_family_for_bp_compound_material'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                       
+                       $("#bp_compound_material option").remove();
+                                              
+
+                        if ($("#bp_compound_family option:selected").text() == "<%= _('Master-batch') %>" )
+                        {
+                            var oil_rows = "";
+                            var bio_rows = "";
+
+                            $.each(data, function(i, j){
+                              
+                              if (j.bp_compound_material.based_type == "oil") {
+                                oil_rows += "<option value=\"" + j.bp_compound_material.id + "\">" + j.bp_compound_material.name + "</option>";
+                              
+                              } else if (j.bp_compound_material.based_type == "bio") {
+                                bio_rows += "<option value=\"" + j.bp_compound_material.id + "\">" + j.bp_compound_material.name + "</option>";
+                              }
+
+                            });
+
+                            $("#bp_compound_material").html(' <option value="" selected></option> <optgroup label="<%= _("Bio-based plastics") %>">' + bio_rows + '</optgroup><optgroup label="<%= _("Oil based plastics") %>">' + oil_rows + '</optgroup>');
+                        }
+                        else {
+                          var row; 
+
+                            $.each(data, function(i, j){
+                              row = "<option value=\"" + j.bp_compound_material.id + "\">" + j.bp_compound_material.name + "</option>";  
+
+                              $(row).appendTo("select#bp_compound_material");
+
+                            }); 
+                        }
+
+
+
+                      $("#bp_compound_material").change();  
+                     }
+                });
+             };
+           });
+
+
+    });
+</script>
+
+
+
+<h1><%=_('Product Assessment').html_safe%> 
+<br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/lca/bp_tabs') %>
+	</div>
+<div class="clear"></div>
+    <table>
+      <tr>
+        <td style="background:#2b4950;color:#EBEEDB;width:25%">
+          <b><%=_('Functional unit').html_safe%></b>  <a title="<%=_('Please enter here the &quot;Functional unit&quot; considered in the assessment. (e.g.: to deliver to your customer 2000 units of carrier bags of 12 L of capacity; to produce and deliver to your customer 1000 cups of yoghurt of 100 mL of capacity each; to produce and deliver to customer 100 m2 of film (150  micrometers thick). Important note: please do not forget when raw materials are entered that usually a higher amount of material is required due to scrap production during the processing of the material.)').html_safe%>" href="#" class="tip">&nbsp;</a>
+        </td>
+        <td style="background:#ffffff">  
+          <span id="functional_unit"><%= @bp_product.functional_unit.html_safe if !@bp_product.functional_unit.blank? %></span>
+        </td>
+      </tr>
+    </table>      
+
+    
+   <script type="text/javascript">
+       $("#functional_unit").editInPlace({
+            url: "/bp_production/update_functional_unit" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+            params: "bp_product_id=<%=@bp_product.id%>",
+            saving_text: '<%=_("Saving...")%>',  
+            default_text: '<%= _("(Click here to add functional unit)") %>'
+          });
+    </script>     
+<div class="clear"></div>
+
+    <%= form_for BpMaterialData.new, :remote => true do |f| %>
+	    <fieldset class="empty">
+	      <legend><%=_('Raw materials').html_safe%></legend>
+	      <input type="hidden" name="bp_material_data[bp_product_id]" id="bp_product_id" value="<%=@bp_product.id%>"/>
+
+        <p><%= _("Select and enter the amount or raw material used for processing:").html_safe%><br/>
+        <%= _("(Note: more than one material can be entered - e.g. in case you are considering a multilayered material, a blend, etc.-)").html_safe%></p>
+	      <!-- Material -->
+          <div class="span-6">    
+             <%= f.label :value, _('Raw material').html_safe %> <a title="<%=_('Please enter here the total amount of raw material used.').html_safe%>" href="#" class="tip">&nbsp;</a>
+             <br/>
+             <select class="span-5" id="bp_material" name="bp_material_data[bp_material_id]" class="span-5">
+                <option value="" selected></option>
+                <optgroup label="<%= _("Bio-based plastics").html_safe %>">
+                    <% @bp_materials_bio_based.each do |mat_bio| %>
+                        <option value="<%=mat_bio.id%>"><%=mat_bio.name.html_safe%></option>    
+                    <% end %>
+                </optgroup>
+                <optgroup label="<%= _("Oil based plastics").html_safe %>">
+                    <% @bp_materials_oil_based.each do |mat_oil| %>
+                      <option value="<%=mat_oil.id%>"><%=mat_oil.name.html_safe%></option>    
+                    <% end %>
+                </optgroup>                
+             </select>
+          </div>
+	      
+	      <!-- Amount -->
+          <div class="span-3" id="div_quantity"> 
+             <%= f.label :value, _('Amount').html_safe %> 
+             </br>
+             <%= f.text_field :quantity, :size => 5%>
+          </div>
+	      
+          <!-- Units -->
+          <div class="span-3">    
+             <%= f.label :value, _('Unit').html_safe %>
+             <br/>
+             <select class="span-2" id="bp_material_data_bp_units_id" name="bp_material_data[bp_unit_id]">
+             <% @bp_units.each do |bp_unit| %>
+                <option value="<%=bp_unit.id%>"><%=bp_unit.name.html_safe%></option>
+             <% end %>
+             </select>
+          </div>
+
+          <!-- Comment -->
+          <div class="span-6"> 
+             <%= f.label :value, _('Comment').html_safe %> 
+             </br>
+             <%= f.text_field :comment, :size => 30 %>
+          </div>
+
+        <div class="clear"></div> 
+
+<!--        <div class="span-5" id="bp_material_info" style="font-size:12px;">
+          <h2 style="border-style:solid; border-bottom:thin dotted black;">
+            <%= _('Material information').html_safe %></h2>
+         <table class="span-10" id="table_bp_material_info">
+            <tr>
+              <th class="span-4"><%= _('Field').html_safe %></th>
+              <th class="span-6"><%= _('Value').html_safe %></th>
+            </tr> 
+          </table>  
+        </div>
+-->
+         <div id="material_information_1" style="display:none">
+          <h2 style="border-style:solid; border-bottom:thin dotted black;">
+            <%= _('Material information').html_safe %></h2>
+         <table id="table_bp_material_info_1">
+            <tr>
+              <td><%= _('TPS Type I refers to pellets based on a blend of corn starch and biodegradable copolyesters, for film applications').html_safe %></td>
+            </tr> 
+          </table>  
+        </div>
+
+         <div id="material_information_2" style="display:none">
+          <h2 style="border-style:solid; border-bottom:thin dotted black;">
+            <%= _('Material information').html_safe %></h2>
+         <table id="table_bp_material_info_2">
+            <tr>
+              <td><%= _('TPS Type II refers to pellets based on a blend of corn starch, vegetable oil derivatives and biodegradable polyesters').html_safe %></td>
+            </tr> 
+          </table>  
+        </div>
+
+	      <div class="clear"></div> 
+	      
+	      	      
+	      
+		  <div class="span-3 buttons last">
+		     <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+		  </div>
+          <div class="clear"></div>	      
+	    </fieldset>
+    <% end %> 
+    
+    <table class="standard2">
+	  <tr class="add">
+	    <th class="span-9">
+	      <%=_('Material').html_safe %>
+	    </th>
+	    <th class="span-2">
+	      <%=_('Amount').html_safe %>
+	    </th>
+	    <th class="span-2">
+	      <%=_('Unit').html_safe %>
+	    </th>
+	    <th class="span-10">
+        <%=_('Comment').html_safe %>
+      </th>
+	    <th class="span-1">
+	      &nbsp;
+	    </th>
+	  </tr>	  
+	  <tbody id="bp_materials">
+	    <%= render :partial => @bp_material_datas, :locals => { :list => true } %>
+	  </tbody>   
+	</table>
+
+<!-- compound -->
+<div class="clear"></div>
+    <%= form_for BpCompoundMaterialData.new, :remote => true do |f| %>
+      <fieldset class="empty">
+        <legend><%=_('Additives, compounding materials and master-batch').html_safe%></legend>
+        <input type="hidden" name="bp_compound_material_data[bp_product_id]" id="bp_product_id" value="<%=@bp_product.id%>"/>
+
+        <p><%= _("Select and enter the amount of additives, compounding materials and/or the master-batch used for processing:").html_safe%><br/>
+        <%= _("(Note: more than one material can be entered)").html_safe%></p>
+        
+        <!-- Compound family -->
+          <div class="span-4">    
+             <%= f.label :value, _('Family').html_safe %> <a title="<%=_('Additives (fillers, impact modifiers, lubricants, other additives, pigments, plasticiers, stabilizers) are substances commonly used to make compounds with resins. On the other hand ,masterbatches are a concentrated of additives for specific properties made on a resin base.').html_safe%>" href="#" class="tip">&nbsp;</a>
+             <br/>
+             <select class="span-4" id="bp_compound_family" name="bp_compound_material_data[bp_compound_family_id]" >
+                  <option value="" selected></option>
+                 <% @bp_compound_families.each do |bp_compound_family| %>
+                    <option value="<%=bp_compound_family.id%>"><%=bp_compound_family.name.html_safe%></option>
+                 <% end %>
+                  
+                  <option value='-' disabled>--------------</option>   
+                  <option value="<%= @bp_compound_family_master_batch.id %>"><%= @bp_compound_family_master_batch.name.html_safe %></option>
+             </select>
+          </div>
+
+        <!-- Compound Material -->
+          <div class="span-4">    
+             <%= f.label :value, _('Material').html_safe %>  <a title="<%=_('Please enter here the exact amount of additive used.').html_safe%>" href="#" class="tip">&nbsp;</a>
+             <br/>
+             <select class="span-4" id="bp_compound_material" name="bp_compound_material_data[bp_compound_material_id]" >
+               <option value="" selected></option>
+             </select>
+          </div>
+        
+        <!-- Amount -->
+          <div class="span-2" id="div_quantity"> 
+             <%= f.label :value, _('Amount').html_safe %> 
+             </br>
+             <%= f.text_field :amount, :size => 5%>
+          </div>
+        
+          <!-- Units -->
+          <div class="span-2">    
+             <%= f.label :value, _('Unit').html_safe %> 
+             <br/>
+             <select class="span-2" id="bp_compound_material_data_bp_units_id" name="bp_compound_material_data[bp_unit_id]">
+             <% @bp_units.each do |bp_unit| %>
+                <option value="<%=bp_unit.id%>"><%=bp_unit.name.html_safe%></option>
+             <% end %>
+             </select>
+          </div>
+
+          <!-- Comment -->
+          <div class="span-5"> 
+             <%= f.label :value, _('Comment').html_safe %> 
+             </br>
+             <%= f.text_field :comment, :size => 35 %>
+          </div>
+
+        <div class="clear"></div> 
+<!--
+        <div class="span-5" id="bp_compound_material_info" style="font-size:12px;">
+          <h2 style="border-style:solid; border-bottom:thin dotted black;">
+            <%= _('Material information').html_safe %></h2>
+          <table class="span-10" id="table_bp_compound_material_info">
+            <tr>
+              <th class="span-4"><%= _('Field').html_safe %></th>
+              <th class="span-6"><%= _('Value').html_safe %></th>
+            </tr> 
+          </table>  
+        </div>
+-->
+        <div class="clear"></div> 
+        
+                
+        
+      <div class="span-3 buttons last">
+         <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+      </div>
+          <div class="clear"></div>       
+      </fieldset>
+    <% end %> 
+    
+    <table class="standard2">
+    <tr class="add">
+      <th class="span-5">
+        <%=_('Family').html_safe%>
+      </th>
+      <th class="span-5">
+        <%=_('Material').html_safe%>
+      </th>
+      <th class="span-2">
+        <%=_('Amount').html_safe%>
+      </th>
+      <th class="span-2">
+        <%=_('Unit').html_safe%>
+      </th>
+      <th class="span-9">
+        <%=_('Comment').html_safe%>
+      </th>
+      <th class="span-1">
+        &nbsp;
+      </th>
+    </tr>   
+    <tbody id="bp_compound_materials">
+      <%= render :partial => @bp_compound_material_datas, :locals => { :list => true } %>
+    </tbody>   
+  </table>
+
+
+    
+<div class="buttons span-5 last" style="float:right;text-align:right">
+  <%= form_tag '/bp_production/next_step' do %>
+    <input type="hidden" name="bp_product_id" id="bp_product_id" value="<%=@bp_product.id%>"/>	
+	<button type="submit" class="positive" style="float:right;text-align:right"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+  <% end %>
+  </div>    	
+  <!--
+<div class="clear"></div>
+  <div class="span-23" style="text-align:center;font-size:11">
+     <ul style="padding-left:0;margin-right:130px">	        	        
+	    <li class="link_booklabels"><%= link_to _('To Economic Data'),  bp_economic_url(@bp_product) %></li>
+	        
+        <li class="link_booklabels"><%= link_to _('To Results').html_safe, bp_result_url(@bp_product) %></li>
+	        
+	    <li class="link_booklabels"><%= link_to _('To Data Quality'), bp_data_quality_intro_path(@bp_product) %></li>
+	        
+	    <li class="link_booklabels"><%= link_to _('To Introduction').html_safe, bp_production_intro_path(@bp_product) %></li>
+        <div class="clear"></div>
+     </ul>
+  </div>
+  
+<div class="clear"></div>
+-->
+
+    <div class="clear"></div>
+    <div class="navbar">
+      <!-- <div id="for-ie"> -->
+      <div>
+        <ul>
+          <li><%= link_to _('To Data Entry').html_safe, bp_production_url(@bp_product) %></li>
+          <li><%= link_to _('To Data Quality').html_safe, bp_data_quality_intro_path(@bp_product) %></li>
+          <li><%= link_to _('To Results').html_safe, bp_result_url(@bp_product) %></li>
+          <li><%= link_to _('To Economic Data'), bp_economic_url(@bp_product) %></li>
+        </ul>
+      </div>
+    </div>
+
+
+    <div class="clear"></div>
+
+
+</div>	 

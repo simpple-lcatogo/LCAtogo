@@ -1,0 +1,441 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#material_data_material_id").change(function(){
+           var id_value_string = $(this).val();
+           if (id_value_string != "") {
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'unit_for_material'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                        alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                        alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("unit_span").innerHTML = "" + data; 
+                       }
+                    }); 
+              }
+         });       
+    
+        $("#material_data_family_id").change(function(){
+            var id_value_string = $(this).val();
+            if ((id_value_string == "") ||  (id_value_string == null)) {
+                // if the id is empty remove all the sub_selection options from being selectable and do not do any ajax
+                $("#material_data_material_id option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#material_data_material_id");
+            }
+            else {
+                var text_selected = $("#material_data_family_id option[value='" + id_value_string + "']").text();
+                var div_display = document.getElementById("div_display");
+                var div_quantity = document.getElementById("div_quantity");
+                if (text_selected == 'Display') {
+                   div_display.style.display = 'block';
+                   div_quantity.style.display = 'none';
+                   $("#material_data_material_id option").remove();
+                } else {
+                   div_display.style.display = 'none';
+                   div_quantity.style.display = 'block';
+                           
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'materials_for_family'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                       $("#material_data_material_id option").remove();
+                       var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.material.id + "\">" + j.material.name + "</option>";  
+                            $(row).appendTo("select#material_data_material_id");                    
+                        }); 
+                        $("#material_data_material_id").change();          
+                     }
+                });
+                 }
+             };   
+           });     
+           
+        $("#material_data_data_module_id").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                // if the id is empty remove all the sub_selection options from being selectable and do not do any ajax
+                $("#material_data_family_id option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#material_data_family_id");
+            }
+            else {
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'families_for_module', stage: 'Materials'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                       $("#material_data_family_id option").remove();
+                       var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.family.id + "\">" + j.family.name + "</option>";  
+                            $(row).appendTo("select#material_data_family_id");                    
+                        });
+                        $("#material_data_family_id").change();            
+                     }
+                });
+             };   
+           });     
+
+
+
+
+        $("#component_data_material_id").change(function(){
+           var id_value_string = $(this).val();
+           if (id_value_string != "") {
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'unit_for_material'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                        alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                        alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("unit_span_component").innerHTML = "" + data; 
+                       }
+                    }); 
+              }
+         });       
+    
+        $("#component_data_family_id").change(function(){
+            var id_value_string = $(this).val();
+            if ((id_value_string == "") ||  (id_value_string == null)) {
+                // if the id is empty remove all the sub_selection options from being selectable and do not do any ajax
+                $("#component_data_material_id option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#component_data_material_id");
+            }
+            else {
+                var text_selected = $("#component_data_family_id option[value='" + id_value_string + "']").text();
+                var div_display = document.getElementById("div_display_component");
+                var div_quantity = document.getElementById("div_quantity_component");
+                if (text_selected == 'Display') {
+                   div_display.style.display = 'block';
+                   div_quantity.style.display = 'none';
+                   $("#component_data_material_id option").remove();
+                } else {
+                   div_display.style.display = 'none';
+                   div_quantity.style.display = 'block';
+                           
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'materials_for_family'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                       $("#component_data_material_id option").remove();
+                       var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.material.id + "\">" + j.material.name + "</option>";  
+                            $(row).appendTo("select#component_data_material_id");                    
+                        }); 
+                        $("#component_data_material_id").change();          
+                     }
+                });
+                 }
+             };   
+           });     
+           
+        $("#component_data_data_module_id").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                // if the id is empty remove all the sub_selection options from being selectable and do not do any ajax
+                $("#component_data_family_id option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#component_data_family_id");
+            }
+            else {
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'families_for_module', stage: 'Materials', substage: 'Components'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                       $("#component_data_family_id option").remove();
+                       var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.family.id + "\">" + j.family.name + "</option>";  
+                            $(row).appendTo("select#component_data_family_id");                    
+                        });
+                        $("#component_data_family_id").change();            
+                     }
+                });
+             };   
+           });     
+
+
+           
+
+        $("#process_data_data_module_id").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                // if the id is empty remove all the sub_selection options from being selectable and do not do any ajax
+                $("#process_data_family_id option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#process_data_family_id");
+            }
+            else {
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'families_for_module', stage: 'Processes'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                       $("#process_data_family_id option").remove();
+                       var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.family.id + "\">" + j.family.name + "</option>";  
+                            $(row).appendTo("select#process_data_family_id");                    
+                        });
+                        $("#process_data_family_id").change();            
+                     }
+                });
+             };   
+           });     
+
+           
+           $("#component_data_data_module_id").change();           
+           $("#material_data_data_module_id").change();
+           $("#process_data_data_module_id").change();
+           
+           <% @material_datas.each do |material_data| %>
+			   $(".quantity_material_<%=material_data.id%>").editInPlace({
+			        url: "/material_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+			        params: "material_data_id=<%=material_data.id%>",
+			        saving_text: '<%=_("Saving...")%>'
+			        });           
+           <% end %>
+           
+           
+           $("#scenario_use_lifetime, #scenario_annual_failure, #scenario_repair_likeness").keyup(function(){
+                var scenario_use_lifetime = parseFloat($("#scenario_use_lifetime").val());
+                var scenario_annual_failure = parseFloat($("#scenario_annual_failure").val());
+                var scenario_repair_likeness = parseFloat($("#scenario_repair_likeness").val());
+                
+                var afr = scenario_annual_failure / 100;
+                var monthly_failure = afr / 12;
+                var i;
+                var repair_likeliness;
+                var monthly_trash;
+                var aggregated_trash = 0;
+                var extra_sum = 0;
+                var average_technical_lifetime;
+				for(i = 1; i <= (scenario_use_lifetime * 12); i++) {
+				    repair_likeliness = 1-(1/(1+Math.exp(scenario_repair_likeness-i/12)));
+				    monthly_trash = monthly_failure-repair_likeliness*monthly_failure;
+				    aggregated_trash += monthly_trash;
+				    average_technical_lifetime = (1 - aggregated_trash) * i + extra_sum;
+				    extra_sum += (i * monthly_trash)				    
+				}
+				
+                $("#device_lifetime").val("" + (average_technical_lifetime / 12).toFixed(2));
+            });
+            $("#scenario_use_lifetime").keyup();
+            
+            
+            $("#scenario_use_lifetime").keyup(function(){
+               var scenario_use_lifetime = parseFloat($("#scenario_use_lifetime").val(), 10);
+               var half = scenario_use_lifetime / 2;
+               if (half < 2) {
+                 half = 2;               
+               }
+               $("#scenario_repair_likeness").val("" + half);
+            });
+            
+    });
+</script>    
+    
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/lca/tabs') %>
+	</div>
+	
+<div class="clear"></div>
+   <table>
+      <tr>
+        <td style="background:#2b4950;color:#EBEEDB;width:25%">
+          <b><%=_('Name of the product').html_safe%></b>
+        </td>
+        <td style="background:#ffffff;color:#000000">  
+          <%= @product.name %>
+        </td>
+      </tr>
+    </table>     
+    
+    <div class="clear"></div>
+
+ <%= form_for @scenario do |f| %>
+ 
+ 	<div class="span-10" >
+	  <%= f.label :use_lifetime, _('Use lifetime (in case no technical failures occur)').html_safe %>
+	</div>  
+	<div class="span-8" >
+	  <%= f.text_field :use_lifetime%> <%=_('years').html_safe%>
+	</div>
+	
+	<div class="clear"></div>
+	
+	<b><%=_('Lifetime reduction due to technical failures:').html_safe%></b>
+	<br/><br/>
+	
+    <div class="clear"></div>		
+		   
+ 	<div class="span-10" >
+	  <%=_('Annual Device Failure Rate').html_safe %>
+	</div>  
+	<div class="span-8" >
+	  <%= f.text_field :annual_failure%> %
+	</div>    
+    
+    <div class="clear"></div>	
+    
+    <span class="tip_text">
+      <i><%=_('Note: You should change the Annual Device Failure Rate to a lower value only if you are confident, that component choice and system design increase reliability compared to conventional products').html_safe%></i>    
+    </span>
+ 
+    <div class="clear"></div>    
+    <br/>
+ 	<div class="span-10" >
+	  <%=_('Repair likeliness at 50%').html_safe %>
+	</div>  
+	<div class="span-11" >
+	  <%= f.text_field :repair_likeness%> <%=_('years of device age').html_safe%>
+	</div>    
+    
+    <div class="clear"></div>	
+
+    <span class="tip_text">
+      <i><%=_('Note: Repair likeliness goes down over time and you should change the point of 50% repair likeliness to a higher device age only, if your design (ease of repair) or business model (e.g. extended warranty) justify the assumption, that users will get failures fixed also among aged devices').html_safe%></i>    
+    </span>
+ 
+    <div class="clear"></div>	
+    <br/><br/>
+    <div class="span-10" >
+       <b><%=_('Average technical device lifetime (considers hardware and accidental failures and whether repairs will be undertaken):').html_safe%></b>
+    </div>   
+ 	<div class="span-11" >
+	    <input type="text" readonly="readonly" id="device_lifetime" value=""/> <%=_('years').html_safe%>
+	</div> 
+ 
+    <div class="clear"></div>
+    <br/><br/>
+    <b><%=_('What justifies your use lifetime assumption?').html_safe%></b>
+    <br/><br/>
+    <%=_('Please, consider that the annual failure rate of computers (including accidental damage) is per default in the range of 10% and that many failures get fixed and do not lead to a disposal of the whole device. Having said this, an extended lifetime can be assumed only, if the problem of e.g. performance loss and long-term software compatibility is addressed by the business model; else minor lifetime increase through particularly long-living components (business use products) and design for repairability are justified. List all measures which give you confidence, that your product is likely to be used as long as stated:').html_safe%>    
+    <br/><br/>
+    <div class="clear"></div>
+        
+    <div class="span-20" >
+       <%=_('Hardware measures (e.g. robust system design, design for repairability, use of long-lifetime components)').html_safe%>
+    </div>    
+    <div class="clear"></div>
+    <div class="span-20" >
+       <%= f.text_area :hardware_measures, :size => '80x3'; %>
+    </div>
+     
+    <br/><br/>
+    <div class="span-20" >
+       <%=_('Software measures (e.g. OS with reduced hardware requirements, long-term OS compatability guaranteed)').html_safe%>
+    </div>    
+    <div class="clear"></div>
+    <div class="span-20" >
+       <%= f.text_area :software_measures, :size => '80x3'; %>
+    </div>
+             
+    <br/><br/>
+    <div class="span-20" >            
+       <%=_('Service measures (e.g. extended warranty, convenient servicing at low costs, one free upgrade included in initial purchase price, long-term spare parts availability and compatibility guaranteed)').html_safe%>
+    </div>    
+    <div class="clear"></div>
+    <div class="span-20" >
+       <%= f.text_area :service_measures, :size => '80x3'; %>
+    </div>
+
+    <br/><br/>
+    <div class="span-20" >            
+       <%=_('Business model measures (e.g. leasing or takeback contracts with implemented refurbishment strategy)').html_safe%>
+    </div>    
+    <div class="clear"></div>
+    <div class="span-20" >
+       <%= f.text_area :business_measures, :size => '80x3'; %>
+    </div>
+
+    <div class="clear"></div>
+
+    <div class="buttons span-4 last" style="float:right">
+	  <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button> 
+    </div>    	
+
+             
+ <% end %>	
+
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, production_intro_path(@product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, data_quality_intro_path(@product) %></li>
+        <li><%= link_to _('To Results').html_safe, product_result_url(@product) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+
+
+</div>	
+  
+  
+  
+  

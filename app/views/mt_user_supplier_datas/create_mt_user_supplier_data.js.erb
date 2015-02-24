@@ -1,0 +1,15 @@
+$("#error_explanation_mt_user_supplier_data").empty();
+$("#error_explanation_mt_user_supplier_data").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#mt_user_supplier_datas").append("<%= escape_javascript(render(@mt_user_supplier_data)) %>");
+/* Highlight the new comment */
+$("#mt_user_supplier_data_<%= @mt_user_supplier_data.id %>").effect("highlight", {}, 3000);
+
+$("#mt_user_supplier_data_with_sensor").val("");
+$("#mt_user_supplier_data_without_sensor").val("");
+$("#mt_user_supplier_data_recycling_revenue").val("");
+$("#mt_user_supplier_data_description").val("");
+$("#mt_user_supplier_data_global_warming_potential").val("");
+
+
+updateWeight();

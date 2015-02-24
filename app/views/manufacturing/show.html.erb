@@ -1,0 +1,445 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#manufacturing_data_material_id").change(function(){
+           var id_value_string = $(this).val();
+           if (id_value_string != "") {
+                var text_selected = $("#manufacturing_data_material_id option[value='" + id_value_string + "']").text();
+                var text_family_selected = $("#manufacturing_data_family_id option:selected").text();
+                
+                $("#div_others").hide();
+                $("#div_wood").hide();                    
+                $("#div_steel").hide();                       
+                
+                if (text_selected == 'wood (oak)') {
+                    $("#div_steel").hide();    
+                    $("#div_others").hide();
+                    $("#div_wood").show();                        
+                }
+                if ((text_selected == 'steel') || (text_selected == 'aluminium')) {
+                   $("#div_others").hide();
+                   $("#div_wood").hide();                    
+                   $("#div_steel").show();                
+                }           
+                if (text_selected == 'Others') {
+                   $("#div_wood").hide();                    
+                   $("#div_steel").hide();                
+                   $("#div_others").show();                   
+                }
+                
+                if (text_family_selected == 'Printed Circuit Board Assemblies') {
+                   $("#div_wood").show();     
+                }
+                
+                if (text_selected != 'Others') {
+	                $.ajax({
+	                    dataType: "json",
+	                    cache: false,
+	                    url: '/ajax_helpers',
+	                    data: {id: id_value_string, type: 'unit_for_material'},
+	                    timeout: 5000,
+	                    error: function(XMLHttpRequest, errorTextStatus, error){
+	                        alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+	                        alert(error);
+	                    },
+	                    success: function(data){
+	                       document.getElementById("unit_span").innerHTML = "" + data; 
+	                       }
+	                    });
+	               } else {
+	               document.getElementById("unit_span").innerHTML = "g";
+	               }      
+              }
+         });       
+    
+        $("#manufacturing_data_family_id").change(function(){
+            var id_value_string = $(this).val();
+            if ((id_value_string == "") ||  (id_value_string == null)) {
+                // if the id is empty remove all the sub_selection options from being selectable and do not do any ajax
+                $("#manufacturing_data_material_id option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#manufacturing_data_material_id");
+            } else {
+                var text_selected = $("#manufacturing_data_family_id option[value='" + id_value_string + "']").text();
+                var div_display = document.getElementById("div_display");
+                var div_quantity = document.getElementById("div_quantity");
+                $("#div_display").hide();               
+                $("#div_component").hide(); 
+                $("#div_wood").hide(); 
+                $("#div_steel").hide(); 
+                $("#div_others").hide(); 
+                $("#div_battery").hide(); 
+                if (text_selected == 'Display') {
+                   $("#div_display").show();
+                   $("#div_quantity").hide();                   
+                   $("#manufacturing_data_material_id option").remove();
+                } else {
+                  $("#div_quantity").show();
+                }
+               if (text_selected != 'Tantalum capacitors') {
+                   $("#div_component").show();
+                }
+                if (text_selected == 'Battery') {
+                //   $("#div_battery").show();
+                }                           
+                 if (text_selected == 'Printed Circuit Board Assemblies') {
+                   $("#div_wood").show();
+                }                
+                
+                
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'materials_for_family'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                       $("#manufacturing_data_material_id option").remove();
+                       var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.material.id + "\">" + j.material.name + "</option>";  
+                            $(row).appendTo("select#manufacturing_data_material_id");                    
+                        }); 
+                        if (text_selected == 'Housing & internal structural elements') {
+                            row = "<option value=\"-1\"><%=_('Others').html_safe%></option>";  
+                            $(row).appendTo("select#manufacturing_data_material_id");                                             
+                            }
+                        if (text_selected == 'Printed Circuit Board Assemblies') {
+                            row = "<option value=\"-1\"><%=_('Others').html_safe%></option>";  
+                            $(row).appendTo("select#manufacturing_data_material_id");                                             
+                            }                            
+                        $("#manufacturing_data_material_id").change();          
+                     }
+                });
+                
+                
+                
+             }
+             
+           });     
+           
+        $("#manufacturing_data_data_module_id").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                // if the id is empty remove all the sub_selection options from being selectable and do not do any ajax
+                $("#manufacturing_data_family_id option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#manufacturing_data_family_id");
+            }
+            else {
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'families_for_module', stage: 'Materials'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                       $("#manufacturing_data_family_id option").remove();
+                       var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.family.id + "\">" + j.family.name + "</option>";  
+                            $(row).appendTo("select#manufacturing_data_family_id");                    
+                        });
+                        $("#manufacturing_data_family_id").change();            
+                     }
+                });
+             };   
+           });     
+           
+
+        $("#process_data_data_module_id").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                // if the id is empty remove all the sub_selection options from being selectable and do not do any ajax
+                $("#process_data_family_id option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#process_data_family_id");
+            }
+            else {
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'families_for_module', stage: 'Processes'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                       $("#process_data_family_id option").remove();
+                       var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.family.id + "\">" + j.family.name + "</option>";  
+                            $(row).appendTo("select#process_data_family_id");                    
+                        });
+                        $("#process_data_family_id").change();            
+                     }
+                });
+             };   
+           });     
+
+           
+           
+           $("#manufacturing_data_family_id").change();
+         
+           
+           <% @manufacturing_datas.each do |manufacturing_data| %>
+			   $(".quantity_material_<%=manufacturing_data.id%>").editInPlace({
+			        url: "/manufacturing_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+			        params: "manufacturing_data_id=<%=manufacturing_data.id%>",
+			        saving_text: '<%=_("Saving...")%>'
+			        });           
+           <% end %>
+           
+           $("#manufacturing_data_aspect, #manufacturing_data_ratio, #manufacturing_data_diagonal").keyup(function(){
+                var aspect = parseFloat($("#manufacturing_data_aspect").val(), 10);
+                var ratio = parseFloat($("#manufacturing_data_ratio").val(), 10);
+                var diagonal = parseFloat($("#manufacturing_data_diagonal").val(), 10);
+                
+                var result = 0;
+                if (!isNaN(aspect) && !isNaN(ratio) && !isNaN(diagonal)) {
+	                result = (aspect * ratio);
+	                result = result / (Math.pow(aspect, 2) + Math.pow(ratio, 2));
+	                result = result * Math.pow((diagonal * 2.54), 2);
+	                result = result.toFixed(2);
+	                }
+	             $("#display_quantity").val(result);
+	             
+              });     
+           
+           $("#overhead_parts").keyup(function(){
+              $("#overhead_miscellaneous").val( $("#overhead_parts").val());
+              });
+              
+            $("#manufacturing_data_component_age").keyup(function(){
+               var value = parseFloat($("#manufacturing_data_component_age").val(), 10) + <%=@average_technical_lifetime%>;
+               if (!isNaN(value)) {
+                  $("#manufacturing_data_component_total_lifetime").val(value.toFixed(2));
+                  }
+              });
+              
+              
+    });
+</script>    
+    
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/lca/tabs') %>
+	</div>
+    <div class="clear"></div>
+    
+    <br/>
+      <!-- overhead for cut-offs -->
+       <div class="span-15" >
+          <b><%=_('Overhead miscellaneous parts:').html_safe %></b>
+          <input type="text" id="overhead_parts" name="overhead_parts" value="<%=@product.overhead_miscellaneous%>"/>  %
+        </div>
+    <br/>
+ 
+    <div class="clear"></div>    
+    <%= form_for ManufacturingData.new, :remote => true do |f| %>
+	    <fieldset class="empty">
+	      <legend><%=_('Raw materials and production').html_safe%></legend>
+	      <input type="hidden" name="product_id" id="product_id" value="<%=@product.id%>"/>
+	    
+	      <!-- Family -->
+		  <div class="span-7">    
+		     <%= f.label :value, _('Part').html_safe %>
+		     <br/>
+		     <select id="manufacturing_data_family_id" name="manufacturing_data[family_id]">
+		     <% @families.each do |family| %>
+		        <option value="<%=family.id%>"><%=family.name.html_safe%></option>
+		     <% end %>
+		     </select>
+		  </div>
+	      
+	      <!-- Material -->
+		  <div class="span-5">    
+		     <%= f.label :value, _('Material/Component').html_safe %>
+		     <br/>
+		     <select id="manufacturing_data_material_id" name="manufacturing_data[material_id]">
+		     </select>
+		  </div>
+	      
+	      <div class="clear"></div>
+	      
+	      <!-- Quantity -->
+          <div class="span-6" id="div_quantity"> 
+             <%= f.label :value, _('Quantity').html_safe %>
+             </br>
+             <%= f.text_field :quantity, :size => 8%> <span id="unit_span">Kg</span>
+          </div>
+	      
+	      <div id="div_component" style="display:none;">
+		      <!-- Component age -->
+			  <div class="span-5">    
+			     <%= f.label :value, _('Component age').html_safe %> <a title="<%=_('Enter &quot;0&quot; for new components.').html_safe%>" href="#" class="tip">&nbsp;</a>
+			     <br/>
+                 <%= f.text_field :component_age, :size => 8, :value => 0%> &nbsp; <%=_('years').html_safe%>
+			  </div>	      
+		      <!-- Component total lifetime -->
+			  <div class="span-7">    
+			     <%= f.label :value, _('Component total lifetime').html_safe %> <a title="<%=_('Component end-of-life to be reached latest at device end-of-life (reuse beyond device end-of-life to be entered in &quot;reuse&quot; section).').html_safe%>" href="#" class="tip">&nbsp;</a>
+			     <br/>
+                 <%= f.text_field :component_total_lifetime, :size => 8, :value => number_with_precision(@average_technical_lifetime, :precision => 2)%> &nbsp; <%=_('years').html_safe%>
+			  </div>	      	      	     
+	      </div>
+
+	      <div id="div_wood" style="display:none;">
+		      <!-- overheads for cut-offs -->
+			  <div class="span-5">    
+			     <%= f.label :value, _('overhead for cut-offs').html_safe %>
+			     <br/>
+                 <%= f.text_field :overhead_cutoffs, :size => 8%> &nbsp; %
+			  </div>	      
+	      </div>
+
+	      <div id="div_steel" style="display:none;">
+		      <!-- overhead for cut-offs -->
+			  <div class="span-5">    
+			     <%= f.label :value, _('overhead for cut-offs, stamped out material').html_safe %>
+			     <br/>
+                 <%= f.text_field :overhead_cutoffs_stamped, :size => 8%> &nbsp; %
+			  </div>
+			  <div class="span-5">    
+			     <%= f.label :value, _('overhead for milled out material').html_safe %>
+			     <br/>
+                 <%= f.text_field :overhead_milled, :size => 8%> &nbsp; %
+			  </div>	      			  	      
+	      </div>
+
+
+
+
+	      <div id="div_others" style="display:none;">
+			  <div class="span-5">    
+			     <%= f.label :value, _('Name of the material').html_safe %>
+			     <br/>
+                 <%= f.text_field :material_user_name, :size => 17%>
+			  </div>
+			  <div class="span-4">    
+			     <%= f.label :value, _('Type of Material').html_safe %>
+			     <br/>
+			     <select name="manufacturing_data[material_user_type]" id="manufacturing_data_material_user_type">
+			        <option value=""></option>			     
+			        <option value="wood"><%=_('Wood').html_safe%></option>
+			        <option value="metal"><%=_('Metal').html_safe%></option>			        
+			        <option value="plastic"><%=_('Plastic').html_safe%></option>			        
+			     </select>
+			  </div>
+			  <div class="span-7">    
+			     <%= f.label :value, _('Global Warming Potential').html_safe %>
+			     <br/>
+                 <%= f.text_field :user_global_warming, :size => 8%> <%=_('kg CO2-eq./g').html_safe%>
+			  </div>
+	      </div>
+
+	      
+	      <div id="div_display" style="display:none;">
+	          <div class="clear"></div>
+		      <!-- Aspect : ratio -->
+	          <div class="span-5"> 
+	             <%= f.label :value, _('Aspect : ratio').html_safe %>
+	             </br>
+	             <%= f.text_field :aspect, :size => 3%> : <%= f.text_field :ratio, :size => 3%> 
+	          </div>
+	          
+		      <!-- Diagonal -->
+	          <div class="span-5"> 
+	             <%= f.label :value, _('Diagonal').html_safe %>
+	             </br>
+	             <%= f.text_field :diagonal, :size => 8%> <%=_('inch').html_safe%>
+	          </div>
+	          
+	          <div class="span-5"> 
+	             <%= f.label :value, _('Quantity').html_safe %>
+	             </br>
+	             <input type="text" name="display_quantity" id="display_quantity" readonly="readonly"> <%=_('cm<sup>2</sup>').html_safe%>
+	          </div>
+	          
+          </div>          
+	      <div class="clear"></div>
+	      
+	      
+		  <div class="span-3 buttons last">
+		     <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+		  </div>
+          <div class="clear"></div>	      
+	    </fieldset>
+    <% end %>
+    
+    <table class="standard2">
+	  <tr class="add"> 
+	    <th>
+	      <%=_('Part').html_safe %><br/>
+	    </th>
+	    <th>
+	      <%=_('Material/Component').html_safe %><br/>
+	    </th>
+	    <th style="text-align:center">
+	      <%=_('Quantity').html_safe %>
+	    </th>
+	    <th>
+	      <%=_('Unit').html_safe %>
+	    </th>	
+	    <th style="width:90px">
+	      <%=_('Age (y)').html_safe %>
+	    </th>
+	    <th style="width:200px">
+	      <%=_('Total lifetime (y)').html_safe %>
+	    </th>	        
+
+	    <th>
+	      &nbsp;
+	    </th>
+	  </tr>	  
+	  <tbody id="manufacturings">
+	    <%= render :partial => @manufacturing_datas, :locals => { :list => true } %>
+	  </tbody>   
+	 </table>
+    
+     <br/><br/>
+
+<div class="buttons span-4 last" style="float:right">
+  <%= form_tag '/manufacturing/next_step' do %>
+    <input type="hidden" name="product_id" id="product_id" value="<%=@product.id%>"/>	
+    <input type="hidden" name="overhead_miscellaneous" id="overhead_miscellaneous" value="<%=@product.overhead_miscellaneous%>"/>    
+	<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+  <% end %>
+  </div>    	
+
+<div class="clear"></div>
+<div class="navbar">
+  <!-- <div id="for-ie"> -->
+  <div>
+    <ul>
+      <li><%= link_to _('To Introduction').html_safe, production_intro_path(@product) %></li>
+      <li><%= link_to _('To Data Quality').html_safe, data_quality_intro_path(@product) %></li>
+      <li><%= link_to _('To Results').html_safe, product_result_url(@product) %></li>
+    </ul>
+  </div>
+</div>
+
+
+<div class="clear"></div>
+  
+  
+</div>	
+

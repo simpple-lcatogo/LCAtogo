@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  bp_product: 
+  bp_material: 
+  amount: 1.5
+  unit: 
+  comment: MyText
+
+two:
+  bp_product: 
+  bp_material: 
+  amount: 1.5
+  unit: 
+  comment: MyText

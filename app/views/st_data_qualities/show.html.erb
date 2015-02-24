@@ -1,0 +1,73 @@
+<h1><%=_('Data Quality').html_safe%>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/st_data_qualities/tabs') %>
+	</div>
+	  <div class="clear"></div>
+<%= form_for(@st_data_quality) do |f| %>
+  <table class="standard2">
+   <tbody>
+    <tr>
+      <th colspan="4">&nbsp;</th>
+    </tr>
+    <tr>
+      <td><%=_('Materials').html_safe%></td>
+	  <td><%= f.radio_button :materials, "robust" %>  <%=_('Robust').html_safe%></td>
+	  <td><%= f.radio_button :materials, "indicative" %>  <%=_('Indicative').html_safe%></td>
+	  <td><%= f.radio_button :materials, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	<tr>
+      <td><%=_('Manufacturing').html_safe%></td>
+      <td><%= f.radio_button :manufacturing, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :manufacturing, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :manufacturing, "illustrative" %>  <%=_('Illustrative').html_safe%></td>  
+	</tr>
+	<tr>
+      <td><%=_('Distribution').html_safe%></td>
+      <td><%= f.radio_button :distribution, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :distribution, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :distribution, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	<tr>
+      <td><%=_('Use').html_safe%></td>
+      <td><%= f.radio_button :use, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :use, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :use, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	<tr>
+      <td><%=_('End-of-life').html_safe%></td>
+      <td><%= f.radio_button :end_of_life, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :end_of_life, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :end_of_life, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	</tbody> 
+   </table>
+   
+   <div class="buttons last" style="float:left">
+     <a href="<%=st_data_quality_intro_path(@st_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Previous step").html_safe %></a>
+   </div>
+   
+   
+    <div class="buttons last" style="float:right">  
+	   <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Data Update").html_safe %></button>
+	</div>   
+<% end %>
+
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, st_production_intro_url(@st_product) %></li>
+        <li><%= link_to _('To Data Entry').html_safe, st_material_detail_path(@st_product) %></li>
+        <li><%= link_to _('To Results').html_safe, st_result_url(@st_product) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+
+
+
+</div>	

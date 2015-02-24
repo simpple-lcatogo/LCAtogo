@@ -1,0 +1,64 @@
+<h1><%=_('Product comparison').html_safe%>
+<br/>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/ph_results/tabs') %>
+	</div>
+  <div class="clear"></div>
+    <%= form_tag '/ph_results/compare' do %>
+
+   <table>
+      <tr>
+        <td style="background:#2b4950;color:#EBEEDB;width:25%">
+          <b><%=_('Name of current product').html_safe%></b>
+        </td>
+        <td style="background:#ffffff">  
+            <%= @product.name %></span>
+        </td>
+      </tr>
+    </table>     
+    
+    <div class="clear"></div>
+       <%=_('Please select a <b>maximum of three products</b>. A higher number will generate problems in the graphics results.').html_safe%>
+     <br/><br/>
+    <div class="clear"></div>
+    <div class="span-7">
+	  <h6><%=_('1. Compare your product to:').html_safe%></h6>
+	</div>   
+    <div class="span-13">
+       <% @products_to_compare.each do |product| %>
+           <% if product.ph_product %>
+              <input type="checkbox" name="compare_product_<%=product.ph_product.id%>" id="compare_product_<%=product.ph_product.id%>"/> <%=product.name%><br/>
+           <% end %>
+       <% end %>
+    </div>
+ 	<div class="clear"></div>	
+ 	
+ 	
+  <div class="buttons span-5" style="float:left;text-align:left">   
+     <a href="<%=ph_result_optimisation_path(@ph_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Previous step").html_safe %></a>
+  </div> 	
+ 	
+  <div class="buttons" style="float:right">
+     <input type="hidden" name="ph_product_id" id="ph_product_id" value="<%=@ph_product.id%>"/>	
+     <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+  </div>
+
+ 	
+ <% end %>	
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, ph_production_intro_path(@ph_product) %></li>
+        <li><%= link_to _('To Data Entry'), ph_basic_information_path(@ph_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, ph_data_quality_intro_path(@ph_product) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+	
+</div>	

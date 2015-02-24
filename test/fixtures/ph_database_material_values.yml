@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  ph_product_id: 1
+  ph_database_material_id: 1
+  co2: 1.5
+  pe: 1.5
+
+two:
+  ph_product_id: 1
+  ph_database_material_id: 1
+  co2: 1.5
+  pe: 1.5

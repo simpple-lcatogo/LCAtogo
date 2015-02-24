@@ -1,0 +1,263 @@
+<script type="text/javascript">
+	$(document).ready(function(){
+
+		$("#bp_transport_to_customer_data_bp_mode_id").change(function(){
+            
+            var id_value_string = $(this).val();
+            if ((id_value_string == "") ||  (id_value_string == null)) {
+                // if the id is empty remove all the sub_selection options from being selectable and do not do any ajax
+                $("#bp_transport_to_customer_data_bp_vehicle_id option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#bp_transport_to_customer_data_bp_vehicle_id");
+            }
+            else {
+             
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {bp_mode_id: id_value_string, type: 'bp_vehicles_for_bp_model'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                       
+                       $("#bp_transport_to_customer_data_bp_vehicle_id option").remove();
+                       var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.bp_vehicle.id + "\">" + j.bp_vehicle.name + "</option>";  
+                            $(row).appendTo("select#bp_transport_to_customer_data_bp_vehicle_id");
+
+                        }); 
+                       // $("#bp_transport_to_customer_data_bp_vehicle_id").change();          
+                     }
+                });
+             };   
+           });
+
+    $("#bp_transport_to_customer_data_bp_mode_id").change();
+
+    });
+</script>
+
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/lca/bp_tabs') %>
+	</div>
+<div class="clear"></div>
+   <table>
+      <tr>
+        <td style="background:#2b4950;color:#EBEEDB;width:25%">
+          <b><%=_('Functional unit').html_safe%></b>
+        </td>
+        <td>  
+          <%= @bp_product.functional_unit if !@bp_product.functional_unit.blank? %>
+        </td>
+      </tr>
+    </table>     
+<div class="clear"></div>
+  
+  <div id="default-values">  
+
+    
+    <fieldset class="empty">
+    <legend><%=_('Packaging').html_safe%></legend>
+    <p><%= _('Enter the total amount of packaging materials used for dispatching the manufactured products to customers:').html_safe %></p>
+    <table style="width:350px;">
+      <th ></th>
+
+      <%= form_for BpPackagingData.new, :remote => true do |f| %>
+	      <input type="hidden" name="bp_packaging_data[bp_product_id]" id="bp_product_id" value="<%=@bp_product.id%>"/>
+
+         <div class="span-5">    
+             <%= f.label :value, _('Packaging').html_safe %> <a title="<%=_('The weight of packaging materials for dispatch the manufactured products can be easily calculated based on the amount of material processed. If you are producing films you can estimate the amount of packaging used based on the weight of the reel produced: if you produce a reel of 250 kg which is packaged with a EUR pallet 1200x800 of 22 kg + 1.5 kg of strech PE film, then the amount of packaging material required per functional unit (e.g.: 1000 kg of film) will be just (1000 kg*22 kg of pallet)/250 kg of film = 88 kg of pallet and (1000kg*1.5 kg of strech PE film)/250 kg of film = 6 kg of strech PE film. When you produce units (e.g.: HDPE bottles), the calculation is done in a similar way, but you should take into account the unitary weight of the package and the total amount of the functional unit. Let\'s see an example: if your functional unit is the production of 2000 HDPE bottles with a unitary weight of 0.180 kg and each unit of EUR pallet (22 kg/pallet) contains 500 HDPE bottles in 20 corrrugated board boxes (0.400 kg/corrugated board box) which are streched with 1 kg of PE film, then the total amount of packaging per functional unit will be: Pallet = (2000 HDPE bottles * 22 kg/pallet)/500 HDPE bottles = 88 kg of EUR pallet; Corrugated board box = (20 corrugated board boxes * 0.400 kg/corrugated borad box*2000 HDPE bottles)/500 HDPE bottles = 32 kg of corrugated board boxes; Strech PE film = (2000 HDPE bottles *1.5 kg of strech PE film)/500 HDPE bottles = 6 kg of strech PE film.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+             <br/>
+             <select class="span-3" id="bp_packaging_data_bp_distribution_default_value_id" name="bp_packaging_data[bp_distribution_default_value_id]">
+              <option value="" selected></option>
+             <% @bp_distribution_default_values.each do |dv| %>
+                <% if dv.id != @amount_of_product_package.id %>
+                   <option value="<%=dv.id%>"><%=dv.name.html_safe%></option>
+                <% end %>   
+             <% end %>
+             </select>
+          </div> 
+
+      
+        <!-- Distance -->
+          <div class="span-3"> 
+             <%= f.label :value, _('Amount').html_safe %>
+             </br>
+             <%= f.text_field :amount, :size => 6 %> kg
+          </div>
+      
+	      	      
+         <div class="span-3"> 
+             <%= f.label :value, _('Comment').html_safe %>
+             </br>
+             <%= f.text_field :comment, :size => 15 %>
+          </div>
+      
+	      <div class="clear"></div> 
+	      
+		  <div class="span-3 buttons last">
+		     <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+		  </div>
+          <div class="clear"></div>	            
+      <% end %>
+      
+    <table class="standard2">
+	  <tr class="add"> 
+	    <th class="span-4">
+	      <%=_('Packaging').html_safe %>
+	    </th>
+	    <th class="span-2">
+        <%=_('Amount').html_safe %>
+        </th>
+	    <th class="span-2">
+        <%=_('Unit').html_safe %>
+        </th>
+	    <th class="span-4">
+	      <%=_('Comment').html_safe %>
+	    </th>
+        
+         <th class"span-1">
+	      &nbsp;
+	    </th>
+	  </tr>	  
+	  <tbody id="bp_packaging_datas">
+	    <%= render :partial => @bp_packaging_datas, :locals => { :list => true } %>
+	  </tbody>   
+	</table>      
+      
+ 
+  </div>
+  </fieldset>  
+  <br>
+  
+    <%= form_for BpTransportToCustomerData.new, :remote => true do |f| %>
+	    <fieldset class="empty">
+	      <legend><%=_('Distribution').html_safe%></legend>
+	      <input type="hidden" name="bp_transport_to_customer_data[bp_product_id]" id="bp_product_id" value="<%=@bp_product.id%>"/>
+
+	      <p><%= _("Select transport mode, enter the distance covered by each transport and the amount of material transported from the manufacturer to the customer:").html_safe %></p>
+	      <!-- Mode -->
+          <div class="span-3">    
+             <%= f.label :value, _('Mode').html_safe %> 
+             <br/>
+             <select class="span-3" id="bp_transport_to_customer_data_bp_mode_id" name="bp_transport_to_customer_data[bp_mode_id]">
+              <option value="" selected></option>
+             <% @bp_modes.each do |bp_mode| %>
+                <option value="<%=bp_mode.id%>"><%=bp_mode.name.html_safe%></option>
+             <% end %>
+             </select>
+          </div> 
+	      
+	      <!-- Vehicle -->
+          <div class="span-4"> 
+             <%= f.label :value, _('Type').html_safe %>
+             </br>
+             <select class="span-4"  id="bp_transport_to_customer_data_bp_vehicle_id" name="bp_transport_to_customer_data[bp_vehicle_id]">
+             <% @bp_vehicles.each do |bp_vehicle| %>
+                <option value="<%=bp_vehicle.id%>"><%=bp_vehicle.name.html_safe%></option>
+             <% end %>
+             </select>
+             
+          </div> 
+	      
+        <!-- Distance -->
+          <div class="span-3"> 
+             <%= f.label :value, _('Distance').html_safe %>
+             </br>
+             <%= f.text_field :distance, :size => 6 %> km
+          </div>
+
+        <!-- Amount -->
+          <div class="span-3"> 
+             <%= f.label :value, _('Amount').html_safe %>
+             </br>
+             <%= f.text_field :amount, :size => 6 %> kg
+          </div>
+
+        <!-- Comment -->
+          <div class="span-4"> 
+           <%= f.label :value, _('Comment').html_safe %>
+           </br>
+           <%= f.text_field :comment, :size => 30 %>
+          </div>             
+
+
+	      <div class="clear"></div> 
+	      
+	      	      
+	      
+		  <div class="span-3 buttons last">
+		     <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+		  </div>
+          <div class="clear"></div>	      
+	    </fieldset>
+    <% end %> 
+    
+    <table class="standard2">
+	  <tr class="add"> 
+	    <th class="span-4">
+	      <%=_('Mode').html_safe %>
+	    </th>
+	    <th class="span-5">
+	      <%=_('Type').html_safe %>
+	    </th>
+	    <th class="span-4">
+	      <%=_('Distance (km)').html_safe %>
+	    </th>
+	    <th class="span-3">
+        <%=_('Amount (kg)').html_safe %>
+      </th>
+	    <th class="span-8">
+        <%=_('Comment').html_safe %>
+      </th>
+      <th class"span-1">
+	      &nbsp;
+	    </th>
+	  </tr>	  
+	  <tbody id="bp_transport_to_converter_datas">
+	    <%= render :partial => @bp_transport_to_customer_datas, :locals => { :list => true } %>
+	  </tbody>   
+	</table>
+
+<div class="buttons span-5" style="float:left;text-align:left">
+  <%= form_tag '/bp_transport_to_customer/previous_step' do %>
+    <input type="hidden" name="bp_product_id" id="bp_product_id" value="<%=@bp_product.id%>"/>	
+	<button type="submit" class="positive" style="float:left;text-align:left"> <%= image_tag 'tick.png' %><%= _("Previous step").html_safe %></button>
+  <% end %>
+  </div>    	
+    
+<div class="buttons span-5 last" style="float:right;text-align:right">
+  <%= form_tag '/bp_transport_to_customer/next_step' do %>
+    <input type="hidden" name="bp_product_id" id="bp_product_id" value="<%=@bp_product.id%>"/>	
+	<button type="submit" class="positive" style="float:right;text-align:right"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+  <% end %>
+  </div>    	
+    <div class="clear"></div>
+    <div class="navbar">
+      <!-- <div id="for-ie"> -->
+      <div>
+        <ul>
+          <li><%= link_to _('To Introduction').html_safe, bp_production_intro_path(@bp_product) %></li>
+          <li><%= link_to _('To Data Quality').html_safe, bp_data_quality_intro_path(@bp_product) %></li>
+          <li><%= link_to _('To Results').html_safe, bp_result_url(@bp_product) %></li>
+          <li><%= link_to _('To Economic Data'), bp_economic_url(@bp_product) %></li>
+        </ul>
+      </div>
+    </div>
+
+
+    <div class="clear"></div>
+
+
+
+</div>	 

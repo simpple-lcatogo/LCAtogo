@@ -1,0 +1,765 @@
+<script type="text/javascript">
+  function checkFields() {
+     var isOk = true;
+     return isOk;   
+  }
+  
+  function goPrevious() {
+     if (checkFields()) {
+        document.getElementById("arrow").value = 'previous';
+        document.forms[1].submit();
+     }         
+  }
+
+  function goNext() {
+     if (checkFields()) {
+        document.getElementById("arrow").value = 'next';
+        document.forms[1].submit();
+     }     
+  }
+
+  function goPreviousDetailed() {
+     if (checkFields()) {
+        document.getElementById("arrow").value = 'previous';
+        document.forms[4].submit();
+     }         
+  }
+
+  function goNextDetailed() {
+     if (checkFields()) {
+        document.getElementById("arrow").value = 'next';
+        document.forms[4].submit();
+     }     
+  }
+
+
+        function updateWeight() {
+        
+          var waste = parseFloat($("#mt_manufacturing_waste").val());
+          var value = waste * 100 / (<%=@product_weight%> + waste);
+          if (!isNaN(value)) {           
+               $("#percentage_weight").html(value.toFixed(2));
+           } else {
+               $("#percentage_weight").html("0.00");
+           }
+        }
+
+
+       function updateWeightDetailed() {
+          var total_value = 0;           
+		  $('[id^=td_quantity_material_]').each(function(index) {
+		     var value = parseFloat($(this).html());	    
+		     total_value += value;
+		  });
+		  
+           var percentage = (total_value / (<%=@product_weight%> + total_value)) * 100;
+           if (!isNaN(percentage)) {           
+               $("#percentage_weight_detailed").html(percentage.toFixed(2));
+           } else {
+               $("#percentage_weight_detailed").html("0.00");
+           }
+        }
+
+    $(document).ready(function(){
+
+
+
+        $("#mt_overhead_energy_data_mt_energy_family").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                $("#mt_overhead_energy_data_mt_energy_process option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#mt_overhead_energy_data_mt_energy_process");
+            }
+            else {
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'mt_energy_processes_for_mt_energy_family', general:"true"},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                        $("#mt_overhead_energy_data_mt_energy_process option").remove();
+                        var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.mt_energy_process.id + "\">" + j.mt_energy_process.name + "</option>";  
+                            $(row).appendTo("select#mt_overhead_energy_data_mt_energy_process");                    
+                        });     
+                        $("#mt_overhead_energy_data_mt_energy_process").change();       
+                     }
+                });
+             };   
+           });     
+
+
+
+        $("#mt_energy_data_mt_energy_family").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                $("#mt_energy_data_mt_energy_process option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#mt_energy_data_mt_energy_process");
+            }
+            else {
+                $("#mt_energy_data_mt_energy_process option").remove();
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'mt_energy_processes_for_mt_energy_family', general:"true"},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                        var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.mt_energy_process.id + "\">" + j.mt_energy_process.name + "</option>";  
+                            $(row).appendTo("select#mt_energy_data_mt_energy_process");                    
+                        });     
+                        $("#mt_energy_data_mt_energy_process").change();       
+                     }
+                });
+             };   
+           });     
+
+
+        $("#mt_waste_energy_data_mt_energy_family").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                $("#mt_waste_energy_data_mt_energy_process option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#mt_waste_energy_data_mt_energy_process");
+            }
+            else {
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'mt_energy_processes_for_mt_energy_family', general:"true"},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                        $("#mt_waste_energy_data_mt_energy_process option").remove();
+                        var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.mt_energy_process.id + "\">" + j.mt_energy_process.name + "</option>";  
+                            $(row).appendTo("select#mt_waste_energy_data_mt_energy_process");                    
+                        });     
+                        $("#mt_waste_energy_data_mt_energy_process").change();       
+                     }
+                });
+             };   
+           });     
+
+
+
+        $("#mt_waste_energy_data_mt_family").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                $("#mt_waste_energy_data_mt_material option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#mt_waste_energy_data_mt_material");
+            }
+            else {
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'mt_materials_for_mt_family', general:"false"},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                        $("#mt_waste_energy_data_mt_material option").remove();
+                        var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.mt_material.id + "\">" + j.mt_material.name + "</option>";  
+                            $(row).appendTo("select#mt_waste_energy_data_mt_material");                    
+                        });     
+                        $("#mt_waste_energy_data_mt_material").change();       
+                     }
+                });
+             };   
+           });     
+           
+           
+        $("#mt_energy_data_mt_energy_process").change(function(){
+           var id_value_string = $(this).val();
+           if (id_value_string != "") {
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'unit_for_mt_energy_process'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+     //                   alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+     //                   alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("unit_mt_energy").innerHTML = "" + data; 
+                       }
+                    }); 
+              }
+         });                  
+
+
+
+
+        $("#mt_overhead_energy_data_mt_energy_process").change(function(){
+           var id_value_string = $(this).val();
+           if (id_value_string != "") {
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'unit_for_mt_energy_process'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+     //                   alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+     //                   alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("unit_mt_energy_overhead").innerHTML = "" + data; 
+                       }
+                    }); 
+              }
+         });                  
+
+        $("#mt_waste_energy_data_mt_material").change(function(){
+           var id_value_string = $(this).val();
+           if (id_value_string != "") {
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'unit_for_mt_material'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+  //                      alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+  //                      alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("unit_mt_energy_waste").innerHTML = "" + data; 
+                       }
+                    }); 
+              }
+         });                  
+
+        $("#mt_manufacturing_main_data_mt_manufacturing_process").change(function(){           
+           var id_value_string = $(this).val();
+           if (id_value_string != "") {
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'unit_for_mt_manufacturing_process'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+  //                      alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+  //                      alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("unit_mt_main_manufacturing").innerHTML = "" + data; 
+                       }
+                    }); 
+              }
+         });                  
+           
+           
+           $("#mt_manufacturing_waste").keyup(function(){
+                    updateWeight();  
+           });
+           
+           $("#mt_energy_data_mt_energy_family").change();           
+           $("#mt_overhead_energy_data_mt_energy_family").change();           
+           $("#mt_waste_energy_data_mt_family").change();                                 
+           $("#mt_manufacturing_main_data_mt_manufacturing_process").change();           
+          updateWeight();
+          updateWeightDetailed();
+ });
+</script>
+<h1>
+  <% if @mt_product.mt_assessment && @mt_product.mt_assessment.assessment_type == 'rough' %>
+     <%=_('Rough Assessment').html_safe%>
+  <% else %>
+     <%=_('Detailed Assessment').html_safe%>
+  <% end %>   
+
+  <br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+<div class="content_skin">
+  <div class="lcamenu span-23 showdgrid last ">
+    <%= render(:partial => 'shared/lca/mt_tabs') %>
+  </div>
+  <div class="clear"></div>
+
+<% if @detailed %>
+        <!-- MAIN MANUFACTURING PROCESS -->
+		 <%= form_for MtManufacturingMainData.new, :remote => true do |f| %>
+		  <input type="hidden" name="mt_manufacturing_main_data[mt_product_id]" id="mt_product_id" value="<%=@mt_product.id%>"/>
+		  <fieldset class="empty">
+            <legend><%=_('Main manufacturing process').html_safe%> <a title="<%=_('Select and add the main manufacturing processes that are used to produce the components in your product or the product itself.').html_safe%>" href="#" class="tip_left">&nbsp;</a></legend>
+		    <div class="span-6" > 
+		       <%= f.label :value, _('Manufacturing process').html_safe %> 
+		       <br/>
+		        <select class="span-4" id="mt_manufacturing_main_data_mt_manufacturing_process" name="mt_manufacturing_main_data[mt_manufacturing_process_id]">
+		         
+		         <% @mt_manufacturing_processes.each do |mt_manufacturing_process| %>
+		            <option value="<%=mt_manufacturing_process.id%>"><%=mt_manufacturing_process.name.html_safe%></option>
+		         <% end %>
+		       
+		       </select>
+		    </div>
+		
+		
+		    <div class="span-5">
+		      <%= f.label :value, _('Quantity').html_safe %> <a title="<%=_('Please indicate the weight of material removed in chipping processes or the amount of material processed in non-chipping processes.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+		      <br />
+		      <%= f.text_field :quantity, :size => 10 %> <span id="unit_mt_main_manufacturing"></span>
+		    </div>
+		
+		
+		
+		    <div class="clear"></div>
+		
+			<div class="span-3 buttons last">
+				<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+			</div>
+		
+		</fieldset>
+		<% end %>
+		<br/>
+		
+		<table class="standard2">
+		    <tr class="add"> 
+		      <th class="span-8">
+		        <%=_('Manufacturing process').html_safe %><br/>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Quantity').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Unit').html_safe %>
+		      </th>      
+		      <th class="span-1">
+		        &nbsp;
+		      </th>
+		    </tr>   
+		    <tbody id="mt_manufacturing_main_datas">
+		      <%= render :partial => @mt_manufacturing_main_datas %>
+		    </tbody>
+		</table>
+<% end %>
+
+
+		 <%= form_for MtEnergyData.new, :remote => true do |f| %>
+		  <input type="hidden" name="mt_energy_data[mt_product_id]" id="mt_product_id" value="<%=@mt_product.id%>"/>
+		  <fieldset class="empty">
+		    <% if !@detailed %>
+		       <legend><%=_('Energy').html_safe%></legend>
+		    <% else %>
+		       <legend><%=_('Additional manufacturing energy').html_safe%> <a title="<%=_('If any electricity consumption related to the product manufacturing has not been recorded in the previous section use this opportunity to record the kWh.').html_safe%>" href="#" class="tip_left">&nbsp;</a></legend>
+		    <% end %>   
+		    <div class="span-6" > 
+		       <% if @detailed %>
+		          <%= f.label :value, _('Family').html_safe %>
+		       <% else %>		       
+		          <%= f.label :value, _('Form of Energy').html_safe %>
+		       <% end %> 
+		       <br/>
+		        <select class="span-4" id="mt_energy_data_mt_energy_family" name="mt_energy_data[mt_energy_family_id]">
+		         
+		         <% @mt_energy_families.each do |mt_energy_family| %>
+		            <option value="<%=mt_energy_family.id%>"><%=mt_energy_family.name.html_safe%></option>
+		         <% end %>
+		       
+		       </select>
+		    </div>
+		
+		    <div class="span-5">
+		       <% if @detailed %>
+		          <%= f.label :value, _('Type/Source').html_safe %>
+		       <% else %>		       
+		          <%= f.label :value, _('Supply Country').html_safe %>
+		       <% end %>		    
+		       <br/>
+		        <select class="span-4" id="mt_energy_data_mt_energy_process" name="mt_energy_data[mt_energy_process_id]">
+		         		       
+		       </select>
+		    </div>
+		
+		    <div class="span-5">
+		      <%= f.label :value, _('Quantity').html_safe %>
+		      <% if !@detailed %> 
+		        <a title="<%=_('Input the kWh energy consumption to manufacture and assemble your product until the point where it is ready for shipping.').html_safe%>" href="#" class="tip_right">&nbsp;</a>
+		      <% end %>   
+		      <br />
+		      <%= f.text_field :quantity, :size => 10 %> <span id="unit_mt_energy"></span>
+		    </div>
+		
+		
+		
+		    <div class="clear"></div>
+		
+			<div class="span-3 buttons last">
+				<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+			</div>
+		
+		</fieldset>
+		<% end %>
+		<br/>
+		
+		<table class="standard2">
+		    <tr class="add"> 
+		      <th class="span-8">
+		        <%=_('Family').html_safe %><br/>
+		      </th>
+		      <th class="span-8">
+		       <% if @detailed %>
+		          <%=_('Type/Source').html_safe %>
+		       <% else %>		       
+		          <%=_('Supply Country').html_safe %>
+		       <% end %>			      
+		      </th>
+		      <th class="span-3">
+		        <%=_('Quantity').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Unit').html_safe %>
+		      </th>      
+		      <th class="span-1">
+		        &nbsp;
+		      </th>
+		    </tr>   
+		    <tbody id="mt_energy_datas">
+		      <%= render :partial => @mt_energy_datas %>
+		    </tbody>
+		</table>
+		
+<% if !@detailed %>		
+		  <%= form_for @mt_manufacturing do |f| %>
+		      <fieldset class="empty">
+		        <legend><%=_('Waste in production process').html_safe%></legend>
+		        <input type="hidden" name="mt_product_id" id="mt_product_id" value="<%=@mt_product.id%>"/>
+		        <input type="hidden" name="arrow" id="arrow" value=""/>        
+		
+		        <div class="span-10">
+		          <%= f.label :waste, _('Waste').html_safe %> <a title="<%=_('Record the total weight of waste material from your manufacturing phase to produce your product.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+		        </div>  
+		        <div class="span-5" >
+		          <%= f.text_field :waste, :size => 5%> kg
+		        </div>
+		        <div class="clear"></div>
+		        <br/>
+			   <table>
+			      <tr>
+			        <td style="background:#666666;color:#EBEEDB"> 
+			             <span id="percentage_weight">0</span><%=_('% of the total material input is discarded as waste').html_safe%>
+			        </td>
+			      </tr>
+			   </table>        
+		        
+		        
+		           
+		        <br/>
+		      </fieldset>
+		  <% end %>
+  
+		<div class="buttons span-5 last" style="float:left;text-align:left">
+		      <button type="submit" class="positive" style="float:left;text-align:left" onClick="javascript:goPrevious();"> <%= image_tag 'tick.png' %><%= _("Previous step").html_safe %></button>
+		</div>
+      
+		<div class="buttons span-5 last" style="float:right;text-align:right">
+		      <button type="submit" class="positive" style="float:right;text-align:right" onClick="javascript:goNext();"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+		</div>
+
+		  <br/>
+		   
+		  <div class="clear"></div>
+
+<% else %>
+ 
+
+
+         <!-- OVERHEAD ENERGY -->
+		 <%= form_for MtOverheadEnergyData.new, :remote => true do |f| %>
+		  <input type="hidden" name="mt_overhead_energy_data[mt_product_id]" id="mt_product_id" value="<%=@mt_product.id%>"/>
+		  <fieldset class="empty">
+            <legend><%=_('Overhead energy').html_safe%></legend>
+            <%=_('Overhead energy - i.e. Energy not related to a specific process but needed for manufacture, e.g. Air Conditioning, Lighting, Heating, etc.. Please indicate the value per product being evaluated in this study.').html_safe%>
+            <br/><br/>
+            <div class="clear"></div>
+		    <div class="span-6" > 
+		       <%= f.label :value, _('Family').html_safe %> 
+		       <br/>
+		        <select class="span-4" id="mt_overhead_energy_data_mt_energy_family" name="mt_overhead_energy_data[mt_energy_family_id]">
+		         
+		         <% @mt_energy_families.each do |mt_energy_family| %>
+		            <option value="<%=mt_energy_family.id%>"><%=mt_energy_family.name.html_safe%></option>
+		         <% end %>
+		       
+		       </select>
+		    </div>
+		
+		    <div class="span-5">
+		       <%= f.label :value, _('Type/Source').html_safe %> 
+		       <br/>
+		        <select class="span-4" id="mt_overhead_energy_data_mt_energy_process" name="mt_overhead_energy_data[mt_energy_process_id]">
+		         
+		       
+		       </select>
+		    </div>
+		
+		    <div class="span-5">
+		      <%= f.label :value, _('Quantity').html_safe %> 
+		      <br />
+		      <%= f.text_field :quantity, :size => 10 %> <span id="unit_mt_energy_overhead"></span>
+		    </div>
+		
+		
+		
+		    <div class="clear"></div>
+		
+			<div class="span-3 buttons last">
+				<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+			</div>
+		
+		</fieldset>
+		<% end %>
+		<br/>
+		
+		<table class="standard2">
+		    <tr class="add"> 
+		      <th class="span-8">
+		        <%=_('Family').html_safe %><br/>
+		      </th>
+		      <th class="span-8">
+		        <%=_('Type/Source').html_safe %><br/>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Quantity').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Unit').html_safe %>
+		      </th>      
+		      <th class="span-1">
+		        &nbsp;
+		      </th>
+		    </tr>   
+		    <tbody id="mt_overhead_energy_datas">
+		      <%= render :partial => @mt_overhead_energy_datas %>
+		    </tbody>
+		</table>
+
+
+
+         <!-- MANUFACTURING RESOURCES -->
+		 <%= form_for MtManufacturingResourceData.new, :remote => true do |f| %>
+		  <input type="hidden" name="mt_manufacturing_resource_data[mt_product_id]" id="mt_product_id" value="<%=@mt_product.id%>"/>
+		  <fieldset class="empty">
+            <legend><%=_('Manufacturing resources').html_safe%></legend>
+		    <div class="span-6" > 
+		       <%= f.label :value, _('Consumable').html_safe %> 
+		       <br/>
+		        <select class="span-4" id="mt_manufacturing_resource_data_mt_consumable" name="mt_manufacturing_resource_data[mt_consumable_id]">
+		         
+		         <% @mt_consumables.each do |mt_consumable| %>
+		            <option value="<%=mt_consumable.id%>"><%=mt_consumable.name.html_safe%></option>
+		         <% end %>
+		       
+		       </select>
+		    </div>
+		
+		
+		    <div class="span-5">
+		      <%= f.label :value, _('Quantity').html_safe %> 
+		      <br />
+		      <%= f.text_field :quantity, :size => 10 %> <span id="unit_mt_manufacturing_resource"><%=_('kg').html_safe%></span>
+		    </div>
+		
+		
+		
+		    <div class="clear"></div>
+		
+			<div class="span-3 buttons last">
+				<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+			</div>
+		
+		</fieldset>
+		<% end %>
+		<br/>
+		
+		<table class="standard2">
+		    <tr class="add"> 
+		      <th class="span-8">
+		        <%=_('Consumable').html_safe %><br/>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Quantity').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Unit').html_safe %>
+		      </th>      
+		      <th class="span-1">
+		        &nbsp;
+		      </th>
+		    </tr>   
+		    <tbody id="mt_manufacturing_resource_datas">
+		      <%= render :partial => @mt_manufacturing_resource_datas %>
+		    </tbody>
+		</table>
+
+
+
+         <!-- MANUFACTURING WASTE -->
+		 <%= form_for MtWasteEnergyData.new, :remote => true do |f| %>
+		  <input type="hidden" name="mt_waste_energy_data[mt_product_id]" id="mt_product_id" value="<%=@mt_product.id%>"/>
+		  <fieldset class="empty">
+            <legend><%=_('Manufacturing waste').html_safe%> <a title="<%=_('Record any waste from the manufacture of your product, including the material removed in the above specified processes.').html_safe%>" href="#" class="tip_left">&nbsp;</a></legend>
+		    <div class="span-6" > 
+		       <%= f.label :value, _('Family').html_safe %> 
+		       <br/>
+		        <select class="span-4" id="mt_waste_energy_data_mt_family" name="mt_waste_energy_data[mt_family_id]">
+		         
+		         <% @mt_families.each do |mt_family| %>
+		            <option value="<%=mt_family.id%>"><%=mt_family.name.html_safe%></option>
+		         <% end %>
+		       
+		       </select>
+		    </div>
+		
+		    <div class="span-5">
+		       <%= f.label :value, _('Material').html_safe %> 
+		       <br/>
+		        <select class="span-4" id="mt_waste_energy_data_mt_material" name="mt_waste_energy_data[mt_material_id]">
+		         
+		       
+		       </select>
+		    </div>
+		
+		    <div class="span-5">
+		      <%= f.label :value, _('Quantity').html_safe %> 
+		      <br />
+		      <%= f.text_field :quantity, :size => 10 %> <span id="unit_mt_energy_waste"></span>
+		    </div>
+		
+		
+		
+		    <div class="clear"></div>
+		
+			<div class="span-3 buttons last">
+				<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+			</div>
+		
+		</fieldset>
+		<% end %>
+		<br/>
+		
+		<table class="standard2">
+		    <tr class="add"> 
+		      <th class="span-8">
+		        <%=_('Family').html_safe %><br/>
+		      </th>
+		      <th class="span-8">
+		        <%=_('Material').html_safe %><br/>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Quantity').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Unit').html_safe %>
+		      </th>      
+		      <th class="span-1">
+		        &nbsp;
+		      </th>
+		    </tr>   
+		    <tbody id="mt_waste_energy_datas">
+		      <%= render :partial => @mt_waste_energy_datas %>
+		    </tbody>
+		</table>
+
+        <div class="clear"></div>
+        <br/>
+	   <table>
+	      <tr>
+	        <td style="background:#666666;color:#EBEEDB"> 
+	             <span id="percentage_weight_detailed">0</span><%=_('% of the total material input is discarded as waste').html_safe%>
+	        </td>
+	      </tr>
+	   </table>  
+	
+    <div class="clear"></div>
+    <%= form_tag '/mt_manufacturings/next_step' do %>
+        <input type="hidden" name="mt_product_id" id="mt_product_id" value="<%=@mt_product.id%>"/>
+        <input type="hidden" name="arrow" id="arrow" value=""/>     
+		<div class="buttons span-5 last" style="float:left;text-align:left">
+		      <button type="submit" class="positive" style="float:left;text-align:left" onClick="javascript:goPreviousDetailed();"> <%= image_tag 'tick.png' %><%= _("Previous step").html_safe %></button>
+		</div>      
+		<div class="buttons span-5 last" style="float:right;text-align:right">
+		      <button type="submit" class="positive" style="float:right;text-align:right" onClick="javascript:goNextDetailed();"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+		</div>
+    <% end %>
+    <div class="clear"></div>
+	
+	
+<% end %>   
+   
+   <!--
+<div class="clear"></div>
+  <div class="span-23" style="text-align:center;font-size:11">
+     <ul style="padding-left:0;margin-right:85px">	      
+        <li class="link_booklabels"><%= link_to _('To Improvements').html_safe, mt_production_improvement_path(@mt_product) %></li>     
+      
+        <li class="link_booklabels"><%= link_to _('To Results').html_safe, mt_result_path(@mt_product) %></li>
+	        
+	    <li class="link_booklabels"><%= link_to _('To Data Quality'), mt_data_quality_path(@mt_product) %></li>
+
+	    <li class="link_booklabels"><%= link_to _('To Method').html_safe, mt_assessment_url(@mt_product) %></li>
+	    
+	    <li class="link_booklabels"><%= link_to _('To Introduction').html_safe, mt_production_intro_url(@mt_product) %></li>	    
+        <div class="clear"></div>
+     </ul>
+  </div>   
+<br/>   
+<div class="clear"></div>
+-->
+
+
+<div class="clear"></div>
+<div class="navbar">
+  <!-- <div id="for-ie"> -->
+  <div>
+    <ul>
+      <li><%= link_to _('To Introduction').html_safe, mt_production_intro_url(@mt_product) %></li>
+      <li><%= link_to _('To Method').html_safe, mt_assessment_url(@mt_product) %></li>
+      <li><%= link_to _('To Data Quality').html_safe, mt_data_quality_path(@mt_product) %></li>
+      <li><%= link_to _('To Results').html_safe, mt_result_path(@mt_product) %></li>
+      <li><%= link_to _('To Improvements').html_safe, mt_production_improvement_path(@mt_product) %></li>
+    </ul>
+  </div>
+</div>
+
+
+<div class="clear"></div>
+
+</div>

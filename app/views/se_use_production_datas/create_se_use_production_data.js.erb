@@ -1,0 +1,16 @@
+$("#error_explanation_se_use_production_data").empty();
+$("#error_explanation_se_use_production_data").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#se_use_production_datas").append("<%= escape_javascript(render(@se_use_production_data)) %>");
+/* Highlight the new comment */
+$("#se_use_production_data_<%= @se_use_production_data.id %>").effect("highlight", {}, 3000);
+
+$("#se_use_production_data_downtime_level_description").val("");
+$("#se_use_production_data_occurrance_with_sensor").val("");
+$("#se_use_production_data_avg_duration_with_sensor").val("");
+$("#se_use_production_data_occurance_without_sensor").val("");
+$("#se_use_production_data_avg_duration_without_sensor").val("");
+
+$(function(){
+	executeCalcFunctions();
+});	

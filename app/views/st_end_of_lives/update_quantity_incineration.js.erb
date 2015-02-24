@@ -1,0 +1,7 @@
+<script type="text/javascript">
+$(".quantity_incineration_<%= @st_end_of_life_data.id%>").html("<%=@update_value%>");
+<% if @st_end_of_life_data.eco_cost_incineration %>
+   $(".eco_cost_incineration_<%= @st_end_of_life_data.id%>").html("<%=@new_eco_cost%>");
+<% end %>
+updateIncinerations();    
+</script>

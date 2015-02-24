@@ -1,0 +1,21 @@
+<ul>
+  <% if @product.id %>
+     <li><%= tab_link_to _('Introduction').html_safe, production_intro_path(@product), :product => @product, :index => 0 %></li>
+     <li><%= tab_link_to _('<span>Step 1:</span><br/>Production data').html_safe, production_url(@product), :product => @product, :index => 1 %></li>
+     <li><%= tab_link_to _('<span>Step 2:</span><br/>Distribution data').html_safe, distribution_url(@product), :product => @product, :index => 2 %></li>
+     <li><%= tab_link_to _('<span>Step 3:</span><br/>Use data').html_safe, use_url(@product), :product => @product, :index => 3 %></li>
+     <li><%= tab_link_to _('<span>Step 4:</span><br/>End of life data').html_safe, end_of_life_url(@product), :product => @product, :index => 4 %></li>
+     <li><%= tab_link_to _('<span>Step 5:</span><br/>Select indicators').html_safe, indicator_url(@product), :product => @product, :index => 5 %></li>
+     <li><%= tab_link_to _('<span>Step 6:</span><br/>See results').html_safe, result_url(@product), :class => 'results', :product => @product, :index => 100 %></li>
+  <% else %>
+     <li><%= tab_link_to _('Production').html_safe, '/production', :product => @product %></li>
+     <li><%= tab_link_to _('Distribution').html_safe, '/distributions/new', :product => @product %></li>
+     <li><%= tab_link_to _('Use').html_safe, '/use', :product => @product %></li>
+     <li><%= tab_link_to _('End of life').html_safe, '/end_of_lives/new', :product => @product %></li>
+     <li><%= tab_link_to _('Indicators').html_safe, '/indicators', :product => @product %></li>
+     <li><%= link_to _('Results').html_safe,'/results', :class => 'results', :product => @product, :index => 100 %></li>
+   <% end %>               
+   <!--  <li class="mid">&#9658;</li>
+     <li><%= link_to _('Graphics').html_safe, graphic_url(@product), :class => 'results', :product => @product %></li>-->   
+<div class="clear"></div>
+</ul>

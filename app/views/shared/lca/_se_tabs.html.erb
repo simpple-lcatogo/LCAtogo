@@ -1,0 +1,18 @@
+<!-- #TODO: check links! -->
+<ul>
+  <% if @product.id %>
+     <li><%= tab_link_to _('Manufacturing').html_safe, se_manufacturing_path(@product.se_product), :product => @product, :index => 1 %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>
+     <li><%= tab_link_to _('Use production').html_safe, se_use_production_path(@product.se_product), :product => @product, :index => 2 %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>
+     <li><%= tab_link_to _('Use products').html_safe, se_use_product_path(@product.se_product), :product => @product, :index => 3 %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>
+     <li><%= tab_link_to _('Use consumption').html_safe, se_use_consumption_path(@product.se_product), :product => @product, :index => 4 %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>
+     <li><%= tab_link_to _('Use cost').html_safe, se_use_cost_path(@product.se_product), :product => @product, :index => 5 %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>
+     <li><%= tab_link_to _('Recycling').html_safe, se_recycling_path(@product.se_product), :product => @product, :index => 6 %></li>
+
+   <% end %>               
+<div class="clear"></div>
+</ul>

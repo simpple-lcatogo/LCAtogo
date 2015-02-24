@@ -1,0 +1,16 @@
+<!-- #TODO: check links! -->
+<ul>
+  <% if @product.id %>
+     <li><%= tab_link_to _('Materials').html_safe, mt_raw_material_path(@product.mt_product), :product => @product, :index => 1 %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>
+     <li><%= tab_link_to _('Manufacturing').html_safe, mt_manufacturing_path(@product.mt_product), :product => @product, :index => 2 %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>
+     <li><%= tab_link_to _('Distribution').html_safe, mt_distribution_path(@product.mt_product), :product => @product, :index => 3 %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>
+     <li><%= tab_link_to _('Use').html_safe, mt_use_path(@product.mt_product), :product => @product, :index => 4 %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>
+     <li><%= tab_link_to _('End-of-life').html_safe, mt_end_of_life_path(@product.mt_product), :product => @product, :index => 5 %></li>
+
+   <% end %>
+<div class="clear"></div>
+</ul>

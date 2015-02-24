@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  product_result_id: 1
+  name_en: MyString
+  name_ca: MyString
+  name_es: MyString
+  parent_id: 1
+
+two:
+  product_result_id: 1
+  name_en: MyString
+  name_ca: MyString
+  name_es: MyString
+  parent_id: 1

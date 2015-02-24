@@ -1,0 +1,2 @@
+module BpCompoundMaterialDatasHelper
+end

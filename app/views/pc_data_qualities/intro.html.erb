@@ -1,0 +1,73 @@
+<h1><%=_('Overview').html_safe%>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/pc_data_qualities/tabs') %>
+	</div>
+	
+	<table class="standard2">
+	   <thead>
+	      <tr>
+	        <th></th>
+	        <th><div style="float:left;padding-top:7px;text-align:center"><%=_('Robust').html_safe%></div><div><%= image_tag('bullet-green-icon.png')%></div></th>
+	        <th><div style="float:left;padding-top:7px"><%=_('Indicative').html_safe%></div><div><%= image_tag('bullet-yellow-icon.png')%></div></th>
+	        <th><div style="float:left;padding-top:7px"><%=_('Illustrative').html_safe%></div><div><%= image_tag('bullet-red-icon.png')%></div></th>
+	      </tr>	      
+	   </thead>
+	   <tbody>
+	      <tr>
+	        <th><%=_('Reliability').html_safe%></th>
+	        <td><%=_('Data for use phase energy / media consumption from measurement or verified data provided by a third party').html_safe%></td>
+	        <td><%=_('Data is partly based on assumptions (qualified estimate based on industrial insights), may also contain data from measurement and/or provided by a third party').html_safe%></td>
+	        <td><%=_('Estimate data not based on measurement or provided information, use of default data entries ').html_safe%></td>	        
+	      </tr>
+	      <tr>
+	        <th><%=_('Completeness').html_safe%></th>
+	        <td><%=_('Data over an adequate period (to even out normal fluctuations and to cover an average of hazardous incidents)').html_safe%></td>
+	        <td><%=_('Data gathered over a shorter time period').html_safe%></td>
+	        <td><%=_('Data applies to a different type of production line ').html_safe%></td>	        
+	      </tr>
+	      <tr>
+	        <th><%=_('Temporal correlation').html_safe%></th>
+	        <td><%=_('Data partly based on production statistics for operational times and downtimes ').html_safe%></td>
+	        <td><%=_('Data were derived from other production line with similar characteristics').html_safe%></td>
+	        <td><%=_('Data may apply to a different (or unknown) area/region').html_safe%></td>	        
+	      </tr>
+	      <tr>
+	        <th><%=_('Geographical correlation').html_safe%></th>
+	        <td><%=_('Data applies exactly to the process line under investigation').html_safe%></td>
+	        <td><%=_('Data applies to an area/region with similar production/processing conditions').html_safe%></td>
+	        <td><%=_('Data is older than 8 years or the age is unknown').html_safe%></td>	        
+	      </tr>
+	      <tr>
+	        <th><%=_('Technological correlation').html_safe%></th>
+	        <td><%=_('Data is less than 3 years old').html_safe%></td>
+	        <td><%=_('Data is less than 8 years old').html_safe%></td>
+	        <td><%=_('Data gaps cannot be mitigated').html_safe%></td>	        
+	      </tr>
+      
+	   </tbody>	   
+	</table>
+	
+  <div class="buttons last" style="float:right;text-align:right">
+     <a href="<%=pc_data_quality_path(@pc_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Next step").html_safe %></a>
+  </div>
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, pc_production_intro_url(@pc_product) %></li>
+        <li><%= link_to _('To Data Entry').html_safe, pc_basic_path(@pc_product) %></li>
+        <li><%= link_to _('To Results').html_safe, pc_result_path(@pc_product) %></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="clear"></div>
+
+
+
+</div>	

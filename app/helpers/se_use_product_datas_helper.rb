@@ -1,0 +1,2 @@
+module SeUseProductDatasHelper
+end

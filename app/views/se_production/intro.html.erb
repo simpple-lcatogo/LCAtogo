@@ -1,0 +1,56 @@
+
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Introduction').html_safe%></span>
+</h1>
+
+
+<div class="content_skin">
+   
+<%=_('With this tool <b>system and service providers in the sensors industry</b> will be enabled <b>to assess the environmental and cost benefits of better sensor-based monitoring of energy-intensive industrial continuous processes</b>, such as steel rolling mills, paper machines or aluminium foil production.').html_safe%>
+<br/><br/>
+<%=_('The webtool <b>is made</b> for performance forecasts <b>before the sensor system is actually installed.</b>').html_safe%>
+<br/><br/>
+<%=_('The webtool will rely on statistical data or assumptions to be entered by the user.').html_safe%>
+<br/><br/>
+<%=_('In particular the following effects of employing a sensor system can be assessed with the tool:').html_safe%>
+<ul>
+  <li><%=_('Reduced <b>downtimes</b>').html_safe%></li> 
+  <li><%=_('<b>Efficiency monitoring</b>').html_safe%></li>
+  <li><%=_('Improved process performance and efficiency due to higher <b>machining speed</b>').html_safe%></li> 
+  <li><%=_('Improved <b>product quality</b>').html_safe%></li>
+  <li><%=_('Reduced <b>yield losses</b>').html_safe%></li>
+  <li><%=_('Optimised (i.e. reduced) <b>auxiliaries dosing</b>').html_safe%></li>
+</ul>   
+<%=_('For any other application usability of the tool is limited. Inquire with LCA to go partners for assistance.').html_safe%>
+<br/><br/> 
+<%=_('The outcome of the assessment is a <b>benchmark</b> of an industrial continuous process line with a sensor solution being installed versus the same industrial process line without (such) a sensor system.').html_safe%> 
+<br/><br/>
+<%=_('In the <b>"DATA ENTRY"</b> module, the user should enter the needed data for both, the sensor system and the controlled industrial process, and for two scenarios: With and without the sensor system under study being installed:').html_safe%>
+<ul> 
+  <li><%=_('MANUFACTURING.- This refers to the manufacturing of the sensor system components and allows a consideration of the sensor system\'s own carbon footprint and system costs.').html_safe%></li>
+  <li><%=_('USE PRODUCTION.- Here the user should model the general aspects of the industrial process monitored by the sensor system, such as production times, location, and process line downtimes.').html_safe%></li>
+  <li><%=_('USE PRODUCTS.- Enter the output amount and quality of the process line. This is the reference later on to calculate the impacts and costs per output.').html_safe%></li>
+  <li><%=_('USE CONSUMPTION.- Here the user models the energy and material consumption related to the industrial process. Even if the sensor application does not control directly energy and media consumption, through a higher productivity a higher energy efficiency of the process line will be achieved. The system boundaries are therefore the process line on which the sensor system is installed, including the infrastructure required to run the process line.').html_safe%></li>
+  <li><%=_('USE COSTS.- Cost data is related to the process line and the energy and material consumption entered above. Data is directly used for the economic analysis.').html_safe%></li>
+  <li><%=_('RECYCLING.- An important effect of a better controlled process line might be a reduced yield loss rate. Yield losses are assumed to be recycled.').html_safe%></li>
+</ul>  
+<%=_('In the <b>"RESULT"</b> module you can see the results as a comparison of the process line with and without the sensor system under study installed. DETAILED RESULTS lists the individual values calculated based on your entries, but as the assessment focusses on a quantification of benefits the calculated difference is the major outcome, not the absolute value for only one of the scenarios. GRAPHIC RESULTS covers the same results as bar charts, depicting the difference between both scenarios, i.e. showing the benefit of applying the sensor system.').html_safe%>
+<br/><br/>
+<%=_('You need to make data entries for both, environmental aspects and the economic analysis, to get results calculated. In case of an error message your data might be incomplete, please check again.').html_safe%>  
+<br/><br/>
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Data Entry').html_safe, se_manufacturing_path(@product.se_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, se_data_quality_intro_url(@product.se_product) %></li>
+        <li><%= link_to _('To Results').html_safe, se_result_path(@product.se_product) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+  
+  
+</div>	

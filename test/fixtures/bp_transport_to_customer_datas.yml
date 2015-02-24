@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  bp_product: 
+  bp_mode: 
+  bp_vehicle: 
+  distance: 1.5
+
+two:
+  bp_product: 
+  bp_mode: 
+  bp_vehicle: 
+  distance: 1.5

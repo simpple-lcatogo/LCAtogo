@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  se_country_id: 1
+  maximum_production: 1.5
+  closing_times: 1.5
+  operation_time: 1.5
+  se_product_id: 1
+
+two:
+  se_country_id: 1
+  maximum_production: 1.5
+  closing_times: 1.5
+  operation_time: 1.5
+  se_product_id: 1

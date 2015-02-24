@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  se_product: 
+  se_utility: 
+  with_sensor: 1.5
+  without_sensor: 1.5
+  electricity_consumption: 1.5
+  temperature_difference: 1.5
+
+two:
+  se_product: 
+  se_utility: 
+  with_sensor: 1.5
+  without_sensor: 1.5
+  electricity_consumption: 1.5
+  temperature_difference: 1.5

@@ -1,0 +1,227 @@
+<script type="text/javascript">
+
+    function checkSubmit() {
+      var customized = $("#customized");
+      var isCustomized = (customized.attr("checked") != "undefined" && customized.attr("checked") == "checked");
+      if (!isCustomized) {     
+         document.forms[0].submit();
+      } else {
+         var total = 0;
+         var landfill = parseFloat($("#custom_landfill").val().replace(",", "."));
+         var incineration = parseFloat($("#custom_incineration").val().replace(",", "."));
+         var composting = parseFloat($("#custom_composting").val().replace(",", "."));
+         var recycling = parseFloat($("#custom_recycling").val().replace(",", "."));
+         
+         if (!isNaN(landfill) && (landfill != '')) {
+            total += parseFloat(landfill);
+            }
+         if (!isNaN(incineration) && (incineration != '')) {
+            total += parseFloat(incineration);
+            }
+         if (!isNaN(composting) && (composting != '')) {
+            total += parseFloat(composting);
+            }
+         if (!isNaN(recycling) && (recycling != '')) {
+            total += parseFloat(recycling);
+            }
+         if (total != 100) {
+            alert('Sum of customized values must be 100%'); 
+            return false;  
+         }    
+          document.forms[0].submit();
+      }
+    }
+
+    $(document).ready(function(){     
+
+$("input[name='bp_end_of_life_data[bp_end_of_life_default_scenario_id]']").change(function () {
+   var customized = $("#customized");
+   var isCustomized = (customized.attr("checked") != "undefined" && customized.attr("checked") == "checked");
+   if (!isCustomized) {
+      $("#custom_landfill").attr('readonly', true);
+      $("#custom_landfill").css("background-color","#cccccc");
+      $("#custom_incineration").attr('readonly', true);
+      $("#custom_incineration").css("background-color","#cccccc"); 
+      $("#custom_composting").attr('readonly', true);
+      $("#custom_composting").css("background-color","#cccccc");      
+      $("#custom_recycling").attr('readonly', true);
+      $("#custom_recycling").css("background-color","#cccccc");      
+      } else {
+      $("#custom_landfill").attr('readonly', false);
+      $("#custom_landfill").css("background-color","#ffffff");      
+      $("#custom_incineration").attr('readonly', false);
+      $("#custom_incineration").css("background-color","#ffffff");      
+      $("#custom_composting").attr('readonly', false);
+      $("#custom_composting").css("background-color","#ffffff");      
+      $("#custom_recycling").attr('readonly', false);      
+      $("#custom_recycling").css("background-color","#ffffff");      
+      }
+  });
+  
+  $("input[name='bp_end_of_life_data[bp_end_of_life_default_scenario_id]']").change();
+});
+</script>
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/lca/bp_tabs') %>
+	</div>
+<div class="clear"></div>
+   <table>
+      <tr>
+        <td style="background:#2b4950;color:#EBEEDB;width:25%">
+          <b><%=_('Functional unit').html_safe%></b>
+        </td>
+        <td>  
+          <%= @bp_product.functional_unit if !@bp_product.functional_unit.blank? %>
+        </td>
+      </tr>
+    </table>     
+<div class="clear"></div>
+
+    <%= form_for @bp_end_of_life_data do |f| %>
+	    <fieldset class="empty">
+	      <legend><%=_('End-of-life').html_safe%></legend>
+	      <input type="hidden" name="bp_end_of_life_data[bp_product_id]" id="bp_product_id" value="<%=@bp_product.id%>"/>
+	      <input type="hidden" name="bp_end_of_life_data[default_transport_distance]" id="default_transport_distance" value="<%=@bp_end_of_life_data.default_transport_distance%>"/>
+         
+	      <p><%= _('Select an average end-of-life scenario for the manufactured products:').html_safe %></p>
+	      <fieldset class="empty">
+
+
+		    <div class="span-12" style="border-style:solid; border-bottom:thin dotted black;">
+			    <p style="margin-bottom:2px;"> <%= _("Predefined scenario for industrially compostable products").html_safe %> </p>
+			    <p style="font-size:11px; font-style:italic"><%= _('(e.g. PLA, starch blend, potato-based fermented starch, PHB, PBS, etc.)').html_safe %></p>
+		    </div>
+		    
+		    <div class="clear"></div>
+
+
+
+		     <% @bp_end_of_life_default_scenarios_section_1.each do |scenario| %>
+	     		<input style="margin:8px 0 8px 0;" type="radio" name="bp_end_of_life_data[bp_end_of_life_default_scenario_id]" value="<%=scenario.id%>" <%if @bp_end_of_life_data.bp_end_of_life_default_scenario_id == scenario.id%> checked <% end %>> <%=scenario.name%><br>
+		     <% end %>
+
+		     <br>
+		     <div class="span-12" style="border-style:solid; border-bottom:thin dotted black;">
+			     <p style="margin-bottom:2px;"> <%= _("Predefined scenario for non biodegradable products").html_safe %> </p>
+
+			     <p style="font-size:11px; font-style:italic"><%= _('(e.g. sugarcane-based HDPE/LLDPE/PET, PP, LDPE, HDPE, LLDPE, PVC, PET, etc.)').html_safe%></p>
+		      </div>
+
+		      <div class="clear"></div>
+	     	
+		     <% @bp_end_of_life_default_scenarios_section_2.each do |scenario| %>
+	     		<input style="margin:8px 0 8px 0;" type="radio" name="bp_end_of_life_data[bp_end_of_life_default_scenario_id]" value="<%=scenario.id%>" <%if @bp_end_of_life_data.bp_end_of_life_default_scenario_id == scenario.id%> checked <% end %>> <%=scenario.name%><br>
+		     <% end %>
+
+		     <br>
+		     <% @bp_end_of_life_default_scenario_customized.each_with_index do |scenario, index| %>
+		        <% if index == @bp_end_of_life_default_scenario_customized.size - 1 %>
+	     		   <input style="margin:8px 0 8px 0;" type="radio" name="bp_end_of_life_data[bp_end_of_life_default_scenario_id]" value="<%=scenario.id%>" <%if @bp_end_of_life_data.bp_end_of_life_default_scenario_id == scenario.id%> checked <% end %> id="customized"> <%=scenario.name%><br>
+	     		<% else %>
+	     		   <input style="margin:8px 0 8px 0;" type="radio" name="bp_end_of_life_data[bp_end_of_life_default_scenario_id]" value="<%=scenario.id%>" <%if @bp_end_of_life_data.bp_end_of_life_default_scenario_id == scenario.id%> checked <% end %>> <%=scenario.name%><br>
+	     		<% end %>   
+		     <% end %>
+		     
+		     <br>
+		     <ol id="customized_scenario" class="span-12 prepend-2 last" style="list-style-type:none;">	
+
+			    <li> 
+			       <label class="span-8" for="custom_landfill"><%= _('Landfill:') %></label>
+			       <input  type="text" id="custom_landfill" name="bp_end_of_life_data[custom_landfill]" value="<%= @bp_end_of_life_data.custom_landfill%>" size="6"> %
+			    </li>
+			    
+			    <li> 
+			       <label class="span-8" for="custom_incineration"><%= _('Incineration with energy recovery: ') %></label>
+			       <input  type="text" id="custom_incineration" name="bp_end_of_life_data[custom_incineration]" value="<%= @bp_end_of_life_data.custom_incineration%>" size="6"> %
+			    </li>
+			    
+			    <li>
+			       <label class="span-8" for="custom_composting"><%= _('Composting:') %></label>
+			       <input type="text" id="custom_composting" name="bp_end_of_life_data[custom_composting]" value="<%= @bp_end_of_life_data.custom_composting%>" size="6"> %
+			    </li>
+			    
+			    <li>
+				   <label class="span-8" for="custom_recycling"><%= _('Recycling:') %></label>
+			       <input type="text" id="custom_recycling" name="bp_end_of_life_data[custom_recycling]" value="<%= @bp_end_of_life_data.custom_recycling%>" size="6"> %
+			    </li>
+	      	 </ol>
+            <div class="clear"></div>
+            <input style="margin:8px 0 8px 0;" type="radio" name="bp_end_of_life_data[bp_end_of_life_default_scenario_id]" value="<%=-1%>" <%if @bp_end_of_life_data.bp_end_of_life_default_scenario_id == -1%> checked <% end %>> <b><%=_('Don\'t generate END-OF-LIFE results').html_safe%></b><br>
+            <div class="clear"></div>
+
+
+      </fieldset>
+      <br/>
+      <fieldset class="empty">
+		<table >
+		  <tr>
+			<th></th>
+			<th><%= _('Default value').html_safe %></th>
+			<th><%= _('User value').html_safe %></th>
+		  </tr>
+
+		  <tr>
+		  	<td class="span-17"><p><%= _('Enter an average transport distance from collection to waste treatment plants:').html_safe %></p></td>
+		  	<td class="span-4"><input type="text" name="bp_end_of_life_data[default_transport_distance]" value="<%= @bp_end_of_life_data.default_transport_distance %>" size='6' disabled> km</td>
+		  	<td class="span-4"><input type="text" name="bp_end_of_life_data[custom_transport_distance]" value="<%= @bp_end_of_life_data.custom_transport_distance %>" size='6'> km</td>
+		  </tr>	
+
+		</table>		     
+      </fieldset>
+
+
+	      <div class="clear"></div> 
+	      
+	      <br/>	      
+	<p style="font-size:11px; font-style:italic"><%= _('Note: for the end-of-life step, only contributions to &quot;Global Warming&quot; potential are considered in the assessment').html_safe %></p>
+		      <div class="clear"></div>      
+		  <div class="span-3 buttons last">
+		  </div>
+          <div class="clear"></div>	      
+	    </fieldset>
+   
+    
+	</table>
+
+<div class="buttons span-5 last" style="float:right;text-align:right">
+
+    <input type="hidden" name="bp_product_id" id="bp_product_id" value="<%=@bp_product.id%>"/>	
+	<button type="button" class="positive" style="float:right;text-align:right" onClick="javascript:checkSubmit();"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+  <% end %>
+  </div>    	
+
+    
+<div class="buttons span-5" style="float:left;text-align:left">
+  <%= form_tag '/bp_end_of_life/previous_step' do %>
+    <input type="hidden" name="bp_product_id" id="bp_product_id" value="<%=@bp_product.id%>"/>	
+	<button type="submit" class="positive" style="float:left;text-align:left"> <%= image_tag 'tick.png' %><%= _("Previous step").html_safe %></button>
+  <% end %>
+  </div>        
+    
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, bp_production_intro_path(@bp_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, bp_data_quality_intro_path(@bp_product) %></li>
+        <li><%= link_to _('To Results').html_safe, bp_result_url(@bp_product) %></li>
+        <li><%= link_to _('To Economic Data'), bp_economic_url(@bp_product) %></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="clear"></div>
+
+
+
+
+
+
+</div>	 

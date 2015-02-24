@@ -1,0 +1,49 @@
+<tr id="mt_use_machine_subsystem_data_<%= mt_use_machine_subsystem_data.id %>">
+     <td>
+	      <% if mt_use_machine_subsystem_data.mt_subsystem %>
+	        <% if mt_use_machine_subsystem_data.mt_subsystem.name == 'Other sub-system' %>
+			   <%= mt_use_machine_subsystem_data.subsystem_name.html_safe %>
+			<% else %>
+			   <%= mt_use_machine_subsystem_data.mt_subsystem.name.html_safe %>
+			<% end %>   
+	      <% end %>		
+     </td>
+     <td id="td_processing_<%= mt_use_machine_subsystem_data.id %>">
+          <%= mt_use_machine_subsystem_data.processing %>
+     </td>
+     <script type="text/javascript">
+		   $("#td_processing_<%=mt_use_machine_subsystem_data.id%>").editInPlace({
+		        url: "/mt_use_machine_subsystem_datas/update_processing" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+		        params: "mt_use_machine_subsystem_data_id=<%=mt_use_machine_subsystem_data.id%>",
+		        saving_text: '<%=_("Saving...")%>',
+		        success: function(msg) {updateUnassigned();}
+		        });  
+     </script>       
+     <td id="td_ready_<%= mt_use_machine_subsystem_data.id %>">
+          <%= mt_use_machine_subsystem_data.ready %>
+     </td>
+     <script type="text/javascript">
+		   $("#td_ready_<%=mt_use_machine_subsystem_data.id%>").editInPlace({
+		        url: "/mt_use_machine_subsystem_datas/update_ready" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+		        params: "mt_use_machine_subsystem_data_id=<%=mt_use_machine_subsystem_data.id%>",
+		        saving_text: '<%=_("Saving...")%>',
+		        success: function(msg) {updateUnassigned();}
+		        });  
+     </script>       
+     <td id="td_standby_<%= mt_use_machine_subsystem_data.id %>">
+          <%= mt_use_machine_subsystem_data.standby %>
+     </td>
+     <script type="text/javascript">
+		   $("#td_standby_<%=mt_use_machine_subsystem_data.id%>").editInPlace({
+		        url: "/mt_use_machine_subsystem_datas/update_standby" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+		        params: "mt_use_machine_subsystem_data_id=<%=mt_use_machine_subsystem_data.id%>",
+		        saving_text: '<%=_("Saving...")%>',
+		        success: function(msg) {updateUnassigned();}
+		        });  
+     </script>       
+     
+     <td>
+          <%=_('kW').html_safe%>
+     </td>
+     <td class="center"><%= link_to '&#10006;'.html_safe, mt_use_machine_subsystem_data_path(mt_use_machine_subsystem_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>

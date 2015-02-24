@@ -1,0 +1,158 @@
+<h1><%=_('Summary').html_safe%>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/ph_results/tabs') %>
+	</div>
+	<% if @ph_product.ph_intermediate_result %>   
+		<b><%=_('Your defined system includes:').html_safe%></b><br/>
+
+        <% if I18n.locale == :es %>
+          <b>Módulos fotovoltaicos</b>
+          <% if @ph_product.ph_basic_information.framed == 'yes' %>
+              con marco
+          <% else %>
+              sin marco
+          <% end %> con una superficie de <%=lca_format_number(@ph_product.ph_intermediate_result.module_area,1)%> m<sup>2</sup>, <b>usando la tecnología de <%=@ph_product.ph_specified.ph_module_type.name%></b> ( o otras tecnologías dependiendo del caso).
+          Los módulos utilizados
+          <% if @ph_product.ph_basic_information.framed == 'yes' %>
+              <b>tienen marco</b>
+          <% else %>
+              <b>no tienen marco</b>
+          <% end %> y <b>están montados
+          <% if @ph_product.ph_basic_information.ph_mounting_type.name == 'On Roof - Integrated' %>
+              <%=_('integrated in a roof').html_safe%>.
+          <% end %>
+          <% if @ph_product.ph_basic_information.ph_mounting_type.name == 'Open Ground' %>
+              <%=_('on the ground').html_safe%>.
+          <% end %>
+          <% if @ph_product.ph_basic_information.ph_mounting_type.name == 'On Roof - Mounted' %>
+              <%=_('on top of a roof').html_safe%>.
+          <% end %>
+          <% if @ph_product.ph_basic_information.ph_mounting_type.name == 'Facade - Mounted' || @ph_product.ph_basic_information.ph_mounting_type.name == 'Facade - Integrated' %>
+              <%=_('in or on the facade of a building').html_safe%>.
+          <% end %></b>
+          Teniendo en cuenta la <b>radiación</b> determinada de <%=lca_format_number(@ph_product.ph_basic_information.radiation, 0)%> por m<sup>2</sup> <b>y año</b> en <%=@ph_product.ph_basic_information.ph_country_info.name%> así como los parámetros técnicos, la energía máxima se estima en <%=lca_format_number(@ph_embedded_result.peak_power,1)%> kWp.
+        <% else %>
+          <%=_('Photovoltaic').html_safe%>
+            <% if @ph_product.ph_basic_information.framed == 'yes' %>
+               <%=_("framed Modules/Panels").html_safe%>
+            <% else %>
+               <%=_("unframed Modules/Laminate").html_safe%>
+            <% end %>
+            <%=_('with an area of ').html_safe%><%=lca_format_number(@ph_product.ph_intermediate_result.module_area,1)%><%=_('m<sup>2</sup>, using the').html_safe%> <%=@ph_product.ph_specified.ph_module_type.name%> <%=_('technology.').html_safe%>
+            <br/>
+            <%=_('The used modules will be').html_safe%>
+            <% if @ph_product.ph_basic_information.framed == 'yes' %>
+               <%=_("framed").html_safe%>
+            <% else %>
+               <%=_("unframed").html_safe%>
+            <% end %>
+            <%=_('and mounted').html_safe%>
+            <% if @ph_product.ph_basic_information.ph_mounting_type.name == 'On Roof - Integrated' %>
+                <%=_('integrated in a roof').html_safe%>.
+            <% end %>
+            <% if @ph_product.ph_basic_information.ph_mounting_type.name == 'Open Ground' %>
+                <%=_('on the ground').html_safe%>.
+            <% end %>
+            <% if @ph_product.ph_basic_information.ph_mounting_type.name == 'On Roof - Mounted' %>
+                <%=_('on top of a roof').html_safe%>.
+            <% end %>
+            <% if @ph_product.ph_basic_information.ph_mounting_type.name == 'Facade - Mounted' || @ph_product.ph_basic_information.ph_mounting_type.name == 'Facade - Integrated' %>
+                <%=_('in or on the facade of a building').html_safe%>.
+            <% end %>
+
+            <br/>
+            <%=_('Taking into account the given insolation of ').html_safe%><%=lca_format_number(@ph_product.ph_basic_information.radiation, 0)%><%=_('kWh per m<sup>2</sup> and year in').html_safe%> <%=@ph_product.ph_basic_information.ph_country_info.name%> <%=_('as well as technical parameters set, the peak power is estimated to be').html_safe%> <%=lca_format_number(@ph_embedded_result.peak_power,1)%> <%=_('kWp.').html_safe%>
+
+        <% end %>
+
+        <br/>
+
+	    <b><%=_('The technical parameters are:').html_safe%></b><br/>
+	    <%=_('Conversion Efficiency').html_safe%>=<%=@ph_product.ph_specified.efficiency%>%,
+	    <% if @ph_product.ph_specified.efficiency != @ph_product.ph_specified.ph_module_type.efficiency %>
+	       <%=_('manually set').html_safe%>.<br/>
+	    <% else %>   
+	       <%=_('automatically set').html_safe%>.<br/>
+	    <% end %>   
+	    <%=_('Module Lifetime').html_safe%>=<%=@ph_product.ph_specified.lifetime%> <%=_('years').html_safe%>,
+	    <% if @ph_product.ph_specified.lifetime != @ph_product.ph_specified.ph_module_type.lifetime %>	    
+	       <%=_('manually set').html_safe%>.<br/>
+	    <% else %>   
+	       <%=_('automatically set').html_safe%>.<br/>
+	    <% end %>   
+	    <%=_('Performance Ratio').html_safe%>=<%=@ph_product.ph_basic_information.performance_ratio%><br/>
+	    <%=_('Inverter Lifetime is, dependend on the used types').html_safe%> <%=lca_format_number(@ph_product.ph_electric_component.lifetime_1,0)%>/<%=lca_format_number(@ph_product.ph_electric_component.lifetime_2,0)%> years.<br/>
+	    <%=_('Total Inverter Capacity of Type 1 is').html_safe%> <%=lca_format_number(@ph_product.ph_electric_component.inverter_size_1 * @ph_product.ph_electric_component.quantity_1,0)%>W<%=_(', provided by').html_safe%> <%=@ph_product.ph_electric_component.quantity_1%> <%=_('inverters').html_safe%>.<br/>
+	    <%=_('Total Inverter Capacity of Type 2 is').html_safe%> <%=lca_format_number(@ph_product.ph_electric_component.inverter_size_2 * @ph_product.ph_electric_component.quantity_2,0)%>W<%=_(', provided by').html_safe%> <%=@ph_product.ph_electric_component.quantity_2%> <%=_('inverters').html_safe%>.<br/>
+	    <%=_('Maintenance needs like cleaning and inverter replacement').html_safe%>
+	     <% if @ph_product.ph_maintenance.maintenance_needs == 'no' %>
+	       <%=_('will not be included').html_safe%>.
+	     <% end %>
+	     <% if @ph_product.ph_maintenance.maintenance_needs == 'yes_5' %>
+	       <%=_('will be included for the contract time of').html_safe%> 5 <%=_('years').html_safe%>.
+	     <% end %>  
+	     <% if @ph_product.ph_maintenance.maintenance_needs == 'yes_10' %>
+	       <%=_('will be included for the contract time of').html_safe%> 10 <%=_('years').html_safe%>.
+	     <% end %>  
+	     <% if @ph_product.ph_maintenance.maintenance_needs == 'yes_15' %>
+	       <%=_('will be included for the contract time of').html_safe%> 15 <%=_('years').html_safe%>.
+	     <% end %>  
+	     <% if @ph_product.ph_maintenance.maintenance_needs == 'yes_20' %>
+	       <%=_('will be included for the contract time of').html_safe%> 20 <%=_('years').html_safe%>.
+	     <% end %>  
+	       
+	     <br/>
+	    <b><%=_('The results of the analysis are:').html_safe%></b><br/>
+	    <%=_('Module Area').html_safe%> <a title="<%=_('Net area of the system').html_safe%>" href="#" class="tip_left">&nbsp;</a> <%=lca_format_number(@ph_product.ph_intermediate_result.module_area,1)%> <%=_('m<sup>2</sup>').html_safe%><br/>
+	    <%=_('Yearly Power Output').html_safe%> <a title="<%=_('Annual kWh electricity produced from system').html_safe%>" href="#" class="tip_left">&nbsp;</a> <%=lca_format_number(@ph_embedded_result.averaged_power, 1)%> <%=_('kWh/a').html_safe%><br/>    
+	    <%=_('Embodied Energy').html_safe%> <a title="<%=_('Primary energy used for manufacturing and using the system, in MJ').html_safe%>" href="#" class="tip_left">&nbsp;</a> <%=lca_format_number(@ph_embedded_result.system_emb, 1)%> <%=_('MJ PE').html_safe%> <br/>    
+	    <%=_('Embodied Carbon Dioxide').html_safe%> <a title="<%=_('Carbon Dioxide emitted during manufacturing and using the system, in kg CO2-eq').html_safe%>" href="#" class="tip_left">&nbsp;</a> <%=lca_format_number(@ph_result.co2_total, 1)%> <%=_('kg CO2-eq').html_safe%><br/>    
+	    <%=_('Energy Payback Time').html_safe%> <a title="<%=_('The period of time that the system requires to generate as much energy as was required for its manufacturing').html_safe%>" href="#" class="tip_left">&nbsp;</a> <%=lca_format_number(@ph_embedded_result.energy_payback, 1)%> <%=_('years').html_safe%><br/>
+	    
+	<% end %>    
+	
+
+  <%= form_tag '/ph_production/next_intro_step' do %>
+    <input type="hidden" name="ph_product_id" id="ph_product_id" value="<%=@product.ph_product.id%>"/>	
+  <% end %>
+  
+  
+
+  <div class="buttons span-5 last" style="float:right;text-align:right">
+     <a href="<%=ph_result_path(@ph_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Next step").html_safe %></a>
+  </div>  
+
+  <!--
+	<div class="clear"></div>
+	
+	
+  <div class="span-21" style="text-align:center;font-size:11">
+     <ul style="padding-left:0;margin-right:130px">	        	       
+        <li class="link_booklabels"><%= link_to _('To Data Quality').html_safe, ph_data_quality_intro_url(@ph_product) %></li>	        
+        <li class="link_booklabels"><%= link_to _('To Data Entry').html_safe, ph_basic_information_path(@ph_product) %></li>	        
+        <li class="link_booklabels"><%= link_to _('To Introduction').html_safe, ph_production_intro_path(@ph_product) %></li>
+        <div class="clear"></div>
+     </ul>
+  </div>  
+  
+  <div class="clear"></div>
+-->
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, ph_production_intro_path(@ph_product) %></li>
+        <li><%= link_to _('To Data Entry').html_safe, ph_basic_information_path(@ph_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, ph_data_quality_intro_path(@ph_product) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+
+  <br/>   	
+	
+</div>	

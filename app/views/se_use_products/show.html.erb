@@ -1,0 +1,271 @@
+<script type="text/javascript">
+  function alert_greater_than_100(){
+    var with_result = 0;
+    var without_result = 0;
+
+    $("span.with_sensor").each(function(){
+      var val = $(this).text();
+      if (val != '-' ){
+        with_result += parseFloat(val);
+      };
+    });
+
+    $("span.without_sensor").each(function(){
+      var val = $(this).text();
+      if (val != '-' ){
+        without_result += parseFloat(val);
+      };
+    });
+
+    if(with_result == 100 && without_result == 100){
+      return true;
+    }
+    else{
+      var alerta = confirm("<%= _('The sum of the values of the percentages must always be 100')%>");
+
+        if(alerta == true){
+          return false;
+        }else{
+          return false;
+        };    
+    } ;   
+  }
+
+  function updateProductOutput(){
+    output_with = $("#se_use_product_output_with").val();
+    output_without = $("#se_use_product_output_without").val();
+
+    $.ajax({
+      dataType: "json",
+      cache: false,
+      url: '/ajax_helpers',
+      data: {se_use_product_id: "<%= @se_use_product.id %>", type: 'se_use_product_update_product_output', output_with: output_with, output_without: output_without},
+      timeout: 5000,
+      error: function(XMLHttpRequest, errorTextStatus, error){
+        //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+        },
+      success: function(data){
+          executeCalcFunctions();
+       
+      } 
+    });
+  }
+
+  function totalAnualOutput(with_or_without){
+    $.ajax({
+      dataType: "json",
+      cache: false,
+      url: '/ajax_helpers',
+      data: {se_use_product_id: "<%= @se_use_product.id %>", type: 'se_use_product_total_anual_amount', with_or_without: with_or_without},
+      timeout: 5000,
+      error: function(XMLHttpRequest, errorTextStatus, error){
+        //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+        },
+      success: function(data){
+          if (!isNaN(data) && data != 0){          
+            if (with_or_without == "with"){
+              $("#total_anual_output_with_sensor").text(data);
+            }
+            else if (with_or_without == "without") {
+              $("#total_anual_output_without_sensor").text(data);
+            }             
+          }
+          else{
+             if (with_or_without == "with"){
+              $("#total_anual_output_with_sensor").text("-");
+            }
+            else if (with_or_without == "without") {
+              $("#total_anual_output_without_sensor").text("-");
+            }     
+          }
+
+      } 
+    });
+  }  
+
+  function executeCalcFunctions(){
+    totalAnualOutput("with");
+    totalAnualOutput("without");
+
+  }
+
+  function checkFields() {
+     var isOk = true;
+     if (document.getElementById("se_use_product_output_with").value == "") {
+        isOk = false;
+        alert("<%=_('With sensor field can\'t be blank').html_safe %>");
+     }
+     if (document.getElementById("se_use_product_output_without").value == "") {
+        isOk = false;
+        alert("<%=_('Without sensor field can\'t be blank').html_safe %>");
+     }
+     if (isNaN(document.getElementById("se_use_product_output_with").value)) {
+        isOk = false;
+        alert("<%=_('With sensor field must be numeric').html_safe %>");
+     }
+     if (isNaN(document.getElementById("se_use_product_output_without").value)) {
+        isOk = false;
+        alert("<%=_('Without sensor field must be numeric').html_safe %>");
+     }     
+     
+     return isOk;     
+  }
+
+  function goPrevious() {
+     if (checkFields() && alert_greater_than_100()) {
+        document.forms[2].submit();
+     }         
+  }
+
+  function goNext() {
+     if (checkFields() && alert_greater_than_100()) {
+        document.forms[3].submit();
+     }     
+  }
+
+  $(document).ready(function(){
+    executeCalcFunctions();
+    $('#submit_button222').click(function(){
+      return alert_greater_than_100();
+    });
+    $('div.lcamenu > ul > li > a').click(function(){
+      return alert_greater_than_100();
+    });
+    
+    $("#se_use_product_output_with, #se_use_product_output_without").keyup(function(){
+      updateProductOutput();      
+    });
+
+  });
+</script>  
+
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/lca/se_tabs') %>
+	</div>
+<div class="clear"></div>
+<%= form_for(@se_use_product) do |f| %>
+  <% if @se_use_product.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@se_use_product.errors.count, "error") %> prohibited this ph_maintenance from being saved:</h2>
+
+      <ul>
+      <% @se_use_product.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <table class="standard2">
+     <tr>
+       <th class="span-12"></th>
+       <th class="span-6"><%=_('With sensor').html_safe%></th>
+       <th class="span-6"><%=_('Without sensor').html_safe%></th>              
+     </tr>
+     <tr>
+       <td><%=_('Total product output under normal operation').html_safe%> <a title="<%=_('Output, while the production line is operating as planned. Different outputs with and without sensors might occur, if e.g. a better controlled line can be operated at higher speed. Do not account for differences in downtimes here as this is modelled solely through the downtime scenarios introduced earlier.').html_safe%>" href="#" class="tip_left">&nbsp;</a></td>
+       <td><%= f.text_field :output_with, :size => 14, :value => number_with_precision(f.object.output_with, :precision => 0) %> <%=_('kg/h').html_safe%></td>
+       <td><%= f.text_field :output_without, :size => 14, :value => number_with_precision(f.object.output_without, :precision => 0)  %> <%=_('kg/h').html_safe%></td>
+     </tr>
+  </table>
+
+
+
+<% end %>
+
+<div class="clearfix"></div>
+
+<%= form_for SeUseProductData.new, :remote => true do |f| %>
+ <input type="hidden" name="se_use_product_data[se_product_id]" id="se_product_id" value="<%=@se_product.id%>"/>
+
+  <div class="span-6">
+    <%=_('Product Output description').html_safe%> <a title="<%=_('In some cases higher quality products might be produced once a sensor-based monitoring system is installed. If this is the case you have the option to enter various product output descriptions. Example: &quot;High quality material: 100% share - with sensor, 0% share - without sensor; low quality material: 0% share - with sensor, 100% share - without sensor&quot;').html_safe%>" href="#" class="tip_left">&nbsp;</a><br />
+    <%= f.text_field :output_description, :size => 18 %>
+  </div>
+
+  <div class="span-6">
+    <%=_('Share - with sensor').html_safe%> <a title="<%=_('Totals of all entries hereunder should be 100%.').html_safe%>" href="#" class="tip_left">&nbsp;</a><br />
+    <%= f.text_field :share_with_sensor, :size => 18 %> %
+  </div>
+
+  <div class="span-6">
+    <%=_('Share - without sensor').html_safe%> <a title="<%=_('Totals of all entries hereunder should be 100%.').html_safe%>" href="#" class="tip_left">&nbsp;</a><br />
+    <%= f.text_field :share_without_sensor, :size => 18 %> %
+  </div>
+
+<div class="clearfix"></div>
+
+  <div class="span-3 buttons last">
+     <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+  </div>
+
+<% end %>
+
+<table class="standard2" style="border-collapse: collapse;">
+    <tr class="add"> 
+      <th class="span-7">
+        <%=_('Product Output').html_safe %><br/>
+      </th>
+      <th class="span-8" style="text-align:center;">
+        <%=_('With sensor').html_safe %><br/>
+      </th>
+      <th class="span-8" style="text-align:center;">
+        <%=_('Without sensor').html_safe %>
+      </th>
+      <th class="span-1">
+        &nbsp;
+      </th>
+    </tr>   
+    <tbody id="se_use_product_datas">
+      <%= render :partial => @se_use_product_datas %>
+    </tbody>
+    <tfoot style="border-top: 1px solid black;">
+      <tr>
+        <td><%= _("Total Annual Output").html_safe %></td>
+        <td style="text-align:center">
+          <span id="total_anual_output_with_sensor"> - </span>
+          <span> <%= _("kg").html_safe %></span>
+        </td>
+        <td style="text-align:center">
+          <span id="total_anual_output_without_sensor"> - </span>
+          <span> <%= _("kg").html_safe %></span>
+        </td>
+      </tr>
+    </tfoot>
+</table>     
+
+ <div class="clear"></div>
+
+
+  <div class="buttons span-5" style="float:left;text-align:left">
+    <%= form_tag '/se_use_products/previous_step' do %>
+        <input type="hidden" name="se_product_id" id="se_product_id" value="<%=@se_product.id%>"/>
+        <button type="button" class="positive" style="float:left;text-align:left" onClick="javascript:goPrevious();"> <%= image_tag 'tick.png' %><%= _("Previous step").html_safe %></button>
+    <% end %>
+  </div>
+
+  <div class="buttons span-5 last" style="float:right;text-align:right">
+    <%= form_tag '/se_use_products/next_step' do %>
+        <input type="hidden" name="se_product_id" id="se_product_id" value="<%=@se_product.id%>"/>
+        <button type="button" class="positive" id="submit_button" style="float:right;text-align:right" onClick="javascript:goNext();"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+    <% end %>
+  </div>
+
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, se_production_intro_path(@product.se_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, se_data_quality_intro_url(@product.se_product) %></li>
+        <li><%= link_to _('To Results').html_safe, se_result_path(@product.se_product) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+
+</div>

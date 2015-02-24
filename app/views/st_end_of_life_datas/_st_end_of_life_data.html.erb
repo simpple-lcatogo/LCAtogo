@@ -1,0 +1,87 @@
+<tr id="st_end_of_life_data_<%= st_end_of_life_data.id %>">
+     <td>
+	      <% if st_end_of_life_data.st_material_data %>
+	        <% if st_end_of_life_data.st_material_data.st_material %>
+			   <%= st_end_of_life_data.st_material_data.st_material.name.html_safe %>
+			<% else %>
+			   <%= st_end_of_life_data.st_material_data.st_user_material_name %>
+			<% end %>   
+	      <% end %>
+	      <% if st_end_of_life_data.st_packaging_data %>
+			<%= st_end_of_life_data.st_packaging_data.st_packaging_type.name.html_safe %>
+	      <% end %>		
+	      <% if st_end_of_life_data.st_consumable_data %>
+			<%= st_end_of_life_data.st_consumable_data.st_material.name.html_safe %>
+	      <% end %>		
+	      		
+     </td>
+     <% if phase == 'recycling' %>
+	     <td class="quantity_recycling_<%= st_end_of_life_data.id%>"><%= st_end_of_life_data.quantity_recycling %></td>
+			<script type="text/javascript">   
+			   $(".quantity_recycling_<%= st_end_of_life_data.id%>").editInPlace({
+			        url: "/st_end_of_lives/update_quantity_recycling" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+			        params: "st_end_of_life_data_id=<%=st_end_of_life_data.id%>",
+			        saving_text: '<%=_("Saving...")%>'
+			        });	     
+	        </script>
+     <td>
+	      <% if st_end_of_life_data.st_material_data %>
+	        <% if st_end_of_life_data.st_material_data.st_material %>
+			   <%= st_end_of_life_data.st_material_data.st_material.unit.html_safe %>
+			<% else %>
+			   <%= st_end_of_life_data.st_material_data.user_unit %>
+			<% end %>   
+	      <% end %>
+	      <% if st_end_of_life_data.st_packaging_data %>
+			<%= st_end_of_life_data.st_packaging_data.st_packaging_type.unit.html_safe %>
+	      <% end %>		
+	      <% if st_end_of_life_data.st_consumable_data %>
+			<%= st_end_of_life_data.st_consumable_data.st_material.unit.html_safe %>
+	      <% end %>		
+	      		
+     </td>
+	        
+	     <td id="eco_cost_recycling_<%= st_end_of_life_data.id%>" class="eco_cost_recycling_<%= st_end_of_life_data.id%>">
+	       <% if st_end_of_life_data.eco_cost_recycling && st_end_of_life_data.quantity_recycling %>
+	          <%= lca_format_number(st_end_of_life_data.quantity_recycling * st_end_of_life_data.eco_cost_recycling / 1000, 4)  %>
+	       <% else %>
+	          0
+	       <% end %>  
+	       &euro; 
+	     </td>
+	  <% else %>
+	     <td class="quantity_incineration_<%= st_end_of_life_data.id%>"><%= st_end_of_life_data.quantity_incineration %></td>
+			<script type="text/javascript">   
+			   $(".quantity_incineration_<%= st_end_of_life_data.id%>").editInPlace({
+			        url: "/st_end_of_lives/update_quantity_incineration" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+			        params: "st_end_of_life_data_id=<%=st_end_of_life_data.id%>",
+			        saving_text: '<%=_("Saving...")%>'
+			        });
+	        </script>
+     <td>
+	      <% if st_end_of_life_data.st_material_data %>
+	        <% if st_end_of_life_data.st_material_data.st_material %>
+			  <%= st_end_of_life_data.st_material_data.st_material.unit.html_safe %>
+			<% else %>
+			  <%= st_end_of_life_data.st_material_data.user_unit %>
+			<% end %>  
+	      <% end %>
+	      <% if st_end_of_life_data.st_packaging_data %>
+			<%= st_end_of_life_data.st_packaging_data.st_packaging_type.unit.html_safe %>
+	      <% end %>		
+	      <% if st_end_of_life_data.st_consumable_data %>
+			<%= st_end_of_life_data.st_consumable_data.st_material.unit.html_safe %>
+	      <% end %>		
+	      		
+     </td>
+	     
+	     <td id="eco_cost_incineration_<%= st_end_of_life_data.id%>" class="eco_cost_incineration_<%= st_end_of_life_data.id%>">
+	       <% if st_end_of_life_data.eco_cost_incineration && st_end_of_life_data.quantity_incineration %>
+	          <%= lca_format_number(st_end_of_life_data.quantity_incineration * st_end_of_life_data.eco_cost_incineration / 1000, 4)  %>
+	       <% else %>
+	          0
+	       <% end %> 
+	       &euro;  
+	     </td>	  	
+	  <% end %>        
+</tr>

@@ -1,0 +1,474 @@
+# encoding: UTF-8
+<script type="text/javascript">
+    $(document).ready(function(){     
+
+
+    $("#bp_material").change(function(){
+            
+            var id_value_string = $(this).val();
+            if ((id_value_string == "") ||  (id_value_string == null)) {
+                // if the id is empty remove all the sub_selection options from being selectable and do not do any ajax
+                $("#bp_manufacturing_process option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#bp_manufacturing_process");
+            }
+            else {
+             
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {bp_material_id: id_value_string, type: 'bp_manufacturing_process_for_bp_material'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                       
+                       $("#bp_manufacturing_process option").remove();
+                       var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.bp_manufacturing_process.id + "\">" + j.bp_manufacturing_process.name + "</option>";  
+                            $(row).appendTo("select#bp_manufacturing_process");
+
+                        }); 
+                     }
+                });
+             };   
+           });
+
+
+      $("#bp_manufacturing_transport_data_bp_mode_id").change(function(){
+            
+            var id_value_string = $(this).val();
+            if ((id_value_string == "") ||  (id_value_string == null)) {
+                // if the id is empty remove all the sub_selection options from being selectable and do not do any ajax
+                $("#bp_manufacturing_transport_data_bp_vehicle_id option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#bp_manufacturing_transport_data_bp_vehicle_id");
+            }
+            else {
+             
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {bp_mode_id: id_value_string, type: 'bp_vehicles_for_bp_model'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                       
+                       $("#bp_manufacturing_transport_data_bp_vehicle_id option").remove();
+                       var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.bp_vehicle.id + "\">" + j.bp_vehicle.name + "</option>";  
+                            $(row).appendTo("select#bp_manufacturing_transport_data_bp_vehicle_id");
+
+                        }); 
+                     }
+                });
+             };   
+           });
+
+    $("#bp_material").change();
+    $("#bp_manufacturing_transport_data_bp_mode_id").change();
+
+   
+
+    });
+</script>
+
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/lca/bp_tabs') %>
+	</div>
+<div class="clear"></div>
+   <table>
+      <tr>
+        <td style="background:#2b4950;color:#EBEEDB;width:25%">
+          <b><%=_('Functional unit').html_safe%></b>
+        </td>
+        <td>  
+          <%= @bp_product.functional_unit if !@bp_product.functional_unit.blank? %>
+        </td>
+      </tr>
+    </table>     
+<div class="clear"></div>
+
+    <%= form_for BpManufacturingData.new, :remote => true do |f| %>
+      <fieldset class="empty">
+        <legend><%=_('Processing').html_safe%></legend>
+        <input type="hidden" name="bp_manufacturing_data[bp_product_id]" id="bp_product_id" value="<%=@bp_product.id%>"/>
+
+          <p><%= _("Select per each material the process/es applied and enter their input parameters in &quot;Process profile&quot; if they are known:").html_safe%></p>
+
+          <p style="font-size:11px; font-style:italic;"><%= _("(Note 1: add a previous additional process of &quot;Drying of pellets&quot; for the following materials: PLA, starch blend, potato-based fermented starch, PHB, partially sugarcane-based PET, PBS and PET)").html_safe%>
+            <br>
+           <%= _("(Note 2: only in case of PVC selected as raw material, enter your process parameters, if known, for compounding. If not, default values will be used. Consider the amount of PVC and the amount of additives as the total amount for processing)").html_safe%></p>
+           <br>
+
+        <!-- Materials --> 
+        <div class="span-4">    
+           <%= f.label :value, _('Material').html_safe %>
+           <br/>
+            <select class="span-4" id="bp_material" name="bp_manufacturing_data[bp_material_id]">
+             
+             <% @bp_material_datas.each do |material_data| %>
+                <% if material_data.bp_material %>
+                  <option value="<%=material_data.bp_material.id%>"><%=material_data.bp_material.name.html_safe%></option>
+                <% end %>
+             <% end %>
+           
+           </select>
+        </div>
+
+        <!-- Process -->
+        <div class="span-4">    
+           <%= f.label :value, _('Process').html_safe %> 
+           <br/>
+            <select class="span-4" id="bp_manufacturing_process" name="bp_manufacturing_data[bp_manufacturing_process_id]">
+           <% @bp_manufacturing_processes.each do |bp_manufacturing_process| %>
+              <option value="<%=bp_manufacturing_process.id%>"><%=bp_manufacturing_process.name.html_safe%></option>
+           <% end %>
+           </select>
+      </div>
+        
+      <!-- Quantity -->
+      <div class="span-2" id="div_quantity"> 
+         <%= f.label :value, _('Amount').html_safe %> 
+         </br>
+         <%= f.text_field :quantity, :size => 5%>
+      </div>
+
+       <!-- Units -->
+      <div class="span-2">    
+         <%= f.label :value, _('Unit').html_safe %> 
+         <br/>
+         <select class="span-2" id="bp_manufacturing_data_bp_units_id" name="bp_manufacturing_data[bp_unit_id]">
+           <% @bp_units.each do |bp_unit| %>  
+              <option value="<%=bp_unit.id%>"><%=bp_unit.name.html_safe%></option>
+           <% end %>
+         </select>
+      </div>
+      
+       <!-- Country -->
+      <div class="span-4">    
+         <%= f.label :value, _('Processing place*').html_safe %> 
+         <br/>
+         <select class="span-3" id="bp_manufacturing_data_bp_country_info_id" name="bp_manufacturing_data[bp_country_info_id]">
+         <% @bp_country_infos.each do |bp_country_info| %>  
+            <% if bp_country_info.name == 'Europe' %>
+               <option value="<%=bp_country_info.id%>" selected="true"><%=bp_country_info.name.html_safe%></option>
+            <% else %>
+               <option value="<%=bp_country_info.id%>"><%=bp_country_info.name.html_safe%></option>
+            <% end %>   
+         <% end %>
+         </select>
+      </div>
+
+      <!-- Comment -->
+      <div class="span-5"> 
+         <%= f.label :value, _('Comment').html_safe %> 
+         </br>
+         <%= f.text_field :comment, :size => 26  %>
+      </div>
+
+      <div class="clear"></div>
+
+      <p style="font-size:11px;"><%= _("*Country where the process takes place").html_safe %></p>
+        
+      <div class="span-3 buttons last">
+         <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+      </div>
+
+      </fieldset>
+    <% end %> 
+    
+    <table class="standard2">
+    <tr class="add"> 
+      <th class="span-2">
+        <%=_('Material').html_safe %><br/>
+      </th>
+      <th class="span-2">
+        <%=_('Process').html_safe %><br/>
+      </th>
+      <th class="span-3" >
+        <%=_('Amount (kg)').html_safe %>
+      </th>
+     <!-- <th class="span-1">
+        <%#=_('Unit').html_safe %>
+      </th> -->
+      <th class="span-3">
+        <%=_('Processing place').html_safe %> <a title="<%=_('This option enables you to take into account the electricity mix of the country where you are manufacturing your product. By default, the European electricity mix is considered.').html_safe%>" href="#" class="tip">&nbsp;</a><br/>
+      </th>  
+      <th class="span-8">
+        <%=_('Process profile').html_safe %> <a title="<%=_('<p>We recommend to enter your own data for the manufacturing stage, since you will increase data accuracy and take into account the efficiency of your process.</p><p> </p><p> Default values for Injection moulding and Injection strech blow moulding are given for an hydraulic injection equipment. Do not use this data in case you are considering hybrid and electric injection equipment.</p>').html_safe%>" href="#" class="tip">&nbsp;</a><br/>
+      </th>
+      <th class="span-6">
+        <%=_('Comment').html_safe %>
+      </th>
+      <th class="span-1">
+        &nbsp;
+      </th>
+    </tr>   
+    <tbody id="bp_manufacturing_datas">
+      <%= render :partial => @bp_manufacturing_datas, :locals => { :list => true } %>
+    </tbody>   
+  </table>
+
+
+<!-- -->
+
+    <%= form_for BpFinishingData.new, :remote => true do |f| %>
+      <fieldset class="empty">
+        <legend><%=_('Finishing').html_safe%></legend>
+        <input type="hidden" name="bp_finishing_data[bp_product_id]" id="bp_product_id" value="<%=@bp_product.id%>"/>
+
+          <p><%= _("Select per each material the process/es applied and enter their input parameters in &quot;Process profile&quot; if they are known:").html_safe%></p>
+
+
+        <!-- Materials --> 
+        <div class="span-4">    
+           <%= f.label :value, _('Material').html_safe %>
+           <br/>
+            <select class="span-4" id="bp_finishing_data_bp_material" name="bp_finishing_data[bp_material_id]">
+             
+             <% @bp_material_datas.each do |material_data| %>
+                <% if material_data.bp_material %>
+                   <option value="<%=material_data.bp_material.id%>"><%=material_data.bp_material.name.html_safe%></option>
+                <% end %>
+             <% end %>
+           
+           </select>
+        </div>
+
+        <!-- Process -->
+        <div class="span-4">    
+           <%= f.label :value, _('Process').html_safe %> 
+           <br/>
+            <select class="span-4" id="bp_finishing_data_bp_manufacturing_process" name="bp_finishing_data[bp_manufacturing_process_id]">
+            <% if @bp_material_datas.size > 0 %>
+		           <% @bp_finishing_processes.each do |bp_finishing_process| %>
+		              <option value="<%=bp_finishing_process.id%>"><%=bp_finishing_process.name.html_safe%></option>
+		           <% end %>
+            <% end %>
+           </select>
+      </div>
+        
+      <!-- Quantity -->
+      <div class="span-3" id="div_quantity">
+         <%= f.label :value, _('Surface').html_safe %>
+         </br>
+         <%= f.text_field :quantity, :size => 5%> <%=  _("m<sup>2</sup>").html_safe %>
+      </div>
+
+
+      
+       <!-- Country -->
+      <div class="span-4">    
+         <%= f.label :value, _('Processing place*').html_safe %> 
+         <br/>
+         <select class="span-3" id="bp_finishing_data_bp_country_info_id" name="bp_finishing_data[bp_country_info_id]">
+         <% @bp_country_infos.each do |bp_country_info| %>  
+            <% if bp_country_info.name == 'Europe' %>
+               <option value="<%=bp_country_info.id%>" selected="true"><%=bp_country_info.name.html_safe%></option>
+            <% else %>
+               <option value="<%=bp_country_info.id%>"><%=bp_country_info.name.html_safe%></option>
+            <% end %>   
+         <% end %>
+         </select>
+      </div>
+
+      <!-- Comment -->
+      <div class="span-5"> 
+         <%= f.label :value, _('Comment').html_safe %> 
+         </br>
+         <%= f.text_field :comment, :size => 26  %>
+      </div>
+
+      <div class="clear"></div>
+
+      <p style="font-size:11px;"><%= _("*Country where the process takes place").html_safe %></p>
+        
+      <div class="span-3 buttons last">
+         <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+      </div>
+
+      </fieldset>
+    <% end %> 
+    
+    <table class="standard2">
+    <tr class="add"> 
+      <th class="span-2">
+        <%=_('Material').html_safe %><br/>
+      </th>
+      <th class="span-2">
+        <%=_('Process').html_safe %><br/>
+      </th>
+      <th class="span-3" >
+        <%=_('Surface (m<sup>2</sup>)').html_safe %>
+      </th>
+      <th class="span-3">
+        <%=_('Processing place').html_safe %> <a title="<%=_('This option enables you to take into account the electricity mix of the country where you are manufacturing your product. By default, the European electricity mix is considered.').html_safe%>" href="#" class="tip">&nbsp;</a><br/>
+      </th>  
+      <th class="span-8">
+        <%=_('Process profile').html_safe %> <a title="<%=_('We recommend to enter your own data for the manufacturing stage, since you will increase data accuracy and take into account the efficiency of your process.').html_safe%>" href="#" class="tip">&nbsp;</a><br/>
+      </th>
+      <th class="span-6">
+        <%=_('Comment').html_safe %>
+      </th>
+      <th class="span-1">
+        &nbsp;
+      </th>
+    </tr>   
+    <tbody id="bp_finishing_datas">
+      <%= render :partial => @bp_finishing_datas, :locals => { :list => true } %>
+    </tbody>   
+  </table>
+
+
+  <!-- -->
+  <%= form_for BpManufacturingTransportData.new, :remote => true do |f| %>
+      <fieldset class="empty">
+        <legend><%=_('Transport')%></legend>
+        <input type="hidden" name="bp_manufacturing_transport_data[bp_product_id]" id="bp_product_id" value="<%=@bp_product.id%>"/>
+
+        <p><%= _('Only additional transport for intermediate products (e.g.: PET bottle preforms, unprinted films, film reels for subsequent die-cut, etc.), not transport to final customer. ').html_safe %>
+        <a title="<%=_('Please indicate here any additional transport can be necessary to transport semi-finished products between plants.').html_safe%>" href="#" class="tip">&nbsp;</a><br/>
+        </p>
+        <p><%= _('Select transport mode, enter the distance covered by each transport and the amount of material transported:').html_safe %></p>
+        
+        <!-- Mode -->
+          <div class="span-3">    
+             <%= f.label :value, _('Mode').html_safe %>
+             <br/>
+             <select class="span-3" id="bp_manufacturing_transport_data_bp_mode_id" name="bp_manufacturing_transport_data[bp_mode_id]">
+                <option value="" selected></option>
+               <% @bp_modes.each do |bp_mode| %>
+                  <option value="<%=bp_mode.id%>"><%=bp_mode.name.html_safe%></option>
+               <% end %>
+             </select>
+          </div> 
+        
+        <!-- Vehicle -->
+          <div class="span-3"> 
+             <%= f.label :value, _('Type').html_safe %>
+             </br>
+             <select class="span-3" id="bp_manufacturing_transport_data_bp_vehicle_id" name="bp_manufacturing_transport_data[bp_vehicle_id]">
+               <% @bp_vehicles.each do |bp_vehicle| %>
+                  <option value="<%=bp_vehicle.id%>"><%=bp_vehicle.name.html_safe%></option>
+               <% end %>
+             </select>
+             
+          </div> 
+        
+        <!-- Distance -->
+          <div class="span-3"> 
+             <%= f.label :value, _('Distance').html_safe %> 
+             </br>
+             <%= f.text_field :distance, :size => 6 %> km
+          </div>
+
+        <!-- Amount -->
+          <div class="span-3"> 
+             <%= f.label :value, _('Amount').html_safe %>
+             </br>
+             <%= f.text_field :amount, :size => 6 %> kg
+          </div>
+
+        <!-- Comment -->
+          <div class="span-9"> 
+           <%= f.label :value, _('Comment').html_safe %>
+           </br>
+           <%= f.text_field :comment, :size => 38 %>
+          </div>   
+
+
+        <div class="clear"></div> 
+        
+                
+        
+      <div class="span-3 buttons last">
+         <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+      </div>
+          <div class="clear"></div>       
+      </fieldset>
+    <% end %> 
+    
+    <table class="standard2">
+    <tr class="add"> 
+      <th class="span-2">
+        <%=_('Mode').html_safe %>
+      </th>
+      <th class="span-4">
+        <%=_('Type').html_safe %>
+      </th>
+      <th class="span-3">
+        <%=_('Distance (km)').html_safe %>
+      </th>
+      <th class="span-3">
+        <%=_('Amount (kg)').html_safe %>
+      </th>
+      <th class="span-2">
+        <%=_('Comment').html_safe %>
+      </th>
+      <th class="span-1">
+        &nbsp;
+      </th>
+    </tr>
+    <tbody id="bp_manufacturing_transport_datas">
+      <%= render :partial => @bp_manufacturing_transport_datas, :locals => { :list => true } %>
+    </tbody>   
+  </table>
+
+
+
+
+
+  <!-- -->
+
+
+
+    
+<div class="buttons span-5" style="float:left;text-align:left">
+  <%= form_tag '/bp_manufacturing/previous_step' do %>
+    <input type="hidden" name="bp_product_id" id="bp_product_id" value="<%=@bp_product.id%>"/>	
+	<button type="submit" class="positive" style="float:left;text-align:left"> <%= image_tag 'tick.png' %><%= _("Previous step").html_safe %></button>
+  <% end %>
+  </div>    	    
+    
+<div class="buttons span-5 last" style="float:right;text-align:right">
+  <%= form_tag '/bp_manufacturing/next_step' do %>
+    <input type="hidden" name="bp_product_id" id="bp_product_id" value="<%=@bp_product.id%>"/>  
+  <button type="submit" class="positive" style="float:right;text-align:right"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+  <% end %>
+  </div>      
+
+
+    <div class="clear"></div>
+    <div class="navbar">
+      <!-- <div id="for-ie"> -->
+      <div>
+        <ul>
+          <li><%= link_to _('To Introduction').html_safe, bp_production_intro_path(@bp_product) %></li>
+          <li><%= link_to _('To Data Quality').html_safe, bp_data_quality_intro_path(@bp_product) %></li>
+          <li><%= link_to _('To Results').html_safe, bp_result_url(@bp_product) %></li>
+          <li><%= link_to _('To Economic Data'), bp_economic_url(@bp_product) %></li>
+        </ul>
+      </div>
+    </div>
+
+
+    <div class="clear"></div>
+
+
+</div>	 

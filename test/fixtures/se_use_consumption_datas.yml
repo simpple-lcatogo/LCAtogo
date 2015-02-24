@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  se_product: 
+  se_energy_type: 
+  se_energy_use: 
+  with_sensor: 1.5
+  without_sensor: 1.5
+
+two:
+  se_product: 
+  se_energy_type: 
+  se_energy_use: 
+  with_sensor: 1.5
+  without_sensor: 1.5

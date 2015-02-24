@@ -1,0 +1,84 @@
+<h1 class="green">
+   <div style="width:50%;display:inline;float:left"><%=_('Login').html_safe%></div>
+   <div style="width:50%;display:inline;float:right"><span style="padding-left:20px"><%=_('Need some Help?')%></span></div>
+   <div class="clear"></div>   
+</h1>
+
+  <div>
+
+	<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+    <div class="span-10 prepend-2 prepend-top">
+      <h3><%= _("Welcome!").html_safe %></h3>
+      <%= _("Please login to access the <strong>LCAtogo Tool</strong>.").html_safe %><br/><br/>
+      <p><label><%=_('E-mail').html_safe %></label><br/>
+      <%= f.text_field :email, :size => 40 %></p>
+      <p><label><%=_('Password').html_safe %></label><br/>
+      <%= f.password_field :password, :size => 40 %></p>
+      <div class="buttons span-10 append-bottom last">
+        <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Login").html_safe %></button>
+      </div>
+      
+    </div>
+    <div style="display:inline;width:1px;background:#666666;float:left;height:310px">&nbsp;</div> 
+    <div class="span-10 prepend-top last" style="padding-left:20px">
+      <%= render :partial => "devise/shared/links" %>
+     <!--  <%= image_tag("logo_lca_to_go.png", :border=>0)%> -->
+    </div>
+    <div class="clear"></div>
+    
+    
+
+    
+
+   
+    
+
+<!--    <div style="margin-bottom:3px;margin-left:20px;margin-right:20px"> 
+      <span class="tip_text"><%=_('LCA to go is currently in its pilot stage (beta release) and right now the available sectors are electronics, photovoltaics, bio-based plastics, machine tools, printed circuit boards, sensors and smart textiles.').html_safe%></span>
+    </div>
+    <div style="margin-left:20px;margin-right:20px">   
+      <span class="tip_text"><%=_('Please indicate your preferred sector in the registration page and we will inform you of the project development and training opportunities.').html_safe%></span>
+    </div>          
+-->
+    <div class="clear"></div>
+<!--	  <% if devise_mapping.rememberable? -%>
+	    <p><%= f.check_box :remember_me %> <%= f.label :remember_me %></p>
+	  <% end -%>
+-->	
+	<% end %>
+
+    <div class="clear"></div>
+	
+    </div>	
+  </div>
+    <div style="margin-bottom:3px;margin-left:20px;margin-right:20px">
+      <span class="tip_text"><%=_('LCA to go web tool is a simplified Life Cycle Based Assessment tool focusing on photovoltaics, bio-based plastics, sensors, smart textiles, machine tools, printed circuit boards and electronics. ').html_safe%></span>
+    </div>
+    <br/>
+<div>
+  <div style="width:50%;display:inline;float:left">
+   <table width="50%">
+      <tr>
+        <td style="text-align:center;font-size:10px;width:25%"><%= image_tag("logos/logo_bio.png", :border=>0, :width => 64, :height => 64)%><br/><%=_('bio-based plastics').html_safe%></td>
+        <td style="text-align:center;font-size:10px;width:25%"><%= image_tag("logos/logo_machine.png", :border=>0, :width => 64, :height => 64)%><br/><%=_('machine tools').html_safe%></td>
+        <td style="text-align:center;font-size:10px;width:25%"><%= image_tag("logos/logo_sensors.png", :border=>0, :width => 64, :height => 64)%><br/><%=_('sensors').html_safe%></td>
+        <td style="text-align:center;font-size:10px;width:25%"><%= image_tag("logos/logo_photovoltaics.png", :border=>0, :width => 64, :height => 64)%><br/><%=_('photovoltaic').html_safe%></td>        
+      </tr>
+   </table>
+
+   <table width="50%">
+      <tr>
+        <td style="text-align:center;font-size:10px;width:33%"><%= image_tag("logos/logo_electronics.png", :border=>0, :width => 64, :height => 64)%><br/><%=_('electronics').html_safe%></td>
+        <td style="text-align:center;font-size:10px;width:33%"><%= image_tag("logos/logo_smart.png", :border=>0, :width => 64, :height => 64)%><br/><%=_('smart textiles').html_safe%></td>
+        <td style="text-align:center;font-size:10px;width:33%"><%= image_tag("logos/logo_pcb.png", :border=>0, :width => 64, :height => 64)%><br/><%=_('printed circuit boards').html_safe%></td>                
+      </tr>
+   </table>
+  </div> 
+
+
+   <div style="width:50%;display:inline;float:right;text-align:center">
+      <%= image_tag("logos/esquema_general.png", :border=>0, :width => 400)%>
+   </div>
+   <div class="clear"></div>
+   
+   <br/><br/>  

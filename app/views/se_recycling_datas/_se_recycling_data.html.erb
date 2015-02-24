@@ -1,0 +1,27 @@
+<tr id="se_recycling_data_<%= se_recycling_data.id %>">
+     <td>
+          <% if se_recycling_data.se_production_yield_loss_material.name_en != 'Other' %>
+    		<%= se_recycling_data.se_production_yield_loss_material.name.html_safe %>
+          <% else %>
+            <%= se_recycling_data.description.html_safe %>
+          <% end %>		
+     </td>
+     <td style="text-align:center;">
+          <%= se_recycling_data.with_sensor.to_s.html_safe %> <span>%</span>
+     </td>
+     <td style="text-align:center;">
+          <%= se_recycling_data.without_sensor.to_s.html_safe %> <span>%</span>
+     </td>
+     <td style="text-align:center;">
+          <%= se_recycling_data.recycling_revenue.to_s.html_safe %> <span><%= _('&euro;/kg').html_safe%></span>
+     </td>
+      <td style="text-align:center;">
+          <% if  se_recycling_data.global_warming_potential.nil? %>
+          -
+          <% else %>
+              <%= se_recycling_data.global_warming_potential.to_s.html_safe %><span> <%= _('kg CO<sub>2</sub> eq/kg').html_safe %></span>
+          <% end %>
+     </td>
+
+  <td class="center"><%= link_to '&#10006;'.html_safe, se_recycling_data_path(se_recycling_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>

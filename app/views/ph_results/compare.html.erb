@@ -1,0 +1,91 @@
+<h1><%=_('Comparison').html_safe%>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/ph_results/tabs') %>
+	</div>
+
+
+  <div class="buttons span-23 last">
+    <%= form_tag '/ph_results/pdf_compare' do %>
+        <input type="hidden" name="ph_product_id" id="ph_product_id" value="<%=@ph_product.id%>"/>
+        <% @products_checked.each do |product| %>
+            <input type="hidden" name="compare_product_<%=product.id%>" id="compare_product_<%=product.id%>"/>
+        <% end %>
+        <button type="submit" class="positive" style="float:left"> <%= image_tag 'page_white_acrobat.png' %><%= _("Summary Report").html_safe %></button>
+    <% end %>
+  </div>
+  <div class="clear"></div>
+
+   <h2><%=_('Carbon footprint').html_safe%> <a title="<%=_('Comparison of the carbon footprint of the different parts of the systems').html_safe%>" href="#" class="tip_left">&nbsp;</a></h2>
+
+
+
+  <%
+     # 7 --> phases selected
+     height =  (7 * 14) + ((@products_checked.size + 1) * 7) * 14 + 30
+     axis_format = ''
+     axis_format_energy = ''
+     index_axis = 0
+     while index_axis <=  @products_checked.size
+       axis_format += 'N*f0*,000000,' + index_axis.to_s + ',-1,11,,:10:'
+       axis_format_energy += 'N*f2*,000000,' + index_axis.to_s + ',-1,11,,:10:'
+       if index_axis != @products_checked.size
+         axis_format += '|'
+         axis_format_energy += '|'
+       end
+       index_axis = index_axis + 1
+     end
+  %>
+
+
+   <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=14&amp;chts=2B4950,16,l&amp;chxt=x,y&amp;cht=bhg&amp;chds=a&amp;chd=t:<%=@values_co2_to_array%>&amp;chco=<%=@seriesColors_to_array%>&amp;chls=2.0&amp;chs=530x<%=height%>&amp;chxl=1:<%=@ticks_to_array%>&amp;chm=<%=axis_format%>&amp;chdl=<%=@legend%>"
+     style="padding-right:20px;padding-bottom:0px;">
+ 	<div style="width:600px;text-align:center;font-size:11px;"><%=_('Carbon footprint (kg CO<sub>2</sub>-eq)').html_safe%></div>
+      
+   <br/><br/>   
+	
+   <h2><%=_('Energy').html_safe%> <a title="<%=_('Comparison of the fractions of the energy payback time of the different parts of the system').html_safe%>" href="#" class="tip_left">&nbsp;</a></h2>
+   
+   <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=14&amp;chts=2B4950,16,l&amp;chxt=x,y&amp;cht=bhg&amp;chds=a&amp;chd=t:<%=@values_pe_to_array%>&amp;chco=<%=@seriesColors_to_array%>&amp;chls=2.0&amp;chs=530x<%=height%>&amp;chxl=1:<%=@ticks_to_array%>&amp;chm=<%=axis_format_energy%>&amp;chxs=1,,11,-1,lt&amp;chdl=<%=@legend%>"
+     style="padding-right:20px;padding-bottom:0px;">
+	<div style="width:600px;text-align:center;padding-bottom:40px;font-size:11px;"><%=_('Energy Payback time (years)').html_safe%></div>
+
+
+   <br/><br/>   
+	
+   <h2><%=_('Lifetime electricity production').html_safe%></h2>
+
+  <% height_lifetime = (@products_checked.size * 26)  + 32 %>
+
+   <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=18&amp;chts=2B4950,16,l&amp;chxt=x,y&amp;cht=bhg&amp;chds=a&amp;chd=t:<%=@values_lifetime_to_array%>&amp;chco=<%=@seriesColors_to_array%>&amp;chls=2.0&amp;chs=600x<%=height_lifetime%>&amp;chxl=1:<%=@ticks_lifetime_to_array%>&amp;chm=<%=axis_format%>&amp;chxs=1,,11,-1,lt&amp;chdl=<%=@legend%>"
+     style="padding-right:20px;padding-bottom:0px;">
+	<div style="width:600px;text-align:center;padding-bottom:40px;font-size:11px;"><%=_('Lifetime electricity production (kWh)').html_safe%></div>
+	
+
+    <div class="buttons span-5" style="float:left;text-align:left">
+      <a href="<%=ph_comparison_url(@ph_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Previous step").html_safe %></a>
+    </div>
+
+
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, ph_production_intro_path(@ph_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, ph_data_quality_intro_path(@ph_product) %></li>
+        <li><%= link_to _('To Data Entry').html_safe, ph_basic_information_path(@ph_product) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+
+</div>

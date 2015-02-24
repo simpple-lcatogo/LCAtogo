@@ -1,0 +1,136 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#mt_assessment_mt_product_type_id").change(function(){
+            var id_value_string = $(this).val();
+            if ((id_value_string == "") ||  (id_value_string == null)) {
+               $("#product_type_text").show(); 
+             } else {
+               $("#product_type_text").hide(); 
+             } 
+             
+           });     
+      $("#mt_assessment_mt_product_type_id").change();      
+    });
+</script>
+
+<h1><%=_('Assessment method').html_safe%>  
+</h1>
+<div class="content_skin">
+  <div class="clear"></div>
+
+  <%= form_for @mt_assessment do |f| %>
+      <fieldset class="empty">
+        <legend><%=_('Product definition').html_safe%></legend>
+        <input type="hidden" name="mt_product_id" id="mt_product_id" value="<%=@mt_product.id%>"/>
+        <div class="span-10" >
+          <%= f.label :weight, _('Total weight').html_safe %> <a title="<%=_('Please indicate the total machine weight, without packaging.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+        </div>
+        <div class="span-5" >
+          <%= f.text_field :weight, :size => 5%> kg
+        </div>
+          
+        <div class="clear"></div>
+               
+        <div class="span-10" >
+          <%= f.label :lifetime, _('Lifetime').html_safe %> <a title="<%=_('Please indicate the typical machine lifetime in years assuming an average use intensity.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+        </div>  
+        <div class="span-5" >
+          <%= f.text_field :lifetime, :size => 5%> <%=_('years').html_safe%>
+        </div>
+        <div class="clear"></div>        
+        <div class="span-10" >
+          <%= f.label :mt_product_type_id, _('Indicate your product/process type').html_safe %> <a title="<%=_('Please indicate which type of machine tool you will be evaluating. (eg. Drilling machine, milling machine, etc.)').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+        </div>
+                
+        <div class="span-5" >
+		     <select id="mt_assessment_mt_product_type_id" name="mt_assessment[mt_product_type_id]">
+			     <% @mt_product_types.each do |mt_product_type| %>
+			        <% if @mt_assessment.mt_product_type && @mt_assessment.mt_product_type.id == mt_product_type.id %>
+			           <option selected="true" value="<%=mt_product_type.id%>"><%=mt_product_type.name.html_safe%></option>
+			        <% else %>
+			           <option value="<%=mt_product_type.id%>"><%=mt_product_type.name.html_safe%></option>
+			        <% end %>   
+			     <% end %>
+			     <% if !@mt_assessment.mt_product_type && !@mt_assessment.product_type.blank? %>
+			        <option value="" selected="true"><%=_('Other').html_safe%></option>
+			     <% else %>
+			        <option value=""><%=_('Other').html_safe%></option>
+			     <% end %>   
+		     </select>          
+         </div>
+
+        <div class="span-5" id="product_type_text" style="display:none">
+          <%= f.text_field :product_type, :size => 20%>
+        </div>
+
+        <div class="span-10" >
+          <%= f.label :mt_assessment_type, _('Assessment method').html_safe %> <a title="<%=_('Select a rough assessment if this is your initial study of your product or process. If you have already completed a rough assessment and you have highlighted your main lifecycle phases that you want to look at in more detail then you should select the Detailed assessment option.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+        </div>
+        <div class="span-5" >
+                <% if @mt_product.is_completed %>
+		          <select id="mt_assessment_assessment_type" name="mt_assessment[assessment_type]" disabled="true">
+		        <% else %>     
+		          <select id="mt_assessment_assessment_type" name="mt_assessment[assessment_type]">
+		        <% end %>     
+		        <% if @mt_assessment.assessment_type && @mt_assessment.assessment_type == 'rough' %>
+		            <option value="rough" selected="true"><%=_('Rough assessment').html_safe%></option>
+		        <% else %>
+		            <option value="rough"><%=_('Rough assessment').html_safe%></option>
+		        <% end %>
+		        <% if @mt_assessment.assessment_type && @mt_assessment.assessment_type == 'detailed' %>
+		            <option value="detailed" selected="true"><%=_('Detailed assessment').html_safe%></option>
+		        <% else %>
+		            <option value="detailed"><%=_('Detailed assessment').html_safe%></option>
+		        <% end %>    
+		     </select>          
+         </div>
+
+   <div class="clear"></div>
+
+   <div class="buttons" style="float:right">
+     <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("To Data Entry").html_safe %></button>
+   </div>
+
+
+   <% end %>
+</div>   
+<!--
+<div class="clear"></div>
+  <div class="span-23" style="text-align:center;font-size:11">
+     <ul style="padding-left:0;margin-right:50px">	       
+        <li class="link_booklabels"><%= link_to _('To Improvements').html_safe, mt_production_improvement_path(@mt_product) %></li>     
+     
+        <li class="link_booklabels"><%= link_to _('To Results').html_safe, mt_result_path(@mt_product) %></li>
+	        
+	    <li class="link_booklabels"><%= link_to _('To Data Quality'), mt_data_quality_path(@mt_product) %></li>
+
+	    <li class="link_booklabels"><%= link_to _('To Data Entry'),  mt_raw_material_path(@mt_product) %></li>
+	        
+	    <li class="link_booklabels"><%= link_to _('To Introduction').html_safe, mt_production_intro_url(@mt_product) %></li>
+        <div class="clear"></div>
+     </ul>
+  </div>   
+<br/>   
+<div class="clear"></div>
+
+-->
+
+<div class="clear"></div>
+<div class="navbar">
+  <!-- <div id="for-ie"> -->
+  <div>
+    <ul>
+      <li><%= link_to _('To Introduction').html_safe, mt_production_intro_url(@mt_product) %></li>
+      <li><%= link_to _('To Data Entry').html_safe, mt_raw_material_path(@mt_product) %></li>
+      <li><%= link_to _('To Data Quality').html_safe, mt_data_quality_path(@mt_product) %></li>
+      <li><%= link_to _('To Results').html_safe, mt_result_path(@mt_product) %></li>
+      <li><%= link_to _('To Improvements').html_safe, mt_production_improvement_path(@mt_product) %></li>
+    </ul>
+  </div>
+</div>
+
+
+<div class="clear"></div>
+
+
+<br/> 

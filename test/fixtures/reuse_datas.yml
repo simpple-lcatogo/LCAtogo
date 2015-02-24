@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  product_id: 1
+  material_id: 1
+  contained: 1.5
+  anticipated: 1.5
+  contained_repair: 1.5
+  anticipated_repair: 1.5
+
+two:
+  product_id: 1
+  material_id: 1
+  contained: 1.5
+  anticipated: 1.5
+  contained_repair: 1.5
+  anticipated_repair: 1.5

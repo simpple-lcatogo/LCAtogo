@@ -1,0 +1,39 @@
+
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Introduction').html_safe%></span>
+</h1>
+
+
+<div class="content_skin">
+     <%=_('The intention of using the tool is to evaluate the environmental performance and/or benefits of a projected photovoltaic installation. Further features are the proposal of improvement actions and a support for the choice of the most suitable PV technology for specified conditions.').html_safe%>
+     <br/><br/>
+     <%=_('In the <b>"DATA ENTRY"</b> module, the user should enter the needed data for simulating your PV system (i.e. materials, etc.). The system by default suggests some values, but the user can change them at his convenience. In case the data entered by the user is out of range, an alert appears to guarantee that these values are between the defined limits. The steps to be followed are:').html_safe%>
+     <ul>
+       <li><%=_('BASIC PROJECT INFORMATION.- Here, the user should enter the basic information of the project, including country of use, solar radiation, type of mounting, etc. In this step the user decides which parameter is know about the PV system (i.e. area or power). This parameter will be used as basis for further calculations and system optimisation.').html_safe%></li>
+       <li><%=_('MODULE TYPE.- Here the user should choose the specific Module type used in the system. Default data appears about the selected module characteristics, but the user can change this data. Also in this step, the user can decide the Benchmarking Options to be analysed, that is, Which parameters can theoretically be influenced by the user.').html_safe%></li>
+       <li><%=_('INTERMEDIATE RESULTS.- Here the user receive a first evaluation about the data entered, and introduces the country where the different modules of the system are produced. If it is "unknown", default data is used.').html_safe%></li>
+       <li><%=_('ELECTRIC COMPONENTS.- Here the user includes the information about the different electric components used in the system (i.e. Inverters and batteries).').html_safe%></li>
+       <li><%=_('MAINTENANCE.- Here the user includes the information about the maintenance requirements for the system (e.g. frequency, components and operator distance)').html_safe%></li>
+     </ul>   
+     <%=_('In the "RESULT" module you could see the results using different perspectives:').html_safe%>
+     <ul>
+       <li><%=_('"SUMMARY RESULTS", where the main characteristics of the system are explained.').html_safe%></li>
+       <li><%=_('"DETAILED RESULTS", where the results for the proposed indicators (i.e. Carbon footprint and Embedded Energy) are shown for the different components of the system. In this page it is also showed the comparison of the produced energy (using the proposed system) with other energy sources.').html_safe%></li>
+       <li><%=_('"COMPARE RESULTS" that allows you to compare the results obtained for the system with other products previously assessed by the user (e.g. previous designs of theproduct or benchmarking products)').html_safe%></li>
+     </ul>   
+   
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Data Entry').html_safe, ph_basic_information_path(@ph_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, ph_data_quality_intro_path(@ph_product) %></li>
+        <li><%= link_to _('To Results').html_safe, ph_result_summary_path(@ph_product) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+
+</div>	

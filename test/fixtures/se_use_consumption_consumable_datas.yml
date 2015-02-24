@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  se_product: 
+  se_consumable: 
+  with_sensor: 1.5
+  without_sensor: 1.5
+  description: MyText
+  global_warming_potential: 1.5
+
+two:
+  se_product: 
+  se_consumable: 
+  with_sensor: 1.5
+  without_sensor: 1.5
+  description: MyText
+  global_warming_potential: 1.5

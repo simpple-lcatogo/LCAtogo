@@ -1,0 +1,318 @@
+<script type="text/javascript">
+  function checkFields() {
+     var isOk = true;
+     return isOk;   
+  }
+
+  function goPrevious() {
+     if (checkFields()) {
+        document.getElementById("arrow").value = 'previous';
+        document.forms[0].submit();
+     }         
+  }
+
+  function goNext() {
+     if (checkFields()) {
+        document.getElementById("arrow").value = 'next';
+        document.forms[0].submit();
+     }     
+  }
+  
+  function updateRecyclings() {
+      var sum_bonus = 0;
+	  $('[id^=eco_cost_recycling]').each(function(index) {
+	    var value = parseFloat($(this).html());	    
+	    if (value < 0) {
+	       sum_bonus += value;
+	    }
+	  });
+      $("#bonus_total_recycling").html(sum_bonus.toFixed(4));
+      $("#eco_total_recycling").html((sum_bonus + <%=@recycling_processes%>).toFixed(4));
+   }
+  
+  function updateIncinerations() {
+      var sum_bonus = 0;
+	  $('[id^=eco_cost_incineration]').each(function(index) {
+	    var value = parseFloat($(this).html());	    
+	    sum_bonus += value;
+	  });
+      $("#bonus_total_incineration").html(sum_bonus.toFixed(4));
+      $("#eco_total_incineration").html((sum_bonus + <%=@incineration_processes%>).toFixed(4));
+   }
+
+ $(document).ready(function(){
+    $("#st_end_of_life_selected").change(function(){
+        var value = $(this).val();
+        if (value == 'recycling') {
+           $("#recyclings").show();
+           $("#incinerations").hide();
+           $("#landfillings").hide();                      
+        }
+        if (value == 'incineration') {
+           $("#recyclings").hide();
+           $("#incinerations").show();
+           $("#landfillings").hide();
+        }
+        if (value == 'landfilling') {
+           $("#recyclings").hide();
+           $("#incinerations").hide();
+           $("#landfillings").show();        
+        }   
+    });
+    
+    $("#st_end_of_life_repair").change(function(){
+        var value = $(this).val();
+        if (value == 'yes') {
+           $("#lifetime_div").show();
+        }
+        if (value == 'no') {
+           $("#lifetime_div").hide();
+        }
+    });    
+    
+    $("#st_end_of_life_selected").change();
+    $("#st_end_of_life_repair").change();
+  });
+
+</script>
+
+<h1><%=_('Data entry').html_safe%>
+  <br/><span class="tool_subtitle"></span>
+</h1>
+<div class="content_skin">
+  <div class="lcamenu span-23 showdgrid last ">
+    <%= render(:partial => 'shared/lca/st_tabs') %>
+  </div>
+  <div class="clear"></div>
+  <%= form_for @st_end_of_life do |f| %>
+      <input type="hidden" name="arrow" id="arrow" value=""/>
+      <fieldset class="empty">
+        <legend><%=_('Select an End-of-life scenario for your product').html_safe%></legend>
+        <input type="hidden" name="st_product_id" id="st_product_id" value="<%=@st_product.id%>"/>
+
+        <div class="span-12" >
+          <%= f.label :value, _('Repair and Re-use (second hand)').html_safe %>
+       </div>
+       <div>             
+          <select id="st_end_of_life_repair" name="st_end_of_life[repair]">
+             <% if @st_end_of_life.repair == 'yes' %>
+                 <option value="yes" selected="true"><%=_('Yes').html_safe%></option>
+             <% else %>
+                 <option value="yes"><%=_('Yes').html_safe%></option>
+             <% end %>    
+              <% if @st_end_of_life.repair == 'no' %>
+                 <option value="no" selected="true"><%=_('No').html_safe%></option>
+             <% else %>
+                 <option value="no"><%=_('No').html_safe%></option>
+             <% end %>
+          </select>
+        </div>
+    <div id="lifetime_div">
+        <div class="span-12" >
+          <%= f.label :value, _('Estimate the possible lifetime extension').html_safe %>
+       </div>
+       <div>             
+          <%= f.text_field :lifetime, :size => 5%> <%=_('years').html_safe%>
+        </div>
+    </div>
+       <div class="span-12" >
+          <%= f.label :value, _('End-of-life treatment').html_safe %> <a title="<%=_('Incineration = the burning of waste in an industrial facility.').html_safe%>" href="#" class="tip">&nbsp;</a>
+       </div>
+       <div>   
+          <select id="st_end_of_life_selected" name="st_end_of_life[selected]">
+            <% if @st_end_of_life.selected == 'recycling' %>
+              <option value="recycling" selected="true"><%=_('Recycling').html_safe%></option>
+            <% else %>
+              <option value="recycling"><%=_('Recycling').html_safe%></option>
+            <% end %> 
+            <% if @st_end_of_life.selected == 'incineration' %>
+              <option value="incineration" selected="true"><%=_('Incineration').html_safe%></option>
+            <% else %>
+              <option value="incineration"><%=_('Incineration').html_safe%></option>
+            <% end %>            
+            <% if @st_end_of_life.selected == 'landfilling' %>            
+              <option value="landfilling"><%=_('Landfilling').html_safe%></option>  
+            <% else %>
+              <option value="landfilling"><%=_('Landfilling').html_safe%></option>            
+            <% end %>
+          </select>
+        </div>
+
+        <div class="clear"></div>
+
+
+
+      </fieldset>
+  <% end %>
+
+<div id="recyclings" style="display:none">
+	<table class="standard2">
+	    <tr class="add"> 
+	      <th class="span-14">
+	        <%=_('Material').html_safe %><br/>
+	      </th>
+	      <th class="span-3">
+	        <%=_('Quantity').html_safe %>
+	      </th>
+	      <th class="span-3">
+	        <%=_('Unit').html_safe %>
+	      </th>
+	      
+	      <th class="span-3">
+	        <%=_('Eco-costs').html_safe %>
+	      </th>      
+	    </tr>   
+	    <tbody id="st_end_of_lives">
+	      <%= render :partial => @st_end_of_lives, :locals => {:phase => 'recycling'} %>
+	    </tbody>
+	</table>
+	
+	
+    <table>
+      <tr>
+        <td style="background:#2b4950;color:#EBEEDB;width:50%">
+          <b><%=_('Eco-costs bonus for material recycling').html_safe%></b>
+        </td>
+        <td style="background:#ffffff">  
+          <span id="bonus_total_recycling"></span> &euro;
+        </td>
+      </tr>
+      <tr>
+        <td style="background:#2b4950;color:#EBEEDB;width:50%">
+          <b><%=_('Eco-costs of recycling processes').html_safe%></b>
+        </td>
+        <td style="background:#ffffff">  
+          <%=lca_format_number(@recycling_processes, 4)%> &euro;
+        </td>
+      </tr>
+      <tr>
+        <td style="background:#2b4950;color:#EBEEDB;width:50%">
+          <b><%=_('Total eco-costs of recycling').html_safe%></b>
+        </td>
+        <td style="background:#ffffff">  
+          <span id="eco_total_recycling"></span> &euro;
+        </td>
+      </tr>
+      
+    </table>      	
+	
+	
+	<div class="clear"></div>
+</div>
+
+<div id="incinerations" style="display:none">
+	<table class="standard2">
+	    <tr class="add"> 
+	      <th class="span-14">
+	        <%=_('Material').html_safe %><br/>
+	      </th>
+	      <th class="span-3">
+	        <%=_('Quantity').html_safe %>
+	      </th>
+	      <th class="span-3">
+	        <%=_('Unit').html_safe %>
+	      </th>	      
+	      <th class="span-3">
+	        <%=_('Eco-costs').html_safe %>
+	      </th>      
+	    </tr>   
+	    <tbody id="st_end_of_lives">
+	      <%= render :partial => @st_end_of_lives, :locals => {:phase => 'incineration'} %>
+	    </tbody>
+	</table>
+    <table>
+      <tr>
+        <td style="background:#2b4950;color:#EBEEDB;width:50%">
+          <b><%=_('Eco-costs of material incineration').html_safe%></b>
+        </td>
+        <td style="background:#ffffff">  
+          <span id="bonus_total_incineration"></span> &euro;
+        </td>
+      </tr>
+      <tr>
+        <td style="background:#2b4950;color:#EBEEDB;width:50%">
+          <b><%=_('Eco-costs of incineration processes').html_safe%></b>
+        </td>
+        <td style="background:#ffffff">  
+          <%=lca_format_number(@incineration_processes, 4)%> &euro;
+        </td>
+      </tr>
+      <tr>
+        <td style="background:#2b4950;color:#EBEEDB;width:50%">
+          <b><%=_('Total eco-costs of incineration').html_safe%></b>
+        </td>
+        <td style="background:#ffffff">  
+          <span id="eco_total_incineration"></span> &euro;
+        </td>
+      </tr>
+      
+    </table>      
+	
+	<div class="clear"></div>
+</div> 
+ <br/>
+<div id="landfillings" style="display:none"> 
+   <table>
+      <tr>
+        <td style="background:#2b4950;color:#EBEEDB;width:50%">
+          <b><%=_('Eco-costs of e-waste landfill').html_safe%></b>
+        </td>
+        <td style="background:#ffffff">  
+          <%=lca_format_number(@landfill_ewaste, 4)%> &euro;
+        </td>
+      </tr>
+      <tr>
+        <td style="background:#2b4950;color:#EBEEDB;width:50%">
+          <b><%=_('Eco-costs of other materials landfill').html_safe%></b>
+        </td>
+        <td style="background:#ffffff">  
+          <%=lca_format_number(@landfill_other, 4)%> &euro;
+        </td>
+      </tr>
+      <tr>
+        <td style="background:#2b4950;color:#EBEEDB;width:50%">
+          <b><%=_('Total eco-costs of landfill').html_safe%></b>
+        </td>
+        <td style="background:#ffffff">  
+          <%=lca_format_number(@landfill_ewaste + @landfill_other, 4)%> &euro;
+        </td>
+      </tr>
+      
+    </table>      
+
+
+</div> 
+
+
+
+ <div class="buttons span-5 last" style="float:left;text-align:left">
+      <button type="submit" class="positive" style="float:left;text-align:left" onClick="javascript:goPrevious();"> <%= image_tag 'tick.png' %><%= _("Previous step").html_safe %></button>
+</div>
+ 
+ <div class="buttons span-5 last" style="float:right;text-align:right">
+      <button type="submit" class="positive" style="float:right;text-align:right" onClick="javascript:goNext();"> <%= image_tag 'tick.png' %><%= _("Go to results").html_safe %></button>
+</div>
+
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, st_production_intro_url(@st_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, st_data_quality_intro_path(@st_product) %></li>
+        <li><%= link_to _('To Results').html_safe, st_result_url(@st_product) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+
+
+
+</div>
+
+
+<script type="text/javascript">
+   updateRecyclings();
+   updateIncinerations();   
+</script>

@@ -1,0 +1,10 @@
+$("#error_explanation_compound_material").empty();
+$("#error_explanation_compound_material").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#bp_compound_materials").append("<%= escape_javascript(render(@bp_compound_material_data)) %>");
+/* Highlight the new comment */
+$("#bp_compound_material_<%= @bp_compound_material_data.id %>").effect("highlight", {}, 3000);
+
+
+$("#bp_compound_material_data_quantity").val("");
+$("#bp_compound_material_data_comment").val("");

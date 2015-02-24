@@ -1,0 +1,129 @@
+<% # encoding: utf-8 %>
+<script type="text/javascript">
+    $(document).ready(function(){
+    	$("#se_recycling_data_se_production_yield_loss_material_id").change(function(){
+	        if($("#se_recycling_data_se_production_yield_loss_material_id option:selected").data('loss_mat_action') == 'other'){
+	          $(".other-option").show();
+	        }
+	        else {
+	         $(".other-option").hide();   
+	        };
+      	});
+      	$("#se_recycling_data_se_production_yield_loss_material_id").change();
+    });
+</script>  
+
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/lca/se_tabs') %>
+	</div>
+<div class="clear"></div>
+
+<%= form_for SeRecyclingData.new, :remote => true do |f| %>
+ <input type="hidden" name="se_recycling_data[se_product_id]" id="se_product_id" value="<%=@se_product.id%>"/>
+<fieldset class="empty">
+<legend><%=_('Material loss/scrap rate').html_safe%></legend>
+
+	
+    <div class="span-6" > 
+       <%= _('Production yield loss<br/>material').html_safe %> <a title="<%=_('Select the intended production line output (not input!) material. If your production output (thus, also the yield loss material) is not listed here, select &quot;other&quot;, but then you also have to source an appropriate GWP value for the process of recycling the yield loss to new production line input material (closed loop recycling assumed)').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+       </br>
+       <%= f.select :se_production_yield_loss_material_id, @se_production_yield_loss_materials.map{|c| [c.name,c.id, {'data-loss_mat_action' =>c.action}]}, {:include_blank => true}, {:class => "span-5" }%>
+    </div>
+
+    <div class="span-5">
+      <%= _('With sensor').html_safe%> <a title="<%=_('Enter the (estimated) percentage of quantity lost per total quantity produced for an equivalent period of time.').html_safe%>" href="#" class="tip_left">&nbsp;</a><br />
+      <%= f.text_field :with_sensor, :size => 10 %> <span>%</span>
+    </div>
+
+    <div class="span-5">
+      <%= _('Without sensor').html_safe%> <a title="<%=_('Enter the (estimated) percentage of quantity lost per total quantity produced for an equivalent period of time.').html_safe%>" href="#" class="tip_right">&nbsp;</a><br />
+      <%= f.text_field :without_sensor, :size => 10 %> <span>%</span>
+    </div>
+
+    <div class="span-5">
+      <%= _('Recycling revenue').html_safe%> <a title="<%=_('Price paid by the external recycler for recyclable production yield loss material').html_safe%>" href="#" class="tip_right">&nbsp;</a><br />
+      <%= f.text_field :recycling_revenue, :size => 10 %> <span>&euro;/kg</span>
+    </div>
+	
+	  <div class="span-6 other-option">
+      <%= _('Description').html_safe%><br />
+      <%= f.text_field :description, :size => 18 %>
+    </div>
+
+    <div class="span-7 other-option">
+      <%= _('Global Warming Potential').html_safe%><br />
+      <%= f.text_field :global_warming_potential, :size => 15 %> <span> <%= _('kg CO<sub>2</sub> eq/kg').html_safe %></span>
+    </div>
+
+    <div class="clear"></div>
+
+	<div class="span-3 buttons last">
+		<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+	</div>
+
+</fieldset>
+<% end %>
+<br>
+
+<table class="standard2">
+    <tr class="add"> 
+      <th class="span-8">
+        <%=_('Production yield loss material').html_safe %><br/>
+      </th>
+      <th class="span-3" style="text-align:center;">
+        <%=_('With sensor').html_safe %><br/>
+      </th>
+      <th class="span-3" style="text-align:center;">
+        <%=_('Without sensor').html_safe %>
+      </th>
+      <th class="span-3" style="text-align:center;">
+        <%=_('Recycling revenue').html_safe %><br/>
+      </th>
+      <th class="span-6" style="text-align:center;">
+        <%=_('Global Warming Potential').html_safe %><br/>
+      </th>
+      <th class="span-1">
+        &nbsp;
+      </th>
+    </tr>   
+    <tbody id="se_recycling_datas">
+      <%= render :partial => @se_recycling_datas %>
+    </tbody>
+</table>
+
+ <div class="clear"></div>
+
+  <div class="buttons span-5" style="float:left;text-align:left">
+    <%= form_tag '/se_recyclings/previous_step' do %>
+        <input type="hidden" name="se_product_id" id="se_product_id" value="<%=@se_product.id%>"/>
+        <button type="submit" class="positive" style="float:left;text-align:left"> <%= image_tag 'tick.png' %><%= _("Previous step").html_safe %></button>
+    <% end %>
+  </div>
+
+  <div class="buttons last" style="float:right;text-align:right">
+    <%= form_tag '/se_recyclings/next_step' do %>
+        <input type="hidden" name="se_product_id" id="se_product_id" value="<%=@se_product.id%>"/>
+        <button type="submit" class="positive" style="float:right;text-align:right"> <%= image_tag 'tick.png' %><%= _("Generate results").html_safe %></button>
+    <% end %>
+  </div>
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, se_production_intro_path(@product.se_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, se_data_quality_intro_url(@product.se_product) %></li>
+        <li><%= link_to _('To Results').html_safe, se_result_path(@product.se_product) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+
+
+
+</div>

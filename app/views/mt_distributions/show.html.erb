@@ -1,0 +1,269 @@
+<script type="text/javascript">
+  function checkFields() {
+     var isOk = true;
+     return isOk;   
+  }
+  
+  function goPrevious() {
+     if (checkFields()) {
+        document.getElementById("arrow").value = 'previous';
+        document.forms[1].submit();
+     }         
+  }
+
+  function goNext() {
+     if (checkFields()) {
+        document.getElementById("arrow").value = 'next';
+        document.forms[1].submit();
+     }     
+  }
+  
+  function goPreviousDetailed() {
+     if (checkFields()) {
+        document.getElementById("arrow").value = 'previous';
+        document.forms[2].submit();
+     }         
+  }
+
+  function goNextDetailed() {
+     if (checkFields()) {
+        document.getElementById("arrow").value = 'next';
+        document.forms[2].submit();
+     }     
+  }  
+</script>  
+
+<h1>
+  <% if @mt_product.mt_assessment && @mt_product.mt_assessment.assessment_type == 'rough' %>
+     <%=_('Rough Assessment').html_safe%>
+  <% else %>
+     <%=_('Detailed Assessment').html_safe%>
+  <% end %>   
+
+  <br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+
+<div class="content_skin">
+  <div class="lcamenu span-23 showdgrid last ">
+    <%= render(:partial => 'shared/lca/mt_tabs') %>
+  </div>
+  <div class="clear"></div>
+<% if !@detailed %>  
+  <%= form_for @mt_distribution do |f| %>
+      <fieldset class="empty">
+        <legend><%=_('Options').html_safe%></legend>
+        <input type="hidden" name="mt_product_id" id="mt_product_id" value="<%=@mt_product.id%>"/>
+        <input type="hidden" name="arrow" id="arrow" value=""/>        
+
+        <div class="span-10" >
+          <%= f.label :options, _('Distribution options').html_safe %> <a title="<%=_('Tick the box which applies in the majority of cases, if you mainly distribute your product in continental Europe then select overland, if a significant portion of the distribution is to customers overseas (USA, Asia, ...) then select overseas.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+        </div>  
+        <div class="span-5" >
+	      <%= f.radio_button :options, "overland" %>  <%=_('Overland').html_safe%>
+	      <%= f.radio_button :options, "overseas" %>  <%=_('Overseas').html_safe%>
+        </div>	  
+        <div class="clear"></div>
+        <br/>
+        <div class="span-10" >
+          <%= f.label :waste, _('Packaging').html_safe %> <a title="<%=_('Enter the total weight of the standard packaging that you use in the majority of cases.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+        </div>  
+        <div class="span-5" >
+          <%= f.text_field :packaging, :size => 5%> kg
+        </div>
+        <div class="clear"></div>
+    </fieldset>
+		<div class="buttons span-5 last" style="float:left;text-align:left">
+		      <button type="submit" class="positive" style="float:left;text-align:left" onClick="javascript:goPrevious();"> <%= image_tag 'tick.png' %><%= _("Previous step").html_safe %></button>
+		</div>
+      
+		<div class="buttons span-5 last" style="float:right;text-align:right">
+		      <button type="submit" class="positive" style="float:right;text-align:right" onClick="javascript:goNext();"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+		</div>
+
+   <% end %>
+<% else %>
+        <!-- TRANSPORT -->
+		 <%= form_for MtDistributionTransportData.new, :remote => true do |f| %>
+		  <input type="hidden" name="mt_distribution_transport_data[mt_product_id]" id="mt_product_id" value="<%=@mt_product.id%>"/>
+		  <fieldset class="empty">
+            <legend><%=_('Transport').html_safe%> <a title="<%=_('Enter details of the typical method of distribution of your product. If it travels a portion by road and a portion by sea then select add and record the other forms of transport used.').html_safe%>" href="#" class="tip_left">&nbsp;</a></legend>
+            <%=_('Distribution of machine (with packaging). Estimation of distances and means of transportation.').html_safe%>
+            <div class="clear"></div>
+            <br/>
+		    <div class="span-6" > 
+		       <%= f.label :value, _('Type').html_safe %> 
+		       <br/>
+		        <select class="span-4" id="mt_distribution_transport_data_mt_transport_type" name="mt_distribution_transport_data[mt_transport_type_id]">
+		         
+		         <% @mt_transport_types.each do |mt_transport_type| %>
+		            <option value="<%=mt_transport_type.id%>"><%=mt_transport_type.name.html_safe%></option>
+		         <% end %>
+		       
+		       </select>
+		    </div>
+		
+		
+		    <div class="span-5">
+		      <%= f.label :value, _('Distance').html_safe %> 
+		      <br />
+		      <%= f.text_field :distance, :size => 10 %> <%=_('km').html_safe%>
+		    </div>
+		
+		
+		
+		    <div class="clear"></div>
+		
+			<div class="span-3 buttons last">
+				<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+			</div>
+		
+		</fieldset>
+		<% end %>
+		<br/>
+		
+		<table class="standard2">
+		    <tr class="add"> 
+		      <th class="span-8">
+		        <%=_('Type').html_safe %><br/>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Distance').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Unit').html_safe %>
+		      </th>			  
+		      <th class="span-1">
+		        &nbsp;
+		      </th>
+		    </tr>   
+		    <tbody id="mt_distribution_transport_datas">
+		      <%= render :partial => @mt_distribution_transport_datas %>
+		    </tbody>
+		</table>
+		
+		
+        <!-- PACKAGING -->
+		 <%= form_for MtDistributionPackagingData.new, :remote => true do |f| %>
+		  <input type="hidden" name="mt_distribution_packaging_data[mt_product_id]" id="mt_product_id" value="<%=@mt_product.id%>"/>
+		  <fieldset class="empty">
+            <legend><%=_('Packaging').html_safe%> <a title="<%=_('Record the type of packaging that is typically used including the weight and what happens to the packaging at the end of its life.').html_safe%>" href="#" class="tip_left">&nbsp;</a></legend>
+            <%=_('Specify the volumen of packaging per product.').html_safe%>
+            <div class="clear"></div>
+            <br/>            
+		    <div class="span-6" > 
+		       <%= f.label :value, _('Type').html_safe %> 
+		       <br/>
+		        <select class="span-4" id="mt_distribution_packaging_data_mt_material" name="mt_distribution_packaging_data[mt_material_id]">
+		         
+		         <% @mt_materials.each do |mt_material| %>
+		            <option value="<%=mt_material.id%>"><%=mt_material.name.html_safe%></option>
+		         <% end %>
+		       
+		       </select>
+		    </div>
+		
+		
+		    <div class="span-5">
+		      <%= f.label :value, _('Quantity').html_safe %> 
+		      <br />
+		      <%= f.text_field :quantity, :size => 10 %> <%=_('kg').html_safe%>
+		    </div>
+		
+		    <div class="span-5">
+		      <%= f.label :value, _('End of life scenario').html_safe %> 
+		      <br />
+			  <select id="mt_distribution_packaging_data_scenario" name="mt_distribution_packaging_data[scenario]">
+			  	<option value="recycling"><%=_('Recycling').html_safe%></option>
+			  	<option value="incineration"><%=_('Incineration').html_safe%></option>
+			  	<option value="landfill"><%=_('Landfill').html_safe%></option>								
+			  </select>
+		   
+		    </div>		
+		
+		    <div class="clear"></div>
+		
+			<div class="span-3 buttons last">
+				<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+			</div>
+		
+		</fieldset>
+		<% end %>
+		<br/>
+		
+		<table class="standard2">
+		    <tr class="add"> 
+		      <th class="span-8">
+		        <%=_('Material').html_safe %><br/>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Quantity').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Unit').html_safe %>
+		      </th>
+		      <th class="span-6">
+		        <%=_('End of life scenario').html_safe %>
+		      </th>			  
+		      <th class="span-1">
+		        &nbsp;
+		      </th>
+		    </tr>   
+		    <tbody id="mt_distribution_packaging_datas">
+		      <%= render :partial => @mt_distribution_packaging_datas %>
+		    </tbody>
+		</table>		
+
+    <div class="clear"></div>
+    <%= form_tag '/mt_distributions/next_step' do %>
+        <input type="hidden" name="mt_product_id" id="mt_product_id" value="<%=@mt_product.id%>"/>
+        <input type="hidden" name="arrow" id="arrow" value=""/>     
+		<div class="buttons span-5 last" style="float:left;text-align:left">
+		      <button type="submit" class="positive" style="float:left;text-align:left" onClick="javascript:goPreviousDetailed();"> <%= image_tag 'tick.png' %><%= _("Previous step").html_safe %></button>
+		</div>      
+		<div class="buttons span-5 last" style="float:right;text-align:right">
+		      <button type="submit" class="positive" style="float:right;text-align:right" onClick="javascript:goNextDetailed();"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+		</div>
+    <% end %>
+    <div class="clear"></div>		
+		
+<% end %>
+
+<!--
+<div class="clear"></div>
+  <div class="span-23" style="text-align:center;font-size:11">
+     <ul style="padding-left:0;margin-right:85px">	       
+        <li class="link_booklabels"><%= link_to _('To Improvements').html_safe, mt_production_improvement_path(@mt_product) %></li>     
+     
+        <li class="link_booklabels"><%= link_to _('To Results').html_safe, mt_result_path(@mt_product) %></li>
+	        
+	    <li class="link_booklabels"><%= link_to _('To Data Quality'), mt_data_quality_path(@mt_product) %></li>
+
+	    <li class="link_booklabels"><%= link_to _('To Method').html_safe, mt_assessment_url(@mt_product) %></li>
+	    
+	    <li class="link_booklabels"><%= link_to _('To Introduction').html_safe, mt_production_intro_url(@mt_product) %></li>	    
+        <div class="clear"></div>
+     </ul>
+  </div>   
+<br/>   
+<div class="clear"></div>
+-->
+
+
+<div class="clear"></div>
+<div class="navbar">
+  <!-- <div id="for-ie"> -->
+  <div>
+    <ul>
+      <li><%= link_to _('To Introduction').html_safe, mt_production_intro_url(@mt_product) %></li>
+      <li><%= link_to _('To Method').html_safe, mt_assessment_url(@mt_product) %></li>
+      <li><%= link_to _('To Data Quality').html_safe, mt_data_quality_path(@mt_product) %></li>
+      <li><%= link_to _('To Results').html_safe, mt_result_path(@mt_product) %></li>
+      <li><%= link_to _('To Improvements').html_safe, mt_production_improvement_path(@mt_product) %></li>
+    </ul>
+  </div>
+</div>
+
+
+<div class="clear"></div>
+
+</div>

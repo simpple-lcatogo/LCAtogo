@@ -1,0 +1,16 @@
+<tr id="process_<%= process_data.id %>">
+  <td><%= process_data.data_module.name.html_safe %></td>
+  <% if process_data.family %>
+     <td><%= process_data.family.name.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>   
+  <% if process_data.data_process %>  
+     <td><%= process_data.data_process.name.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>   
+  <td><%= process_data.quantity %></td>
+  <td class="center"><%= link_to '&#10006;'.html_safe, process_data_path(process_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>
+

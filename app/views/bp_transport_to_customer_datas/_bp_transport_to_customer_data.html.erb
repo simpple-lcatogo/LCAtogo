@@ -1,0 +1,55 @@
+<tr id="bp_transport_to_customer_<%= bp_transport_to_customer_data.id %>">
+
+  <% if bp_transport_to_customer_data.bp_mode %>  
+     <td><%= bp_transport_to_customer_data.bp_mode.name.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>  
+  <% end %>
+
+
+  <% if bp_transport_to_customer_data.bp_vehicle %>  
+     <td><%= bp_transport_to_customer_data.bp_vehicle.name.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>
+
+  <% if bp_transport_to_customer_data.distance %>
+     <td id="bp_transport_to_customer_distance_<%= bp_transport_to_customer_data.id %>" class="bp_transport_to_customer_distance_<%= bp_transport_to_customer_data.id %>"><%= number_with_precision(bp_transport_to_customer_data.distance.to_s.html_safe,:precision => 2) %></td>
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>
+
+  <% if bp_transport_to_customer_data.amount %>
+     <td style="text-align: center;" id="bp_transport_to_customer_amount_<%= bp_transport_to_customer_data.id %>" class="bp_transport_to_customer_amount_<%= bp_transport_to_customer_data.id %>"><%= bp_transport_to_customer_data.amount.to_s.html_safe%></td>
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>
+
+  <% if bp_transport_to_customer_data.comment %>  
+     <td id="bp_transport_to_customer_comment_<%= bp_transport_to_customer_data.id %>" class="bp_transport_to_customer_comment_<%= bp_transport_to_customer_data.id %>"><%= bp_transport_to_customer_data.comment.to_s.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>
+ 
+  
+  <td class="center"><%= link_to '&#10006;'.html_safe, bp_transport_to_customer_data_path(bp_transport_to_customer_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>
+
+
+<script type="text/javascript">
+   $(".bp_transport_to_customer_distance_<%=bp_transport_to_customer_data.id%>").editInPlace({
+        url: "/bp_transport_to_customer_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "bp_transport_to_customer_id=<%=bp_transport_to_customer_data.id%>&field=distance",
+        saving_text: '<%=_("Saving...")%>'
+        });
+   $(".bp_transport_to_customer_amount_<%=bp_transport_to_customer_data.id%>").editInPlace({
+        url: "/bp_transport_to_customer_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "bp_transport_to_customer_id=<%=bp_transport_to_customer_data.id%>&field=amount",
+        saving_text: '<%=_("Saving...")%>'
+        });
+   $(".bp_transport_to_customer_comment_<%=bp_transport_to_customer_data.id%>").editInPlace({
+        url: "/bp_transport_to_customer_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "bp_transport_to_customer_id=<%=bp_transport_to_customer_data.id%>&field=comment",
+        saving_text: '<%=_("Saving...")%>'
+        });
+ </script> 

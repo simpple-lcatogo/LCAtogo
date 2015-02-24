@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  with_sensors: 1.5
+  without_sensors: 1.5
+  custom_name: MyString
+  co2: 1.5
+  revenue: 1.5
+  se_product_id: 1
+
+two:
+  with_sensors: 1.5
+  without_sensors: 1.5
+  custom_name: MyString
+  co2: 1.5
+  revenue: 1.5
+  se_product_id: 1

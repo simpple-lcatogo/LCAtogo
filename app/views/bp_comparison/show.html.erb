@@ -1,0 +1,133 @@
+<script type="text/javascript">
+  function checkAllIndicators() {
+    $('[id^=indicator_]').each(function(index) {
+	     $(this).prop('checked', true);	    
+	  }); 
+	$("#check_all_indicator").hide();  
+	$("#uncheck_all_indicator").show();	
+	}
+	
+  function uncheckAllIndicators() {
+    $('[id^=indicator_]').each(function(index) {
+	     $(this).prop('checked', false);	    
+	  });
+	$("#check_all_indicator").show();  
+	$("#uncheck_all_indicator").hide();	
+	   
+	}
+	
+  function checkAllLca() {
+    $("#total").prop('checked', true);
+    $("#materials").prop('checked', true);
+    $("#transport").prop('checked', true);
+    $("#processing").prop('checked', true);
+    $("#distribution").prop('checked', true);
+    $("#end_of_life").prop('checked', true);
+
+	$("#check_all_lca").hide();  
+	$("#uncheck_all_lca").show();	
+	}
+	
+  function uncheckAllLca() {
+    $("#total").prop('checked', false);
+    $("#materials").prop('checked', false);
+    $("#transport").prop('checked', false);
+    $("#processing").prop('checked', false);
+    $("#distribution").prop('checked', false);
+    $("#end_of_life").prop('checked', false);
+
+	$("#check_all_lca").show();  
+	$("#uncheck_all_lca").hide();	
+	   
+	}	
+	
+</script>
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Results').html_safe%></span>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/bp_results/tabs') %>
+	</div>
+<%= form_tag '/bp_results/compare' do %>	
+    <div class="span-7">
+	  <h6><%=_('1. Compare your product to:').html_safe%></h6>
+	</div>   
+    <div class="span-13">
+          <% @products_to_compare.each do |product| %>
+              <% if product.bp_product %>
+                  <input type="checkbox" name="compare_product_<%=product.bp_product.id%>" id="compare_product_<%=product.bp_product.id%>"/> <%=product.name%><br/>
+              <% end %>
+          <% end %>
+    </div>
+ 	<div class="clear"></div>	
+	<div class="span-11" style="width:445px">		    
+		<h6><%=_('2. Choose the indicator to compare').html_safe%></h6>
+		<div id="check_all_indicator">
+          <input class="positive_button" type="button" value="<%=_('Select all')%>" onClick="javascript:checkAllIndicators();">		
+		</div>
+		<div id="uncheck_all_indicator" style="display:none">
+          <input class="positive_button" type="button" value="<%=_('Unselect all')%>" onClick="javascript:uncheckAllIndicators();">		
+		</div>
+		<div class="clear"></div>	
+		<br/>		
+		<% @indicators.each do |indicator|%>
+		   <input type="checkbox" name="indicator_<%=indicator.id%>" id="indicator_<%=indicator.id%>"/> <%=indicator.name.html_safe%><br/>
+		<% end %>
+	</div>    	 	
+	
+	<div class="span-9">
+		<h6><%=_('3. Choose LCA items to compare').html_safe%></h6>
+		<div id="check_all_lca">
+          <input class="positive_button" type="button" value="<%=_('Select all')%>" onClick="javascript:checkAllLca();">
+		</div>
+		<div id="uncheck_all_lca" style="display:none">
+          <input class="positive_button" type="button" value="<%=_('Unselect all')%>" onClick="javascript:uncheckAllLca();">	
+        </div>	
+        <div class="clear"></div>	
+		<br/>		
+		
+		<input type="checkbox" name="total" id="total"/> <%=_('Total').html_safe%><br/>	
+		<input type="checkbox" name="materials" id="materials"/> <%=_('Materials').html_safe%><br/>
+		<input type="checkbox" name="transport" id="transport"/> <%=_('Transport').html_safe%><br/>	
+		<input type="checkbox" name="processing" id="processing"/> <%=_('Processing').html_safe%><br/>
+		<input type="checkbox" name="distribution" id="distribution"/> <%=_('Distribution').html_safe%><br/>		
+		<input type="checkbox" name="end_of_life" id="end_of_life"/> <%=_('End-of-life').html_safe%><br/>
+	</div>	 	
+
+
+ 	<div class="clear"></div>
+
+      <br/><br/>
+      <div class="buttons span-5" style="float:left;text-align:left">
+        <a href="<%=bp_result_graphic_path(@bp_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Previous step").html_safe %></a>
+      </div>
+
+
+      <div class="buttons" style="float:right">
+     <input type="hidden" name="bp_product_id" id="bp_product_id" value="<%=@bp_product.id%>"/>	
+     <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+   </div>
+    
+
+  <div class="clear"></div>
+      <div class="navbar">
+        <!-- <div id="for-ie"> -->
+        <div>
+          <ul>
+            <li><%= link_to _('To Introduction').html_safe, bp_production_intro_path(@bp_product) %></li>
+            <li><%= link_to _('To Data Entry').html_safe, bp_production_url(@bp_product) %></li>
+            <li><%= link_to _('To Data Quality').html_safe, bp_data_quality_intro_path(@bp_product) %></li>
+            <li><%= link_to _('To Economic Data'), bp_economic_url(@bp_product) %></li>
+          </ul>
+        </div>
+      </div>
+
+
+  <div class="clear"></div>	    
+ 	
+ <% end %>	
+	
+	
+	
+</div>	

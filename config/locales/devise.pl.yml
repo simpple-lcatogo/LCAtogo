@@ -1,0 +1,60 @@
+﻿# Additional translations at https://github.com/plataformatec/devise/wiki/I18n
+ 
+pl:
+  devise:
+    confirmations:
+      confirmed: "Twoje konto zostalo aktywowane. Zostales pomyslnie zalogowany."
+      send_instructions: "Za chwile otrzymasz email z instrukcja jak aktywowac konto."
+      send_paranoid_instructions: "Jesli Twój adres email istnieje w naszej bazie, za chwile powinienes otrzymac instrukcje jak aktywowac konto."
+    failure:
+      already_authenticated: "Jestes aktualnie zalogowany."
+      inactive: "Twoje konto nie zostalo jeszcze aktywowane."
+      invalid: "Bledny adres email lub haslo."
+      invalid_token: "Bledny token aktywacyjny."
+      locked: "Twoje konto jest zablokowane."
+      not_found_in_database: "Bledny adres email lub haslo."
+      timeout: "Sesja wygasla, zaloguj sie ponownie by kontynuowac."
+      unauthenticated: "Aby kontynuowac musisz sie zalogowac."
+      unconfirmed: "Aby kontynuowac musisz aktywowac swoje konto."
+    mailer:
+      confirmation_instructions:
+        subject: "Instrukcja aktywacji konta"
+      reset_password_instructions:
+        subject: "Instrukcja zresetowania hasla."
+      unlock_instructions:
+        subject: "Instrukcja odblokowania konta"
+    omniauth_callbacks:
+      failure: "Logowanie przez konto %{kind} zakonczylo sie bledem: \"%{reason}\"."
+      success: "Zalogowales sie pomyslnie przez konto %{kind}."
+    passwords:
+      no_token: "Dostep do tej strony jest mozliwy jedynie poprzez uzycie prawidlowego adresu z emaila z instrukcjami o resecie hasla. Jezeli wlasnie skorzystales z tego adresu, sprawdz czy uzyty adres jest zgodny z tym w emailu."
+      send_instructions: "Za chwile otrzymasz emaila z instrukcja jak zresetowac haslo."
+      send_paranoid_instructions: "Jezeli Twój adres istnieje w naszej bazie, otrzymasz za chwile emaila z instrukcja zmiany hasla."
+      updated: "Twoje haslo zostalo zmienione. Zostales pomyslnie zalogowany."
+      updated_not_active: "Twoje haslo zostalo zmienione."
+    registrations:
+      destroyed: "Do widzenia! Twoje konto zostalo usuniete."
+      signed_up: "Witaj! Zarejestrowales sie pomyslnie."
+      signed_up_but_inactive: "Zarejestrowales sie pomyslnie. Niemniej jednak nie zostales zalogowany, poniewaz Twoje konto nie zostalo jeszcze aktywowane."
+      signed_up_but_locked: "Zarejestrowales sie pomyslnie. Niemniej jednak nie zostales zalogowany, poniewaz Twoje konto zostalo zablokowane."
+      signed_up_but_unconfirmed: "Wiadomosc email z instrukcja aktywacji konta zostala przeslana na Twój adres email. Uzj linku z emaila aby aktywowac konto."
+      update_needs_confirmation: "Konto zostalo zaktualizowane. Niemniej jednak przed wprowadzeniem zmian musimy potwierdzic Twój nowy adres email. Za chwile wyslemy instrukcje na nowy adres."
+      updated: "Konto zostalo pomyslnie zaktualizowane."
+    sessions:
+      user:
+        signed_in: "Zostales zalogowany."
+        signed_out: "Zostales wylogowany."
+    unlocks:
+      send_instructions: "Za chwile otrzymasz wiadomosc email z instrukcja jak odblokowac konto."
+      send_paranoid_instructions: "Jezeli Twoje konto istnieje, otrzymasz wiadomosc emial z instrukcja jak odblokowac konto."
+      unlocked: "Twoje konto zostala pomyslnie odblokowane. Zaloguj sie by kontynuowac."
+  errors:
+    messages:
+      already_confirmed: "juz zostal aktywowany, prosze spróbowac sie zalogowac."
+      confirmation_period_expired: "musi zostac potwierdzony w czasie %{period}, wyslij zapytanie o nowy."
+      expired: "stracil waznosc, wyslij zapytanie o nowy."
+      not_found: "nie znaleziono"
+      not_locked: "nie byl zablokowany"
+      not_saved:
+        one: "%{resource} nie zostal zapisany z powodu bledu:"
+        other: "%{resource} nie zostal zapisany z powodu nastepujacych bledów:"

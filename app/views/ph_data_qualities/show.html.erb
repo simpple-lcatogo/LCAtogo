@@ -1,0 +1,100 @@
+<h1><%=_('Data Quality').html_safe%>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/ph_data_qualities/tabs') %>
+	</div>
+	<div class="clear"></div>
+<%= form_for(@ph_data_quality) do |f| %>
+  <table class="standard2">
+   <tbody>
+    <tr>
+      <th colspan="4">&nbsp;</th>
+    </tr>
+    <tr>
+      <td><%=_('Country of use & radiation').html_safe%></td>
+	  <td><%= f.radio_button :country_use, "robust" %>  <%=_('Robust').html_safe%></td>
+	  <td><%= f.radio_button :country_use, "indicative" %>  <%=_('Indicative').html_safe%></td>
+	  <td><%= f.radio_button :country_use, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	<tr>
+      <td><%=_('Modules\' temperature').html_safe%></td>
+      <td><%= f.radio_button :module_temperature, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :module_temperature, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :module_temperature, "illustrative" %>  <%=_('Illustrative').html_safe%></td>  
+	</tr>
+	<tr>
+      <td><%=_('Performance ratio (PR)').html_safe%></td>
+      <td><%= f.radio_button :performance_ratio, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :performance_ratio, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :performance_ratio, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	<tr>
+      <td><%=_('Module specifications').html_safe%></td>
+      <td><%= f.radio_button :module_specifications, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :module_specifications, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :module_specifications, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	<tr>
+      <td><%=_('Production countries').html_safe%></td>
+      <td><%= f.radio_button :production_countries, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :production_countries, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :production_countries, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	<tr>
+      <td><%=_('Inverters').html_safe%></td>
+      <td><%= f.radio_button :inverter, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :inverter, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :inverter, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	<tr>
+      <td><%=_('Batteries').html_safe%></td>
+      <td><%= f.radio_button :batteries, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :batteries, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :batteries, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	<tr>
+      <td><%=_('Maintenance').html_safe%></td>
+      <td><%= f.radio_button :maintenance, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :maintenance, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :maintenance, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	
+	</tbody> 
+   </table>
+
+  <div class="buttons last" style="float:left">
+     <a href="<%=ph_data_quality_intro_path(@ph_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Previous step").html_safe %></a>
+  </div>
+   
+   
+  <div class="buttons" style="float:right">
+     <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Data Update").html_safe %></button>
+  </div>
+
+  <div class="clear"></div>
+
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, ph_production_intro_path(@ph_product) %></li>
+        <li><%= link_to _('To Data Entry').html_safe, ph_basic_information_path(@ph_product) %></li>
+        <li><%= link_to _('To Results').html_safe, ph_result_summary_path(@ph_product) %></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="clear"></div>
+
+
+
+  <br/>
+
+  </div>
+
+	
+	
+<% end %>
+
+</div>	

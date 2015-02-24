@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/9377/svn-repos/LiMaS/public/javascripts/jquery-editInPlace-v2.2.1/spec/unit
+END
+default_settings.js
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/!svn/ver/9377/svn-repos/LiMaS/public/javascripts/jquery-editInPlace-v2.2.1/spec/unit/default_settings.js
+END
+shared_setup.js
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/!svn/ver/9377/svn-repos/LiMaS/public/javascripts/jquery-editInPlace-v2.2.1/spec/unit/shared_setup.js
+END
+spec.helper.js
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/!svn/ver/9377/svn-repos/LiMaS/public/javascripts/jquery-editInPlace-v2.2.1/spec/unit/spec.helper.js
+END
+custom_settings.js
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/!svn/ver/9377/svn-repos/LiMaS/public/javascripts/jquery-editInPlace-v2.2.1/spec/unit/custom_settings.js
+END
+editor_behaviour.js
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/!svn/ver/9377/svn-repos/LiMaS/public/javascripts/jquery-editInPlace-v2.2.1/spec/unit/editor_behaviour.js
+END
+callbacks.js
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/!svn/ver/9377/svn-repos/LiMaS/public/javascripts/jquery-editInPlace-v2.2.1/spec/unit/callbacks.js
+END
+browser_bugs.js
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/!svn/ver/9377/svn-repos/LiMaS/public/javascripts/jquery-editInPlace-v2.2.1/spec/unit/browser_bugs.js
+END

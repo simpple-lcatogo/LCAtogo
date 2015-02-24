@@ -1,0 +1,433 @@
+<html>
+<head>
+  <title>LCA to go</title>
+  <link rel="shortcut icon" href="/images/logo_lca_to_go.ico" >
+  <%= stylesheet_link_tag("tabs/ui.tabs.css") %>  
+  <%= stylesheet_link_tag 'blueprint/screen', :media => 'screen, projection' %>
+  <%= stylesheet_link_tag 'blueprint/screen', :media => 'print' %>
+  <% if params[:controller] != 'fingerprint_results'%>  
+     <%= stylesheet_link_tag 'blueprint/print', :media => 'print' %>
+  <% end %>   
+  <%= stylesheet_link_tag 'application', 'grid' %>
+  <%= javascript_include_tag 'rails' %>  
+  <%= javascript_include_tag  "jquery-1.6.2.min.js" %>
+  <%= javascript_include_tag  "jquery-ui.min.js" %>
+  <%= javascript_include_tag "jquery-rails.js" %>
+  <%= javascript_include_tag("tabs/ui.tabs.pack.js") %>
+  <%= javascript_include_tag("jquery-treeview/jquery.treeview.js") %>
+  <%= javascript_include_tag("jquery-editInPlace-v2.2.1/lib/jquery.editinplace.js") %>  
+  <%= javascript_include_tag "jquery.treeTable.js" %>    
+  <%= javascript_include_tag("jquery.qtip-1.0.0-rc3.js") %>
+  <%= javascript_include_tag("jqplot/jquery.jqplot.js") %>
+  <%= javascript_include_tag("jqplot/excanvas.js") %>  
+  <%= javascript_include_tag("jqplot/plugins/jqplot.barRenderer.min.js") %>
+  <%= javascript_include_tag("jqplot/plugins/jqplot.categoryAxisRenderer.min.js") %>
+  <%= javascript_include_tag("jqplot/plugins/jqplot.pointLabels.min.js") %>    
+  <%= javascript_include_tag("jqplot/plugins/jqplot.canvasAxisTickRenderer.min.js") %>
+  <%= javascript_include_tag("jqplot/plugins/jqplot.canvasTextRenderer.min.js") %>
+  <%= javascript_include_tag("jquery.blockUI.js") %>
+  <%= javascript_include_tag("jquery.easytabs.js") %>  
+  <%= javascript_include_tag("jquery.validate.js") %>
+  <%= javascript_include_tag("bluff-0.3.6.2/js-class.js") %>
+  <%= javascript_include_tag("bluff-0.3.6.2/bluff-min.js") %>  
+  <%= csrf_meta_tag %>
+  <%= stylesheet_link_tag("jquery.treeTable.css") %>
+  <%= javascript_tag "var AUTH_TOKEN = '#{form_authenticity_token}';" if protect_against_forgery?%>
+<script type="text/javascript">
+function clearForm(oForm) {    
+  var elements = oForm.elements;     
+  oForm.reset();
+  for(i=0; i<elements.length; i++) {      
+    field_type = elements[i].type.toLowerCase();  
+    switch(field_type) {  
+	    case "text": 
+	    case "password": 
+	    case "textarea":
+	    case "hidden":   
+	      elements[i].value = ""; 
+	      break;
+	        
+	    case "radio":
+	    case "checkbox":
+	        if (elements[i].checked) {
+	          elements[i].checked = false; 
+	      }
+	      break;
+	
+	    case "select-one":
+	    case "select-multi":
+	                elements[i].selectedIndex = -1;
+	      break;
+	
+	    default: 
+	      break;
+        }
+      }
+   }
+   </script>
+  <script type="text/javascript">
+	$(document).ready(function() {
+	  $('.tip_image').qtip({ 
+	  style: { 
+	    background: '#b8d2f2',
+	    tip: true, 
+	    width: { max: 11550 },
+	    border: {
+         width: 3,
+         radius: 8,
+         color: '#75a0cf'
+      }
+	    },
+	  position: {	  
+	    corner: {
+          target: 'rightMiddle',
+          tooltip: 'leftMiddle'
+          }
+        }        
+	   });
+
+        $('.tip_image_top').qtip({
+            style: {
+                background: '#b8d2f2',
+                tip: true,
+                width: { max: 11550 },
+                border: {
+                    width: 3,
+                    radius: 8,
+                    color: '#75a0cf'
+                }
+            },
+            position: {
+                corner: {
+                    target: 'topMiddle',
+                    tooltip: 'bottomMiddle'
+                }
+            }
+        });
+
+        $('.tip_disclaimer').qtip({
+	  style: { 
+	    background: '#b8d2f2',
+	    tip: true, 
+	    width: { max: 500 },
+	    border: {
+         width: 3,
+         radius: 8,
+         color: '#75a0cf'
+      }
+	    },
+	  position: {	  
+	    corner: {
+          target: 'rightMiddle',
+          tooltip: 'leftBottom'
+          }
+        }        
+	   });	  	
+
+	
+	  $('.tip').qtip({ 
+	  style: { 
+	    background: '#b8d2f2',
+	    tip: true, 
+	    width: { max: 550 },
+	    border: {
+         width: 3,
+         radius: 8,
+         color: '#75a0cf'
+      }
+	    },
+	  position: {	  
+	    corner: {
+          target: 'bottomMiddle',
+          tooltip: 'topMiddle'
+          }
+        }        
+	   });	  
+
+	  $('.tip_info').qtip({ 
+	  style: { 
+	    background: '#b8d2f2',
+	    tip: true, 
+	    width: { max: 550 },
+	    border: {
+         width: 3,
+         radius: 8,
+         color: '#75a0cf'
+      }
+	    },
+	  position: {	  
+	    corner: {
+          target: 'bottomMiddle',
+          tooltip: 'topMiddle'
+          }
+        }        
+	   });	  
+
+	   
+	  $('.tip_left').qtip({ 
+	  style: { 
+	    background: '#b8d2f2',
+	    tip: true, 
+	    width: { max: 550 },
+	    border: {
+         width: 3,
+         radius: 8,
+         color: '#75a0cf'
+      }
+	    },
+	  position: {	  
+	    corner: {
+          target: 'bottomMiddle',
+          tooltip: 'topLeft'
+          }
+        }        
+	   });	  	   
+	   
+	  $('.tip_right').qtip({ 
+	  style: { 
+	    background: '#b8d2f2',
+	    tip: true, 
+	    width: { max: 550 },
+	    border: {
+         width: 3,
+         radius: 8,
+         color: '#75a0cf'
+      }
+	    },
+	  position: {	  
+	    corner: {
+          target: 'bottomMiddle',
+          tooltip: 'topRight'
+          }
+        }        
+	   });	  	   
+	   
+	  $(window).keydown(function(event){
+	    if(event.keyCode == 13) {
+	      event.preventDefault();
+	      return false;
+	    }
+	  });	   
+	   
+	});  
+   
+   
+</script>  
+</head>
+<body>
+<div id="top"></div>
+<div class="container">
+<br/>
+  <div id="header" class="span-24 last">
+    <div class="span-2">
+	    <% if current_user %>   
+	        <%= link_to image_tag('logo_lca_to_go.png'), intros_index_path %> 
+	    <% else %>
+	        <%= image_tag('logo_lca_to_go.png')%> 
+	    <% end %>   
+    </div>
+    <% if params[:controller] != 'devise/sessions'%>
+       <div class="span-3" style="float:left;text-align:center;height:50px;padding-top:10px">
+         <% if @product %>
+            <% if @product.sector == 'electronics' %>
+               <%= image_tag('logos/logo_electronics.png', :height => '70px')%><!-- <br/><%=_('electronics').html_safe%> -->
+            <% end %>
+            <% if @product.sector == 'bio_based' %>
+               <%= image_tag('logos/logo_bio.png', :height => '70px')%><!--<br/><%=_('bio-based plastics').html_safe%> -->
+            <% end %>
+            <% if @product.sector == 'machine' %>
+               <%= image_tag('logos/logo_machine.png', :height => '70px')%><!--<br/><%=_('machine tools').html_safe%> -->
+            <% end %>
+            <% if @product.sector == 'printed' %>
+               <%= image_tag('logos/logo_pcb.png', :height => '70px')%><!--<br/><%=_('printed circuit boards').html_safe%> -->
+            <% end %>
+            <% if @product.sector == 'renewable' %>
+               <%= image_tag('logos/logo_photovoltaics.png', :height => '70px')%><!--<br/><%=_('photovoltaic').html_safe%> -->
+            <% end %>
+            <% if @product.sector == 'sensors' %>
+               <%= image_tag('logos/logo_sensors.png', :height => '70px')%><!--<br/><%=_('sensors').html_safe%> -->
+            <% end %>
+            <% if @product.sector == 'textiles' %>
+               <%= image_tag('logos/logo_smart.png', :height => '70px')%><!--<br/><%=_('smart textiles').html_safe%> -->
+            <% end %>
+         <% else %>
+            <% if @bp_product %>
+                 <%= image_tag('logos/logo_bio.png', :height => '70px')%><!--<br/><%=_('bio-based plastics').html_safe%> -->
+            <% end %>
+            <% if @st_product %>
+                 <%= image_tag('logos/logo_smart.png', :height => '70px')%><!--<br/><%=_('smart textiles').html_safe%>-->
+            <% end %>
+            <% if @mt_product %>
+                 <%= image_tag('logos/logo_machine.png', :height => '70px')%><!--<br/><%=_('machine tools').html_safe%>-->
+            <% end %>
+            <% if @pc_product %>
+                 <%= image_tag('logos/logo_pcb.png', :height => '70px')%><!--<br/><%=_('printed circuit boards').html_safe%>-->
+            <% end %>
+            <% if @se_product %>
+                 <%= image_tag('logos/logo_sensors.png', :height => '70px')%><!--<br/><%=_('sensors').html_safe%>-->
+            <% end %>
+            <% if @ph_product %>
+                 <%= image_tag('logos/logo_photovoltaics.png', :height => '70px')%><!--<br/><%=_('photovoltaic').html_safe%>-->
+            <% end %>
+            
+         <% end %>
+        </div>    
+    <% end %>
+    
+    <% if current_user %>
+      <div class="utils span-19 last" style="margin-bottom:5px">
+            <p>
+              <% if I18n.locale == :en %>
+                  en&nbsp;|
+              <% else %>
+                  <%= link_to 'en', current_url('en') %>&nbsp;|
+              <% end %>
+              <% if I18n.locale == :pl %>
+                  pl&nbsp;|
+              <% else %>
+                  <%= link_to 'pl', current_url('pl') %>&nbsp;|
+              <% end %>
+              <% if I18n.locale == :nl %>
+                  nl&nbsp;|
+              <% else %>
+                  <%= link_to 'nl', current_url('nl') %>&nbsp;|
+              <% end %>
+              <% if I18n.locale == :fr %>
+                  fr&nbsp;|
+              <% else %>
+                  <%= link_to 'fr', current_url('fr') %>&nbsp;|
+              <% end %>
+              <% if I18n.locale == :de %>
+                  de&nbsp;|
+              <% else %>
+                  <%= link_to 'de', current_url('de') %>&nbsp;|
+              <% end %>
+              <% if I18n.locale == :es %>
+                  es
+              <% else %>
+                  <%= link_to 'es', current_url('es') %>
+              <% end %>
+
+            </p>
+
+
+
+
+
+
+
+<!--        <p>
+          <% if I18n.locale == :en %>
+              en&nbsp;|
+              <%= link_to 'es', current_url('es') %>
+          <% else %>
+              <%= link_to 'en', current_url('en') %>&nbsp;|
+              es
+          <% end %>
+        </p> -->
+          &nbsp; &nbsp; &nbsp;
+          <span><%=_('Welcome').html_safe%>, <%= current_user.email %> | <%= link_to _('Help').html_safe, intros_index_path, :target => '_blank' %> | <%= link_to _('My profile').html_safe, edit_user_registration_path(current_user.id) %> | <%= link_to _('Logout').html_safe, :sign_out %></span>
+        </p>
+      </div>
+    <% end %>
+    <% if params[:controller] == 'devise/sessions'%>
+       <div style="float:left;font-size:20px;padding-top:20px"><%=_('webtools to boost life cycle based assessment').html_safe%><br><%=_('in small and medium enterprises').html_safe%></div>
+    <% else %>
+ 
+    <% end %>   
+    <% if params[:controller] != 'devise/sessions'%>
+    <div class="top_menu span-22 last">
+     <ul>
+	     <% if user_signed_in? -%>
+          <% if current_user.admin || current_user.email == "dom@edcw.org" || current_user.email == "jude@edcw.org" || current_user.email == "richard@edcw.org" %>
+             <li><a href="<%=users_path%>"><%=_('Users')%></a></li>          
+          <% end %>
+          <% if params[:controller] == 'products' && params[:action] == 'index' %>	             
+            <li><a href="<%=products_path%>" class="selected"><%=_('My products')%></a></li>
+          <% else %>  
+            <li><a href="<%=products_path%>"><%=_('My products')%></a></li>
+          <% end %>  
+          <% if params[:controller] == 'products' && params[:action] == 'new' %>            	       	        
+            <li><a href="<%=new_product_path%>" class="selected"><%=_('New product')%></a></li>
+          <% else %>  
+            <li><a href="<%=new_product_path%>"><%=_('New product')%></a></li>
+          <% end %>                   	                
+	     <% else %>  
+	        <li style="margin-top:18px;"><%= link_to _('Login').html_safe, new_user_session_path %></li>    
+	     <% end %>      
+     <div class="clear"></div>
+     </ul>
+  </div>
+  <% end %>
+</div>                 
+
+     <div class=" span-24 last breadcrumb">    
+       <%= render_breadcrumbs :separator => ' > ' %>
+     </div>    
+
+  <div class="content span-24 last" id="content">
+  
+    <div id="flash_messages">
+      <% if flash[:notice] %>
+          <p class="notice"><%= flash[:notice] %></p>
+      <% end %>
+      <% if flash[:error] %>
+          <p class="error"><%= flash[:error] %></p>
+      <% end %>
+      <% if flash[:alert] %>
+          <p class="alert"><%= flash[:alert] %></p>
+      <% end %>
+    </div>
+
+
+    <%= yield %>
+  </div>
+  <div class="clear"></div>
+  <div id="footer-spacer"></div>   
+</div>
+
+<div class="clear"></div>
+<div id="footer">
+  <div style="margin:0 auto;width:940px;height:135px;">
+    <div class="span-6">
+      <h3><%=_('LCA to go Project').html_safe%></h3>
+      <ul>
+        <li><a href="http://www.lca2go.eu/index.en.html" target="_blank"><%=_('About us').html_safe%></a></li>
+        <li><a href="http://www.lca2go.eu/contact+partners.en.html" target="_blank"><%=_('LCA to go consortium').html_safe%></a></li>
+        <li><a href="http://www.lca2go.eu/news.en.html" target="_blank"><%=_('Press and media resources').html_safe%></a></li>	        
+      </ul>
+    </div>
+    <div class="span-5">
+      <h3><%=_('Support').html_safe%></h3>
+      <ul>
+        <li><a title="<%=_('This beta version of the software might contain defects and errors and it is being subjected to a fine tuning process before its final version release. Data and calculations have been verified intensively, the LCA to go consortium however cannot ensure the accuracy of the results obtained by the user. The user is fully responsible about the use of the obtained results. LCA to go consortium shall in no event be liable to the user or any third party for any indirect damages and/or loss, incidental, special or consequential damages and/or loss or similar damages, including without limitation, indirect, special, punitive, or exemplary damages for loss of business, loss of profit, missed savings, loss due to business stagnation, loss of data, or loss of business information.').html_safe%>" class="tip_disclaimer"><%=_('Disclaimer').html_safe%></a></li>
+        <li><a href="" target="_blank"><%=_('FAQs').html_safe%></a></li>
+        <li><a href="http://www.lca2go.eu/contact+partners.en.html" target="_blank"><%=_('Contact us').html_safe%></a></li>
+      </ul>
+    </div>
+    <div class="span-4">
+      <h3><%=_('Feedback').html_safe%></h3>
+      <ul>
+        <li><a href="https://www.surveymonkey.com/s/6MYD77H" target="_blank"><%=_('Online survey').html_safe%></a></li>
+      </ul>
+    </div>
+    
+    
+    <div class="span-8" style="margin-right:0px">
+       <a href="http://cordis.europa.eu/fp7/home_en.html" target="_blank">
+          <img src="/images/eu_flag.png" alt="" style="width:100px;padding-left:25px;">
+       </a>
+       <br/>
+       <span style="color:white;font-size:9px;"><%=_('This project has received funding from the European Union\'s Seventh Programme for research, technological development and demonstration under grant agreement No 265096').html_safe%></span>
+    </div>
+    <div class="last" style="float:right;font-size:0.7em">
+
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,2 @@
+module MtWasteEnergyDatasHelper
+end

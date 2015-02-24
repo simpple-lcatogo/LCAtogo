@@ -1,0 +1,487 @@
+<style>
+  .big-text {font-size:16px;} 
+  .info-note {font-size:11px; font-style: italic; margin-top:5px; margin-bottom:5px; display:block;}
+  .italic-text {font-style: italic; font-size: 12;}
+  .td-title {vertical-align: top; padding-top: 6px;} 
+</style>
+<script type="text/javascript">
+
+  function checkFields() {
+     var isOk = true;
+     <% @se_use_consumption_consumable_datas.each do |se_use_consumption_consumable_data| %>
+	     if (($("#se_use_consumption_consumable_data_cost_<%=se_use_consumption_consumable_data.id%>").html().length == 5) || ($("#se_use_consumption_consumable_data_cost_<%=se_use_consumption_consumable_data.id%>").html() == '(value)')){
+	        alert("<%=_('Cost value can\'t be blank').html_safe%>");
+	        isOk = false;
+	     }
+	 <% end %>    
+	 <% @se_use_product_datas.each do |se_use_product_data| %>
+	     if (($("#se_use_product_data_cost_<%=se_use_product_data.id%>").html().length == 5) || ($("#se_use_product_data_cost_<%=se_use_product_data.id%>").html() == '(value)')){
+	        alert("<%=_('Cost value can\'t be blank').html_safe%>");
+	        isOk = false;
+ 	     }
+     <% end %>    
+
+     if (document.getElementById("se_use_cost_machine_fixed").value == "") {
+        isOk = false;
+        alert("<%=_('Fixed field can\'t be blank').html_safe%>");
+     }
+     if (document.getElementById("se_use_cost_machine_variable").value == "") {
+        isOk = false;
+        alert("<%=_('Variable field can\'t be blank').html_safe%>");
+     }     
+     if (document.getElementById("se_use_cost_personnel_with").value == "") {
+        isOk = false;
+        alert("<%=_('For machine operation with sensors field can\'t be blank').html_safe%>");
+     }
+     if (document.getElementById("se_use_cost_personnel_without").value == "") {
+        isOk = false;
+        alert("<%=_('For machine operation without sensors field can\'t be blank').html_safe%>");
+     }
+     if (document.getElementById("se_use_cost_maintenance_with").value == "") {
+        isOk = false;
+        alert("<%=_('With sensors field can\'t be blank').html_safe%>");
+     }
+     if (document.getElementById("se_use_cost_maintenance_without").value == "") {
+        isOk = false;
+        alert("<%=_('Without sensors field can\'t be blank').html_safe%>");
+     }
+     if (document.getElementById("se_use_cost_spare_parts_with").value == "") {
+        isOk = false;
+        alert("<%=_('Average stored mass with sensors field can\'t be blank').html_safe%>");
+     }                    
+     if (document.getElementById("se_use_cost_spare_parts_without").value == "") {
+        isOk = false;
+        alert("<%=_('Average stored mass without sensors field can\'t be blank').html_safe%>");
+     }                    
+     if (document.getElementById("se_use_cost_spare_parts_storage").value == "") {
+        isOk = false;
+        alert("<%=_('Storage costs field can\'t be blank').html_safe%>");
+     }                    
+     if (document.getElementById("se_use_cost_electricity").value == "") {
+        isOk = false;
+        alert("<%=_('Electricity field can\'t be blank').html_safe%>");
+     }                    
+     if (document.getElementById("se_use_cost_heat").value == "") {
+        isOk = false;
+        alert("<%=_('Heat field can\'t be blank').html_safe%>");
+     }                    
+     if (document.getElementById("se_use_cost_gas").value == "") {
+        isOk = false;
+        alert("<%=_('Natural gas field can\'t be blank').html_safe%>");
+     }                    
+     if (document.getElementById("se_use_cost_fuels").value == "") {
+        isOk = false;
+        alert("<%=_('Other fuels field can\'t be blank').html_safe%>");
+     }                    
+     if (document.getElementById("se_use_cost_raw_material").value == "") {
+        isOk = false;
+        alert("<%=_('Raw material field can\'t be blank').html_safe%>");
+     }                    
+     
+               
+     if (isNaN(document.getElementById("se_use_cost_machine_fixed").value)) {
+        isOk = false;
+        alert("<%=_('Fixed field must be numeric').html_safe%>");
+     }
+     if (isNaN(document.getElementById("se_use_cost_machine_variable").value)) {
+        isOk = false;
+        alert("<%=_('Variable field must be numeric').html_safe%>");
+     }     
+     if (isNaN(document.getElementById("se_use_cost_personnel_with").value)) {
+        isOk = false;
+        alert("<%=_('For machine operation with sensors field must be numeric').html_safe%>");
+     }
+     if (isNaN(document.getElementById("se_use_cost_personnel_without").value)) {
+        isOk = false;
+        alert("<%=_('For machine operation without sensors field must be numeric').html_safe%>");
+     }
+     if (isNaN(document.getElementById("se_use_cost_maintenance_with").value)) {
+        isOk = false;
+        alert("<%=_('With sensors field must be numeric').html_safe%>");
+     }
+     if (isNaN(document.getElementById("se_use_cost_maintenance_without").value)) {
+        isOk = false;
+        alert("<%=_('Without sensors field must be numeric').html_safe%>");
+     }
+     if (isNaN(document.getElementById("se_use_cost_spare_parts_with").value)) {
+        isOk = false;
+        alert("<%=_('Average stored mass with sensors field must be numeric').html_safe%>");
+     }
+     if (isNaN(document.getElementById("se_use_cost_spare_parts_without").value)) {
+        isOk = false;
+        alert("<%=_('Average stored mass without sensors field must be numeric').html_safe%>");
+     }
+     if (isNaN(document.getElementById("se_use_cost_spare_parts_storage").value)) {
+        isOk = false;
+        alert("<%=_('Storage costs field must be numeric').html_safe%>");
+     }
+     if (isNaN(document.getElementById("se_use_cost_electricity").value)) {
+        isOk = false;
+        alert("<%=_('Electricity field must be numeric').html_safe%>");
+     }
+     if (isNaN(document.getElementById("se_use_cost_heat").value)) {
+        isOk = false;
+        alert("<%=_('Heat field must be numeric').html_safe%>");
+     }
+     if (isNaN(document.getElementById("se_use_cost_gas").value)) {
+        isOk = false;
+        alert("<%=_('Natural gas field must be numeric').html_safe%>");
+     }
+     if (isNaN(document.getElementById("se_use_cost_fuels").value)) {
+        isOk = false;
+        alert("<%=_('Other fuels field must be numeric').html_safe%>");
+     }
+     if (isNaN(document.getElementById("se_use_cost_raw_material").value)) {
+        isOk = false;
+        alert("<%=_('Raw material field must be numeric').html_safe%>");
+     }
+     
+     return isOk;     
+  }
+
+
+  function goPrevious() {
+     if (checkFields()) {
+        document.getElementById("arrow").value = 'previous';
+        document.forms[0].submit();
+     }         
+  }
+
+  function goNext() {
+     if (checkFields()) {
+        document.getElementById("arrow").value = 'next';
+        document.forms[0].submit();
+     }     
+  }
+</script>
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/lca/se_tabs') %>
+	</div>
+
+  <div class="clear"></div>
+<%= form_for(@se_use_cost) do |f| %>
+  <input type="hidden" name="arrow" id="arrow" value=""/>
+<fieldset class="empty">
+<legend></legend>
+
+  <% if @se_use_cost.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@se_use_cost.errors.count, "error") %> prohibited this ph_maintenance from being saved:</h2>
+
+      <ul>
+      <% @se_use_cost.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+ <p class="big-text"><%= _('This is a simplified cost scheme only and might deviate substantially from the real cost accounting approach in a given facility')%></p>
+
+ <table>
+    <tr>
+      <th class="span-5"></th>
+      <th class="span-10"></th>
+      <th class="span-3"></th>
+      <th class="span-2"></th>
+    </tr>  
+    <tr>
+      <td rowspan="2" class="big-text td-title">
+        <%=_('Machine-hour-rate').html_safe + '*'%>
+      </td>
+      <td>
+        <span class="big-text"><%=_('Fixed')%> - </span><span class="italic-text"><%= _('costs related to facility operation times regardless of machinery operation; utility costs included').html_safe%></span>
+      </td>
+      <td>
+        <%= f.text_field :machine_fixed, :style => "text-align: Right" ,:size => 15 %>
+      </td>
+      <td>
+        <%=_('&euro;/h').html_safe%>
+      </td>
+    </tr>  
+    <tr>
+      <td>
+        <span class="big-text"><%=_('Variable')%> - </span> <span class="italic-text"><%= _('only costs related to productive times; machinery energy and consumables excluded, if data is entered separately below').html_safe%></span>
+      </td>
+      <td>
+        <%= f.text_field :machine_variable , :style => "text-align: Right", :size => 15%>
+      </td>
+      <td>
+        <%=_('&euro;/h').html_safe%>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <span class="info-note"><%= _('* Make sure machine-hour-rates (fixed and variable) do not include energy and media consumption, neither directly nor as overhead, as otherwise  there might be a doubble-counting (see entries below)')%></span>
+      </td>
+    </tr>  
+    </table>
+</fieldset>    
+<br/>
+<fieldset class="empty">
+ <table>
+    <tr>
+      <th class="span-5"></th>
+      <th class="span-10"></th>
+      <th class="span-3"></th>
+      <th class="span-2"></th>
+    </tr>  
+    <tr>
+      <td rowspan="2" class="big-text td-title">
+        <%=_('Personnel costs').html_safe%>
+      </td>
+      <td>
+        <span class="big-text"><%=_('For machine operation with sensors').html_safe%></span>
+      </td>
+      <td>
+        <%= f.text_field :personnel_with, :style => "text-align: right", :size => 15 %>
+      </td>
+      <td><%=_('&euro;/year').html_safe%></td>      
+    </tr>  
+    <tr>
+      <td>
+        <span class="big-text"><%=_('For machine operation without sensors').html_safe%></span>
+      </td>
+      <td>
+        <%= f.text_field :personnel_without, :style => "text-align: right", :size => 15 %>
+      </td>
+      <td>
+        <%=_('&euro;/year').html_safe%>
+      </td>
+    </tr>  
+ </table>    
+</fieldset>    
+<br/>
+<fieldset class="empty">
+ <table>
+    <tr>
+      <th class="span-5"></th>
+      <th class="span-10"></th>
+      <th class="span-3"></th>
+      <th class="span-2"></th>
+    </tr>      
+    <tr>
+      <td rowspan="2" class="big-text td-title">
+        <%=_('Machine maintenance costs').html_safe%>
+      </td>
+      <td>
+        <span class="big-text"><%=_('With sensors').html_safe%></span>
+      </td>
+      <td>
+        <%= f.text_field :maintenance_with, :style => "text-align: right", :size => 15 %>
+      </td>
+      <td>
+        <%=_('&euro;/year').html_safe%>
+      </td>      
+    </tr>  
+    <tr>
+      <td>
+        <span class="big-text"><%=_('Without sensors').html_safe%></span>
+      </td>
+      <td>
+        <%= f.text_field :maintenance_without, :style => "text-align: right", :size => 15 %>
+      </td>
+      <td>
+        <%=_('&euro;/year').html_safe%>
+      </td>      
+    </tr>
+ </table>    
+</fieldset>    
+<br/>
+<fieldset class="empty">
+ <table>
+    <tr>
+      <th class="span-5"></th>
+      <th class="span-10"></th>
+      <th class="span-3"></th>
+      <th class="span-2"></th>
+    </tr>      
+      
+    <tr>
+      <td rowspan="3" class="big-text td-title">
+        <%=_('Spare parts storage').html_safe%>
+      </td>
+      <td>
+        <span class="big-text"><%=_('Average stored mass with sensors').html_safe%></span>
+      </td>
+      <td>
+        <%= f.text_field :spare_parts_with, :style => "text-align: right", :size => 15 %>
+      </td>
+      <td>
+        <%=_('kg').html_safe%>
+      </td>      
+    </tr>  
+    <tr>
+      <td>
+        <span class="big-text"><%=_('Average stored mass without sensors').html_safe%></span>
+      </td>
+      <td>
+        <%= f.text_field :spare_parts_without, :style => "text-align: Right", :size => 15 %>
+      </td>
+      <td>
+        <%=_('kg').html_safe%>
+      </td>      
+    </tr>  
+    <tr>
+      <td>
+        <span class="big-text"><%=_('Storage costs').html_safe%></span>
+      </td>
+      <td>
+        <%= f.text_field :spare_parts_storage, :style => "text-align: right", :size => 15 %>
+      </td>
+      <td>
+        <%=_('&euro;/kg.year').html_safe%>
+      </td>      
+    </tr>  
+ </table>    
+</fieldset>    
+<br/>
+<fieldset class="empty">
+ <table>
+    <tr>
+      <th class="span-5"></th>
+      <th class="span-10"></th>
+      <th class="span-3"></th>
+      <th class="span-2"></th>
+    </tr>       
+    <tr>
+      <td class="big-text td-title" colspan="2">
+        <%=_('Electricity').html_safe%><br/>
+        <span class="italic-text" style="font-size:11;"><%=_('For industrial electricity prices in Europe see').html_safe%> <a target="_blank" href="http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=nrg_pc_205&lang=en">Eurostat database</a></span>
+    </span>
+      </td>
+      <td><%= f.text_field :electricity, :style => "text-align: right", :size => 15 %></td>    
+      <td><%=_('&euro;/kWh').html_safe%></td>       
+    </tr>  
+    <tr>
+      <td class="big-text td-title">
+        <%=_('Heat').html_safe%><br>
+      </td>
+      <td></td>
+      <td><%= f.text_field :heat, :style => "text-align: right", :size => 15 %></td>    
+      <td><%=_('&euro;/kWh').html_safe%></td>     
+    </tr>  
+    <tr>
+      <td class="big-text td-title" colspan="2">
+        <%=_('Natural gas').html_safe%><br/>
+        <span class="italic-text" style="font-size:11;"><%=_('For natural gas prices in Europe see').html_safe%> <a target="_blank" href="http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=nrg_pc_203&lang=en">Eurostat database</a></span>        
+      </td>
+      <td><%= f.text_field :gas, :style => "text-align: right", :size => 15 %></td>    
+      <td><%=_('&euro;/GJ').html_safe%></td>      
+    </tr>  
+    <tr>
+      <td class="big-text td-title">
+        <%=_('Other fuels').html_safe%>
+      </td>
+      <td></td>
+      <td><%= f.text_field :fuels, :style => "text-align: right", :size => 15 %></td>   
+      <td><%=_('&euro;/GJ').html_safe%></td>
+    </tr>
+    <tr>
+      <td class="big-text td-title">
+        <%=_('Raw material').html_safe%> <a title="<%=_('This is the semi-finished product, which is processed in the production line.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+      </td>
+      <td></td>
+      <td><%= f.text_field :raw_material, :style => "text-align: right", :size => 15 %></td>   
+      <td><%=_('&euro;/kg').html_safe%></td>
+    </tr>                 
+ </table>   
+ 
+ 
+<% end %>
+</fieldset>
+
+<br>
+<div class="clearfix"></div>
+
+<fieldset class="empty">
+<legend><%=_('Consumables').html_safe%></legend>
+
+
+
+    <table class="standard2">
+      <tr class="add"> 
+        <th class="span-7">
+          <%=_('Consumable').html_safe %><br/>
+        </th>
+        <th class="span-6" style="text-align:center;">
+          <%=_('With sensor').html_safe %><br/>
+        </th>
+        <th class="span-6" style="text-align:center;">
+          <%=_('Without sensor').html_safe %><br/>
+        </th>
+        <th class="span-4" style="text-align:center;">
+          <%=_('Cost').html_safe %><br/>
+        </th>
+      </tr>   
+      <tbody id="se_use_consumption_consumable_datas">
+        <%= render :partial => @se_use_consumption_consumable_datas, :locals => {:page => "use_cost"} %>
+      </tbody>
+  </table>
+
+</fieldset>
+
+
+  <br>
+  <div class="clearfix"></div>
+
+  <fieldset class="empty">
+  <legend><%=_('Value of the product').html_safe%></legend>
+
+      <table class="standard2">
+        <tr class="add"> 
+          <th class="span-7">
+            <%=_('Product Output').html_safe %><br/>
+          </th>
+          <th class="span-6" style="text-align:center;">
+            <%=_('With sensor').html_safe %><br/>
+          </th>
+          <th class="span-6" style="text-align:center;">
+            <%=_('Without sensor').html_safe %>
+          </th>
+          <th class="span-4" style="text-align:center;">
+            <%=_('Net sales price').html_safe %>
+          </th>
+        </tr>     
+        <tbody id="se_use_consumption_consumable_datas">
+          <%= render :partial => @se_use_product_datas, :locals => {:page => "use_cost"} %>
+        </tbody>
+    </table>
+
+  </fieldset>
+  
+  <br/><br/>
+    
+ <div class="clear"></div>
+
+<div class="buttons span-5" style="float:left;text-align:left">
+      <button type="button" class="positive" style="float:left;text-align:left" onClick="javascript:goPrevious();"> <%= image_tag 'tick.png' %><%= _("Previous step").html_safe %></button>
+</div>
+
+<div class="buttons span-5 last" style="float:right;text-align:right">
+      <button type="submit" class="positive" style="float:right;text-align:right" onClick="javascript:goNext();"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+</div>
+
+
+<div class="clear"></div>
+<div class="navbar">
+  <!-- <div id="for-ie"> -->
+  <div>
+    <ul>
+      <li><%= link_to _('To Introduction').html_safe, se_production_intro_path(@product.se_product) %></li>
+      <li><%= link_to _('To Data Quality').html_safe, se_data_quality_intro_url(@product.se_product) %></li>
+      <li><%= link_to _('To Results').html_safe, se_result_path(@product.se_product) %></li>
+    </ul>
+  </div>
+</div>
+<div class="clear"></div>
+
+
+</div>
+
+
+

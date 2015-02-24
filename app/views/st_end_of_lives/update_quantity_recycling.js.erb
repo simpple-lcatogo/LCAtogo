@@ -1,0 +1,8 @@
+<script type="text/javascript">
+$(".quantity_recycling_<%= @st_end_of_life_data.id%>").html("<%=@update_value%>");
+<% if @st_end_of_life_data.eco_cost_recycling %>
+   $(".eco_cost_recycling_<%= @st_end_of_life_data.id%>").html("<%=@new_eco_cost%>");
+<% end %>
+
+updateRecyclings();   
+</script>

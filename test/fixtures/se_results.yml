@@ -1,0 +1,27 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  se_product_id: 1
+  sensor_kg_year_with: 1.5
+  energy_kg_year_with: 1.5
+  consumables_kg_year_with: 1.5
+  utilities_kg_year_with: 1.5
+  yield_kg_year_with: 1.5
+  sensor_kg_product_with: 1.5
+  energy_kg_product_with: 1.5
+  consumables_kg_product_with: 1.5
+  utilities_kg_product_with: 1.5
+  yield_kg_product_with: 1.5
+
+two:
+  se_product_id: 1
+  sensor_kg_year_with: 1.5
+  energy_kg_year_with: 1.5
+  consumables_kg_year_with: 1.5
+  utilities_kg_year_with: 1.5
+  yield_kg_year_with: 1.5
+  sensor_kg_product_with: 1.5
+  energy_kg_product_with: 1.5
+  consumables_kg_product_with: 1.5
+  utilities_kg_product_with: 1.5
+  yield_kg_product_with: 1.5

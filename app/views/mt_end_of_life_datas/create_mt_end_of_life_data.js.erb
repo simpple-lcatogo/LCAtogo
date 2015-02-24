@@ -1,0 +1,14 @@
+$("#error_explanation_mt_end_of_life_data").empty();
+$("#error_explanation_mt_end_of_life_data").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#mt_end_of_life_datas").append("<%= escape_javascript(render(@mt_end_of_life_data)) %>");
+/* Highlight the new comment */
+$("#mt_end_of_life_data_<%= @mt_end_of_life_data.id %>").effect("highlight", {}, 3000);
+
+$("#mt_end_of_life_data_with_sensor").val("");
+$("#mt_end_of_life_data_without_sensor").val("");
+$("#mt_end_of_life_data_recycling_revenue").val("");
+$("#mt_end_of_life_data_description").val("");
+$("#mt_end_of_life_data_global_warming_potential").val("");
+
+updateWeight();

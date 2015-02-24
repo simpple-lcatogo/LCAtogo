@@ -1,0 +1,24 @@
+<tr id="mt_manufacturing_main_data_<%= mt_manufacturing_main_data.id %>">
+     <td>
+	      <% if mt_manufacturing_main_data.mt_manufacturing_process %>
+			<%= mt_manufacturing_main_data.mt_manufacturing_process.name.html_safe %>
+	      <% end %>		
+     </td>
+     <td class="quantity_<%=mt_manufacturing_main_data.id%>">
+          <%= mt_manufacturing_main_data.quantity %>
+     </td>
+     <script type="text/javascript">
+		   $(".quantity_<%=mt_manufacturing_main_data.id%>").editInPlace({
+		        url: "/mt_manufacturing_main_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+		        params: "mt_manufacturing_main_data_id=<%=mt_manufacturing_main_data.id%>",
+		        saving_text: '<%=_("Saving...")%>'
+		        });      
+  
+     </script>         
+     <td>
+	      <% if mt_manufacturing_main_data.mt_manufacturing_process %>
+			<%= mt_manufacturing_main_data.mt_manufacturing_process.unit.html_safe %>
+	      <% end %>		
+     </td>     
+     <td class="center"><%= link_to '&#10006;'.html_safe, mt_manufacturing_main_data_path(mt_manufacturing_main_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>

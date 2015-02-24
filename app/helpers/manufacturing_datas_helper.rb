@@ -1,0 +1,2 @@
+module ManufacturingDatasHelper
+end

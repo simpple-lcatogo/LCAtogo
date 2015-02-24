@@ -1,0 +1,807 @@
+<script type="text/javascript">
+		  function checkFields() {
+		     var isOk = true;
+		     return isOk;   
+		  }
+		  
+		  function goNext() {
+		     if (checkFields()) {
+		        document.forms[2].submit();
+		     }     
+		  }
+
+		  function goNextDetailed() {
+		     if (checkFields()) {
+		        document.forms[4].submit();
+		     }     
+		  }
+
+        
+        function updateSupplierParts() {
+            $.ajax({
+                dataType: "json",
+                cache: false,
+                url: '/ajax_helpers',
+                data: {id: "<%=@mt_product.id%>", type: 'mt_supplier_part_datas_for_mt_product'},
+                timeout: 15000,
+                error: function(XMLHttpRequest, errorTextStatus, error){
+                //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                },
+                success: function(data){                    
+                    // Clear all options from sub category select
+                    $("#mt_user_supplier_data_mt_supplier_part_data option").remove();
+                    var row;                        
+                    // Fill sub category select
+                    $.each(data, function(i, j){
+                        row = "<option value=\"" + j.mt_supplier_part_data.id + "\">" + j.mt_supplier_part_data.name + "</option>";  
+                        $(row).appendTo("select#mt_user_supplier_data_mt_supplier_part_data");                    
+                    });     
+                    $("#mt_user_supplier_data_mt_supplier_part_data").change();       
+                 }
+            });               
+        }
+
+
+        function updateWeight() {
+          var total_value = 0;           
+		  $('[id^=td_quantity_material_]').each(function(index) {
+		     var value = parseFloat($(this).html());	    
+		     total_value += value;
+		  });
+		  $('[id^=td_quantity_supplier_]').each(function(index) {
+		     var value = parseFloat($(this).html());	    
+		     total_value += value;
+		  });
+		  
+           var percentage = (total_value / <%=@product_weight%>) * 100;
+           if (!isNaN(percentage)) {           
+               $("#percentage_weight").html(percentage.toFixed(0));
+           } else {
+               $("#percentage_weight").html("0");
+           }
+        }
+
+    $(document).ready(function(){
+
+
+
+
+
+        $("#mt_user_supplier_data_mt_family").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                $("#mt_user_supplier_data_mt_material option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#mt_user_supplier_data_mt_material");
+            }
+            else {
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'mt_materials_for_mt_family', general:"<%=!@detailed%>"},
+                    timeout: 15000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                        $("#mt_user_supplier_data_mt_material option").remove();
+                        var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.mt_material.id + "\">" + j.mt_material.name + "</option>";  
+                            $(row).appendTo("select#mt_user_supplier_data_mt_material");                    
+                        });     
+                        $("#mt_user_supplier_data_mt_material").change();       
+                     }
+                });
+             };   
+           });     
+
+
+       $("#mt_user_supplier_data_mt_material").change(function(){
+           var id_value_string = $(this).val();
+           if (id_value_string != "") {
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'unit_for_mt_material'},
+                    timeout: 15000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                 //       alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                //        alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("unit_user_defined_material").innerHTML = "" + data; 
+                       }
+                    }); 
+              }
+         });            
+
+
+        $("#mt_material_data_mt_family").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                $("#mt_material_data_mt_material option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#mt_material_data_mt_material");
+            }
+            else {
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'mt_materials_for_mt_family', general:"<%=!@detailed%>"},
+                    timeout: 15000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                        $("#mt_material_data_mt_material option").remove();
+                        var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.mt_material.id + "\">" + j.mt_material.name + "</option>";  
+                            $(row).appendTo("select#mt_material_data_mt_material");                    
+                        });     
+                        $("#mt_material_data_mt_material").change();       
+                     }
+                });
+             };   
+           });     
+           
+           
+        $("#mt_material_data_mt_material").change(function(){
+           var id_value_string = $(this).val();
+           if (id_value_string != "") {
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'unit_for_mt_material'},
+                    timeout: 15000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                      //  alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                     //   alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("unit_mt_material").innerHTML = "" + data; 
+                       }
+                    }); 
+              }
+         });                  
+           
+           
+        $("#mt_predefined_supplier_data_mt_family").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                $("#mt_predefined_supplier_data_mt_material option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#mt_predefined_supplier_data_mt_material");
+            }
+            else {
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'mt_materials_for_mt_family', general:"false"},
+                    timeout: 15000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){
+                        // Clear all options from sub category select
+                        $("#mt_predefined_supplier_data_mt_material option").remove();
+                        var row;
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.mt_material.id + "\">" + j.mt_material.name + "</option>";  
+                            $(row).appendTo("select#mt_predefined_supplier_data_mt_material");                    
+                        });     
+                        $("#mt_predefined_supplier_data_mt_material").change();       
+                     }
+                });
+             };   
+           });     
+           
+           
+        $("#mt_supplier_data_mt_family").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                $("#mt_supplier_data_mt_material option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#mt_supplier_data_mt_material");
+            } else {
+                $("#mt_supplier_data_mt_material option").remove();
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'mt_materials_for_mt_family_rough', general:"false"},
+                    timeout: 15000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){
+                        // Clear all options from sub category select
+                        $("#mt_supplier_data_mt_material option").remove();
+                        var row;
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.mt_material.id + "\">" + j.mt_material.name + "</option>";  
+                            $(row).appendTo("select#mt_supplier_data_mt_material");                    
+                        });     
+                        $("#mt_supplier_data_mt_material").change();       
+                     }
+                });
+             };   
+           });     
+           
+           
+        $("#mt_supplier_data_mt_material, #mt_predefined_supplier_data_mt_material").change(function(){
+           var id_value_string = $(this).val();
+           if (id_value_string != "") {
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'unit_for_mt_material'},
+                    timeout: 15000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                     //   alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("unit_mt_supplier").innerHTML = "" + data; 
+                       }
+                    }); 
+              }
+         });                  
+           
+        $("#mt_user_supplier_data_mt_manufacturing_process_id").change(function(){
+           var id_value_string = $(this).val();
+           if (id_value_string != "") {
+              if (id_value_string == "-1") {
+                  $("#value_user_defined_process").hide();
+                  $("#mt_user_supplier_data_value").val("");
+                  } else {
+                  $("#value_user_defined_process").show();
+                  }
+           
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'unit_for_mt_manufacturing_process'},
+                    timeout: 15000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                     //   alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    //    alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("unit_user_defined_process").innerHTML = "" + data; 
+                       }
+                    }); 
+              }
+         });                   
+           
+           
+           
+           $("#mt_material_data_mt_family").change();
+    //       $("#mt_material_data_mt_material").change();
+           $("#mt_supplier_data_mt_family").change();
+    //       $("#mt_supplier_data_mt_material").change();
+           $("#mt_predefined_supplier_data_mt_family").change();
+   //        $("#mt_predefined_supplier_data_mt_material").change();
+           $("#mt_user_supplier_data_mt_family").change();
+     //      $("#mt_user_supplier_data_mt_material").change();           
+           $("#mt_user_supplier_data_mt_manufacturing_process_id").change();
+           
+          updateWeight();
+ });
+</script>
+<h1>
+  <% if @mt_product.mt_assessment && @mt_product.mt_assessment.assessment_type == 'rough' %>
+     <%=_('Rough Assessment').html_safe%>
+  <% else %>
+     <%=_('Detailed Assessment').html_safe%>
+  <% end %>   
+  <br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+<div class="content_skin">
+  <div class="lcamenu span-23 showdgrid last ">
+    <%= render(:partial => 'shared/lca/mt_tabs') %>
+  </div>
+  <div class="clear"></div>
+
+ <%= form_for MtMaterialData.new, :remote => true do |f| %>
+  <input type="hidden" name="mt_material_data[mt_product_id]" id="mt_product_id" value="<%=@mt_product.id%>"/>
+  <fieldset class="empty">
+    <legend><%=_('Raw materials').html_safe%> <a title="<%=_('Please list any raw materials that are used in the manufacture or assembly of your product.').html_safe%>" href="#" class="tip_left">&nbsp;</a></legend>
+    
+    <% if @detailed %>
+	    <div class="span-5">
+	      <%= f.label :value, _('Component name').html_safe %> <a title="<%=_('Give each of the components a name for your own traceability.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+	      <br />
+	      <%= f.text_field :module, :size => 10 %></span>
+	    </div>   
+    <% end %>
+    <div class="span-6" > 
+       <%= f.label :value, _('Family').html_safe %> 
+       <br/>
+        <select class="span-4" id="mt_material_data_mt_family" name="mt_material_data[mt_family_id]">         
+         <% @mt_families_materials.each do |mt_family| %>
+            <option value="<%=mt_family.id%>"><%=mt_family.name.html_safe%></option>
+         <% end %>
+       </select>
+    </div>
+
+    <div class="span-5">
+       <%= f.label :value, _('Material').html_safe %> <a title="<%=_('For ease of use, the database of available materials has been kept small. Should the material you are looking for not be included in the list, please use a similar material as a substitute.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+       <br/>
+       <select class="span-4" id="mt_material_data_mt_material" name="mt_material_data[mt_material_id]">
+       </select>
+    </div>
+
+    <div class="span-5">
+      <%= f.label :value, _('Quantity').html_safe %> 
+      <br />
+      <%= f.text_field :quantity, :size => 10 %> <span id="unit_mt_material"></span>
+    </div>
+
+
+
+    <div class="clear"></div>
+    
+    <div class="span-8">
+      <%= f.label :value, _('Comments').html_safe %> <a title="<%=_('Add any necessary comments needed here such as assumption made.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+      <br />
+      <%= f.text_field :comments, :size => 35 %>
+    </div>
+
+    <div class="clear"></div>
+    
+	<div class="span-3 buttons last">
+		<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+	</div>
+
+</fieldset>
+<% end %>
+<br/>
+
+<table class="standard2">
+    <tr class="add"> 
+      <% if @detailed %>
+	      <th class="span-8">
+	        <%=_('Component').html_safe %><br/>
+	      </th>      
+      <% end %>
+      <th class="span-8">
+        <%=_('Family').html_safe %><br/>
+      </th>
+      <th class="span-8">
+        <%=_('Material').html_safe %><br/>
+      </th>
+      <th class="span-3">
+        <%=_('Quantity').html_safe %>
+      </th>
+      <th class="span-3">
+        <%=_('Unit').html_safe %>
+      </th>
+      <th class="span-5">
+        <%=_('Comments').html_safe %>
+      </th>      
+            
+      <th class="span-1">
+        &nbsp;
+      </th>
+    </tr>   
+    <tbody id="mt_material_datas">
+      <%= render :partial => @mt_material_datas %>
+    </tbody>
+</table>
+
+<% if !@detailed %>
+
+        
+
+		 <%= form_for MtSupplierData.new, :remote => true do |f| %>
+		  <input type="hidden" name="mt_supplier_data[mt_product_id]" id="mt_product_id" value="<%=@mt_product.id%>"/>
+		  <fieldset class="empty">
+		    <legend><%=_('Supplier parts').html_safe%></legend>
+		    <div class="span-6" > 
+		       <%= f.label :value, _('Family').html_safe %> 
+		       <br/>
+		        <select class="span-4" id="mt_supplier_data_mt_family" name="mt_supplier_data[mt_family_id]">
+		         
+		         <% @mt_families_suppliers.each do |mt_family| %>
+		            <option value="<%=mt_family.id%>"><%=mt_family.name.html_safe%></option>
+		         <% end %>
+		       
+		       </select>
+		    </div>
+		
+		    <div class="span-5">
+		       <%= f.label :value, _('Material').html_safe %> 
+		       <br/>
+		        <select class="span-4" id="mt_supplier_data_mt_material" name="mt_supplier_data[mt_material_id]">
+		         
+		       
+		       </select>
+		    </div>
+		
+		    <div class="span-5">
+		      <%= f.label :value, _('Quantity').html_safe %> 
+		      <br />
+		      <%= f.text_field :quantity, :size => 10 %> <span id="unit_mt_supplier"></span>
+		    </div>
+		
+		
+		
+		    <div class="clear"></div>
+		
+			<div class="span-3 buttons last">
+				<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+			</div>
+		
+		</fieldset>
+		<% end %>
+		<br/>
+		
+		<table class="standard2">
+		    <tr class="add"> 
+		      <th class="span-8">
+		        <%=_('Family').html_safe %><br/>
+		      </th>
+		      <th class="span-8">
+		        <%=_('Material').html_safe %><br/>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Quantity').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Unit').html_safe %>
+		      </th>      
+		      <th class="span-1">
+		        &nbsp;
+		      </th>
+		    </tr>   
+		    <tbody id="mt_supplier_datas">
+		      <%= render :partial => @mt_supplier_datas %>
+		    </tbody>
+		</table>
+<% else %>
+		 <div class="span-23" style="border-style:solid; border-bottom:thin dotted black;">
+            <h2><%=_('Supplier parts').html_safe%></h2>
+         </div>
+         <br/><br/>
+         <div class="clear"></div>   
+         <br/>
+         <!-- PREDEFINED SUPPLIER PARTS -->
+		 <%= form_for MtPredefinedSupplierData.new, :remote => true do |f| %>
+		  <input type="hidden" name="mt_predefined_supplier_data[mt_product_id]" id="mt_product_id" value="<%=@mt_product.id%>"/>
+		  <fieldset class="empty">
+		    <legend><%=_('Predefined supplier parts').html_safe%> <a title="<%=_('Please select supplier parts which have been predefined, if your part or supplier is not listed you may define your own supplier parts and components below.').html_safe%>" href="#" class="tip_left">&nbsp;</a></legend>
+		    <div class="span-6" > 
+		       <%= f.label :value, _('Component type').html_safe %> 
+		       <br/>
+		        <select class="span-4" id="mt_predefined_supplier_data_mt_family" name="mt_predefined_supplier_data[mt_family_id]">
+		         
+		         <% @mt_families_suppliers.each do |mt_family| %>
+		            <option value="<%=mt_family.id%>"><%=mt_family.name.html_safe%></option>
+		         <% end %>
+		       
+		       </select>
+		    </div>
+		
+		    <div class="span-5">
+		       <%= f.label :value, _('Description').html_safe %> 
+		       <br/>
+		        <select class="span-4" id="mt_predefined_supplier_data_mt_material" name="mt_predefined_supplier_data[mt_material_id]">		         		     
+		        </select>
+		    </div>
+		
+		    <div class="span-5">
+		      <%= f.label :value, _('Quantity').html_safe %> 
+		      <br />
+		      <%= f.text_field :quantity, :size => 10 %> <span id="unit_mt_supplier"></span>
+		    </div>
+		
+		    <div class="span-6" > 
+		       <%= f.label :value, _('Transport type').html_safe %> 
+		       <br/>
+		        <select class="span-4" id="mt_predefined_supplier_data_mt_transport_type_id" name="mt_predefined_supplier_data[mt_transport_type_id]">
+		         
+		         <% @mt_transport_types.each do |mt_transport_type| %>
+		            <option value="<%=mt_transport_type.id%>"><%=mt_transport_type.name.html_safe%></option>
+		         <% end %>
+		       
+		       </select>
+		    </div>
+		
+		    <div class="span-5">
+		      <%= f.label :value, _('Distance').html_safe %> 
+		      <br />
+		      <%= f.text_field :distance, :size => 10 %> <%=_('km').html_safe%>
+		    </div>
+		
+		    <div class="clear"></div>
+		
+			<div class="span-3 buttons last">
+				<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+			</div>
+		
+		</fieldset>
+		<% end %>
+		<br/>
+		
+		<table class="standard2">
+		    <tr class="add"> 
+		      <th class="span-8">
+		        <%=_('Component type').html_safe %><br/>
+		      </th>
+		      <th class="span-8">
+		        <%=_('Description').html_safe %><br/>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Quantity').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Unit').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Transport type').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Distance').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Unit').html_safe %>
+		      </th>		            
+		      <th class="span-1">
+		        &nbsp;
+		      </th>
+		    </tr>   
+		    <tbody id="mt_predefined_supplier_datas">
+		      <%= render :partial => @mt_predefined_supplier_datas %>
+		    </tbody>
+		</table>
+		
+  <fieldset class="empty">
+    <legend><%=_('User defined supplier parts').html_safe%> <a title="<%=_('Please enter the relevant data below if your part or component is not listed in the Predefined supplier parts above.').html_safe%>" href="#" class="tip_left">&nbsp;</a></legend>
+		 <!-- SUPPLIER PARTS -->
+		 <%= form_for MtSupplierPartData.new, :remote => true do |f| %>
+		  <input type="hidden" name="mt_supplier_part_data[mt_product_id]" id="mt_product_id" value="<%=@mt_product.id%>"/>
+		  <fieldset class="empty">
+		    <legend><%=_('Transport').html_safe%></legend>
+		    <div class="span-6" > 
+		       <%= f.label :value, _('Supplier part name').html_safe %> <a title="<%=_('Please enter a recognisable reference name for the part or component that you are entering.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+		       <br />
+		       <%= f.text_field :name, :size => 10 %>
+		    </div>
+		
+		    <div class="span-5">
+		       <%= f.label :value, _('Transport type').html_safe %> <a title="<%=_('Please select the typical method of transportation used by the supplier.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+		       <br/>
+		        <select class="span-4" id="mt_supplier_part_data_mt_transport_type" name="mt_supplier_part_data[mt_transport_type_id]">
+		         
+		         <% @mt_transport_types.each do |mt_transport_type| %>
+		            <option value="<%=mt_transport_type.id%>"><%=mt_transport_type.name.html_safe%></option>
+		         <% end %>
+		       
+		       </select>
+		    </div>
+		
+		    <div class="span-5">
+		      <%= f.label :value, _('Distance').html_safe %> 
+		      <br />
+		      <%= f.text_field :distance, :size => 10 %> <%=_('km').html_safe%>
+		    </div>
+		
+		
+		    <div class="clear"></div>
+		
+			<div class="span-3 buttons last">
+				<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+			</div>
+		
+		</fieldset>
+		<% end %>
+		<br/>
+		
+		<table class="standard2">
+		    <tr class="add"> 
+		      <th class="span-8">
+		        <%=_('Supplier part name').html_safe %><br/>
+		      </th>
+		      <th class="span-8">
+		        <%=_('Transport type').html_safe %><br/>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Distance').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Unit').html_safe %>
+		      </th>
+		            
+		      <th class="span-1">
+		        &nbsp;
+		      </th>
+		    </tr>   
+		    <tbody id="mt_supplier_part_datas">
+		      <%= render :partial => @mt_supplier_part_datas %>
+		    </tbody>
+		</table>		
+
+
+         <!-- USER DEFINED SUPPLIER PARTS -->
+		 <%= form_for MtUserSupplierData.new, :remote => true do |f| %>
+		  <input type="hidden" name="mt_user_supplier_data[mt_product_id]" id="mt_product_id" value="<%=@mt_product.id%>"/>
+		  <fieldset class="empty">
+		    <legend><%=_('Materials/Processes').html_safe%></legend>
+		    <div class="span-6" > 
+		       <%= f.label :value, _('Supplier part name').html_safe %>  <a title="<%=_('Please select a recognisable reference name for the part or component that you are entering.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+		       <br/>
+		        <select class="span-4" id="mt_user_supplier_data_mt_supplier_part_data" name="mt_user_supplier_data[mt_supplier_part_data_id]">
+		         
+		         <% @mt_supplier_part_datas.each do |_mt_supplier_part_data| %>
+		            <option value="<%=_mt_supplier_part_data.id%>"><%=_mt_supplier_part_data.name.html_safe%></option>
+		         <% end %>
+		       
+		       </select>
+		    </div>
+		
+		    <div class="span-6" > 
+		       <%= f.label :value, _('Family').html_safe %> <a title="<%=_('Select the family category that your part most belongs too.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+		       <br/>
+		        <select class="span-4" id="mt_user_supplier_data_mt_family" name="mt_user_supplier_data[mt_family_id]">
+		         
+		         <% @mt_families.each do |mt_family| %>
+		            <option value="<%=mt_family.id%>"><%=mt_family.name.html_safe%></option>
+		         <% end %>
+		       
+		       </select>
+		    </div>		
+		
+		    <div class="span-5">
+		       <%= f.label :value, _('Material').html_safe %> 
+		       <br/>
+		        <select class="span-4" id="mt_user_supplier_data_mt_material" name="mt_user_supplier_data[mt_material_id]">
+		         
+		       
+		       </select>
+		    </div>
+		
+		    <div class="span-5">
+		      <%= f.label :value, _('Quantity').html_safe %> <a title="<%=_('Indicate the material mass contained in the final supplier part. Also define what process the supplier most likely carried out in the manufacture of the part. Once you have selected a process, a ‘Value’ box with further instructions will appear. E.g. Supplier part is a \'Cooling and Lubrication unit\' containing; among other materials; 1,000 kg steel with holes drilled for mounting. Assume that 10% of the final mass were discarded as chippings and select \'Drilling Steel\', entering a \'Value\' of 100 kg. etc.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+		      <br />
+		      <%= f.text_field :quantity, :size => 10 %> <span id="unit_user_defined_material"></span>
+		    </div>
+		
+		    <div class="span-6" > 
+		       <%= f.label :value, _('Process').html_safe %> 
+		       <br/>
+		        <select class="span-4" id="mt_user_supplier_data_mt_manufacturing_process_id" name="mt_user_supplier_data[mt_manufacturing_process_id]">
+		         <option value="-1"><%=_('None').html_safe%></option>
+		         <% @mt_manufacturing_processes.each do |mt_manufacturing_process| %>
+		            <option value="<%=mt_manufacturing_process.id%>"><%=mt_manufacturing_process.name.html_safe%></option>
+		         <% end %>
+		         
+		       </select>
+		    </div>
+		
+		    <div class="span-5" id="value_user_defined_process" style="display:none">
+		      <%= f.label :value, _('Value').html_safe %> <a title="<%=_('Enter the amount of material removed through processing (e.g. weight of metal chippings from drilling).').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+		      <br />
+		      <%= f.text_field :value, :size => 10 %> <span id="unit_user_defined_process"></span>
+		    </div>
+		
+		    <div class="clear"></div>
+		
+			<div class="span-3 buttons last">
+				<button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+			</div>
+		
+		</fieldset>
+		<% end %>
+		<br/>
+		
+		<table class="standard2">
+		    <tr class="add">
+		      <th class="span-8">
+		        <%=_('Supplier part name').html_safe %><br/>
+		      </th>
+		      <th class="span-8">
+		        <%=_('Family').html_safe %><br/>
+		      </th>
+		      <th class="span-8">
+		        <%=_('Material').html_safe %><br/>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Quantity').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Unit').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Process').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Value').html_safe %>
+		      </th>
+		      <th class="span-3">
+		        <%=_('Unit').html_safe %>
+		      </th>
+		            
+		      <th class="span-1">
+		        &nbsp;
+		      </th>
+		    </tr>   
+		    <tbody id="mt_user_supplier_datas">
+		      <%= render :partial => @mt_user_supplier_datas %>
+		    </tbody>
+		</table>
+
+
+   </fieldset>		
+<% end %>
+
+ <br/>
+   <table>
+      <tr>
+        <td style="background:#666666;color:#EBEEDB"> 
+   <!--          <%=_('You have declared details for').html_safe %> <span id="percentage_weight">0</span><%=_('% of materials in the machine tool').html_safe %> -->
+                 <%=_('You have accounted for').html_safe %> <span id="percentage_weight">0</span><%=_('% of the total weight of your machine tool.').html_safe %>
+        </td>
+      </tr>
+   </table>
+   <span class="tip_text">
+    <% if @detailed %>
+      <%=_('You should aim to account for at least 80% of the total weight of your machine tool to allow a robust calculation of the environmental impact to be calculated. The tool will only take into account the material weight provided.').html_safe%>
+    <% else %>
+      <%=_('You should aim to account for at least 80% of the total weight of your machine tool to allow a robust calculation of the environmental impact. The tool will only take into account the material weight provided.').html_safe%>
+    <% end %>  
+   </span>     
+ <br/>
+
+  <div class="buttons span-5 last" style="float:right;text-align:right">
+    <%= form_tag '/mt_raw_materials/next_step' do %>
+        <input type="hidden" name="mt_product_id" id="mt_product_id" value="<%=@mt_product.id%>"/>
+        <% if @detailed %>
+           <button type="button" class="positive" id="submit_button" style="float:right;text-align:right" onClick="javascript:goNextDetailed();"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+        <% else %>
+           <button type="button" class="positive" id="submit_button" style="float:right;text-align:right" onClick="javascript:goNext();"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>        
+        <% end %>   
+    <% end %>
+  </div>
+
+  <br/>
+
+
+<div class="clear"></div>
+<div class="navbar">
+  <!-- <div id="for-ie"> -->
+  <div>
+    <ul>
+      <li><%= link_to _('To Introduction').html_safe, mt_production_intro_url(@mt_product) %></li>
+      <li><%= link_to _('To Method').html_safe, mt_assessment_url(@mt_product) %></li>
+      <li><%= link_to _('To Data Quality').html_safe, mt_data_quality_path(@mt_product) %></li>
+      <li><%= link_to _('To Results').html_safe, mt_result_path(@mt_product) %></li>
+      <li><%= link_to _('To Improvements').html_safe, mt_production_improvement_path(@mt_product) %></li>
+    </ul>
+  </div>
+</div>
+
+
+<div class="clear"></div>
+
+
+
+</div>

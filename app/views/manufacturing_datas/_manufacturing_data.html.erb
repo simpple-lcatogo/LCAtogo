@@ -1,0 +1,54 @@
+<tr id="manufacturing_<%= manufacturing_data.id %>">
+ 
+  <% if manufacturing_data.family %>
+     <td><%= manufacturing_data.family.name.html_safe %></td>
+  <% else %>   
+     <td>&nbsp;</td>
+  <% end %>
+  <% if manufacturing_data.material %>  
+     <td><%= manufacturing_data.material.name.html_safe %></td>
+  <% else %>
+     <td><%= manufacturing_data.material_user_name%></td>
+  <% end %>   
+  
+  <% if manufacturing_data.aspect && manufacturing_data.ratio && manufacturing_data.diagonal%>  
+     <td style="text-align:center"><%= number_with_precision(manufacturing_data.quantity_aspect, :precision => 2, :locale => 'en') %></td>
+  <% else %>
+     <td class="quantity_material_<%= manufacturing_data.id %>" style="background: none repeat scroll 0% 0% transparent;text-align:center"><%= number_with_precision(manufacturing_data.quantity, :precision => 2, :locale => 'en') %></td>
+  <% end %>
+  
+  
+  <% if manufacturing_data.material %>  
+     <td><%= manufacturing_data.material.unit.html_safe %></td>
+  <% else %>
+     <% if manufacturing_data.aspect && manufacturing_data.ratio && manufacturing_data.diagonal%>
+        <td>cm<sup>2</sup></td>
+     <% else %>  
+        <td>g</td>
+     <% end %>   
+  <% end %>   
+  <td class="component_age_<%=manufacturing_data.id%>"><%= manufacturing_data.component_age %></td>
+  <td class="component_total_lifetime_<%=manufacturing_data.id%>"><%= manufacturing_data.component_total_lifetime %></td>
+  <td class="center"><%= link_to '&#10006;'.html_safe, manufacturing_data_path(manufacturing_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>
+
+<script type="text/javascript">
+   $(".quantity_material_<%=manufacturing_data.id%>").editInPlace({
+        url: "/manufacturing_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "manufacturing_data_id=<%=manufacturing_data.id%>",
+        saving_text: '<%=_("Saving...")%>'
+        });
+   $(".component_age_<%=manufacturing_data.id%>").editInPlace({
+        url: "/manufacturing_datas/update_component_age" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "manufacturing_data_id=<%=manufacturing_data.id%>",
+        saving_text: '<%=_("Saving...")%>'
+        });      
+   $(".component_total_lifetime_<%=manufacturing_data.id%>").editInPlace({
+        url: "/manufacturing_datas/update_component_total_lifetime" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "manufacturing_data_id=<%=manufacturing_data.id%>",
+        saving_text: '<%=_("Saving...")%>'
+        });      
+        
+              
+ </script>       
+

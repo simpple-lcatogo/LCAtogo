@@ -1,0 +1,101 @@
+<h1><%=_('Optimisation Results').html_safe%>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/ph_results/tabs') %>
+	</div>
+	
+	<div class="buttons span-23 last">  
+	    <%= form_tag '/ph_results/pdf' do %>
+	        <input type="hidden" name="ph_result_id" id="result_id" value="<%=@ph_product.id%>"/>
+	        <button type="submit" class="positive" style="float:left"> <%= image_tag 'page_white_acrobat.png' %><%= _("Generate PDF").html_safe %></button>
+	    <% end %>
+    </div>		
+	
+	<div class="clear"></div>
+	
+	<%=_('The projected system is predicted to produce a total of').html_safe%> <%=@ph_result.lifetime.to_i%> <%=_('kWh of electricity in a lifetime of').html_safe%> <%=@ph_product.ph_specified.lifetime.to_i%> <%=_('years').html_safe%>
+	<br/><br/>	
+	<% if @ph_product.ph_basic_information.known == 'total_surface'%>
+	   <br/>
+	   <b><%=_('Power optimisation').html_safe%></b>
+	   <br/><br/>	
+	   <img 
+	     alt="" 
+	     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=38,0,138&amp;chts=2B4950,16,l&amp;chxt=x&amp;cht=bhs&amp;chds=a&amp;chd=t:<%=@power_optimisation_values%>&amp;chco=<%=@power_optimisation_series_colors%>&amp;chls=2.0&amp;chs=600x200&amp;chdl=<%=@power_optimisation_ticks%>&amp;chxs=0N*f0*%,,11,0,lt"
+	     style="padding-right:20px;padding-bottom:40px;">
+	      <br/><br/>
+          <%=_('The optimized system is defined as the system with the maximum power output and the same area as the projected system.').html_safe%>	      
+	      <br/><br/>
+	      <%=_('The projected system\'s output of').html_safe%> <%=lca_format_number(@ph_result.lifetime, 1)%> <%=_('kWh is approx.').html_safe%> <%=lca_format_number(@power_projected_improvement, 1)%><%=_('% of the optimized one\'s').html_safe%><br/>
+	      <%=_('Using the technologies best efficiency would result in a').html_safe%> <%=lca_format_number(@power_efficiency_improvement, 1)%><%=_('% increased Output').html_safe%><br/>
+	      <%=_('Using an 1800kWh/(m<sup>2</sup>*a) radiation would result in a').html_safe%> <%=lca_format_number(@power_insolation_improvement, 1)%><%=_('% increased Output').html_safe%><br/>
+	      <%=_('An improved performance ratio of 0,8 would result in a').html_safe%> <%=lca_format_number(@power_performance_improvement, 1)%><%=_('% increased Output').html_safe%><br/>
+	      <%=_('Using modules with a lifetime of 30 years would result in a').html_safe%> <%=lca_format_number(@power_lifetime_improvement, 1)%><%=_('% increased Output').html_safe%><br/>
+	      <%=_('Total Output Improvement').html_safe%>: <%=lca_format_number(@total_power_improvement, 1)%>%
+	 
+
+       <br/>	
+    <% end %>
+	<% if @ph_product.ph_basic_information.known == 'power_demand' %>
+	   <br/>
+	   <b><%=_('Area optimisation').html_safe%></b>
+	   <br/><br/>	
+	   <img 
+	     alt="" 
+	     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=38,0,138&amp;chts=2B4950,16,l&amp;chxt=x&amp;cht=bhs&amp;chds=a&amp;chd=t:<%=@area_optimisation_values%>&amp;chco=<%=@area_optimisation_series_colors%>&amp;chls=2.0&amp;chs=600x200&amp;chdl=<%=@area_optimisation_ticks%>&amp;chxs=0N*f0*%,,11,0,lt"
+	     style="padding-right:20px;padding-bottom:40px;">
+	      
+	   <br/><br/>   
+	      <%=_('The optimized system is defined as the system with the least needed area to produce the same power output.').html_safe%>	      
+	      <br/><br/>
+		
+		   <%=_('The projected system\'s space demand of').html_safe%> <%=lca_format_number(@area, 1)%> <%=_('m<sup>2</sup> is approx.').html_safe%> <%=lca_format_number(((100 * @area / @area_projected_m2) - 100), 1)%><%=_('% more than the optimized one\'s').html_safe%><br/>
+		   <%=_('Using the technologies best efficiency would result in a').html_safe%> <%=lca_format_number(@area_efficiency_improvement, 1)%><%=_('% change in area').html_safe%><br/>
+		   <%=_('Using an 1800kWh/(m<sup>2</sup>*a) radiation would result in a').html_safe%> <%=lca_format_number(@area_insolation_improvement, 1)%><%=_('% change in area').html_safe%><br/>
+		   <%=_('An improved performance ratio of 0,8 would result in a').html_safe%> <%=lca_format_number(@area_performance_improvement, 1)%><%=_('% change in area').html_safe%><br/>
+		   <%=_('Total Decrease').html_safe%>: <%=lca_format_number(@area_projected_improvement, 1)%>% <%=_('Space demand of').html_safe%> <%=lca_format_number(@area_projected_m2, 1)%> m<sup>2</sup>
+   
+
+	    <br/>
+    <% end %>	  
+    	  
+	
+	<div class="buttons span-23 last">  
+
+    </div>		
+	
+	<div class="clear"></div>
+	
+	
+  <div class="buttons span-4" style="float:left;text-align:left">
+     <a href="<%=ph_result_graphic_path(@ph_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Previous step").html_safe %></a>
+  </div>
+  <div class="buttons span-4" style="float:left;text-align:left">
+	    <%= form_tag '/ph_results/pdf' do %>
+	        <input type="hidden" name="ph_result_id" id="result_id" value="<%=@ph_product.id%>"/>
+	        <button type="submit" class="positive" style="float:left"> <%= image_tag 'page_white_acrobat.png' %><%= _("Generate PDF").html_safe %></button>
+	    <% end %>  
+  
+  </div>
+
+  <div class="buttons span-5 last" style="float:right;text-align:right">
+     <a href="<%=ph_comparison_url(@ph_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Next step").html_safe %></a>
+  </div>	
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, ph_production_intro_path(@ph_product) %></li>
+        <li><%= link_to _('To Data Entry').html_safe, ph_basic_information_path(@ph_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, ph_data_quality_intro_path(@ph_product) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+
+    	  
+</div>	
+	

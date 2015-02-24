@@ -1,0 +1,514 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#repair_use_material_id").change(function(){
+           var id_value_string = $(this).val();
+           if (id_value_string != "") {
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, phase: 'repair', type: 'unit_for_material'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                        alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                        alert(error);
+                    },
+                    success: function(data){
+                       document.getElementById("unit_repair_span").innerHTML = "" + data;
+                       }
+                    }); 
+              }
+         });
+        $("#repair_use_family_id").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                // if the id is empty remove all the sub_selection options from being selectable and do not do any ajax
+                $("#repair_use_material_id option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#repair_use_material_id");
+            }
+            else {
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'materials_for_family'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                        $("#repair_use_material_id option").remove();
+                        var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.material.id + "\">" + j.material.name + "</option>";  
+                            $(row).appendTo("select#repair_use_material_id");                    
+                        });    
+                        $("#repair_use_material_id").change();        
+                     }
+                });
+             };   
+           });     
+           
+
+        $("#consumption_use_energy_mode_id").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "-1") {
+                // if the id is empty remove all the sub_selection options from being selectable and do not do any ajax
+                document.getElementById("consumption_use_time_mode").value = '0';
+                $("#name_other_div").show();
+            }
+            else {
+                $("#name_other_div").hide();            
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, product_id: <%=@product.id%>, type: 'time_mode_percentage'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                        alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                        // Fill sub category select
+                        document.getElementById("consumption_use_time_mode").value = data;
+                     }
+                });
+             };   
+           });     
+
+
+        $("#consumption_use_family_id").change(function(){
+            var id_value_string = $(this).val();
+            if (id_value_string == "") {
+                // if the id is empty remove all the sub_selection options from being selectable and do not do any ajax
+                $("#consumption_use_energy_type_id option").remove();
+                var row = "<option value=\"" + "" + "\">" + "" + "</option>";
+                $(row).appendTo("#consumption_use_energy_type_id");
+            }
+            else {
+                // Send the request and update sub category dropdown
+                $.ajax({
+                    dataType: "json",
+                    cache: false,
+                    url: '/ajax_helpers',
+                    data: {id: id_value_string, type: 'energy_types_for_family'},
+                    timeout: 5000,
+                    error: function(XMLHttpRequest, errorTextStatus, error){
+                    //    alert("Failed to submit : "+ errorTextStatus+" ;"+error);
+                    },
+                    success: function(data){                    
+                        // Clear all options from sub category select
+                        $("#consumption_use_energy_type_id option").remove();
+                        var row;                        
+                        // Fill sub category select
+                        $.each(data, function(i, j){
+                            row = "<option value=\"" + j.energy_type.id + "\">" + j.energy_type.name + "</option>";  
+                            $(row).appendTo("select#consumption_use_energy_type_id");                    
+                        });            
+                     }
+                });
+             };   
+           });     
+
+
+           $("#repair_use_family_id").change();
+           $("#consumption_use_energy_mode_id").change();
+           $("#consumption_use_family_id").change();
+           
+
+           
+           <% @consumption_uses.each do |consumption_use| %>
+			   $(".quantity_consumption_<%=consumption_use.id%>").editInPlace({
+			        url: "/consumption_uses/update_consumption" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+			        params: "consumption_use_id=<%=consumption_use.id%>",
+			        saving_text: '<%=_("Saving...")%>'
+			        });
+			        
+			   $(".timemode_consumption_<%=consumption_use.id%>").editInPlace({
+			        url: "/consumption_uses/update_timemode" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+			        params: "consumption_use_id=<%=consumption_use.id%>",
+			        saving_text: '<%=_("Saving...")%>',
+			        });                
+               $(".timemode_consumption_<%=consumption_use.id%>").focusout(function(){
+                // updateValues();
+               });			        
+           <% end %>
+
+           <% @repair_uses.each do |repair_use| %>
+			   $(".quantity_repair_<%=repair_use.id%>").editInPlace({
+			        url: "/repair_uses/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+			        params: "repair_use_id=<%=repair_use.id%>",
+			        saving_text: '<%=_("Saving...")%>'
+			        });
+           <% end %>
+           
+           
+		   });
+		   
+
+        function updateValues() {
+          var total_percentage_working = 0;        
+          var total_annual_power = 0;       
+		  $('[id^=timemode_value_]').each(function(index) {
+		     var value = parseFloat($(this).html());	    
+		     total_percentage_working += value;
+		     var currentId = $(this).attr('id');
+             var consumptionId = currentId.replace("timemode_value_","");
+		     var consumption = parseFloat($("#consumption_value_" + consumptionId).html());		     
+		     
+		     total_annual_power += (value / 100) * consumption;		     
+		  });
+          $("#percentage_working").html("" + total_percentage_working);
+          
+          total_annual_power = total_annual_power * (8760/1000);
+          
+          $("#annual_power").html("" + total_annual_power.toFixed(2));
+        }
+		   
+           function updateWorking() {
+		      var sum = 0;
+		      if (document.getElementsByName("inplace_value").length > 0) {
+		          sum += Number(document.getElementsByName("inplace_value")[0].value);
+		      }
+		      $('td[id^="timemode_value_"]').each(function() {
+		         if (!isNaN($(this).html())) {   		      		        
+		            sum += Number($(this).html());
+		         }
+		         });
+		      $("#working").val(sum);   
+		      }   
+
+
+    
+</script>    
+
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Data Entry').html_safe%></span>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/lca/tabs') %>
+	</div>
+<div class="clear"></div>
+<% form_tag '/use/next_step', :id => 'next_step' do -%>
+   <input type="hidden" name="product_id" id="product_id" value="<%=@product.id%>"/>
+   <input type="hidden" name="lifetimeHidden" id="lifetimeHidden" value="<%=@product.use.lifetime%>"/>
+   <input type="hidden" name="workingHidden" id="workingHidden" value="<%=@product.use.working%>"/>   
+<% end %>
+<div class="clear"></div>
+    <%= form_for ConsumptionUse.new, :remote => true do |f| %>
+        <input type="hidden" name="product_id" id="product_id" value="<%=@product.id%>"/>
+	    <fieldset class="empty">
+	      <legend><%=_('Power Consumption').html_safe%></legend>
+	      <!-- Energy Mode -->
+		  <div class="span-5">    
+		     <%= f.label :value, _('Mode').html_safe %>
+		     <br/>
+		     <select id="consumption_use_energy_mode_id" name="consumption_use[energy_mode_id]">
+		       <% @energy_modes.each do |energy_mode| %>
+		         <option value="<%=energy_mode.id%>"><%=energy_mode.name.html_safe%></option>
+		       <% end %>
+		       <option value="-1"><%=_('Other').html_safe%></option>		     
+		     </select>
+		  </div>
+	      
+	      <!-- Time mode -->
+          <div class="span-5" style="display:none" id="name_other_div"> 
+             <%= f.label :name_other, _('Name').html_safe %>
+             </br>
+             <%= f.text_field :name_other, :size => 8%>
+          </div>
+          
+	      <!-- Energy Type -->
+		  <div class="span-7">    
+		     <%= f.label :value, _('Place of Use').html_safe %>
+		     <br/>
+		     <select id="consumption_use_energy_type_id" name="consumption_use[energy_type_id]">
+		       <% @energy_types.each do |energy_type| %>
+		         <option value="<%=energy_type.id%>"><%=energy_type.name.html_safe%></option>
+		       <% end %>
+		     </select>
+		  </div>
+
+	      <!-- Consumption -->
+          <div class="span-3"> 
+             <%= f.label :value, _('Consumption').html_safe %>
+             </br>
+             <%= f.text_field :consumption, :size => 8%>&nbsp;W
+          </div>
+          
+	      <!-- Time mode -->
+          <div class="span-5"> 
+             <%= f.label :value, _('Time in this mode (%)').html_safe %>
+             </br>
+             <%= f.text_field :time_mode, :size => 8%>&nbsp;%
+          </div>
+          
+	      <div class="clear"></div>
+		  <div class="span-3 buttons last">
+		     <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+		  </div>
+          <div class="clear"></div>	      
+	    </fieldset>
+    <% end %>
+    <table class="standard2">
+	  <tr class="add"> 
+	    <th>
+	      <%=_('Mode').html_safe %><br/>
+	    </th>
+	    <th>
+	      <%=_('Place of Use').html_safe %>
+	    </th>
+	    <th>
+	      <%=_('Time in this mode (%)').html_safe %>
+	    </th>	    	    
+	    <th>
+	      <%=_('Consumption').html_safe %>
+	    </th>
+	    <th>
+	      <%=_('Unit').html_safe %>
+	    </th>	    
+	    <th>
+	      &nbsp;
+	    </th>
+	  </tr>	  
+	  <tbody id="consumptions">
+	    <%= render :partial => @consumption_uses, :locals => { :list => true } %>
+	  </tbody>   
+	 </table>
+           
+     <br/><br/>
+
+	 <table>
+	    <tr>
+	      <td style="background:#666666;color:#EBEEDB"> 
+	           <%=_('Working time: ').html_safe %> <span id="percentage_working">0</span> %
+	      </td>
+	    </tr>
+	    <tr>
+	      <td style="background:#666666;color:#EBEEDB"> 
+	           <%=_('Annual power consumption: ').html_safe %> <span id="annual_power">0</span> kWh
+	      </td>
+	    </tr>
+	    
+	 </table>
+
+     <br/><br/>
+     
+
+	    <fieldset class="empty">
+	      <legend><%=_('Replacement/upgrade').html_safe%></legend>
+	      <%=_('Scheduled replacement / upgrade over lifetime (new spare parts usage).').html_safe%>
+	      <br/>
+	      <%=_('If the replacement/upgrade of a component is scheduled over lifetime, please introduce the scheduled year (lower than replacement due to failure). If it is not scheduled, leave it blank. The second-last column lists for your information, after which time a replacement has to take place to be coherent with the component lifetimes you entered earlier in the &quot;manufacturing&quot; stage.').html_safe%>
+	      <br/><br/>
+		  <table class="standard2">
+			  <tr class="add">
+			    <th>
+			      <%=_('Family').html_safe %><br/>
+			    </th>	   
+			    <th>
+			      <%=_('Material').html_safe %><br/>
+			    </th>
+			    <th style="text-align:center">
+			      <%=_('Quantity').html_safe %>
+			    </th>
+			    <th>
+			      <%=_('Unit').html_safe %>
+			    </th>
+			    <th>
+			      <%=_('Replacement / upgrade scheduled for year').html_safe %>
+			    </th>			    
+			    <th>
+			      <%=_('Replacement due latest after (years)').html_safe %> <a title="<%=_('For your information, the replacement of the component should be done latest after (years)').html_safe%>" href="#" class="tip">&nbsp;</a>
+			    </th>
+			    <th>
+			      <%=_('Overhead for cut-offs (%)').html_safe %>
+			    </th>
+			    
+			    <th>
+			      &nbsp;
+			    </th>
+			  </tr>	  
+			  <tbody id="repairs">
+			    <% @manufacturing_datas.each do |manufacturing_data| %>
+			       <% if manufacturing_data.family.name != 'Housing & internal structural elements' %>
+			        <tr>
+			          <td><%=manufacturing_data.family.name.html_safe%></td>
+			          <td> 
+			            <% if manufacturing_data.material %>
+			               <%=manufacturing_data.material.name.html_safe%>
+			            <% end %>   
+			          </td>			          
+			          <td id="repair_quantity_<%=manufacturing_data.id%>">
+			             <% if manufacturing_data.repair_data %>
+			                <%=number_with_precision(manufacturing_data.repair_data.quantity, :precision => 2)%>			                
+			             <% else %>
+			                <%=number_with_precision(manufacturing_data.quantity, :precision => 2)%>
+			             <% end %>   
+			          </td>			          
+			          <td>
+			             <% if manufacturing_data.material %>
+			                <%=manufacturing_data.material.unit.html_safe%>
+			             <% end %>   
+			          </td>	
+			          <td id="repair_upgrade_<%=manufacturing_data.id%>">
+			             <% if manufacturing_data.repair_data %>
+			                 <%=manufacturing_data.repair_data.upgrade_year%>
+			             <% end %>
+			          </td>	
+			          <td>
+			             <% if manufacturing_data.component_total_lifetime && manufacturing_data.component_age %>
+    			             <%=manufacturing_data.component_total_lifetime - manufacturing_data.component_age%>
+    			         <% end %>    			             
+			          </td>	
+			          <% if manufacturing_data.family.name == 'Printed Circuit Board Assemblies' %>
+			          <td id="repair_overhead_<%=manufacturing_data.id%>">
+			             <% if manufacturing_data.repair_data %>
+			                 <%=manufacturing_data.repair_data.overheads_cut_offs%>
+			             <% else %>    
+			                <% if manufacturing_data.overhead_cutoffs %>
+			                   <%=manufacturing_data.overhead_cutoffs%>
+			                <% end %>   			                 
+			             <% end %>			          
+			          </td>			          
+			          <% else %>
+			            <td>&nbsp;</td>
+			          <% end %>
+			        </tr>
+					<script type="text/javascript">
+					   $("#repair_quantity_<%=manufacturing_data.id%>").editInPlace({
+					        url: "/repair_datas/update_quantity" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+					        params: "manufacturing_data_id=<%=manufacturing_data.id%>",
+					        saving_text: '<%=_("Saving...")%>'
+					        });
+					   $("#repair_upgrade_<%=manufacturing_data.id%>").editInPlace({
+					        url: "/repair_datas/update_upgrade" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+					        params: "manufacturing_data_id=<%=manufacturing_data.id%>",
+					        saving_text: '<%=_("Saving...")%>'
+					        });
+					   <% if manufacturing_data.family.name == 'Printed Circuit Board Assemblies' %>
+						   $("#repair_overhead_<%=manufacturing_data.id%>").editInPlace({
+						        url: "/repair_datas/update_overhead" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+						        params: "manufacturing_data_id=<%=manufacturing_data.id%>",
+						        saving_text: '<%=_("Saving...")%>'
+						        });
+					   <% end %>     
+					</script>
+			      <% end %>   
+			    <% end %>
+			  </tbody>   
+			 </table>
+	      
+	    </fieldset>
+
+
+
+    <br/><br/>
+
+    <%= form_for TransportRepairData.new, :remote => true do |f| %>
+        <input type="hidden" name="product_id" id="product_id" value="<%=@product.id%>"/>
+	    <fieldset class="empty">
+	      <legend><%=_('Transport to repair shop').html_safe%></legend>
+          <%=_('Transport of the whole device from the user to the repair shop and back (Transport type: &quot;Delivery van&quot;)').html_safe%>
+          <br/><br/>
+	      <!-- Distance -->
+          <div class="span-3"> 
+             <%= f.label :distance, _('Distance').html_safe %>
+             </br>
+             <%= f.text_field :distance, :size => 8%>&nbsp;km
+          </div>
+          
+	      <!-- Amount -->
+          <div class="span-3"> 
+             <%= f.label :amount, _('Amount').html_safe %>
+             </br>
+             <%= f.text_field :amount, :size => 8%>&nbsp;kg
+          </div>
+
+          	      <!-- Amount -->
+          <div class="span-3"> 
+             <%= f.label :comment, _('Comment').html_safe %>
+             </br>
+             <%= f.text_field :comment, :size => 20%>
+          </div>
+          
+	      <div class="clear"></div>
+		  <div class="span-3 buttons last">
+		     <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Add").html_safe %></button>
+		  </div>
+          <div class="clear"></div>	      
+	    </fieldset>
+    <% end %>
+    <table class="standard2">
+	  <tr class="add"> 
+	    <th>
+	      <%=_('Distance').html_safe %><br/>
+	    </th>
+	    <th>
+	      <%=_('Unit').html_safe %>
+	    </th>	    	    
+	    <th>
+	      <%=_('Amount').html_safe %>
+	    </th>
+	    <th>
+	      <%=_('Unit').html_safe %>
+	    </th>
+	    <th>
+	      <%=_('Comment').html_safe %>
+	    </th>
+	    	    
+	    <th>
+	      &nbsp;
+	    </th>
+	  </tr>	  
+	  <tbody id="transport_repair_datas">
+	    <%= render :partial => @transport_repair_datas, :locals => { :list => true } %>
+	  </tbody>   
+	 </table>
+
+<br/><br/>
+
+  <div class="buttons span-4 last" style="float:right">
+	<button class="positive" onclick="javascript:doNextStep();"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+  </div>    	
+
+
+
+
+    <div class="clear"></div>
+    <div class="navbar">
+      <!-- <div id="for-ie"> -->
+      <div>
+        <ul>
+          <li><%= link_to _('To Introduction').html_safe, production_intro_path(@product) %></li>
+          <li><%= link_to _('To Data Quality').html_safe, data_quality_intro_path(@product) %></li>
+          <li><%= link_to _('To Results').html_safe, product_result_url(@product) %></li>
+
+        </ul>
+      </div>
+    </div>
+    <div class="clear"></div>
+  
+</div>	
+  <script type="text/javascript">
+     function doNextStep() {
+        document.getElementById("next_step").submit();
+     
+        var working = document.getElementById("working").value
+        if ((working < 100) || (working > 100)) {
+          alert('<%=_('Value of working time in energy consumption has to be 100%').html_safe%>');
+          } else {
+          document.getElementById("lifetimeHidden").value = document.getElementById("lifetime").value
+          document.getElementById("workingHidden").value = document.getElementById("working").value        
+          document.getElementById("next_step").submit();
+          }
+     }
+     updateValues();
+  </script>   

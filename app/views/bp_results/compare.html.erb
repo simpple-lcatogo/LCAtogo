@@ -1,0 +1,89 @@
+<h1><%=_('Comparison').html_safe%>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/bp_results/tabs') %>
+	</div>
+
+ <div class="buttons span-23 last">      
+   <%= form_tag '/bp_results/pdf_compare' do %>
+        <input type="hidden" name="bp_product_id" id="bp_product_id" value="<%=@product.bp_product.id%>"/>
+       <% @products_checked.each do |bp_product| %>
+           <input type="hidden" name="compare_product_<%=bp_product.id%>" id="compare_product_<%=bp_product.id%>"/>
+       <% end %>
+        <% @indicators_checked.each do |indicator| %>
+          <input type="hidden" name="indicator_<%=indicator.id%>" id="indicator_<%=indicator.id%>" value="true"/>
+        <% end %>
+        <% if @total_check %>
+          <input type="hidden" name="total" id="total" value="true"/>
+        <% end %>        
+        <% if @materials_check %>
+          <input type="hidden" name="materials" id="materials" value="true"/>
+        <% end %>
+        <% if @transport_check %>
+          <input type="hidden" name="transport" id="transport" value="true"/>
+        <% end %>
+        <% if @processing_check %>
+          <input type="hidden" name="processing" id="processing" value="true"/>
+        <% end %>
+        <% if @distribution_check %>
+          <input type="hidden" name="distribution" id="distribution" value="true"/>
+        <% end %>
+        <% if @end_of_life_check %>
+          <input type="hidden" name="end_of_life" id="end_of_life" value="true"/>
+        <% end %>
+        
+        <button type="submit" class="positive" style="float:left"> <%= image_tag 'page_white_acrobat.png' %><%= _("Generate PDF").html_safe %></button>
+   <% end %>		
+ </div>     
+ <div class="clear"></div>
+   
+   <% @indicators_checked.each_with_index do |indicator, index| %>
+    <h2><%= indicator.name.html_safe %> (<%= indicator.unit.html_safe %>)</h2>
+      <%
+         height =  (@phases_selected * 14) + ((@products_checked.size + 1) * @phases_selected) * 14 + 30
+
+         axis_format = ''
+         index_axis = 0
+         while index_axis <=  @products_checked.size
+           axis_format += 'N*f2*,000000,' + index_axis.to_s + ',-1,11,,:10:'
+           if index_axis != @products_checked.size
+             axis_format += '|'
+           end
+           index_axis = index_axis + 1
+         end
+         # axis_format = 'N*f2*,000000,0,-1,11,,:10:|N*f2*,000000,1,-1,11,,:10:'
+      %>
+
+      <img src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chts=2B4950,16,l&amp;cht=bhg&amp;chs=600x<%=height%>&amp;chd=t:<%=@values_array[index]%>&amp;chco=<%=@colors_array.to_s%>&amp;chxt=y&amp;chdl=<%=@compare_products%>&amp;chxt=x,y&&amp;chma=20,20,20,20&amp;chbh=14,0,14&amp;&amp;chm=<%=axis_format.to_s%>&amp;chdlp=r&amp;chxs=1,,11,-1,lt&amp;chxl=1:<%=@compare_titles_to_array%>&amp;chds=a" alt="Grouped chart">
+
+
+   
+   <br/><br/><br/>
+     <% end %>
+  <div class="clear"></div>
+  <div class="buttons span-5" style="float:left;text-align:left">
+    <a href="<%=bp_result_graphic_path(@bp_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Previous step").html_safe %></a>
+  </div>
+      
+   <br/><br/><br/>
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, bp_production_intro_path(@bp_product) %></li>
+        <li><%= link_to _('To Data Entry').html_safe, bp_production_url(@bp_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, bp_data_quality_intro_path(@bp_product) %></li>
+        <li><%= link_to _('To Economic Data'), bp_economic_url(@bp_product) %></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="clear"></div>
+
+
+	
+</div>

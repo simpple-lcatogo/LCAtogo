@@ -1,0 +1,64 @@
+<h1><%=_('Product Assessment').html_safe%>
+  <br/><span class="tool_subtitle"><%=_('Introduction').html_safe%></span>
+</h1>
+
+
+<div class="content_skin">
+
+
+<%=_('This tool will help designers and business managers in the Smart Textiles sector to assess the environmental performance of a product and compare it with design alternatives. This kind of life cycle analysis is called &quot;Life Cycle Assessment&quot; (LCA) and the tool has especially been developed to assist the making of a LCA of a Smart Textiles product in less than an hour.').html_safe%>
+<br/><br/>
+<%=_('The final outcome is presented in a so-called &quot;single indicator&quot;, which is a judgement of the environmental performance of a product in one single number. For this tool the indicator &quot;Eco-costs&quot;, as developed by the Delft University of Technology (NL), has been chosen to express the environmental burden.').html_safe%>
+<br/><br/>
+<%=_('This Eco-costs single indicator is the sum of all costs that would be necessary to invest in order to prevent:').html_safe%>
+<ul>
+	<li><%=_('toxic emissions, called the &quot;Virtual Pollution Prevention Costs&quot;, which represent the &quot;eco-costs of emissions&quot;').html_safe%></li>
+	<li><%=_('materials depletion, called the &quot;eco-costs of materials depletion&quot;').html_safe%></li>
+	<li><%=_('energy consumption, called the &quot;eco-costs of energy&quot;').html_safe%></li>
+</ul>	
+<%=_('More information about the Eco-costs can be found on the website www.ecocostsvalue.com.').html_safe%>
+<%=_('The Eco-costs is based on the concept of &quot;marginal prevention costs&quot;, which are the costs required to offset the environmental burden to a sustainable level. This can be done by investments in:').html_safe%>
+<ul>
+  <li><%=_('&quot;end of pipe&quot; measures aiming at preventing the release of pollutants into the environment').html_safe%></li>  
+  <li><%=_('system integrated solutions which can be implemented during the other life cycle phases, such as the (<i>Materials</i>-) <i>Manufacturing</i> phase, the <i>Use</i> phase or <i>Distribution</i>.').html_safe%></li> 
+</ul>
+<%=_('After reading this Introduction the user can start right away with the LCA by defining a <i>New product</i> (yellow button upper right corner) and click in the <i>List of products</i> on the <i>Pending</i> icon behind the <i>Product name</i> under the column <i>Status</i>. Via the button <i>DATA ENTRY</i> the necessary information can be filled in by following the <i>Next steps</i> (button with green text at the right lower corner) after the required data on each page are entered.').html_safe%>
+<br/><br/>
+<%=_('The <i>Results</i> page of the tool allows to make a comparison with an alternative design solution. The easiest way to compare the original product with an alternative concept, is to <i>Duplicate</i> the original product in the <i>List of products</i> (accessible via the yellow button <i>My products</i> at the upper right corner), rename it and integrate the end of pipe or system integrated solutions (see above) by altering the corresponding input data. Subsequently the <i>Comparison</i> button in the <i>Results</i> section of the <i>Environmental Assessment</i> makes an easy parallel possible: The lower the eco-costs, the better the product.').html_safe%>
+
+
+
+  
+  <br/><br/>
+<!--
+  <div class="clear"></div>
+  
+  <div class="bottom_menu span-23" style="text-align:center;font-size:11">
+    <ul style="padding-left:0;margin-right:230px">
+      <li class="link_booklabels"><%= link_to _('To Results'), st_result_url(@st_product) %></li>
+      
+      <li class="link_booklabels"><%= link_to _('To Data Quality'),  st_data_quality_intro_path(@st_product) %></li>
+      
+      <li class="link_booklabels"><%= link_to _('To Data Entry').html_safe, st_material_detail_path(@st_product) %></li>
+
+      <div class="clear"></div>
+    </ul>
+  </div>
+
+  <div class="clear"></div>
+-->
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Data Entry').html_safe, st_material_detail_path(@st_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, st_data_quality_intro_path(@st_product) %></li>
+        <li><%= link_to _('To Results').html_safe, st_result_url(@st_product) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+
+</div>

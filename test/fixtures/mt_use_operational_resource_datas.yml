@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  mt_product_id: 1
+  mt_family_id: 1
+  mt_material_id: 1
+  processing: 1.5
+  ready: 1.5
+  standby: 1.5
+
+two:
+  mt_product_id: 1
+  mt_family_id: 1
+  mt_material_id: 1
+  processing: 1.5
+  ready: 1.5
+  standby: 1.5

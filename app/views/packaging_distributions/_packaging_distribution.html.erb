@@ -1,0 +1,17 @@
+
+
+<tr id="packaging_<%= packaging_distribution.id %>">
+  <td><%= packaging_distribution.packaging.name.html_safe %></td>
+  <td class="quantity_packaging_<%= packaging_distribution.id %>" style="background: none repeat scroll 0% 0% transparent;text-align:center"><%= packaging_distribution.quantity %></td>
+  <td><%= packaging_distribution.comment %></td>  
+  <td class="center"><%= link_to '&#10006;'.html_safe, packaging_distribution_path(packaging_distribution, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>
+
+<script type="text/javascript">
+    $(".quantity_packaging_<%=packaging_distribution.id%>").editInPlace({
+        url: "/packaging_distributions/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        data: {authenticity_token: AUTH_TOKEN},
+        params: "packaging_distribution_id=<%=packaging_distribution.id%>",
+        saving_text: '<%=_("Saving...")%>'
+    });
+</script>

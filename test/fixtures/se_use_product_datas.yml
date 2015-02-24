@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  se_product: 
+  output_description: MyString
+  share_with_sensor: 1.5
+  share_without_sensor: 1.5
+
+two:
+  se_product: 
+  output_description: MyString
+  share_with_sensor: 1.5
+  share_without_sensor: 1.5

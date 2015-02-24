@@ -1,0 +1,29 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  se_product_id: 1
+  output_with: 1.5
+  output_without: 1.5
+  description_1: 1.5
+  quality_with_1: 1.5
+  quality_without_1: 1.5
+  description_2: 1.5
+  quality_with_2: 1.5
+  quality_without_2: 1.5
+  description_3: 1.5
+  quality_with_3: 1.5
+  quality_without_3: 1.5
+
+two:
+  se_product_id: 1
+  output_with: 1.5
+  output_without: 1.5
+  description_1: 1.5
+  quality_with_1: 1.5
+  quality_without_1: 1.5
+  description_2: 1.5
+  quality_with_2: 1.5
+  quality_without_2: 1.5
+  description_3: 1.5
+  quality_with_3: 1.5
+  quality_without_3: 1.5

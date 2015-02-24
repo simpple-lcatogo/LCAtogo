@@ -1,0 +1,57 @@
+<tr id="bp_manufacturing_transport_<%= bp_manufacturing_transport_data.id %>">
+
+  <% if bp_manufacturing_transport_data.bp_mode %>  
+     <td><%= bp_manufacturing_transport_data.bp_mode.name.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>  
+  <% end %>
+
+
+  <% if bp_manufacturing_transport_data.bp_vehicle %>  
+     <td><%= bp_manufacturing_transport_data.bp_vehicle.name.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>
+
+  <% if bp_manufacturing_transport_data.distance %>  
+   <!--  <td id="bp_manufacturing_transport_distance_<%= bp_manufacturing_transport_data.id %>" class="bp_manufacturing_transport_distance_<%= bp_manufacturing_transport_data.id %>"><%= number_with_precision(bp_manufacturing_transport_data.distance.to_s.html_safe,:precision => 2) + " km" %></td> -->
+     <td id="bp_manufacturing_transport_distance_<%= bp_manufacturing_transport_data.id %>" class="bp_manufacturing_transport_distance_<%= bp_manufacturing_transport_data.id %>"><%= number_with_precision(bp_manufacturing_transport_data.distance.to_s.html_safe,:precision => 2) %></td>   
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>
+
+  <% if bp_manufacturing_transport_data.amount %>  
+<!--     <td id="bp_manufacturing_transport_amount_<%= bp_manufacturing_transport_data.id %>" class="bp_manufacturing_transport_amount_<%= bp_manufacturing_transport_data.id %>"><%= bp_manufacturing_transport_data.amount.to_s.html_safe + " kg"%></td> -->
+     <td id="bp_manufacturing_transport_amount_<%= bp_manufacturing_transport_data.id %>" class="bp_manufacturing_transport_amount_<%= bp_manufacturing_transport_data.id %>"><%= bp_manufacturing_transport_data.amount.to_s.html_safe%></td>
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>
+
+  <% if bp_manufacturing_transport_data.comment %>  
+     <td id="bp_manufacturing_transport_comment_<%= bp_manufacturing_transport_data.id %>" class="bp_manufacturing_transport_comment_<%= bp_manufacturing_transport_data.id %>"><%= bp_manufacturing_transport_data.comment.to_s.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>
+ 
+  
+  <td class="center"><%= link_to '&#10006;'.html_safe, bp_manufacturing_transport_data_path(bp_manufacturing_transport_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>
+
+
+<script type="text/javascript">
+   $(".bp_manufacturing_transport_distance_<%=bp_manufacturing_transport_data.id%>").editInPlace({
+        url: "/bp_manufacturing_transport_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "bp_manufacturing_transport_id=<%=bp_manufacturing_transport_data.id%>&field=distance",
+        saving_text: '<%=_("Saving...")%>'
+        });
+   $(".bp_manufacturing_transport_amount_<%=bp_manufacturing_transport_data.id%>").editInPlace({
+        url: "/bp_manufacturing_transport_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "bp_manufacturing_transport_id=<%=bp_manufacturing_transport_data.id%>&field=amount",
+        saving_text: '<%=_("Saving...")%>'
+        });
+   $(".bp_manufacturing_transport_comment_<%=bp_manufacturing_transport_data.id%>").editInPlace({
+        url: "/bp_manufacturing_transport_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "bp_manufacturing_transport_id=<%=bp_manufacturing_transport_data.id%>&field=comment",
+        saving_text: '<%=_("Saving...")%>'
+        });
+ </script> 

@@ -1,0 +1,14 @@
+$("#error_explanation_mt_use_machine_subsystem_data").empty();
+$("#error_explanation_mt_use_machine_subsystem_data").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#mt_use_machine_subsystem_datas").append("<%= escape_javascript(render(@mt_use_machine_subsystem_data)) %>");
+/* Highlight the new comment */
+$("#mt_use_machine_subsystem_data_<%= @mt_use_machine_subsystem_data.id %>").effect("highlight", {}, 3000);
+
+$("#mt_use_machine_subsystem_data_with_sensor").val("");
+$("#mt_use_machine_subsystem_data_without_sensor").val("");
+$("#mt_use_machine_subsystem_data_recycling_revenue").val("");
+$("#mt_use_machine_subsystem_data_description").val("");
+$("#mt_use_machine_subsystem_data_global_warming_potentiSal").val("");
+updateUnassigned();
+updateWeight();

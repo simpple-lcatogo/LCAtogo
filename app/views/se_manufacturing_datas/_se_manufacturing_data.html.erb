@@ -1,0 +1,24 @@
+<tr id="se_manufacturing_<%= se_manufacturing_data.id %>">
+     <td><%= se_manufacturing_data.sensor_node_description.html_safe %></td>
+     <td class="se_manufacturing_data_number_<%=se_manufacturing_data.id%>"><%= se_manufacturing_data.number.to_s.html_safe %></td>
+     <td><%= se_manufacturing_data.se_component.name.html_safe %></td>
+     <td class="se_manufacturing_data_quantity_<%=se_manufacturing_data.id%>"><%= se_manufacturing_data.quantity.to_s.html_safe %></td>
+     <td><%= se_manufacturing_data.se_component.unit.html_safe %></td>
+      
+  <td class="center"><%= link_to '&#10006;'.html_safe, se_manufacturing_data_path(se_manufacturing_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>
+
+
+<script type="text/javascript">
+    $(".se_manufacturing_data_quantity_<%=se_manufacturing_data.id%>").editInPlace({
+        url: "/se_manufacturing_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "se_manufacturing_data_id=<%=se_manufacturing_data.id%>&field=quantity",
+        saving_text: '<%=_("Saving...")%>'
+    });
+
+    $(".se_manufacturing_data_number_<%=se_manufacturing_data.id%>").editInPlace({
+        url: "/se_manufacturing_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "se_manufacturing_data_id=<%=se_manufacturing_data.id%>&field=number",
+        saving_text: '<%=_("Saving...")%>'
+    });
+</script>

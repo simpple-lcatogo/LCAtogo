@@ -1,0 +1,213 @@
+<h1><%=_('Edit user')%></h1>
+
+<div class="content_skin">
+	<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>  	
+	  <%= devise_error_messages! %>
+
+  <div class="span-5">
+    <label><%=_('Name').html_safe %></label><span class="red"> *</span><br/>
+    <%= f.text_field :name, :size => 20 %>
+  </div>
+
+  <div class="span-5">
+    <label><%=_('Surname').html_safe %></label><span class="red"> *</span><br/>
+    <%= f.text_field :surname, :size => 20 %>
+  </div>
+
+  <div class="span-5">
+    <label><%=_('Organization').html_safe %></label><span class="red"> *</span><br/>
+    <%= f.text_field :organization, :size => 20  %>
+  </div>
+
+  <div class="span-5 last">
+    <label><%=_('Activity').html_safe %></label><span class="red"> *</span><br/>
+    <select name="user[activity]" id="user_activity">
+      <% if current_user.activity == 'industry' %>
+         <option value="industry" selected="true"><%=_('Industrial enterprise').html_safe%></option>
+      <% else %>   
+         <option value="industry"><%=_('Industrial enterprise').html_safe%></option>
+      <% end %>
+      <% if current_user.activity == 'association' %>
+         <option value="association" selected="true"><%=_('Enterprise association / Cluster').html_safe%></option>
+      <% else %>
+         <option value="association"><%=_('Enterprise association / Cluster').html_safe%></option>
+      <% end %>   
+      <% if current_user.activity == 'public_admin' %>      
+         <option value="public_admin" selected="true"><%=_('Public administration').html_safe%></option>
+      <% else %>
+         <option value="public_admin"><%=_('Public administration').html_safe%></option>      
+      <% end %>
+      <% if current_user.activity == 'academic' %>      
+         <option value="academic" selected="true"><%=_('Academic / Educational Institution').html_safe%></option>
+      <% else %>
+         <option value="academic"><%=_('Academic / Educational Institution').html_safe%></option>
+      <% end %>   
+      <% if current_user.activity == 'research_center' %>      
+         <option value="research_center" selected="true"><%=_('Research / Technology Transfer Centre').html_safe%></option>
+      <% else %>
+         <option value="research_center"><%=_('Research / Technology Transfer Centre').html_safe%></option>
+      <% end %>   
+      <% if current_user.activity == 'consulting' %>
+         <option value="consulting" selected="true"><%=_('Consultancy / Engineering').html_safe%></option>
+      <% else %>
+         <option value="consulting"><%=_('Consultancy / Engineering').html_safe%></option>
+      <% end %>   
+      <% if current_user.activity == 'student' %>
+         <option value="student" selected="true"><%=_('Student').html_safe%></option>
+      <% else %>
+         <option value="student"><%=_('Student').html_safe%></option>
+      <% end %>
+      <% if current_user.activity == 'administration' %>      
+         <option value="administration" selected="true"><%=_('Public administration').html_safe%></option>
+      <% else %>  
+         <option value="administration"><%=_('Public administration').html_safe%></option>
+      <% end %> 		
+      <% if current_user.activity == 'ngo' %>      
+         <option value="ngo" selected="true"><%=_('NGO / Non-profit entity').html_safe%></option>
+      <% else %>      
+         <option value="ngo"><%=_('NGO / Non-profit entity').html_safe%></option>
+      <% end %>         
+      <% if current_user.activity == 'other' %>      
+         <option value="other" selected="true"><%=_('Others').html_safe%></option>
+      <% else %>
+         <option value="other"><%=_('Others').html_safe%></option>
+      <% end %>
+    </select>
+  </div>
+  
+  <div class="clear"></div> 
+  
+  <div class="span-7">
+    <label><%=_('Default Industrial Sector').html_safe %></label><span class="red"> *</span><br/>
+    <select name="user[sector]" id="user_sector">
+      <% if current_user.sector == 'bio_based' %>
+         <option value="bio_based" selected="true"><%=_('Bio-based plastics').html_safe%></option>
+      <% else %>   
+         <option value="bio_based"><%=_('Bio-based plastics').html_safe%></option>
+      <% end %>      
+      <% if current_user.sector == 'industrial' %>      
+         <option value="industrial" selected="true"><%=_('Industrial machines').html_safe%></option>
+      <% else %>
+         <option value="industrial"><%=_('Industrial machines').html_safe%></option>      
+      <% end %>      
+      <% if current_user.sector == 'electronics' %>      
+      	 <option value="electronics" selected="true"><%=_('Electronics').html_safe%></option>
+      <% else %>
+      	 <option value="electronics"><%=_('Electronics').html_safe%></option>      
+      <% end %>      
+      <% if current_user.sector == 'printed' %>      
+         <option value="printed" selected="true"><%=_('Printed Circuit Boards').html_safe%></option>
+      <% else %>
+         <option value="printed"><%=_('Printed Circuit Boards').html_safe%></option>      
+      <% end %>      
+      <% if current_user.sector == 'renewable' %>      
+    	 <option value="renewable" selected="true"><%=_('Renewable Energy - Photovoltaics').html_safe%></option>
+      <% else %>
+    	 <option value="renewable"><%=_('Renewable Energy - Photovoltaics').html_safe%></option>      
+      <% end %>
+      <% if current_user.sector == 'semiconductors' %>      
+      	 <option value="semiconductors" selected="true"><%=_('Semiconductors').html_safe%></option>
+      <% else %>
+         <option value="semiconductors"><%=_('Semiconductors').html_safe%></option>
+      <% end %>      
+      <% if current_user.sector == 'sensors' %>      
+      	 <option value="sensors" selected="true"><%=_('Sensors').html_safe%></option>
+      <% else %>
+         <option value="sensors"><%=_('Sensors').html_safe%></option>
+      <% end %>      
+      <% if current_user.sector == 'textiles' %>      
+      	 <option value="textiles" selected="true"><%=_('Smart Textiles').html_safe%></option>
+      <% else %>
+      	 <option value="textiles"><%=_('Smart Textiles').html_safe%></option>      
+      <% end %>
+    </select>
+  </div>
+
+
+  <div class="span-9">
+    <label><%=_('Postal address').html_safe %></label><br/>
+    <%= f.text_field :postal, :size => 50 %>
+  </div>
+
+  <div class="span-5 last">
+    <label><%=_('Country').html_safe %></label><br/>
+    <%= f.text_field :country, :size => 20 %>
+  </div>
+
+  <div class="clear"></div> 
+
+  <div class="span-7 last">
+    <label><%=_('Default Language').html_safe %></label><span class="red"> *</span><br/>
+    <select name="user[language]" id="user_language">
+      <% if current_user.language == 'english' %>    
+      	<option value="english" selected="true"><%=_('English').html_safe%></option>
+      <% else %>
+        <option value="english"><%=_('English').html_safe%></option>
+      <% end %>      
+      <% if current_user.language == 'spanish' %>      
+      	<option value="spanish" selected="true" disabled="disabled"><%=_('Spanish').html_safe%></option>
+      <% else %>
+        <option value="spanish" disabled="disabled"><%=_('Spanish').html_safe%>aaaaaaaaaa</option>      
+      <% end %>      
+      <% if current_user.language == 'german' %>      
+      	<option value="german" selected="true" disabled="disabled"><%=_('German').html_safe%></option>
+      <% else %>
+        <option value="german" disabled="disabled"><%=_('German').html_safe%></option>
+      <% end %>
+      <% if current_user.language == 'polish' %>      
+      	<option value="polish" selected="true" disabled="disabled"><%=_('Polish').html_safe%></option>      	
+      <% else %>
+        <option value="polish" disabled="disabled"><%=_('Polish').html_safe%></option>
+      <% end %>            
+      <% if current_user.language == 'french' %>      
+      	<option value="french" selected="true" disabled="disabled"><%=_('French').html_safe%></option>
+      <% else %>
+        <option value="french" disabled="disabled"><%=_('French').html_safe%></option>
+      <% end %>            
+      <% if current_user.language == 'dutch' %>      
+      	<option value="dutch" selected="true" disabled="disabled"><%=_('Dutch').html_safe%></option>
+      <% else %>
+        <option value="dutch" disabled="disabled"><%=_('Dutch').html_safe%></option>
+      <% end %>            
+    </select>
+  </div>
+
+  <div class="clear"></div> 
+  
+  <div class="span-12 last">
+    <label><%=_('E-mail').html_safe %></label><span class='red'>*</span><br/>
+    <span class="tip_text"><%= _("Your email address and password will be the credentials for the site.").html_safe %></span><br/>
+    <%= f.text_field :email, :size => 50 %>
+  </div>
+  <div class="clear"></div>
+
+  <div class="span-5">
+    <label><%=_('Password').html_safe %></label><span class='red'>*</span><br/>
+    <%= f.password_field :password, :size => 20 %>
+  </div>
+
+  <div class="span-5 last">
+    <label><%=_('Password confirmation').html_safe %></label><span class='red'>*</span><br/>
+    <%= f.password_field :password_confirmation, :size => 20 %>
+  </div>
+
+  <div class="clear"></div>
+  <div class="span-12 last">
+	  <label><%=_('Current password')%></label><br />
+	  <span class="tip_text"><%=_("We need your current password to confirm your changes.").html_safe%></span><br />
+	  <%= f.password_field :current_password %>
+  </div>
+
+  <div class="buttons span-23 last">
+    <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Update").html_safe %></button>
+  </div>
+
+
+	<% end %>
+	
+<!--	<h3>Cancel my account</h3>
+	
+	<p>Unhappy? <%= link_to "Cancel my account", registration_path(resource_name), :confirm => "Are you sure?", :method => :delete %>.</p>
+	
+	<%= link_to "Back", :back %> -->
+</div>

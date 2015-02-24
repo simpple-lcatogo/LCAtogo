@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  mt_family_id: 1
+  unit: MyString
+
+two:
+  name: MyString
+  mt_family_id: 1
+  unit: MyString

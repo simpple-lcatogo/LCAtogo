@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  se_product: 
+  downtime_level_description: MyString
+  occurrance_with_sensor: 1.5
+  avg_duration_with_sensor: 1.5
+  occurance_without_sensor: 1.5
+  avg_duration_without_sensor: 1.5
+
+two:
+  se_product: 
+  downtime_level_description: MyString
+  occurrance_with_sensor: 1.5
+  avg_duration_with_sensor: 1.5
+  occurance_without_sensor: 1.5
+  avg_duration_without_sensor: 1.5

@@ -1,0 +1,92 @@
+<h1><%=_('Overview').html_safe%>
+
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/data_qualities/tabs') %>
+	</div>
+	
+	<table class="standard2">
+	   <thead>
+	      <tr>
+	        <th></th>
+	        <th><div style="float:left;padding-top:7px;text-align:center"><%=_('Robust').html_safe%></div><div><%= image_tag('bullet-green-icon.png')%></div></th>
+	        <th><div style="float:left;padding-top:7px"><%=_('Indicative').html_safe%></div><div><%= image_tag('bullet-yellow-icon.png')%></div></th>
+	        <th><div style="float:left;padding-top:7px"><%=_('Illustrative').html_safe%></div><div><%= image_tag('bullet-red-icon.png')%></div></th>
+	      </tr>	      
+	   </thead>
+	   <tbody>
+	      <tr>
+	        <th><%=_('Reliability').html_safe%></th>
+	        <td><%=_('Data for use phase energy consumption is based on measurements, data partly based on scientifically grounded statistics').html_safe%></td>
+	        <td><%=_('Data is partly based on assumptions (qualified estimate based on industrial insights), may also contain data from measurement and/or provided by a third party').html_safe%></td>
+	        <td><%=_('Estimate data not based on measurement or provided information, use of default data entries').html_safe%></td>	        
+	      </tr>
+	      <tr>
+	        <th><%=_('Completeness').html_safe%></th>
+	        <td><%=_('Data applies exactly to the electronics product under investigation, all components have been assessed with the foreseen parameters').html_safe%></td>
+	        <td><%=_('Data were derived from previous models of electronics with similar properties; some of the parameters cannot be served, but relevency is considered minor').html_safe%></td>
+	        <td><%=_('Major data gaps, which cannot be mitigated; product specification cannot be plotted sufficiently on foreseen data entries (most likely an electronics product which is significantly different to computer-like devices)').html_safe%></td>	        
+	      </tr>
+	      <tr>
+	        <th><%=_('Temporal correlation').html_safe%></th>
+	        <td><%=_('Data is less than 2 years old.').html_safe%></td>
+	        <td><%=_('Data is less than 4 years old.').html_safe%></td>
+	        <td><%=_('Data is older than 4 years or the age is unknown.').html_safe%></td>	        
+	      </tr>
+	      <tr>
+	        <th><%=_('Geographical correlation').html_safe%></th>
+	        <td><%=_('Data applies to a specified area/region, distances for distribution are known').html_safe%></td>
+	        <td><%=_('Data applies to an area / region with similar conditions, distances for distribution are based on roughly known production regions').html_safe%></td>
+	        <td><%=_('Distances for distribution are based on assumptions only').html_safe%></td>	        
+	      </tr>
+	      <tr>
+	        <th><%=_('Further technological correlation').html_safe%></th>
+	        <td><%=_('Data corresponds with technical specification.').html_safe%></td>
+	        <td><%=_('Minor assumptions had to be made to plot the technical specification on the manufacturing entries').html_safe%></td>
+	        <td><%=_('Data applies to a different model').html_safe%></td>	        
+	      </tr>
+      
+	   </tbody>	   
+	</table>
+	
+	
+  <div class="buttons last" style="float:right;text-align:right">
+     <a href="<%=data_quality_path(@product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Next step").html_safe %></a>
+  </div>
+  
+  <div class="clear"></div>	
+	
+<!-- <div class="clear"></div>
+
+ <div class="span-23" style="text-align:center;font-size:11">
+    <ul style="padding-left:0;margin-right:230px">
+      <li class="link_booklabels"><%= link_to _('To Results').html_safe, product_result_url(@product)  %></li>
+
+      <li class="link_booklabels"><%= link_to _('To Data Entry'), scenario_url(@product) %></li>
+
+      <li class="link_booklabels"><%= link_to _('To Introduction'),  production_intro_path(@product) %></li>
+      <div class="clear"></div>
+    </ul>
+  </div>
+
+   <div class="clear"></div>
+
+
+-->
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, production_intro_path(@product) %></li>
+        <li><%= link_to _('To Data Entry').html_safe, scenario_url(@product) %></li>
+        <li><%= link_to _('To Results').html_safe, product_result_url(@product) %></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="clear"></div>
+
+</div>	

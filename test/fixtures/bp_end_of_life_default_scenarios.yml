@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  landfill: 1.5
+  incineration: 1.5
+  composting: 1.5
+  recycling: 1.5
+
+two:
+  name: MyString
+  landfill: 1.5
+  incineration: 1.5
+  composting: 1.5
+  recycling: 1.5

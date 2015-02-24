@@ -1,0 +1,141 @@
+<h1><%=_('Data Quality').html_safe%> <a title="<%=_('In this section you can highlight the quality of the data that you entered as part of the study, defining whether it is robust, indicative or just illustrative.').html_safe%>" href="#" class="tip_left">&nbsp;</a>
+</h1>
+<div class="content_skin">
+	<!-- <div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/mt_data_qualities/tabs') %>
+	</div> -->
+
+  <div class="clear"></div>
+
+  <table class="standard2">
+    <thead>
+    <tr>
+      <th></th>
+      <th><div style="float:left;padding-top:7px;text-align:center"><%=_('Robust').html_safe%></div><div><%= image_tag('bullet-green-icon.png')%></div></th>
+      <th><div style="float:left;padding-top:7px"><%=_('Indicative').html_safe%></div><div><%= image_tag('bullet-yellow-icon.png')%></div></th>
+      <th><div style="float:left;padding-top:7px"><%=_('Illustrative').html_safe%></div><div><%= image_tag('bullet-red-icon.png')%></div></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <th><%=_('Materials').html_safe%></th>
+      <td><%=_('Materials and masses are taken from a manufacturers bill of material of the assessed product.').html_safe%></td>
+      <td><%=_('Materials and masses are based partly on assumptions e.g. data from other models or default data is used as input in some parts.').html_safe%></td>
+      <td><%=_('Only default data is used or data are based rough on assumptions in percent of total weight.').html_safe%></td>
+    </tr>
+    <tr>
+      <th><%=_('Manufacturing').html_safe%></th>
+      <td><%=_('On-site measured resource consumption (energy, gas, waste, etc.).').html_safe%></td>
+      <td><%=_('The total energy consumption of the plant is used to estimate the energy consumption per manufactured machine. Predefined processes are used. No overhead energy is considered.').html_safe%></td>
+      <td><%=_('Only default data is used or the input is entirely based on rough assumptions.').html_safe%></td>
+    </tr>
+    <tr>
+      <th><%=_('Distribution').html_safe%></th>
+      <td><%=_('Actual mode of transport, distances and packaging materials are known.').html_safe%></td>
+      <td><%=_('Part of the Distribution chain (transport mode, distance or packaging) are based on assumptions.').html_safe%></td>
+      <td><%=_('Actual mode of transport, distances and packaging materials are unknown and therefore based on assumptions.').html_safe%></td>
+    </tr>
+    <tr>
+      <th><%=_('Use').html_safe%></th>
+      <td><%=_('Data from on-site measurement ie. energy consumption measurement according to a standard e.g. ISO/CD 14955.').html_safe%></td>
+      <td><%=_('Energy consumption data from product data sheet or measured according to own standards. Differentiation in Shifts and production, ready for operation and standby mode.').html_safe%></td>
+      <td><%=_('Energy consumption data from general energy balance of the plant allocated to the specific machine tool. No differentiation in shifts and production, ready for operation and standby mode.').html_safe%></td>
+    </tr>
+    <tr>
+      <th><%=_('End-of-life').html_safe%></th>
+      <td><%=_('End of life scenario is predefined and known.').html_safe%></td>
+      <td><%=_('End of life scenario is assumed based on general experience and representative examples.').html_safe%></td>
+      <td><%=_('End of life scenario is roughly estimated.').html_safe%></td>
+    </tr>
+    </tbody>
+  </table>
+
+	  <div class="clear"></div>
+
+<%= form_for(@mt_data_quality) do |f| %>
+  <table class="standard2">
+   <tbody>
+    <tr>
+      <th colspan="4"><%=_('Data').html_safe%>&nbsp;<a title="<%=_('Please indicate for each of the life cycle phases if the data that you entered is either Robust, Indicative, or Illustrative.').html_safe%>" href="#" class="tip_left">&nbsp;</a></th>
+    </tr>
+    <tr>
+      <td><%=_('Materials').html_safe%></td>
+	  <td><%= f.radio_button :materials, "robust" %>  <%=_('Robust').html_safe%></td>
+	  <td><%= f.radio_button :materials, "indicative" %>  <%=_('Indicative').html_safe%></td>
+	  <td><%= f.radio_button :materials, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	<tr>
+      <td><%=_('Manufacturing').html_safe%></td>
+      <td><%= f.radio_button :manufacturing, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :manufacturing, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :manufacturing, "illustrative" %>  <%=_('Illustrative').html_safe%></td>  
+	</tr>
+	<tr>
+      <td><%=_('Distribution').html_safe%></td>
+      <td><%= f.radio_button :distribution, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :distribution, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :distribution, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	<tr>
+      <td><%=_('Use').html_safe%></td>
+      <td><%= f.radio_button :use, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :use, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :use, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	<tr>
+      <td><%=_('End-of-life').html_safe%></td>
+      <td><%= f.radio_button :end_of_life, "robust" %>  <%=_('Robust').html_safe%></td>
+      <td><%= f.radio_button :end_of_life, "indicative" %>  <%=_('Indicative').html_safe%></td>
+      <td><%= f.radio_button :end_of_life, "illustrative" %>  <%=_('Illustrative').html_safe%></td>	  
+	</tr>
+	</tbody> 
+   </table>
+   
+   <div class="buttons last" style="float:left">
+  <!--   <a href="<%=mt_data_quality_intro_path(@mt_product)%>" class="positive"><img alt="Tick" src="/images/tick.png"><%= _("Previous step").html_safe %></a> -->
+   </div>
+   
+   
+    <div class="buttons last" style="float:right">  
+	   <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Data Update").html_safe %></button>
+	</div>   
+<% end %>
+
+<!--
+<div class="clear"></div>
+  <div class="span-23" style="text-align:center;font-size:11">
+     <ul style="padding-left:0;margin-right:85px">	       
+        <li class="link_booklabels"><%= link_to _('To Improvements').html_safe, mt_production_improvement_path(@mt_product) %></li>     
+     
+        <li class="link_booklabels"><%= link_to _('To Results').html_safe, mt_result_path(@mt_product) %></li>
+	        
+	    <li class="link_booklabels"><%= link_to _('To Data Entry'),  mt_raw_material_path(@mt_product) %></li>
+
+	    <li class="link_booklabels"><%= link_to _('To Method').html_safe, mt_assessment_url(@mt_product) %></li>
+	    
+	    <li class="link_booklabels"><%= link_to _('To Introduction').html_safe, mt_production_intro_url(@mt_product) %></li>	    
+        <div class="clear"></div>
+     </ul>
+  </div>   
+<br/>   
+<div class="clear"></div>
+-->
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, mt_production_intro_url(@mt_product) %></li>
+        <li><%= link_to _('To Method').html_safe, mt_assessment_url(@mt_product) %></li>
+        <li><%= link_to _('To Data Entry').html_safe, mt_raw_material_path(@mt_product) %></li>
+        <li><%= link_to _('To Results').html_safe, mt_result_path(@mt_product) %></li>
+        <li><%= link_to _('To Improvements').html_safe, mt_production_improvement_path(@mt_product) %></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="clear"></div>
+
+
+</div>	

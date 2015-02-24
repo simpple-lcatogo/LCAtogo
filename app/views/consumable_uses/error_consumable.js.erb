@@ -1,0 +1,8 @@
+/* Add the new comment to the bottom of the comments list */
+
+$("#error_explanation_consumable").empty();
+$("#error_explanation_consumable").css("display", "block")
+$("#error_explanation_consumable").append("<p><b><%=_('Please check the following issues before proceding. Thanks!').html_safe%></b></p>");  
+  <% full_messages_no_attribute(@consumable_use.errors).each do |msg| %>    
+    $("#error_explanation_consumable").append("<p><%= msg.html_safe %></p>");
+  <% end %>

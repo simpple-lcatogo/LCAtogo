@@ -1,0 +1,42 @@
+<tr id="mt_use_operating_resource_data_<%= mt_use_operating_resource_data.id %>">
+     <td>
+	      <% if mt_use_operating_resource_data.mt_consumable %>
+			<%= mt_use_operating_resource_data.mt_consumable.name.html_safe %>
+	      <% end %>		
+     </td>  
+     <td class="processing_<%= mt_use_operating_resource_data.id %>">
+          <%= mt_use_operating_resource_data.processing %>
+     </td>
+     <script type="text/javascript">
+		   $(".processing_<%=mt_use_operating_resource_data.id%>").editInPlace({
+		        url: "/mt_use_operating_resource_datas/update_processing" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+		        params: "mt_use_operating_resource_data_id=<%=mt_use_operating_resource_data.id%>",
+		        saving_text: '<%=_("Saving...")%>'
+		        });  
+     </script>          
+     <td class="ready_<%= mt_use_operating_resource_data.id %>">
+          <%= mt_use_operating_resource_data.ready %>
+     </td>
+     <script type="text/javascript">
+		   $(".ready_<%=mt_use_operating_resource_data.id%>").editInPlace({
+		        url: "/mt_use_operating_resource_datas/update_ready" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+		        params: "mt_use_operating_resource_data_id=<%=mt_use_operating_resource_data.id%>",
+		        saving_text: '<%=_("Saving...")%>'
+		        });  
+     </script>          
+     
+     <td class="standby_<%= mt_use_operating_resource_data.id %>">
+          <%= mt_use_operating_resource_data.standby %>
+     </td>
+    <script type="text/javascript">
+		   $(".standby_<%=mt_use_operating_resource_data.id%>").editInPlace({
+		        url: "/mt_use_operating_resource_datas/update_standby" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+		        params: "mt_use_operating_resource_data_id=<%=mt_use_operating_resource_data.id%>",
+		        saving_text: '<%=_("Saving...")%>'
+		        });  
+     </script>         
+     <td>
+          <%=_('kg/h').html_safe%>
+     </td>     
+     <td class="center"><%= link_to '&#10006;'.html_safe, mt_use_operating_resource_data_path(mt_use_operating_resource_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>

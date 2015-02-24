@@ -1,0 +1,76 @@
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Results').html_safe%></span>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/st_results/tabs') %>
+	</div>
+<%= form_tag '/st_results/compare' do %>	
+  
+   <div class="clear"></div>
+   <table>
+      <tr>
+        <td style="background:#2b4950;color:#EBEEDB;width:25%">
+          <b><%=_('Name of current product').html_safe%></b>
+        </td>
+        <td style="background:#ffffff">  
+            <%= @product.name %></span>
+        </td>
+      </tr>
+    </table>     
+    
+    <div class="clear"></div>	
+
+    <div class="span-7">
+	  <h6><%=_('1. Compare this product with:').html_safe%></h6>
+	</div> 
+	
+    <div class="span-13">	
+		<select name="compareTo" id="compareTo" style="margin-top:18px">
+		   <%= @products_to_compare.each do |product| %>
+		       <% if product.st_product %>
+		          <option value="<%=product.st_product.id%>"><%=product.name%></option>
+		       <% end %>
+		   <% end %>
+		</select>
+    </div>
+ 	<div class="clear"></div>	
+	<div class="span-9">
+		<h6><%=_('2. Choose LCA items to compare').html_safe%></h6>
+		<input type="checkbox" name="total" id="total"/> <%=_('Total').html_safe%><br/>	
+		<input type="checkbox" name="materials" id="materials"/> <%=_('Materials').html_safe%><br/>
+		<input type="checkbox" name="manufacturing" id="manufacturing"/> <%=_('Manufacturing').html_safe%><br/>	
+		<input type="checkbox" name="distribution" id="distribution"/> <%=_('Distribution').html_safe%><br/>
+		<input type="checkbox" name="use" id="use"/> <%=_('Use').html_safe%><br/>				
+		<input type="checkbox" name="end_of_life" id="end_of_life"/> <%=_('End-of-life').html_safe%><br/>
+	</div>	 	
+ 	
+ 	<div class="clear"></div>	
+  <div class="buttons" style="float:right">
+     <input type="hidden" name="st_product_id" id="st_product_id" value="<%=@st_product.id%>"/>	
+     <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Next step").html_safe %></button>
+   </div>
+    
+    
+
+  <div class="clear"></div>	    
+ 	
+ <% end %>	
+
+
+  <div class="clear"></div>
+  <div class="navbar">
+    <!-- <div id="for-ie"> -->
+    <div>
+      <ul>
+        <li><%= link_to _('To Introduction').html_safe, st_production_intro_url(@st_product) %></li>
+        <li><%= link_to _('To Data Entry').html_safe, st_material_detail_path(@st_product) %></li>
+        <li><%= link_to _('To Data Quality').html_safe, st_data_quality_intro_path(@st_product) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+
+
+	
+</div>	

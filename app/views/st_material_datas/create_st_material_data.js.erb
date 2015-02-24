@@ -1,0 +1,14 @@
+$("#error_explanation_st_material_data").empty();
+$("#error_explanation_st_material_data").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#st_material_datas").append("<%= escape_javascript(render(@st_material_data)) %>");
+/* Highlight the new comment */
+$("#st_material_data_<%= @st_material_data.id %>").effect("highlight", {}, 3000);
+
+$("#st_material_data_with_sensor").val("");
+$("#st_material_data_without_sensor").val("");
+$("#st_material_data_recycling_revenue").val("");
+$("#st_material_data_description").val("");
+$("#st_material_data_global_warming_potential").val("");
+
+$("#st_material_detail_product_weight").keyup();

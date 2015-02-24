@@ -1,0 +1,9 @@
+
+$("#error_explanation_reuse").empty();
+$("#error_explanation_reuse").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#reuses").append("<%= escape_javascript(render(@reuse_end_of_life)) %>");
+/* Highlight the new comment */
+$("#reuse_<%= @reuse_end_of_life.id %>").effect("highlight", {}, 3000);
+
+$("#reuse_end_of_life_quantity").val("");

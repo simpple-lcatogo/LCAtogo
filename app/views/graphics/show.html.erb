@@ -1,0 +1,464 @@
+<script type="text/javascript">
+   function showAbsolute() {
+      document.getElementById("percentage_graph").style.display = 'none';
+      document.getElementById("absolute_graph").style.display = 'block';      
+   }
+   function showPercentage() {
+      document.getElementById("percentage_graph").style.display = 'block';
+      document.getElementById("absolute_graph").style.display = 'none';      
+   }
+   
+</script>
+
+
+
+<h1><%=_('Product Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Results').html_safe%></span>
+</h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/results/tabs') %>
+	</div>
+    <br/><br/>
+   <h2 style="color:#2B4950"><%=_('KEPI explanation').html_safe%></h2>	 
+   <table>
+     <tr>
+        <td name="kepi_explanation" size="50" id="kepi_explanation" class="kepi_explanation" style="background: none repeat scroll 0% 0% transparent;text-align:left;margin-bottom:0px;"><%=@product.kepi_explanation%></td>
+     </tr>
+   </table>
+   <div id="percentage_graph">
+      <% @combineds.each_with_index do |combined, index| %>
+	    <% if @sort == 'no'
+	         values = combined.collect {|x| x[0] }
+	         ticks = combined.collect {|x| x[1] }.reverse      
+	         seriesColors = combined.collect {|x| x[2] }
+	       end 
+	       if @sort == 'asc'
+	         values = combined.collect {|x| x[0] }
+	         ticks = combined.collect {|x| x[1] }.reverse    
+	         seriesColors = combined.collect {|x| x[2] }  
+	       end
+	       if @sort == 'desc' 
+	          values = combined.collect {|x| x[0] }
+	          ticks = combined.collect {|x| x[1] }.reverse
+	          seriesColors = combined.collect {|x| x[2] }
+	       end 
+	       ticks_to_array = ""
+	       ticks.each do |tick|
+	          ticks_to_array += "|" + tick.to_s
+	       end
+	       values_to_array = ""
+	       values.each_with_index do |value, index|
+	          if (index + 1) < values.size
+	             values_to_array += value.to_s + ","
+	          else
+	             values_to_array += value.to_s
+	          end   
+	       end	   
+	       seriesColors_to_array = ""
+	       seriesColors.each_with_index do |seriesColor, index|	 
+	           if (index + 1) < seriesColors.size      
+	       	      seriesColors_to_array += seriesColor.to_s.gsub("#","") + "|"
+	       	   else 
+	       	      seriesColors_to_array += seriesColor.to_s.gsub("#","")
+	       	   end   
+	       end
+       min = combined.sort_by { |x| x[0] }.collect {|x| x[0] }[0]
+       max = combined.sort_by { |x| x[0] }.collect {|x| x[0] }.reverse[0]
+       
+       num_ticks = 0 
+       i = 0
+       if max
+	       while i < max
+	          i += 10
+	       end
+	   end    
+       max = i
+       if i > 100
+          max = (i + 10)
+       end
+       if max < 100
+          max = 100
+       end
+       max = 110
+       if !min || min > 0
+          min = 0
+       else   
+          modulo = min.modulo(10)
+          min -= modulo
+       end	       
+	   max_min_array = ""
+	   min_tmp = min
+	   while min_tmp <= max
+	      max_min_array += "|" + min_tmp.to_s
+	      min_tmp += 10
+	   end
+	    %>
+   <h6 style="color:#2B4950;font-size:16px;"><b><%=@indicators_checked[index].name.html_safe%> (<%=@indicators_checked[index].unit.gsub('<sub>','').gsub('</sub>','').html_safe%>)</b></h6>   
+   <a href="javascript:showAbsolute();">Absolute values</a> / Percentage values<br/>
+   <div class="clear"></div>
+   <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=18&amp;chts=2B4950,16,l&amp;chxt=x,y&amp;cht=bhg&amp;chds=<%=min%>,<%=max%>&amp;chd=t:<%=values_to_array%>&amp;chco=<%=seriesColors_to_array%>&amp;chls=2.0&amp;chs=600x<%=((@labels.size * 26) / @indicators_checked.size) + 32 %>&amp;chxl=0:<%=max_min_array%>|1:<%=ticks_to_array%>&amp;chm=N*f0*%,000000,0,-1,11,,:10:&amp;chxs=1,,11,-1,lt"
+     style="padding-right:20px;padding-bottom:40px;">
+   
+   <br/>
+   <% end %>   
+</div>
+
+<div id="absolute_graph" style="display:none">
+<% @combineds_absolute.each_with_index do |combined, index| %>
+	    <% if @sort == 'no'
+	         values = combined.collect {|x| x[0] }
+	         ticks = combined.collect {|x| x[1] }.reverse      
+	         seriesColors = combined.collect {|x| x[2] }
+	       end 
+	       if @sort == 'asc'
+	         values = combined.collect {|x| x[0] }
+	         ticks = combined.collect {|x| x[1] }.reverse    
+	         seriesColors = combined.collect {|x| x[2] }  
+	       end
+	       if @sort == 'desc' 
+	          values = combined.collect {|x| x[0] }
+	          ticks = combined.collect {|x| x[1] }.reverse
+	          seriesColors = combined.collect {|x| x[2] }
+	       end 
+	       ticks_to_array = ""
+	       ticks.each do |tick|
+	          ticks_to_array += "|" + tick.to_s
+	       end
+	       values_to_array = ""
+	       values.each_with_index do |value, index|
+	          if (index + 1) < values.size
+	             values_to_array += value.to_s + ","
+	          else
+	             values_to_array += value.to_s
+	          end   
+	       end	   
+	       seriesColors_to_array = ""
+	       seriesColors.each_with_index do |seriesColor, index|	 
+	           if (index + 1) < seriesColors.size      
+	       	      seriesColors_to_array += seriesColor.to_s.gsub("#","") + "|"
+	       	   else 
+	       	      seriesColors_to_array += seriesColor.to_s.gsub("#","")
+	       	   end   
+	       end
+       min = combined.sort_by { |x| x[0] }.collect {|x| x[0] }[0]
+       max = combined.sort_by { |x| x[0] }.collect {|x| x[0] }.reverse[0]
+       num_ticks = 0 
+       i = 0
+       if max
+	       while i < max
+	          i += 10
+	       end
+	   end    
+       max = i
+       if i > 100
+          max = (i + 10)
+       end
+       if max < 100
+          max = 100
+       end
+       if !min || min > 0
+          min = 0
+       else   
+          modulo = min.modulo(10)
+          min -= modulo
+       end	       
+	   max_min_array = ""
+	   min_tmp = min
+	   step = (max - min) / 10
+	 
+   if step <= 0
+     step = 10
+   end
+	   
+	   
+	   while min_tmp <= max
+	      max_min_array += "|" + min_tmp.to_s
+	      min_tmp += step
+	   end
+	    %>
+   <h6 style="color:#2B4950;font-size:16px;"><b><%=@indicators_checked[index].name.html_safe%> (<%=@indicators_checked[index].unit.gsub('<sub>','').gsub('</sub>','').html_safe%>)</b></h6>
+   &nbsp;Absolute values / <a href="javascript:showPercentage();">Percentage values</a><br/>
+   <div class="clear"></div>    
+	    
+   <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=18&amp;chts=2B4950,16,l&amp;chxt=x,y&amp;cht=bhg&amp;chds=<%=min%>,<%=max%>&amp;chd=t:<%=values_to_array%>&amp;chco=<%=seriesColors_to_array%>&amp;chls=2.0&amp;chs=600x<%=((@labels.size * 26) / @indicators_checked.size) + 32 %>&amp;chxl=0:<%=max_min_array%>|1:<%=ticks_to_array%>&amp;chm=N*f0*,000000,0,-1,11,,:10:&amp;chxs=1,,11,-1,lt"
+     style="padding-right:20px;padding-bottom:40px;">
+   
+   <br/><br/>   
+   <% end %>   
+</div>
+
+
+
+
+<% @combineds_production.each_with_index do |combined, index| %>
+	    <% if @sort == 'no'
+	         values = combined.collect {|x| x[0] }
+	         ticks = combined.collect {|x| x[1] }   
+	         seriesColors = combined.collect {|x| x[2] }
+	       end 
+	       if @sort == 'asc'
+	         values = combined.collect {|x| x[0] }
+	         ticks = combined.collect {|x| x[1] }.reverse    
+	         seriesColors = combined.collect {|x| x[2] }  
+	       end
+	       if @sort == 'desc' 
+	          values = combined.collect {|x| x[0] }
+	          ticks = combined.collect {|x| x[1] }.reverse
+	          seriesColors = combined.collect {|x| x[2] }
+	       end 
+	       ticks_to_array = ""
+	       ticks.each_with_index do |tick, index|
+	          if index == 0
+	             ticks_to_array += tick.to_s
+	          else
+	             ticks_to_array += "|" + tick.to_s
+	          end   
+	       end
+	       
+	       values_to_array = ""
+	       values.each_with_index do |value, index|
+	          if (index + 1) < values.size
+	             values_to_array += value.to_s + ","
+	          else
+	             values_to_array += value.to_s
+	          end   
+	       end	   
+	       seriesColors_to_array = ""
+	       seriesColors.each_with_index do |seriesColor, index|	 
+	           if (index + 1) < seriesColors.size      
+	       	      seriesColors_to_array += seriesColor.to_s.gsub("#","") + "|"
+	       	   else 
+	       	      seriesColors_to_array += seriesColor.to_s.gsub("#","")
+	       	   end   
+	       end
+       min = combined.sort_by { |x| x[0] }.collect {|x| x[0] }[0]
+       max = combined.sort_by { |x| x[0] }.collect {|x| x[0] }.reverse[0]
+       num_ticks = 0 
+       i = 0
+       if max
+	       while i < max
+	          i += 10
+	       end
+	   end    
+       max = i
+       if i > 100
+          max = (i + 10)
+       end
+       if max < 100
+          max = 100
+       end
+       if !min || min > 0
+          min = 0
+       else   
+          modulo = min.modulo(10)
+          min -= modulo
+       end	       
+	   max_min_array = ""
+	   min_tmp = min
+	   while min_tmp <= max
+	      max_min_array += "|" + min_tmp.to_s
+	      min_tmp += 10
+	   end
+	    %>
+   <h2 style="color:#2B4950"><%=_('Production comments').html_safe%></h2>
+   <table><tr>      
+   <td name="production_comments" size="50" id="production_comments" class="production_comments" style="background: none repeat scroll 0% 0% transparent;text-align:left;margin-bottom:0px;"><%=@product.production_comments%></td>	    	    
+   </tr></table>
+	    
+   <h6 style="color:#2B4950;font-size:16px;"><b><%=@indicators_checked[index].name.html_safe%> (<%=@indicators_checked[index].unit.gsub('<sub>','').gsub('</sub>','').html_safe%>) - Production</b></h6>	    
+   <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chd=t:<%=values_to_array%>&amp;chco=<%=seriesColors_to_array%>&amp;chls=2.0&amp;chs=600x200&amp;chl=<%=ticks_to_array%>"
+     style="padding-right:20px;padding-bottom:40px;">
+   
+   <br/><br/>   
+   <% end %>   
+
+<% @combineds_use.each_with_index do |combined, index| %>
+	    <% if @sort == 'no'
+	         values = combined.collect {|x| x[0] }
+	         ticks = combined.collect {|x| x[1] }    
+	         seriesColors = combined.collect {|x| x[2] }
+	       end 
+	       if @sort == 'asc'
+	         values = combined.collect {|x| x[0] }
+	         ticks = combined.collect {|x| x[1] }.reverse    
+	         seriesColors = combined.collect {|x| x[2] }  
+	       end
+	       if @sort == 'desc' 
+	          values = combined.collect {|x| x[0] }
+	          ticks = combined.collect {|x| x[1] }.reverse
+	          seriesColors = combined.collect {|x| x[2] }
+	       end 
+	       ticks_to_array = ""
+	       ticks.each_with_index do |tick, index|
+	          if index == 0
+	             ticks_to_array += tick.to_s
+	          else
+	             ticks_to_array += "|" + tick.to_s
+	          end   
+	       end
+	       values_to_array = ""
+	       values.each_with_index do |value, index|
+	          if (index + 1) < values.size
+	             values_to_array += value.to_s + ","
+	          else
+	             values_to_array += value.to_s
+	          end   
+	       end	   
+	       seriesColors_to_array = ""
+	       seriesColors.each_with_index do |seriesColor, index|	 
+	           if (index + 1) < seriesColors.size      
+	       	      seriesColors_to_array += seriesColor.to_s.gsub("#","") + "|"
+	       	   else 
+	       	      seriesColors_to_array += seriesColor.to_s.gsub("#","")
+	       	   end   
+	       end
+       min = combined.sort_by { |x| x[0] }.collect {|x| x[0] }[0]
+       max = combined.sort_by { |x| x[0] }.collect {|x| x[0] }.reverse[0]
+       num_ticks = 0 
+       i = 0
+       if max
+	       while i < max
+	          i += 10
+	       end
+	   end    
+       max = i
+       if i > 100
+          max = (i + 10)
+       end
+       if max < 100
+          max = 100
+       end
+       if !min || min > 0
+          min = 0
+       else   
+          modulo = min.modulo(10)
+          min -= modulo
+       end	       
+	   max_min_array = ""
+	   min_tmp = min
+	   while min_tmp <= max
+	      max_min_array += "|" + min_tmp.to_s
+	      min_tmp += 10
+	   end
+	    %>
+   <h2 style="color:#2B4950"><%=_('Use comments').html_safe%></h2>	
+   
+   <table><tr>      
+   <td name="use_comments" size="50" id="use_comments" class="use_comments" style="background: none repeat scroll 0% 0% transparent;text-align:left;margin-bottom:0px;"><%=@product.use_comments%></td>	    	    
+   </tr></table>
+     
+	    
+   <h6 style="color:#2B4950;font-size:16px;"><b><%=@indicators_checked[index].name.html_safe%> (<%=@indicators_checked[index].unit.gsub('<sub>','').gsub('</sub>','').html_safe%>) - Use</b></h6>	    
+	    
+   <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chbh=13&amp;chf=c,s,FFFDF6&amp;chts=00632E,14,l&amp;chxt=x,y&amp;cht=p3&amp;chds=<%=min%>,<%=max%>&amp;chd=t:<%=values_to_array%>&amp;chco=<%=seriesColors_to_array%>&amp;chls=2.0&amp;chs=600x200&amp;chl=<%=ticks_to_array%>&amp;chm=N*f0*%,000000,0,-1,11,,:10:&amp;chxs=1,,11,-1,lt"
+     style="padding-right:20px;padding-bottom:40px;">
+   
+   <br/><br/>   
+     
+<% if @compare_values_1.size > 0 %>     
+      <% 
+	       compare_values_1_to_array = ""
+	       @compare_values_1.each_with_index do |value, index|
+	          if (index + 1) < @compare_values_1.size
+	             compare_values_1_to_array += value.to_s + ","
+	          else
+	             compare_values_1_to_array += value.to_s
+	          end   
+	       end	 
+	       compare_values_2_to_array = ""
+	       @compare_values_2.each_with_index do |value, index|
+	          if (index + 1) < @compare_values_2.size
+	             compare_values_2_to_array += value.to_s + ","
+	          else
+	             compare_values_2_to_array += value.to_s
+	          end   
+	       end
+	       compare_titles_to_array = "|"
+	       @compare_titles.reverse.each_with_index do |value, index|
+	          if (index + 1) < @compare_titles.size
+	             compare_titles_to_array += value.to_s + "|"
+	          else
+	             compare_titles_to_array += value.to_s + "|"
+	          end   
+	       end
+	       
+	       sorted_1 = @compare_values_1.sort
+	       min = sorted_1[0]
+	       sorted_2 = @compare_values_2.sort
+	       if sorted_2[0] < min
+	          min = sorted_2[0]
+	       end
+	       sorted_1 = sorted_1.reverse	 
+	       max = sorted_1[0]
+	       sorted_2 = sorted_2.reverse	       
+	       if sorted_2[0] > max
+	          max = sorted_2[0]
+	       end
+           
+           min = min - 50
+           max = max + 100
+           
+	   max_min_array = ""
+	   min_tmp = min
+	   step = (max - min) / 10
+	 
+   if step <= 0
+     step = 10
+   end
+	   
+	   
+	   while min_tmp <= max
+	      max_min_array += "|" + min_tmp.to_i.to_s
+	      min_tmp += step
+	   end
+
+
+       height = (18 * sorted_1.size * 2) + (18 * sorted_1.size) + 45
+      %>    
+     
+     <h1><%=_('Product comparison').html_safe%></h1>
+     <h2 style="color:#2B4950"><%=_('Comparison comments').html_safe%></h2>	 
+
+   <table><tr>      
+   <td name="comparison_comments" size="50" id="comparison_comments" class="comparison_comments" style="background: none repeat scroll 0% 0% transparent;text-align:left;margin-bottom:0px;"><%=@product.comparison_comments%></td>	    	    
+   </tr></table>
+          
+
+     <h6 style="color:#2B4950;font-size:16px;"><b><%=@indicators_checked[index].name.html_safe%> (<%=@indicators_checked[index].unit.gsub('<sub>','').gsub('</sub>','').html_safe%>)</b></h6>
+     <img src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chts=2B4950,16,l&amp;cht=bhg&amp;chs=600x<%=height%>&amp;chd=t:<%=compare_values_1_to_array%>|<%=compare_values_2_to_array%>&amp;chco=FFCC00,f58528&amp;chds=<%=min%>,<%=max%>&amp;chxt=y&amp;chdl=<%=@product.name%>|<%=@product_to_compare.name%>&amp;chxt=x,y&amp;chxl=0:<%=max_min_array%>|1:<%=compare_titles_to_array%>&amp;chma=20,20,20,20&amp;chbh=18,0,18&amp;&amp;chm=N*f2*,000000,0,-1,11,,:10:|N*f2*,000000,1,-1,11,,:10:&amp;chdlp=r&amp;chxs=1,,11,-1,lt" alt="Grouped chart">
+   
+   <% end %>
+<% end %>      
+</div>
+<script type="text/javascript">
+   $(".kepi_explanation").editInPlace({
+        url: "/products/update_comments" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "product_id=<%=@product.id%>&type=kepi_explanation",
+        saving_text: '<%=_("Saving...")%>'
+        });
+   $(".comparison_comments").editInPlace({
+        url: "/products/update_comments" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "product_id=<%=@product.id%>&type=comparison_comments",
+        saving_text: '<%=_("Saving...")%>'
+        });
+   $(".production_comments").editInPlace({
+        url: "/products/update_comments" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "product_id=<%=@product.id%>&type=production_comments",
+        saving_text: '<%=_("Saving...")%>'
+        });
+   $(".use_comments").editInPlace({
+        url: "/products/update_comments" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        params: "product_id=<%=@product.id%>&type=use_comments",
+        saving_text: '<%=_("Saving...")%>'
+        });
+        
+</script>        

@@ -1,0 +1,137 @@
+<script type="text/javascript">
+      $(document).ready(function(){ 
+         <% if @product.id %>      
+	         $("#edit_product_<%=@product.id%>").validate({
+		   	    rules: {
+			      "product[name]": "required",
+			      "product[assessment]": "required"			      
+			    },
+				messages: {
+                  "product[name]": "<%=_('This field is mandatory').html_safe%>",
+                  "product[assessment]": "<%=_('This field is mandatory').html_safe%>"
+				}		    
+		       });
+		  <% else %>      
+	         $("#new_product").validate({
+		   	    rules: {
+			      "product[name]": "required",
+			      "product[assessment]": "required"			      
+			    },
+				messages: {
+                  "product[name]": "<%=_('This field is mandatory').html_safe%>",
+                  "product[assessment]": "<%=_('This field is mandatory').html_safe%>"
+				}		    
+		       });
+		  <% end %>
+       });
+</script>
+<style type="text/css">
+#new_product label.error {
+	margin-left: 20px;
+	width: auto;
+	display: inline;
+	float:right;
+	padding: 0.3em;
+}
+#edit_product_<%=@product.id%> label.error {
+	margin-left: 20px;
+	width: auto;
+	display: inline;
+	float:right;
+	padding: 0.3em;
+}
+
+</style>
+
+<div class="content_skin">
+<%= form_for(@product) do |f| %>
+  <% if @product.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</h2>
+
+      <ul>
+      <% @product.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= _('Please, provide the following basic information about the new product.').html_safe %><br/>
+  <%= _('Fields marked as <span style="color:red">*</span> are mandatory.').html_safe %>
+  
+  <br/><br/>
+  <fieldset>
+    <legend><%= _("General information about the product").html_safe %></legend>
+
+    <div class="form_title"><label><%=_('Organisation').html_safe%></label></div>
+    <div class="form_field"><%= f.text_field :organisation, :style => "width:400px;" %></div>
+    <div class="clear"></div>
+
+    <div class="form_title"><label><%=_('My name').html_safe%></label></div>
+    <div class="form_field"><%= f.text_field :person_name, :style => "width:400px;" %></div>
+    <div class="clear"></div>
+    
+    <div class="form_title"><label><%=_('Name of the product').html_safe%></label><span class="red"> *</span></div>
+    <div class="form_field"><%= f.text_field :name, :style => "width:400px;"  %></div>
+    <div class="clear"></div>
+    
+    <div class="form_title"><label><%=_('Version of the product').html_safe%></label></div>
+    <div class="form_field"><%= f.text_field :version, :style => "width:400px;"  %></div>
+    <div class="clear"></div>
+        
+    <div class="form_title"><label><%=_('Description of the product').html_safe%></label></div>
+    <div class="form_field"><%= f.text_area :description, :rows => 3, :cols => 45, :style => "width:400px;" %></div>
+    <div class="clear"></div>
+
+    <div class="form_title"><label><%=_('Industrial Sector').html_safe %></label><span class="red"> *</span></div>
+    <div class="form_field">
+	    <select name="product[sector]" id="product_sector" <%= "disabled" if @edit_flag %> >
+
+	      <% if @product.sector == "bio_based" %>
+	         <option value="bio_based" selected="true"><%=_('Bio-based plastics').html_safe%></option>
+	      <% else %>
+	         <option value="bio_based"><%=_('Bio-based plastics').html_safe%></option>
+	      <% end %>   
+	      <% if @product.sector == "electronics" %>
+	         <option value="electronics" selected="true"><%=_('Electronics').html_safe%></option>
+	      <% else %>
+	         <option value="electronics"><%=_('Electronics').html_safe%></option>
+	      <% end %>
+	      <% if @product.sector == "printed" %>
+	         <option value="printed" selected="true"><%=_('Printed Circuit Boards').html_safe%></option>
+	      <% else %>
+	         <option value="printed"><%=_('Printed Circuit Boards').html_safe%></option>
+          <% end %>
+	      <% if @product.sector == "renewable" %>          
+	         <option value="renewable" selected="true"><%=_('Renewable Energy - Photovoltaics').html_safe%></option>
+	      <% else %>
+	         <option value="renewable"><%=_('Renewable Energy - Photovoltaics').html_safe%></option>
+	      <% end %>
+	      <% if @product.sector == "machine" %>
+	         <option value="machine" selected="true"><%=_('Machine tools').html_safe%></option>
+	      <% else %>
+	         <option value="machine"><%=_('Machine tools').html_safe%></option>
+          <% end %>
+          <% if @product.sector == "sensors" %>
+	         <option value="sensors" selected="true"><%=_('Sensors').html_safe%></option>
+	      <% else %>
+	         <option value="sensors"><%=_('Sensors').html_safe%></option>
+	      <% end %>   
+	      <% if @product.sector == "textiles" %>
+	         <option value="textiles" selected="true"><%=_('Smart Textiles').html_safe%></option>
+	      <% else %>
+	         <option value="textiles"><%=_('Smart Textiles').html_safe%></option>
+	      <% end %>
+        </select>
+    </div>
+    <div class="clear"></div>
+  </fieldset>
+  
+  <div class="buttons span-23 last">
+	 <button type="submit" class="positive"> <%= image_tag 'tick.png' %><%= _("Proceed").html_safe %></button>
+	 <a class="negative" href="<%= products_url %>"> <%= image_tag 'cross.png' %><%= _("Cancel") %></a>
+  </div>
+  
+<% end %>
+</div>

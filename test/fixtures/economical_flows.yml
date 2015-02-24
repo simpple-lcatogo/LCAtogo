@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  economical_family_id: 1
+
+two:
+  name: MyString
+  economical_family_id: 1

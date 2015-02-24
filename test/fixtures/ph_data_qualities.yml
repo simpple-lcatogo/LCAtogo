@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  ph_product_id: 1
+  project_information: MyString
+  module_type: MyString
+  initial_results: MyString
+  electric_components: MyString
+  maintenance: MyString
+
+two:
+  ph_product_id: 1
+  project_information: MyString
+  module_type: MyString
+  initial_results: MyString
+  electric_components: MyString
+  maintenance: MyString

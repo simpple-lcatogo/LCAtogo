@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  bp_manufacturing_process: 
+  name: MyString
+  value: 1.5
+
+two:
+  bp_manufacturing_process: 
+  name: MyString
+  value: 1.5

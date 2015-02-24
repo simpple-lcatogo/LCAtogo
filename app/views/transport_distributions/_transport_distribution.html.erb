@@ -1,0 +1,34 @@
+<tr id="transport_<%= transport_distribution.id %>">
+  <% if transport_distribution.data_mode %>
+     <td><%= transport_distribution.data_mode.name.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>   
+  <% if transport_distribution.vehicle %> 
+     <td><%= transport_distribution.vehicle.name.html_safe %></td>
+  <% else %>
+     <td>&nbsp;</td>
+  <% end %>   
+  <td class="distance_transport_<%= transport_distribution.id %>" style="background: none repeat scroll 0% 0% transparent"><%= transport_distribution.distance %></td>
+  <td class="quantity_transport_<%= transport_distribution.id %>" style="background: none repeat scroll 0% 0% transparent"><%= transport_distribution.quantity %></td>
+  <td><%= transport_distribution.comment %></td>  
+  <td class="center"><%= link_to '&#10006;'.html_safe, transport_distribution_path(transport_distribution, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>
+
+<script type="text/javascript">
+    $(".distance_transport_<%=transport_distribution.id%>").editInPlace({
+        url: "/transport_distributions/update_distance" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        data: {authenticity_token: AUTH_TOKEN},
+        params: "transport_distribution_id=<%=transport_distribution.id%>",
+        saving_text: '<%=_("Saving...")%>'
+    });
+</script>
+
+<script type="text/javascript">
+    $(".quantity_transport_<%=transport_distribution.id%>").editInPlace({
+        url: "/transport_distributions/update_quantity" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+        data: {authenticity_token: AUTH_TOKEN},
+        params: "transport_distribution_id=<%=transport_distribution.id%>",
+        saving_text: '<%=_("Saving...")%>'
+    });
+</script>

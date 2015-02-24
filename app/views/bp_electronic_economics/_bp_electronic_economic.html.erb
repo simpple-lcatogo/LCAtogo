@@ -1,0 +1,36 @@
+<tr id="assesment_<%= bp_electronic_economic.id %>">
+  <td><%= bp_electronic_economic.bp_economical_phase.name.html_safe %></td>
+  <% if bp_electronic_economic.bp_economical_family %>
+     <td><%= bp_electronic_economic.bp_economical_family.name.html_safe %></td>
+  <% else %>   
+     <td>&nbsp;</td>
+  <% end %>
+  <td>
+  <% if bp_electronic_economic.bp_material %>  
+     <%= bp_electronic_economic.bp_material.name.html_safe %>
+  <% end %>
+  <% if bp_electronic_economic.bp_compound_material %>  
+     <%= bp_electronic_economic.bp_compound_material.name.html_safe %>
+  <% end %>
+  <% if bp_electronic_economic.bp_vehicle %>  
+     <%= bp_electronic_economic.bp_vehicle.name.html_safe %>
+  <% end %>
+  <% if bp_electronic_economic.bp_manufacturing_process %>  
+     <%= bp_electronic_economic.bp_manufacturing_process.name.html_safe %>
+  <% end %>
+  <% if bp_electronic_economic.bp_distribution_default_value %>  
+     <%= bp_electronic_economic.bp_distribution_default_value.name.html_safe %>
+  <% end %>
+  
+  &nbsp;</td>
+   
+  <td><%= bp_electronic_economic.quantity %></td>  
+  <% if bp_electronic_economic.bp_economical_phase.name == 'Transport' || bp_electronic_economic.bp_economical_family.name == 'Transport' %>  
+     <td>&euro; / kg*km</td>
+  <% else %>
+     <td>&euro; / kg</td>
+  <% end %>   
+
+  <td class="center"><%= link_to '&#10006;'.html_safe, bp_electronic_economic_path(bp_electronic_economic, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>
+

@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  mt_product_id: 1
+  name: MyString
+  transport_type_id: 1
+  distance: 1.5
+
+two:
+  mt_product_id: 1
+  name: MyString
+  transport_type_id: 1
+  distance: 1.5

@@ -1,0 +1,17 @@
+<!-- #TODO: check links! -->
+<ul>
+  <% if @bp_product.id %>
+     <li><%= tab_link_to _('Raw materials').html_safe, bp_production_url(@bp_product),  :index => 1 %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>
+     <li><%= tab_link_to _('Transport').html_safe, bp_transport_to_converter_url(@bp_product), :index => 2 %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>
+     <li><%= tab_link_to _('Processing').html_safe, bp_manufacturing_url(@bp_product), :index => 3 %></li>     
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>     
+     <li><%= tab_link_to _('Distribution').html_safe, bp_transport_to_customer_url(@bp_product), :index => 4 %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>          
+     <li><%= tab_link_to _('End-of-life').html_safe, bp_end_of_life_url(@bp_product), :index => 5 %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>          
+     <li><%= tab_link_to _('KEPIs Selection').html_safe, bp_indicator_url(@bp_product), :index => 6 %></li>        
+   <% end %>               
+   <div class="clear"></div>
+</ul>

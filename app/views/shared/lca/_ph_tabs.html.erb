@@ -1,0 +1,15 @@
+<!-- #TODO: check links! -->
+<ul>
+  <% if @product.id %>
+     <li><%= tab_link_to _('Project Planning').html_safe, ph_basic_information_path(@product.ph_product), :product => @product, :index => 1, :style => 'padding:8px' %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>
+     <li><%= tab_link_to _('Module Specification').html_safe, ph_specified_path(@product.ph_product), :product => @product, :index => 2, :style => 'padding:8px' %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>
+     <li><%= tab_link_to _('Production Countries').html_safe, ph_intermediate_result_path(@product.ph_product), :product => @product, :index => 3, :style => 'padding:8px' %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>     
+     <li><%= tab_link_to _('Electric components').html_safe, ph_electric_component_path(@product.ph_product), :product => @product, :index => 4, :style => 'padding:8px' %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>     
+     <li><%= tab_link_to _('Maintenance').html_safe, ph_maintenance_path(@product.ph_product), :product => @product, :index => 5, :style => 'padding:8px' %></li>
+   <% end %>               
+<div class="clear"></div>
+</ul>

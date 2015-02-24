@@ -1,0 +1,40 @@
+<tr id="se_use_consumption_consumable_data_<%= se_use_consumption_consumable_data.id %>">
+     <% if defined?(page) && page == 'use_cost' %>
+          <td>
+               <% if se_use_consumption_consumable_data.se_consumable.excel_name == 'Other' %>
+                    <%= se_use_consumption_consumable_data.se_consumable.name.to_s.html_safe + ' - ' +
+                    se_use_consumption_consumable_data.description %>
+               <% else %>
+                    <%= se_use_consumption_consumable_data.se_consumable.name.to_s.html_safe %>
+               <% end %>
+          </td>
+          <td style="text-align:center;"><%= se_use_consumption_consumable_data.with_sensor.to_s.html_safe %> <%= _('kg/h')%></td>
+          <td style="text-align:center;"><%= se_use_consumption_consumable_data.without_sensor.to_s.html_safe %> <%= _('kg/h')%></td>
+          <td style="text-align:center;" id="se_use_consumption_consumable_data_cost_<%= se_use_consumption_consumable_data.id %>" ><%= se_use_consumption_consumable_data.cost.to_s.html_safe %><%= ' &euro;/kg'.html_safe if se_use_consumption_consumable_data.cost %></td>
+
+          <script type="text/javascript">
+             $("#se_use_consumption_consumable_data_cost_<%=se_use_consumption_consumable_data.id%>").editInPlace({
+                  url: "/se_use_consumption_consumable_datas/update_values" + "?&authenticity_token=" + encodeURIComponent(AUTH_TOKEN),
+                  params: "id=<%=se_use_consumption_consumable_data.id%>&field=cost",
+                  saving_text: '<%=_("Saving...")%>',
+                  default_text: '<%= _("(value)")%>'
+                  });
+          </script>   
+
+     <% else %>
+          <td>
+          	<% if se_use_consumption_consumable_data.se_consumable.excel_name == 'Other' %>
+          		<%= se_use_consumption_consumable_data.se_consumable.name.to_s.html_safe + ' - ' +
+          		se_use_consumption_consumable_data.description %>
+          	<% else %>
+          		<%= se_use_consumption_consumable_data.se_consumable.name.to_s.html_safe %>
+          	<% end %>
+          </td>
+          <td style="text-align:center;"><%= se_use_consumption_consumable_data.with_sensor.to_s.html_safe %> <%= _('kg/h')%></td>
+          <td style="text-align:center;"><%= se_use_consumption_consumable_data.without_sensor.to_s.html_safe %> <%= _('kg/h')%></td>
+
+          <td class="center"><%= link_to '&#10006;'.html_safe, se_use_consumption_consumable_data_path(se_use_consumption_consumable_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+     <% end %>
+</tr>
+
+

@@ -1,0 +1,2 @@
+module MtDistributionsHelper
+end

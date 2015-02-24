@@ -1,0 +1,2 @@
+module StConsumptionDatasHelper
+end

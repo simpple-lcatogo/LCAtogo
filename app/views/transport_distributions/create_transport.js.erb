@@ -1,0 +1,10 @@
+
+$("#error_explanation_transport").empty();
+$("#error_explanation_transport").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#transports").append("<%= escape_javascript(render(@transport_distribution)) %>");
+/* Highlight the new comment */
+$("#transport_<%= @transport_distribution.id %>").effect("highlight", {}, 3000);
+
+$("#transport_distribution_value").val("");
+$("transport_distribution_name").val("");

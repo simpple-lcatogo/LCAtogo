@@ -1,0 +1,29 @@
+<h1>Listing mt_assessments</h1>
+
+<table>
+  <tr>
+    <th>Mt product</th>
+    <th>Mt product type</th>
+    <th>Weight</th>
+    <th>Lifetime</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @mt_assessments.each do |mt_assessment| %>
+  <tr>
+    <td><%= mt_assessment.mt_product_id %></td>
+    <td><%= mt_assessment.mt_product_type_id %></td>
+    <td><%= mt_assessment.weight %></td>
+    <td><%= mt_assessment.lifetime %></td>
+    <td><%= link_to 'Show', mt_assessment %></td>
+    <td><%= link_to 'Edit', edit_mt_assessment_path(mt_assessment) %></td>
+    <td><%= link_to 'Destroy', mt_assessment, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Mt assessment', new_mt_assessment_path %>

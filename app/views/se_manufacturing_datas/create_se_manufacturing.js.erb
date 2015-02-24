@@ -1,0 +1,12 @@
+
+$("#error_explanation_se_manufacturing").empty();
+$("#error_explanation_se_manufacturing").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#se_manufacturings").append("<%= escape_javascript(render(@se_manufacturing_data)) %>");
+/* Highlight the new comment */
+$("#se_manufacturing_<%= @se_manufacturing_data.id %>").effect("highlight", {}, 3000);
+
+$("#manufacturing_data_ratio").val("");
+$("#manufacturing_data_aspect").val("");
+$("#manufacturing_data_diagonal").val("");
+$("#manufacturing_data_quantity").val("");

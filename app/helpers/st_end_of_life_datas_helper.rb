@@ -1,0 +1,2 @@
+module StEndOfLifeDatasHelper
+end

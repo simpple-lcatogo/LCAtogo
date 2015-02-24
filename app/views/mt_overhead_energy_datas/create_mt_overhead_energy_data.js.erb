@@ -1,0 +1,14 @@
+$("#error_explanation_mt_overhead_energy_data").empty();
+$("#error_explanation_mt_overhead_energy_data").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#mt_overhead_energy_datas").append("<%= escape_javascript(render(@mt_overhead_energy_data)) %>");
+/* Highlight the new comment */
+$("#mt_overhead_energy_data_<%= @mt_overhead_energy_data.id %>").effect("highlight", {}, 3000);
+
+$("#mt_overhead_energy_data_with_sensor").val("");
+$("#mt_overhead_energy_data_without_sensor").val("");
+$("#mt_overhead_energy_data_recycling_revenue").val("");
+$("#mt_overhead_energy_data_description").val("");
+$("#mt_overhead_energy_data_global_warming_potential").val("");
+
+updateWeight();

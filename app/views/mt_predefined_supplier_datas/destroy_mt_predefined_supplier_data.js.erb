@@ -1,0 +1,7 @@
+if ($('#td_quantity_supplier_<%= @mt_predefined_supplier_data.id %>')) {
+   $('#td_quantity_supplier_<%= @mt_predefined_supplier_data.id %>').attr("id", "");   
+}
+/* Eliminate the comment by fading it out */
+$('#mt_predefined_supplier_data_<%= @mt_predefined_supplier_data.id %>').fadeOut();
+
+updateWeight();

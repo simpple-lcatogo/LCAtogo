@@ -1,0 +1,14 @@
+$("#error_explanation_mt_manufacturing_resource_data").empty();
+$("#error_explanation_mt_manufacturing_resource_data").css("display", "none")
+/* Add the new comment to the bottom of the comments list */
+$("#mt_manufacturing_resource_datas").append("<%= escape_javascript(render(@mt_manufacturing_resource_data)) %>");
+/* Highlight the new comment */
+$("#mt_manufacturing_resource_data_<%= @mt_manufacturing_resource_data.id %>").effect("highlight", {}, 3000);
+
+$("#mt_manufacturing_resource_data_with_sensor").val("");
+$("#mt_manufacturing_resource_data_without_sensor").val("");
+$("#mt_manufacturing_resource_data_recycling_revenue").val("");
+$("#mt_manufacturing_resource_data_description").val("");
+$("#mt_manufacturing_resource_data_global_warming_potential").val("");
+
+updateWeight();

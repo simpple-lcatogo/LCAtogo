@@ -1,0 +1,71 @@
+<h1><%=_('Economical Assessment').html_safe%>
+<br/><span class="tool_subtitle"><%=_('Results').html_safe%></h1>
+<div class="content_skin">
+	<div class="lcamenu span-23 showdgrid last ">
+	  <%= render(:partial => 'shared/economical/tabs') %>
+	</div>
+    <div class="clear"></div>
+<% if @datas %>    
+    
+<%
+   min = 0
+   max = 0
+   sorted_1 = @datas.sort
+   min = sorted_1[0]
+   sorted_1 = sorted_1.reverse
+   max = sorted_1[0]
+
+   min = min
+   max = max + 20
+   
+   max_min_array = ""
+   min_tmp = min
+   step = (max - min) / 10
+	 
+   if step <= 0
+     step = 10
+   end
+   
+   
+   while min_tmp <= max
+      max_min_array += "|" + min_tmp.to_i.to_s
+      min_tmp += step
+   end
+
+   ticks_to_array = "|"
+   @labels.reverse.each_with_index do |tick, index|
+      if index == 0
+         ticks_to_array += tick.to_s + "|"
+      else
+         ticks_to_array += tick.to_s  + "|"
+      end   
+   end
+
+   values_to_array = ""
+   @datas.each_with_index do |tick, index|
+	   if (index + 1) < @datas.size
+	       values_to_array += tick.to_s + ","
+	   else
+	       values_to_array += tick.to_s
+	   end   
+   end
+
+   seriesColors_to_array = ""
+   @datas.each_with_index do |tick, index|
+      if index == 0
+         seriesColors_to_array += "f58528".to_s
+      else
+         seriesColors_to_array += "|" + "FF0000".to_s
+      end   
+   end
+
+%>
+
+   <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=18&amp;chts=2B4950,16,l&amp;chxt=x,y&amp;cht=bhg&amp;chds=<%=min%>,<%=max%>&amp;chd=t:<%=values_to_array%>&amp;chco=<%=seriesColors_to_array%>&amp;chls=2.0&amp;chs=600x<%=((@datas.size * 26) / 1) + 32 %>&amp;chxl=0:<%=max_min_array%>|1:<%=ticks_to_array%>&amp;chm=N*f0* &euro;,000000,0,-1,11,,:10:&amp;chxs=1,,11,-1,lt"
+     style="padding-right:20px;padding-bottom:40px;">
+   
+
+<% end %>
+</div>

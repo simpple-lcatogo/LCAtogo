@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  bp_manufacturing_proces: 
+  quantity: 1.5
+  unit: 
+  comment: MyString
+
+two:
+  bp_manufacturing_proces: 
+  quantity: 1.5
+  unit: 
+  comment: MyString

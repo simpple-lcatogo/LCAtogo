@@ -1,0 +1,2 @@
+module MtAssessmentsHelper
+end

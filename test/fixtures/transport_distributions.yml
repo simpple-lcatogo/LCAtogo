@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  data_mode_id: 1
+  vehicle_id: 1
+  quantity: 1.5
+  product_id: 1
+
+two:
+  data_mode_id: 1
+  vehicle_id: 1
+  quantity: 1.5
+  product_id: 1

@@ -1,0 +1,5 @@
+<p><%=_('Welcome').html_safe%> <%= @resource.email %>!</p>
+
+<p><%=_('You can confirm your account through the link below').html_safe%>:</p>
+
+<p><%= link_to _('Confirm my account on LCA to go').html_safe, confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>

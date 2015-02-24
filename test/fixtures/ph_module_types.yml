@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  efficiency: 1.5
+  lifetime: 1.5
+  records: 1.5
+
+two:
+  name: MyString
+  efficiency: 1.5
+  lifetime: 1.5
+  records: 1.5

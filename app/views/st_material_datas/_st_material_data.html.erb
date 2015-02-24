@@ -1,0 +1,48 @@
+<tr id="st_material_data_<%= st_material_data.id %>">
+     <td>
+	      <% if st_material_data.st_family %>
+			<%= st_material_data.st_family.name.html_safe %>
+		  <% else %>
+		    <%=_('Other').html_safe%>	
+	      <% end %>		
+     </td>
+     <td>
+	      <% if st_material_data.st_material %>
+			<%= st_material_data.st_material.name.html_safe %>
+	      <% else %> 
+	        <%= st_material_data.user_material_name %>		
+	      <% end %>		
+
+     </td>
+	 <% if st_material_data.st_material %>
+	   <% if st_material_data.st_material.unit == 'g'%>
+          <td id="td_quantity_<%= st_material_data.id %>">
+       <% else %>
+          <td>
+       <% end %>
+     <% else %>
+       <td>
+     <% end %>
+        <% if st_material_data.quantity %>
+          <%= st_material_data.quantity %>
+        <% else %>
+          &nbsp;
+        <% end %>
+     </td>
+     <td>
+	      <% if st_material_data.st_material %>
+			<%= st_material_data.st_material.unit.html_safe %>
+		  <% else %>
+		    <%= st_material_data.user_unit %>
+	      <% end %>		
+     </td>     
+     <td>
+       <% if st_material_data.eco_cost && st_material_data.quantity %>
+          <%= lca_format_number(st_material_data.eco_cost * st_material_data.quantity, 4)  %> &euro;
+       <% else %>
+          -
+       <% end %>   
+     </td>
+     
+     <td class="center"><%= link_to '&#10006;'.html_safe, st_material_data_path(st_material_data, :authenticity_token => form_authenticity_token), :method => :delete, :class => "delete", :remote => true  %></td>
+</tr>

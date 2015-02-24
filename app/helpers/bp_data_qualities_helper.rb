@@ -1,0 +1,2 @@
+module BpDataQualitiesHelper
+end

@@ -1,0 +1,24 @@
+<ul>
+  <% if @product.id %>
+     <li><%= tab_link_to _('Summary').html_safe, ph_result_summary_path(@product.ph_product), :product => @product, :index => 1 %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>  
+     <% if @ph_product.ph_intermediate_result %>   
+	     <li><%= tab_link_to _('Detailed Results').html_safe, ph_result_path(@product.ph_product), :product => @product, :index => 2 %></li>
+	     <li style="padding-top:10px;padding-bottom:10px"> > </li>
+	     <li><%= tab_link_to _('Graphic Results').html_safe, ph_result_graphic_path(@product.ph_product), :product => @product, :index => 3 %></li>
+	     <li style="padding-top:10px;padding-bottom:10px"> > </li>
+	     <li><%= tab_link_to _('Optimisation Results').html_safe, ph_result_optimisation_path(@product.ph_product), :product => @product, :index => 4 %></li>
+	     <li style="padding-top:10px;padding-bottom:10px"> > </li>
+	     <li><%= tab_link_to _('Product comparison').html_safe, ph_comparison_url(@product.ph_product), :product => @product, :index => 5 %></li>
+     <% else %>
+	     <li class="lcamenu_no_link"><%= _('Detailed Results').html_safe%></li>
+	     <li style="padding-top:10px;padding-bottom:10px"> > </li>
+	     <li class="lcamenu_no_link"><%=_('Graphic Results').html_safe%></li>
+	     <li style="padding-top:10px;padding-bottom:10px"> > </li>
+	     <li class="lcamenu_no_link"><%=_('Optimisation Results').html_safe%></li>
+	     <li style="padding-top:10px;padding-bottom:10px"> > </li>
+	     <li class="lcamenu_no_link"><%=_('Product comparison').html_safe%></li>
+     <% end %>
+   <% end %>
+<div class="clear"></div>
+</ul>

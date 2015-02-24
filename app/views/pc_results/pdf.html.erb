@@ -1,0 +1,532 @@
+# encoding: UTF-8
+<html>
+  <head>
+	<style type="text/css">  
+	 body {
+	  font-family: "Myriad Pro","Myriad Web", helvetica, sans-serif;
+	}
+	
+	table {
+	*border-collapse: collapse; /* IE7 and lower */
+	border-spacing: 0;
+	}
+	th2:first-child {
+	-moz-border-radius: 6px 0 0 0;
+	-webkit-border-radius: 6px 0 0 0;
+	border-radius: 6px 0 0 0;
+	}
+	 
+	th2:last-child {    
+	-moz-border-radius: 0 6px 0 0;    
+	-webkit-border-radius: 0 6px 0 0;    
+	border-radius: 0 6px 0 0;
+	}
+	
+	
+	.bordered {
+	    border-left: solid #2b4950 4px;
+	    border-right: solid #2b4950 4px;    
+	    border-bottom: solid #2b4950 5px;    
+	    -moz-border-radius: 6px;
+	    -webkit-border-radius: 6px;
+	    border-radius: 6px;
+	    -webkit-box-shadow: 0 1px 1px #ccc; 
+	    -moz-box-shadow: 0 1px 1px #ccc; 
+	    box-shadow: 0 1px 1px #ccc;         
+	}
+	
+	.bordered_white {
+	    width: 90px;
+	    background-color:#ffffff;
+	    border-left: solid #ffffff 4px;
+	    border-right: solid #ffffff 4px;    
+	    border-bottom: solid #ffffff 3px;    
+	    border-top: solid #ffffff 3px;    
+	    -moz-border-radius: 6px;
+	    -webkit-border-radius: 6px;
+	    border-radius: 6px;
+	    -webkit-box-shadow: 0 1px 1px #ccc; 
+	    -moz-box-shadow: 0 1px 1px #ccc; 
+	    box-shadow: 0 1px 1px #ccc;         
+	}
+	
+	.bordered_gray {
+	    width: 90px;
+	    background-color:#71c5c8 !important;
+	    border-left: solid #71c5c8 4px !important;
+	    border-right: solid #71c5c8 4px !important;    
+	    border-bottom: solid #71c5c8 5px !important;    
+	    -moz-border-radius: 6px;
+	    -webkit-border-radius: 6px;
+	    border-radius: 6px;
+	}
+	
+	
+	.bordered tr {
+	border: solid #ccc 3px;
+	}    
+	
+	.bordered_gray tr {
+	border: solid #71c5c8 3px;
+	}    
+	
+	    
+	.bordered td, .bordered th {
+	    border-left: 1px solid #ccc;
+	    border-top: 1px solid #ccc;
+	    padding: 5px;
+	    text-align: left;    
+	}
+	
+	.bordered_white th {
+	    border-left: 1px solid #ccc;
+	    border-top: 1px solid #ccc;
+	    padding: 5px;
+	    text-align: left;
+	    background-color:#ffffff;    
+	}
+	
+	.bordered_gray th {
+	    padding: 5px;
+	    text-align: left;
+	    background-color:#71c5c8 !important;    
+	}
+	
+	
+	.bordered th {
+	    background-color: #2b4950;
+	    background-image: -webkit-gradient(linear, left top, left bottom, from(#2b4950), to(#2b4950));
+	    background-image: -webkit-linear-gradient(top, #2b4950, #2b4950);
+	    background-image:    -moz-linear-gradient(top, #2b4950, #2b4950);
+	    background-image:     -ms-linear-gradient(top, #2b4950, #2b4950);
+	    background-image:      -o-linear-gradient(top, #2b4950, #2b4950);
+	    background-image:         linear-gradient(top, #2b4950, #2b4950);
+	    border-top: none;
+	   // text-shadow: 0 1px 0 rgba(255,255,255,.5); 
+	    font-weight: normal;
+	}
+	
+	.bordered_white th {
+	    background-color: #ffffff;
+	    background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#ffffff)) !important;
+	    background-image: -webkit-linear-gradient(top, #ffffff, #ffffff) !important;
+	    background-image:    -moz-linear-gradient(top, #ffffff, #ffffff) !important;
+	    background-image:     -ms-linear-gradient(top, #ffffff, #ffffff) !important;
+	    background-image:      -o-linear-gradient(top, #ffffff, #ffffff) !important;
+	    background-image:         linear-gradient(top, #ffffff, #ffffff) !important;
+	    -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset; 
+	    -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;  
+	    box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;        
+	    border-top: none;
+	    text-shadow: 0 1px 0 rgba(255,255,255,.5); 
+	    font-weight: normal;
+	    font-size:13px;
+	    padding: 5px !important;
+	}
+	
+	
+	.bordered_gray th {
+	    padding-top: 4px !important;
+	    padding-bottom: 4px !important;    
+	    background-color: #71c5c8;
+	    background-image: -webkit-gradient(linear, left top, left bottom, from(#71c5c8), to(#71c5c8)) !important;
+	    background-image: -webkit-linear-gradient(top, #71c5c8, #71c5c8) !important;
+	    background-image:    -moz-linear-gradient(top, #71c5c8, #71c5c8) !important;
+	    background-image:     -ms-linear-gradient(top, #71c5c8, #71c5c8) !important;
+	    background-image:      -o-linear-gradient(top, #71c5c8, #71c5c8) !important;
+	    background-image:         linear-gradient(top, #71c5c8, #71c5c8) !important;
+	    border-top: none;
+	    text-shadow: 0 1px 0 rgba(255,255,255,.5); 
+	    font-weight: bold;
+	    font-size:15px;
+	    border:0px;
+	    padding: 5px !important;
+	}
+	
+	
+	.bordered td:first-child, .bordered th:first-child {
+	    border-left: none;
+	}
+	
+	.bordered_white td:first-child, .bordered_white th:first-child {
+	    border-left: none;
+	}
+	
+	.bordered_gray td:first-child, .bordered_gray th:first-child {
+	    border-left: none;
+	}
+	
+	.bordered_dark {
+	    
+	    -moz-border-radius: 6px;
+	    -webkit-border-radius: 6px;
+	    border-radius: 6px;
+	    -webkit-box-shadow: 0 1px 1px #009da5; 
+	    -moz-box-shadow: 0 1px 1px #009da5; 
+	    box-shadow: 0 1px 1px #009da5;         
+	}
+	
+	.bordered_dark tr {
+	border: solid #ccc 3px;
+	}    
+	    
+	.bordered_dark td {
+	    background-color: #009da5;
+	    padding-right: 10px;
+	    padding-left: 10px;    
+	    padding-bottom: 5px;    
+	    padding-top: 5px;    
+	    text-align: left;    
+	}
+	
+	.bordered_dark th {
+	    padding-right: 10px;
+	    padding-left: 10px;    
+	    padding-bottom: 5px;    
+	    padding-top: 5px;    
+	    text-align: left;    
+	}
+	
+	.bordered_dark th {
+	    border-top: none; 
+	    font-weight: normal;
+	}
+	
+	.bordered_dark td:first-child, .bordered_dark th:first-child {
+	    border-left: none;
+	}
+	
+	.bordered_dark th:first-child {
+	    -moz-border-radius: 6px 0 0 0;
+	    -webkit-border-radius: 6px 0 0 0;
+	    border-radius: 6px 0 0 0;
+	}
+	
+	.bordered_dark th:last-child {
+	    -moz-border-radius: 0 6px 0 0;
+	    -webkit-border-radius: 0 6px 0 0;
+	    border-radius: 0 6px 0 0;
+	}
+	
+	.bordered_dark th:only-child{
+	    -moz-border-radius: 6px 6px 0 0;
+	    -webkit-border-radius: 6px 6px 0 0;
+	    border-radius: 6px 6px 0 0;
+	}
+	
+	.bordered_dark tr:last-child td:first-child {
+	    -moz-border-radius: 0 0 0 6px;
+	    -webkit-border-radius: 0 0 0 6px;
+	    border-radius: 0 0 0 6px;
+	}
+	
+	.bordered_dark tr:last-child td:last-child {
+	    -moz-border-radius: 0 0 6px 0;
+	    -webkit-border-radius: 0 0 6px 0;
+	    border-radius: 0 0 6px 0;
+	}
+	
+	
+	
+	
+	
+	.bordered_gray th:first-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_gray th:last-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_gray th:only-child{
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_gray tr:last-child td:first-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_gray tr:last-child td:last-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	
+	
+	
+	
+	.bordered_white th:first-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_white th:last-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_white th:only-child{
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_white tr:last-child td:first-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	.bordered_white tr:last-child td:last-child {
+	    -moz-border-radius: 0 0 0 0;
+	    -webkit-border-radius: 0 0 0 0;
+	    border-radius: 0 0 0 0;
+	}
+	
+	
+	
+	.title_blue {
+	   color: #009da5;
+	   font-weight: bold;
+	   }
+	
+	.title_white {
+	   color: #ffffff;
+	   font-weight: bold;
+	   }
+	
+	
+	.td_blue td {
+	    border-left: 5px solid #2b4950 !important;
+	    border-top: 5px solid #2b4950 !important;
+	}
+	
+	</style>
+  </head>     
+  <body>
+     <table width="845px;" border="0" style="padding-bottom:20px">
+       <th style="text-align:left;width:155px">
+          <%=absolute_image_tag('logo_lca_to_go.png', :width => 147)%>
+       </th>
+       <th style="text-align:left;width:155px">
+          <%=absolute_image_tag('logos/logo_pcb.png', :width => 147)%>
+       </th>      
+       <th align="right">
+	        <table class="bordered" style="width:500px;color:#ffffff">
+	          <th>        
+				    <b><%=_('Organisation').html_safe%>:</b> <%=@product.organisation%><br/>
+				    <b><%=_('Author').html_safe%>:</b> <%=@product.person_name%><br/>
+				    <b><%=_('Name of the product').html_safe%>:</b> <%=@product.name%><br/>
+				    <b><%=_('Version of the product').html_safe%>:</b> <%=@product.version%><br/>
+				    <b><%=_('Description of the product').html_safe%>:</b> <%=@product.description%><br/>				    
+	          </th>
+			</table>       
+          </th>
+     </table>  
+
+   <br/>
+
+	
+	 <h3><%=_('PRODUCT INFO').html_safe%></h3>
+	   <table class="bordered" width="845px;" style="border-top: solid #2b4950 5px">
+	   <tr>
+	     <td style="text-align:left;background:#2B4950;color:#EBEEDB;width:200px;border-top:0px"><b><%=_('Mark of the PCB').html_safe%></b></td>
+	     <td>
+	        <%=@pc_product.pc_basic.pcb_mark%>
+	     </td>
+	   </tr>
+	   <tr>
+	     <td style="text-align:left;background:#2B4950;color:#EBEEDB;border-top:0px"><b><%=_('Type of PCB').html_safe%></b></td>
+	     <td>
+		    <% if @pc_product && @pc_product.pc_basic && @pc_product.pc_basic.pcb_type %>
+		      <% if @pc_product.pc_basic.pcb_type == 'elastic' %>
+		        <%=_('Flexible').html_safe%>
+		      <% end %>
+		      <% if @pc_product.pc_basic.pcb_type == 'rigid' %>
+		        <%=_('Rigid').html_safe%>
+		      <% end %>        
+		    <% end %>	     
+	     </td>
+	   </tr>
+	   <tr>
+	     <td style="text-align:left;background:#2B4950;color:#EBEEDB;border-top:0px"><b><%=_('Number of layers').html_safe%></b></td>
+	     <td>
+           <%=@pc_product.pc_basic.layers%>	     
+	     </td>
+	   </tr>
+	   <tr>
+	     <td style="text-align:left;background:#2B4950;color:#EBEEDB;border-top:0px"><b><%=_('Type of finish coating').html_safe%></b></td>
+	     <td>
+		    <% if @pc_product && @pc_product.pc_basic && @pc_product.pc_basic.pc_coating_type %>
+		      <%=@pc_product.pc_basic.pc_coating_type.name.html_safe %>
+		    <% end %>	 	     
+	     </td>
+	   </tr>
+	 
+	</table>
+	<br/><br/>
+	<h3><%=_('TOTAL RESULTS on KEPIs DETAILED RESULTS').html_safe%></h3>
+	<table class="bordered" width="845px;" style="border-top: solid #2b4950 5px">
+	  <thead>
+	   <tr style="border:solid 1px">
+	     <th style="text-align:left;background:#2B4950;color:#EBEEDB"><b><%=_('Indicator').html_safe%></b></th>
+	     <th style="text-align:left;background:#2B4950;color:#EBEEDB"><b><%=_('Units').html_safe%></b></th>
+	     <th style="text-align:right;background:#2B4950;color:#EBEEDB"><b><%=_('For 1 PCB').html_safe%></b></th>
+	     <th style="text-align:right;background:#2B4950;color:#EBEEDB"><b><%=_('For').html_safe%> <%=@pc_product.pc_basic.pcb_number%> <%=_('PCBs').html_safe%></b></th>	     
+	   </tr>
+	  </thead>
+	  <% @indicators.each_with_index do |indicator, index| %>
+	   <% if @indicators_checked.include?indicator %>	  
+
+	     <% bg_color = "#006400" 
+	        if index == 0
+	           bg_color = "#696969" 
+	        end 
+	        if index == 1
+	           bg_color = "#9933FF"	        
+	        end 
+	        if index == 2
+	           bg_color = "#8B0000"	        
+	        end 
+	        if index == 3
+	           bg_color = "#1E90FF"	        
+	        end 
+	     
+	     %> 
+		      <% if index == 4 %>
+		      <tr>
+	             <td colspan="2" style="background:#006400;color:#FFF;border-top:0px"><%=_('Possible materials for recycling:').html_safe%></td>
+	             <td colspan="2" style="border-top:0px">&nbsp;</td>	        
+		      </tr>	 
+		       <% end %> 	     
+ 	      <tr>
+ 	         <% if indicator.name == 'Energy consumption'%>
+                <td style="background:<%=bg_color%>;color:#FFF;border-top:0px"><%=_('Energy consumption Ec (Ec = Ecm+Ecp)').html_safe%></td>
+             <% else %>
+                <td style="background:<%=bg_color%>;color:#FFF;border-top:0px"><%=indicator.name.html_safe%></td>
+             <% end %>   	        
+             <td style="background:<%=bg_color%>;color:#FFF;border-top:0px"><%=indicator.unit.html_safe%></td>
+             <% @pc_result_values.each do |pc_result_value| %>
+                <% if pc_result_value.indicator.id == indicator.id %>
+	               <td style="text-align:right;border-top:0px"><%=lca_format_number(pc_result_value.value_one, 4) %></td>
+	               <td style="text-align:right;border-top:0px"><%=lca_format_number(pc_result_value.value_n, 2) %></td>	               
+	            <% end %>
+	         <% end %>    
+	      </tr>	  
+	      <% if index == 1 %>
+		      <tr>
+	             <td style="background:#9933FF;color:#FFF;border-top:0px"><%=_('Ecm - Energy consumed during materials production for PCB').html_safe%></td>
+	             <td style="background:#9933FF;color:#FFF;border-top:0px"><%=_('kWh').html_safe%></td>	        
+	             <td style="text-align:right;border-top:0px"><%=lca_format_number(@ecm, 4)%></td>
+	             <td style="text-align:right;border-top:0px"><%=lca_format_number(@ecm * @pc_product.pc_basic.pcb_number, 2)%></td>             
+		      </tr>
+		      <tr>
+	             <td style="background:#9933FF;color:#FFF;border-top:0px"><%=_('Ecp - Energy consumed during production processes of the PCB').html_safe%></td>
+	             <td style="background:#9933FF;color:#FFF;border-top:0px"><%=_('kWh').html_safe%></td>	        
+	             <td style="text-align:right;border-top:0px"><%=lca_format_number(@ecp, 4)%></td>
+	             <td style="text-align:right;border-top:0px"><%=lca_format_number(@ecp * @pc_product.pc_basic.pcb_number, 2)%></td>             
+		      </tr>	   
+		      	   
+	      <% end %>	       
+	      <% if index == 3 %>
+		      <tr>
+	             <td style="background:#1E90FF;color:#FFF;border-top:0px"><%=_('CF of materials').html_safe%></td>
+	             <td style="background:#1E90FF;color:#FFF;border-top:0px"><%=_('kg CO2 eq').html_safe%></td>	        
+	             <td style="text-align:right;border-top:0px"><%=lca_format_number(@cf_m, 4)%></td>
+	             <td style="text-align:right;border-top:0px"><%=lca_format_number(@cf_m * @pc_product.pc_basic.pcb_number, 2)%></td>             
+		      </tr>	   	      
+		      <tr>
+	             <td style="background:#1E90FF;color:#FFF;border-top:0px"><%=_('CF of production processes').html_safe%></td>
+	             <td style="background:#1E90FF;color:#FFF;border-top:0px"><%=_('kg CO2 eq').html_safe%></td>
+	             <td style="text-align:right;border-top:0px"><%=lca_format_number(@cf_p, 4)%></td>
+	             <td style="text-align:right;border-top:0px"><%=lca_format_number(@cf_p * @pc_product.pc_basic.pcb_number, 2)%></td>
+		      </tr>	   	      
+		      <tr>
+	             <td style="background:#1E90FF;color:#FFF;border-top:0px"><%=_('CF of gas emissions to air').html_safe%></td>
+	             <td style="background:#1E90FF;color:#FFF;border-top:0px"><%=_('kg CO2 eq').html_safe%></td>
+	             <td style="text-align:right;border-top:0px"><%=lca_format_number(@cf_ghg, 4)%></td>
+	             <td style="text-align:right;border-top:0px"><%=lca_format_number(@cf_ghg * @pc_product.pc_basic.pcb_number, 2)%></td>
+		      </tr>	   	      
+		      <tr>
+	             <td style="background:#1E90FF;color:#FFF;border-top:0px"><%=_('CF of transport').html_safe%></td>
+	             <td style="background:#1E90FF;color:#FFF;border-top:0px"><%=_('kg CO2 eq').html_safe%></td>
+	             <td style="text-align:right;border-top:0px"><%=lca_format_number(@cf_t, 4)%></td>
+	             <td style="text-align:right;border-top:0px"><%=lca_format_number(@cf_t * @pc_product.pc_basic.pcb_number, 2)%></td>             	        
+		      </tr>	   	      
+		      <% end %>  
+ 	      
+	      <% end %>
+      <% end %>
+	</table>
+	<br/>
+	
+
+	
+    <table class="bordered" width="845px;" style="page-break-before: always">
+	  <tr>
+	    <td colspan="2" style="text-align:left;background:#2B4950;color:#EBEEDB">
+	       <b><%=_('ROHS compliance information').html_safe%></b>
+	    </td>
+	  </tr>
+	  <tr style="border:solid 1px">
+	    <td colspan="2" style="border:solid 1px">
+	       <% if @pc_product.pc_basic.rohs_compliant %>
+	          <% if @pc_product.pc_basic.rohs_compliant == 'yes' %>
+	             <%=_('The product marked').html_safe%> <%=@pc_product.pc_basic.pcb_mark%> <%=_('meets the EU-directive 2011/65/EU (RoHS) requirements.').html_safe%>
+	          <% end %>   
+	          <% if @pc_product.pc_basic.rohs_compliant == 'no' %>	          
+	             <%=_('The product marked').html_safe%> <%=@pc_product.pc_basic.pcb_mark%> <%=_('does not meet the EU-directive 2011/65/EU (RoHS) requirements.').html_safe%>
+	          <% end %>   
+	       <% end %>
+	    </td>
+	  </tr>
+	  <tr style="border:solid 1px">
+	    <td style="border:solid 1px;width:100px;background:#2B4950;color:#FFF;border:0px"><%=_('Comments').html_safe%></td>
+	    <td style="border:solid 1px"><%=@pc_product.pc_basic.comments%></td>	    
+	  </tr>
+	</table>  
+	
+<% if @graphic_ticks %>
+ <br/>
+  <table class="bordered" width="845px;">
+    <th><span class="title_white"><%=_('CARBON FOOTPRINT (CF)').html_safe%></span></th>
+
+
+
+<%
+	   max_min_array = ""
+	   min_tmp = @min_graphic
+	   step = (@max_graphic - @min_graphic) / 10
+	 
+	   while min_tmp <= @max_graphic
+	      max_min_array += "|" + min_tmp.to_i.to_s
+	      min_tmp += step
+	   end
+	   max_min_array += "|" + min_tmp.to_i.to_s
+	    %>
+      <tr>
+          <td style="text-align:center"> 		
+   <img 
+     alt="" 
+     src="https://chart.googleapis.com/chart?chf=bg,s,EBEEDB|c,s,FFFDF6&amp;chbh=18&amp;chts=2B4950,16,l&amp;chxt=x,y&amp;cht=bhg&amp;chds=<%=@min_graphic%>,<%=@max_graphic%>&amp;chd=t:<%=@graphic_values%>&amp;chco=<%=@graphic_colors%>&amp;chls=2.0&amp;chs=800x<%=((6 * 21) / 1) + 32 %>&amp;chxl=0:<%=max_min_array%>|1:|<%=@graphic_ticks%>&amp;chm=N*f2*,000000,0,-1,11,,:10:&amp;chxs=1,,11,-1,lt"
+     style="padding-top:20px;padding-bottom:20px;">
+     
+    <div style="width:800px;text-align:center;font-size:11px;color:888888">
+       <%=_('kg CO<sub>2</sub> eq').html_safe%> 
+    </div>     
+    </td>
+  </tr>
+ </table>   	
+<% end %>	
+

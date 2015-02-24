@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  st_product_id: 1
+  repair: MyString
+  lifetime: 1.5
+  selected: MyString
+
+two:
+  st_product_id: 1
+  repair: MyString
+  lifetime: 1.5
+  selected: MyString

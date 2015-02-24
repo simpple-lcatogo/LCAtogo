@@ -1,0 +1,9 @@
+<ul>
+  <% if @product.id %>
+     <li><%= tab_link_to _('Overview').html_safe, data_quality_intro_path(@product), :product => @product, :index => 1 %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> > </li>     
+     <li><%= tab_link_to _('Data').html_safe, data_quality_path(@product), :product => @product, :index => 2 %></li>
+     <li style="padding-top:10px;padding-bottom:10px"> </li>
+   <% end %>
+<div class="clear"></div>
+</ul>

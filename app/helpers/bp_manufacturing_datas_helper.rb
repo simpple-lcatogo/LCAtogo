@@ -1,0 +1,2 @@
+module BpManufacturingDatasHelper
+end
